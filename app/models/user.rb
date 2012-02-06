@@ -9,7 +9,10 @@ class User < ActiveRecord::Base
   attr_accessor :login
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
+                  :firstname, :lastname, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme
+  
+  belongs_to :rolable, :polymorphic => true
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
