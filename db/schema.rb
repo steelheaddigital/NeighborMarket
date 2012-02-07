@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20120206151626) do
 
   create_table "buyers", :force => true do |t|
     t.integer "user_id"
-    t.text    "deliveryinstructions"
+    t.text    "delivery_instructions"
   end
 
   create_table "roles", :force => true do |t|
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20120206151626) do
 
   create_table "sellers", :force => true do |t|
     t.integer "user_id"
-    t.text    "paymentinstructions"
+    t.text    "payment_instructions"
   end
 
   create_table "users", :force => true do |t|
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(:version => 20120206151626) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.string   "firstname"
-    t.string   "lastname"
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "initial"
     t.string   "phone"
     t.string   "address"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(:version => 20120206151626) do
     t.string   "country"
     t.integer  "zip"
     t.text     "aboutme"
+    t.integer  "rolable_id"
+    t.string   "rolable_type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

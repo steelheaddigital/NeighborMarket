@@ -1,8 +1,12 @@
 GardenMarketplace::Application.routes.draw do
   get "home/index"
   root :to => "home#index"
-  devise_for :users
-
+  devise_for :users, :controllers => { :registrations => 'UserRegistrations' }
+  devise_scope :user do 
+    match 'buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }
+    match 'seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }
+  end
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
