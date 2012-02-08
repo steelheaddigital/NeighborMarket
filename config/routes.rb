@@ -5,6 +5,7 @@ GardenMarketplace::Application.routes.draw do
   devise_scope :user do 
     match 'buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }
     match 'seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }
+    match 'manager/sign_up' => 'user_registrations#new', :user => { :user_type => 'manager' }
   end
   
   # The priority is based upon order of creation:

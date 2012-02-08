@@ -4,7 +4,7 @@
 
   params[:user][:user_type] ||= 'buyer'
 
-  if ["buyer", "seller"].include? params[:user][:user_type].downcase
+  if ["buyer", "seller", "manager"].include? params[:user][:user_type].downcase
     child_class_name = params[:user][:user_type].downcase.camelize
     user_type = params[:user][:user_type].downcase
   else
@@ -25,17 +25,35 @@
   <div><%= f.label :email %><br />
   <%= f.email_field :email %></div>
 
+  <div><%= f.label :password %><br />
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation %></div>
+
   <div><%= f.label "First name" %><br />
   <%= f.text_field :first_name %></div>
 
   <div><%= f.label "Last name" %><br />
   <%= f.text_field :last_name %></div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+  <div><%= f.label :initial %><br />
+  <%= f.text_field :initial %></div>
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <div><%= f.label :city %><br />
+  <%= f.text_field :city %></div>
+
+  <div><%= f.label :state %><br />
+  <%= f.text_field :state %></div>
+
+  <div><%= f.label :country %><br />
+  <%= f.text_field :country %></div>
+
+  <div><%= f.label :zip %><br />
+  <%= f.text_field :zip %></div>
+
+  <div><%= f.label "About Me" %><br />
+  <%= f.text_area :aboutme %></div>
 
   <% # customized code begin %>
   <%= fields_for resource.rolable do |rf| %>
