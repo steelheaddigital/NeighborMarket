@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :firstname, :lastname, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme
   
   belongs_to :rolable, :polymorphic => true
   

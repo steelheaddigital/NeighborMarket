@@ -21,7 +21,9 @@
       <% end %>
       <% if user_signed_in? %>
         <li>
-        <%= link_to('Edit registration', edit_user_registration_path) %>
+          <% if current_user.rolable_type == "Manager" %>
+            <%= link_to('Edit registration', manager_edit_url) %>
+          <% end%>
         </li>
       <% else %>
         <li>

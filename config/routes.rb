@@ -6,6 +6,9 @@ GardenMarketplace::Application.routes.draw do
     match 'buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }
     match 'seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }
     match 'manager/sign_up' => 'user_registrations#new', :user => { :user_type => 'manager' }
+    match 'buyer/edit' => 'user_registrations#edit', :user => { :user_type => 'buyer' }, :as => :buyer_edit
+    match 'seller/edit' => 'user_registrations#edit', :user => { :user_type => 'seller' }, :as => :seller_edit
+    match 'manager/edit' => 'user_registrations#edit', :user => { :user_type => 'manager' }, :as => :manager_edit
   end
   
   # The priority is based upon order of creation:
