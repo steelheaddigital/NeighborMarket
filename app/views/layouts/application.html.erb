@@ -7,35 +7,35 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-    <div id="Header">
-    <h1>Garden Marketplace</h1>
-    <div id="Login">
-      <% if user_signed_in? %>
-        <li>
-        <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>        
-        </li>
-      <% else %>
-        <li>
-        <%= link_to('Login', new_user_session_path)  %>  
-        </li>
-      <% end %>
-      <% if user_signed_in? %>
-        <li>
-          <%= link_to('Edit registration', edit_user_url) %>
-        </li>
-      <% else %>
-        <li>
-          <%= link_to('Sign up as a buyer', buyer_sign_up_url)  %>
-        </li>
-        <li>
-          <%= link_to('Sign up as a seller', seller_sign_up_url)  %>
-        </li>
-      <% end %>
-      <li><%= link_to "Home", root_path %></li>
-    </div>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="#">Garden Marketplace</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><%= link_to "Home", root_path %></li>
+            </ul>
+            <ul class="navbar-text pull-right nav">
+              <% if user_signed_in? %>
+                <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>        
+              <% else %>
+                <li><%= link_to('Login', new_user_session_path)  %></li>  
+              <% end %>
+              <% if user_signed_in? %>
+                <li><%= link_to('Edit registration', edit_user_url) %></li>
+              <% else %>
+                <li><%= link_to('Sign up as a buyer', buyer_sign_up_url)  %></li>
+                <li><%= link_to('Sign up as a seller', seller_sign_up_url)  %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
   </div>
 <div id="MainContent">
-  <%= yield %>
+  <div class="hero-unit">
+    <%= yield %>
+  </div>
 </div>
 </body>
 </html>

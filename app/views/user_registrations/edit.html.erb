@@ -21,46 +21,46 @@
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label "User Name" %><br />
+  <div><%= f.label "User Name" %>
   <%= f.text_field :username %></div>
 
-  <div><%= f.label "Email" %><br />
+  <div><%= f.label "Email" %>
   <%= f.email_field :email %></div>
 
-  <div><%= f.label "Password" %> <i>(leave blank if you don't want to change it)</i><br />
+  <div><%= f.label "Password (leave blank if you don't want to change it)" %>
   <%= f.password_field :password %></div>
 
-  <div><%= f.label "Password Confirmation" %><br />
+  <div><%= f.label "Password Confirmation" %>
   <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.label "Current Password"%> <i>(we need your current password to confirm your changes)</i><br />
+  <div><%= f.label "Current Password (we need your current password to confirm your changes)"%>
   <%= f.password_field :current_password %></div>
 
-  <div><%= f.label "First name" %><br />
+  <div><%= f.label "First name" %>
   <%= f.text_field :first_name %></div>
 
-  <div><%= f.label "Last name" %><br />
+  <div><%= f.label "Last name" %>
   <%= f.text_field :last_name %></div>
 
-  <div><%= f.label "Initial" %><br />
+  <div><%= f.label "Initial" %>
   <%= f.text_field :initial %></div>
 
-  <div><%= f.label "Address" %><br />
+  <div><%= f.label "Address" %>
   <%= f.text_field :address %></div>
 
-  <div><%= f.label "City" %><br />
+  <div><%= f.label "City" %>
   <%= f.text_field :city %></div>
 
-  <div><%= f.label "State" %><br />
+  <div><%= f.label "State" %>
   <%= f.text_field :state %></div>
 
-  <div><%= f.label "Country" %><br />
+  <div><%= f.label "Country" %>
   <%= f.text_field :country %></div>
 
-  <div><%= f.label "Zip" %><br />
+  <div><%= f.label "Zip" %>
   <%= f.text_field :zip %></div>
 
-  <div><%= f.label "About Me" %><br />
+  <div><%= f.label "About Me" %>
   <%= f.text_area :aboutme %></div>
 
   <% # customized code begin %>
