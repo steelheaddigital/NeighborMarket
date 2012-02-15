@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120208142216) do
+ActiveRecord::Schema.define(:version => 20120215045752) do
 
   create_table "buyers", :force => true do |t|
     t.text "delivery_instructions"
@@ -21,8 +21,11 @@ ActiveRecord::Schema.define(:version => 20120208142216) do
   end
 
   create_table "sellers", :force => true do |t|
-    t.text "payment_instructions"
+    t.text    "payment_instructions"
+    t.boolean "approved",             :default => false, :null => false
   end
+
+  add_index "sellers", ["approved"], :name => "index_sellers_on_approved"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false

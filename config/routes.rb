@@ -11,6 +11,8 @@ GardenMarketplace::Application.routes.draw do
     match 'manager/edit' => 'user_registrations#edit', :user => { :user_type => 'manager' }, :as => :manager_edit
   end
   
+  resources :management
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
