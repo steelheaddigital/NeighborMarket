@@ -8,6 +8,7 @@ gem 'rails', '3.1.3'
 gem 'mysql2'
 gem 'devise'
 gem 'cancan'
+gem 'less-rails-bootstrap'
 
 
 # Gems used only for assets and not required

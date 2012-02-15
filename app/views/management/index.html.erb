@@ -1,10 +1,21 @@
 <h1>Site Management</h1>
 
 <h2>Sellers awaiting approval</h2>
-<table>
-  <%@sellers.each do |seller|%>
-    <td><%=seller.user.first_name%></td>
-    <td><%=seller.user.last_name%></td>
-    <td><%=seller.user.email%></td>
-  <%end%>
+<table class="table">
+  <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%@sellers.each do |seller|%>
+    <tr>
+      <td><%=seller.user.first_name%></td>
+      <td><%=seller.user.last_name%></td>
+      <td><%=seller.user.email%></td>
+    </tr>
+    <%end%>
+  </tbody>
 </table>
