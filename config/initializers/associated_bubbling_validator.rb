@@ -1,6 +1,7 @@
 module ActiveRecord
   module Validations
     class AssociatedBubblingValidator < ActiveModel::EachValidator
+    #Makes sure validation messages from associated models are displayed by parent model 
       def validate_each(record, attribute, value)
         (value.is_a?(Array) ? value : [value]).each do |v|
           unless v.valid?

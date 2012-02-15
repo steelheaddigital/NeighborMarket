@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   belongs_to :rolable, :polymorphic => true
 
   validates :username, :uniqueness => true
-  validates :username, :first_name, :last_name, :initial,  :city, :state, :country, :zip, :presence => true
+  validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
   validates_associated_bubbling :rolable
   
   # Include default devise modules. Others available are:
