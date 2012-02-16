@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   belongs_to :rolable, :polymorphic => true
-
+  belongs_to :buyer, :class_name => "Buyer",
+                     :foreign_key => "rolable_id"
+  belongs_to :seller, :class_name => "Seller",
+                      :foreign_key => "rolable_id"
+  
   validates :username, :uniqueness => true
   validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
   validates_associated_bubbling :rolable
@@ -28,14 +32,14 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && 
       if self.rolable_type == "Seller" 
-        Seller.find(self.rolable_id).approved?
+        self.seller.approved?
       else
         true
       end
   end 
 
   def inactive_message 
-    if self.rolable_type == "Seller" && !Seller.find(self.rolable_id).approved?
+    if self.rolable_type == "Seller" && !self.seller.approved?
       :not_approved 
     else 
       super # Use whatever other message 
