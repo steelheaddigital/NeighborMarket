@@ -4,7 +4,7 @@ class UserRegistrationsController < Devise::RegistrationsController
 
     # customized code begin
 
-    # crate a new child instance depending on the given user type
+    # create a new child instance depending on the given user type
     child_class = params[:user][:user_type].camelize.constantize
     resource.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
 
@@ -31,4 +31,14 @@ class UserRegistrationsController < Devise::RegistrationsController
       respond_with_navigational(resource) { render_with_scope :new }
     end
   end
+
+  def inactive_signup
+    
+  end
+  
+  #Override the devise imethod to send new sellers to a custom page
+  def after_inactive_sign_up_path_for(resource)
+    users_inactive_signup_path
+  end
+  
 end

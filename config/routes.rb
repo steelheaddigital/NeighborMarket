@@ -2,7 +2,6 @@ GardenMarketplace::Application.routes.draw do
   get "home/index"
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'UserRegistrations' }
-  devise_for :sellers
   devise_scope :user do 
     match 'buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up
     match 'seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }, :as => :seller_sign_up
@@ -10,6 +9,7 @@ GardenMarketplace::Application.routes.draw do
     match 'buyer/edit' => 'user_registrations#edit', :user => { :user_type => 'buyer' }, :as => :buyer_edit
     match 'seller/edit' => 'user_registrations#edit', :user => { :user_type => 'seller' }, :as => :seller_edit
     match 'manager/edit' => 'user_registrations#edit', :user => { :user_type => 'manager' }, :as => :manager_edit
+    match 'users/inactive_signup' => 'user_registrations#inactive_signup'
   end
   
   resources :management

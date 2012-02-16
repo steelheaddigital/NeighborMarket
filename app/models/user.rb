@@ -24,4 +24,22 @@ class User < ActiveRecord::Base
     login = conditions.delete(:login)
     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.strip.downcase }]).first
   end
+  
+  def active_for_authentication?
+    super && 
+      if self.rolable_type == "Seller" 
+        Seller.find(self.rolable_id).approved?
+      else
+        true
+      end
+  end 
+
+  def inactive_message 
+    if self.rolable_type == "Seller" && !Seller.find(self.rolable_id).approved?
+      :not_approved 
+    else 
+      super # Use whatever other message 
+    end 
+  end
+
 end
