@@ -12,7 +12,11 @@ GardenMarketplace::Application.routes.draw do
     match 'users/inactive_signup' => 'user_registrations#inactive_signup'
   end
   
-  resources :users, :only => ["show"]
+  resources :users, :only => ["show"] do 
+    member do
+      post "approve_seller"
+    end
+  end
   resources :management, :only => ["index"]
   
   # The priority is based upon order of creation:

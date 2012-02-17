@@ -6,8 +6,8 @@
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Email</th>
-        <th>Details</th>
+        <th>Address</th>
+        <th>Details and Approval</th>
     </tr>
   </thead>
   <tbody>
@@ -15,8 +15,8 @@
     <tr>
       <td><%=seller.user.first_name%></td>
       <td><%=seller.user.last_name%></td>
-      <td><%=seller.user.email%></td>
-      <td><%=link_to "Show Details", user_path(seller.user.id)%>
+      <td><%=seller.user.address%></td>
+      <td><%=link_to "Show Details and Approve", user_path(seller.user.id)%>
     </tr>
     <%end%>
   </tbody>

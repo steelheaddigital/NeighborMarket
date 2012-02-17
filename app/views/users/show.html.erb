@@ -1,3 +1,7 @@
+<% if current_user.rolable_type == "Manager" %>
+  <%= button_to "Approve Seller", :action => "approve_seller" %>
+<% end %>
+
 <p>
   <b>User Name:</b>
   <%= @user.username %>

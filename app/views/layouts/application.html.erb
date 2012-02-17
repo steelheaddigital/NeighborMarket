@@ -14,6 +14,9 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><%= link_to "Home", root_path %></li>
+              <% if user_signed_in? && current_user.rolable_type == "Manager" %>
+                  <li><%= link_to('Manage', management_index_path) %></li>
+              <% end %>
             </ul>
             <ul class="navbar-text pull-right nav">
               <% if user_signed_in? %>
