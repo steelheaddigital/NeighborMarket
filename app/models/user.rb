@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
                      :foreign_key => "rolable_id"
   belongs_to :seller, :class_name => "Seller",
                       :foreign_key => "rolable_id"
+  belongs_to :manager, :class_name => "Manager",
+                      :foreign_key => "rolable_id"
   
   validates :username, :uniqueness => true
   validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true

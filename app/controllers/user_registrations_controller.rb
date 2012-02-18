@@ -1,4 +1,13 @@
 class UserRegistrationsController < Devise::RegistrationsController
+  
+  def new
+    resource = build_resource({})
+    respond_with resource
+    
+    authorize! :manage, :manager if params[:user][:user_type] == "manager"
+    
+  end
+  
   def create
     build_resource
 
@@ -7,7 +16,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     # create a new child instance depending on the given user type
     child_class = params[:user][:user_type].camelize.constantize
     resource.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
-
+    
     # first check if child instance is valid
     # cause if so and the parent instance is valid as well
     # it's all being saved at once
