@@ -31,6 +31,31 @@ class UserRegistrationsController < Devise::RegistrationsController
       respond_with_navigational(resource) { render_with_scope :new }
     end
   end
+  
+  def update
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    
+    # customized code begin
+    
+    child_class = params[:user][:user_type].camelize.constantize
+    resource.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
+    
+    # customized code end
+    
+    if resource.update_with_password(params[resource_name])
+      if is_navigational_format?
+        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
+          flash_key = :update_needs_confirmation
+        end
+        set_flash_message :notice, flash_key || :updated
+      end
+      sign_in resource_name, resource, :bypass => true
+      respond_with resource, :location => after_update_path_for(resource)
+    else
+      clean_up_passwords resource
+      respond_with resource
+    end
+  end
 
   def inactive_signup
     

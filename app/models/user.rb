@@ -46,4 +46,11 @@ class User < ActiveRecord::Base
     end 
   end
 
+  def role?(role)
+    if self.rolable_type.to_s.camelize == role.to_s.camelize
+      true
+    else
+      false
+    end
+  end
 end

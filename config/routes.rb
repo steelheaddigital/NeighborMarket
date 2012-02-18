@@ -17,6 +17,7 @@ GardenMarketplace::Application.routes.draw do
       post "approve_seller"
     end
   end
+  
   resources :management, :only => ["index"]
   
   # The priority is based upon order of creation:

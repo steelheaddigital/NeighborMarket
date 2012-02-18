@@ -17,6 +17,8 @@
   # customized code end
 %>
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <p class="notice"><%= flash[:notice] %></p>
+  <%= flash[:alert] %>
   <%= devise_error_messages! %>
 
   <div><%= f.label "User Name" %>
