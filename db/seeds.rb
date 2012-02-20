@@ -6,6 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+User.delete_all
 user = User.new(
   :username => "manager",
   :email => "manager@manage.com",
@@ -18,10 +19,27 @@ user = User.new(
   :address => "123 Test St.",
   :state => "OR",
   :country => "USA",
-  :zip => "97218",
+  :zip => "97218"
+)
+
+Manager.create
+buyer = Buyer.new(
+  :delivery_instructions => "Blah"
+)
+buyer.save(:validate => false)
+
+user.roles.build(
   :rolable_id => 1,
   :rolable_type => "Manager"
 )
-Manager.create()
+
+user.roles.build(
+  :rolable_id => 1,
+  :rolable_type => "Buyer"
+)
+
 user.save(:validate => false)
+
+
+
 

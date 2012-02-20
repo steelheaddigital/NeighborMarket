@@ -11,21 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120215045752) do
+ActiveRecord::Schema.define(:version => 20120219162659) do
 
   create_table "buyers", :force => true do |t|
-    t.text "delivery_instructions"
+    t.integer "user_id"
+    t.text    "delivery_instructions"
   end
 
   create_table "managers", :force => true do |t|
+    t.integer "user_id"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.integer "user_id"
+    t.integer "rolable_id"
+    t.string  "rolable_type"
   end
 
   create_table "sellers", :force => true do |t|
+    t.integer "user_id"
     t.text    "payment_instructions"
     t.boolean "approved",             :default => false, :null => false
   end
-
-  add_index "sellers", ["approved"], :name => "index_sellers_on_approved"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -51,8 +58,6 @@ ActiveRecord::Schema.define(:version => 20120215045752) do
     t.string   "country"
     t.integer  "zip"
     t.text     "aboutme"
-    t.integer  "rolable_id"
-    t.string   "rolable_type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

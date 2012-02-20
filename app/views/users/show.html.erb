@@ -1,4 +1,4 @@
-<% if current_user.rolable_type == "Manager" %>
+<% if can? :manage, User %>
   <%= button_to "Approve Seller", :action => "approve_seller" %>
 <% end %>
 
@@ -57,4 +57,7 @@
   <%= @user.aboutme %>
 </p>
 
-<%= render :partial => "#{@user.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => @user } %>
+<% @user.roles.each do |role| %>
+  <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
+<% end %>
+

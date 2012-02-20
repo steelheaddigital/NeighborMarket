@@ -15,13 +15,14 @@ class UserRegistrationsController < Devise::RegistrationsController
 
     # create a new child instance depending on the given user type
     child_class = params[:user][:user_type].camelize.constantize
-    resource.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
+    resource_role = resource.roles.new
+    resource_role.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
     
     # first check if child instance is valid
     # cause if so and the parent instance is valid as well
     # it's all being saved at once
     valid = resource.valid?
-    valid = resource.rolable.valid? && valid
+    valid = resource_role.rolable.valid? && valid
 
     # customized code end
 
@@ -46,8 +47,21 @@ class UserRegistrationsController < Devise::RegistrationsController
     
     # customized code begin
     
-    child_class = params[:user][:user_type].camelize.constantize
-    resource.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
+    role_ids = params[:user][:role_id]
+    role_ids.each do |id|
+      role = resource.roles.find(id)
+      target_rolable = role.rolable
+      target_rolable_type = role.rolable_type.camelize.constantize
+      rolable_type_params = params[target_rolable_type.to_s.underscore.to_sym]
+      
+      unless rolable_type_params.nil?
+        rolable_type_params.keys.each do |key|
+          attribute_to_update = key.to_s.underscore.to_sym
+          target_rolable.update_attributes attribute_to_update => rolable_type_params[attribute_to_update]
+        end
+      end
+    end
+    
     
     # customized code end
     

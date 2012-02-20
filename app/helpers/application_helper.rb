@@ -26,12 +26,4 @@ module ApplicationHelper
 
     html.html_safe
   end
-  
-  
-  def edit_user_url
-    return manager_edit_url if current_user.rolable_type == "Manager"
-    return buyer_edit_url if current_user.rolable_type == "Buyer"
-    return seller_edit_url if current_user.rolable_type == "Seller"
-  end
-  
 end

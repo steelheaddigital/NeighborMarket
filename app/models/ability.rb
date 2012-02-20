@@ -26,8 +26,8 @@ class Ability
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
     
     user ||= User.new # guest user (not logged in)
-    can :manage, ManagementController if user.role? :manager
-    can :manage, User if user.role? :manager
-    can :manage, Seller if user.role? :manager
+    can :manage, ManagementController if user.role? :Manager
+    can :manage, User if user.role? :Manager
+    can :manage, Seller if user.role? :Manager
   end
 end

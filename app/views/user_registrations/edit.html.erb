@@ -2,19 +2,7 @@
 
 <%
   # customized code begin
-
-  params[:user][:user_type] ||= 'buyer'
-
-  if ["buyer", "seller", "manager"].include? params[:user][:user_type].downcase
-    child_class_name = params[:user][:user_type].downcase.camelize
-    user_type = params[:user][:user_type].downcase
-  else
-    child_class_name = "Buyer"
-    user_type = "buyer"
-  end
-
-  resource.rolable = child_class_name.constantize.new if resource.rolable.nil?
-
+  resource_roles = resource.roles
   # customized code end
 %>
 
@@ -65,12 +53,17 @@
   <div><%= f.label "About Me" %>
   <%= f.text_area :aboutme %></div>
 
-  <% # customized code begin %>
-  <%= fields_for resource.rolable do |rf| %>
-    <% render :partial => "#{child_class_name.underscore}_fields", :locals => { :f => rf } %>
+  <%#  customized code begin %>
+  <% resource.roles.each do |role| %>
+    <% rolable_type = role.rolable_type %>
+    <%= fields_for role.rolable do |rf| %>
+      <% render :partial => "#{rolable_type.downcase.underscore}_fields", :locals => { :f => rf } %>
+    <% end %>
   <% end %>
 
-  <%= hidden_field :user, :user_type, :value => user_type %>
+  <% resource.roles.each do |role| %>
+    <%= f.hidden_field "role_id][", :value => role.id %>
+  <% end %>
   <% # customized code end %>
 
   <div><%= f.submit "Update" %></div>

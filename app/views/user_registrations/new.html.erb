@@ -12,10 +12,12 @@
     user_type = "buyer"
   end
 
-  resource.rolable = child_class_name.constantize.new if resource.rolable.nil?
+  resource_role = resource.roles.new
+  resource_role.rolable = child_class_name.constantize.new
 
   # customized code end
 %>
+
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <p class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
@@ -61,7 +63,7 @@
   <%= f.text_area :aboutme %></div>
 
   <% # customized code begin %>
-  <%= fields_for resource.rolable do |rf| %>
+  <%= fields_for resource_role.rolable do |rf| %>
     <% render :partial => "#{child_class_name.underscore}_fields", :locals => { :f => rf } %>
   <% end %>
 

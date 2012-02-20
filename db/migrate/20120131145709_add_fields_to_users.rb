@@ -11,7 +11,5 @@ class AddFieldsToUsers < ActiveRecord::Migration
     add_column :users, :country, :string
     add_column :users, :zip, :int
     add_column :users, :aboutme, :text
-    add_column :users, :rolable_id, :integer
-    add_column :users, :rolable_type, :string
   end
 end

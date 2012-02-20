@@ -6,5 +6,7 @@ en:
     attributes:
       user:  
         login: "Username or email"
+        roles: ""
+      role:
         rolable: ""
         

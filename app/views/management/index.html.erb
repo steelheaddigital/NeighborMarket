@@ -14,11 +14,12 @@
   </thead>
   <tbody>
     <%@sellers.each do |seller|%>
+    <%role = seller.roles.find_by_rolable_id(seller.id)%>
     <tr>
-      <td><%=seller.user.first_name%></td>
-      <td><%=seller.user.last_name%></td>
-      <td><%=seller.user.address%></td>
-      <td><%=link_to "Show Details and Approve", user_path(seller.user.id)%>
+      <td><%=role.user.first_name%></td>
+      <td><%=role.user.last_name%></td>
+      <td><%=role.user.address%></td>
+      <td><%=link_to "Show Details and Approve", user_path(role.user.id)%>
     </tr>
     <%end%>
   </tbody>

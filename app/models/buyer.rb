@@ -1,4 +1,4 @@
 class Buyer < ActiveRecord::Base
-  has_one :user, :as => :rolable
+  has_many :roles, :as => :rolable
   validates :delivery_instructions, :presence => true
 end

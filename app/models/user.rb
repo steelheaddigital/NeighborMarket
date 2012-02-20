@@ -1,15 +1,9 @@
 class User < ActiveRecord::Base
-  belongs_to :rolable, :polymorphic => true
-  belongs_to :buyer, :class_name => "Buyer",
-                     :foreign_key => "rolable_id"
-  belongs_to :seller, :class_name => "Seller",
-                      :foreign_key => "rolable_id"
-  belongs_to :manager, :class_name => "Manager",
-                      :foreign_key => "rolable_id"
+  has_many :roles
   
   validates :username, :uniqueness => true
   validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
-  validates_associated_bubbling :rolable
+  validates_associated_bubbling :roles
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -22,7 +16,7 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :rolable_id, :rolable_type
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -32,16 +26,18 @@ class User < ActiveRecord::Base
   end
   
   def active_for_authentication?
+    user = self.roles.find_by_rolable_type("Seller")
     super && 
-      if self.rolable_type == "Seller" 
-        self.seller.approved?
+      if user 
+        user.seller.approved?
       else
         true
       end
   end 
 
-  def inactive_message 
-    if self.rolable_type == "Seller" && !self.seller.approved?
+  def inactive_message
+    user = self.roles.find_by_rolable_type("Seller")
+    if user && !user.seller.approved?
       :not_approved 
     else 
       super # Use whatever other message 
@@ -49,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def role?(role)
-    if self.rolable_type.to_s.camelize == role.to_s.camelize
+    if self.roles.find_by_rolable_type(role)
       true
     else
       false
