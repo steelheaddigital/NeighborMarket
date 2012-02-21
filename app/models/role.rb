@@ -10,5 +10,5 @@ class Role < ActiveRecord::Base
   
   validates_associated_bubbling :rolable
   
-  attr_accessible :rolable_id, :rolable_type
+  attr_accessible :rolable_id, :rolable_type, :user_id
 end

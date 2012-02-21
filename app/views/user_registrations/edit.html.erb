@@ -2,7 +2,13 @@
 
 <%
   # customized code begin
-  resource_roles = resource.roles
+  if @become_seller
+    seller = Seller.new(:user_id => resource.id)
+    seller.save(:validate => false)
+    role = Role.new(:user_id => resource.id, :rolable_type => "Seller", :rolable_id => seller.id)
+    role.save(:validate => false)
+    #resource.roles.push(role)
+  end
   # customized code end
 %>
 
@@ -10,7 +16,7 @@
   <p class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
   <%= devise_error_messages! %>
-  
+
   <div><%= f.label "User Name" %>
   <%= f.text_field :username %></div>
 
@@ -62,7 +68,7 @@
   <% end %>
 
   <% resource.roles.each do |role| %>
-    <%= f.hidden_field "role_id][", :value => role.id %>
+    <%= f.hidden_field "role_id][", :value => role %>
   <% end %>
   <% # customized code end %>
 
