@@ -14,7 +14,7 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><%= link_to "Home", root_path %></li>
-              <% if user_signed_in? %>
+              <% if user_signed_in? && current_user.role?("Manager")%>
                   <li><%= link_to('Manage', management_index_path) %></li>
               <% end %>
             </ul>
@@ -26,7 +26,7 @@
               <% end %>
               <% if user_signed_in? %>
                 <li><%= link_to('Edit registration', edit_user_registration_url) %></li>
-                <% if current_user.role? :Buyer %>
+                <% if current_user.role?("Buyer") && !current_user.role?("Seller")%>
                   <li><%= link_to('Become a seller', edit_user_registration_url(:become_seller => true))  %></li>
                 <% end %>
               <% else %>

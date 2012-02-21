@@ -46,7 +46,6 @@ class UserRegistrationsController < Devise::RegistrationsController
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     
     # customized code begin
-    
     role_ids = params[:user][:role_id]
     role_ids.each do |id|
       role = resource.roles.find(id)
@@ -61,8 +60,6 @@ class UserRegistrationsController < Devise::RegistrationsController
         end
       end
     end
-    
-    
     # customized code end
     
     if resource.update_with_password(params[resource_name])
@@ -70,7 +67,13 @@ class UserRegistrationsController < Devise::RegistrationsController
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
           flash_key = :update_needs_confirmation
         end
-        set_flash_message :notice, flash_key || :updated
+        # customized code begin
+        if params[:user][:become_seller]
+          set_flash_message :notice, flash_key || :became_seller
+        else
+          set_flash_message :notice, flash_key || :updated
+        end
+        # customized code end
       end
       sign_in resource_name, resource, :bypass => true
       respond_with resource, :location => after_update_path_for(resource)
@@ -89,8 +92,9 @@ class UserRegistrationsController < Devise::RegistrationsController
     users_inactive_signup_path
   end
   
+  #Overrid devise edit method so that we know if this user is already a buyer, but becoming a seller
   def edit
     @become_seller = params[:become_seller]
-    super
   end
+  
 end

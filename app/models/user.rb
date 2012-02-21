@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     user = self.roles.find_by_rolable_type("Seller")
     super && 
-      if user 
+      if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager")  
         user.seller.approved?
       else
         true
@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
 
   def inactive_message
     user = self.roles.find_by_rolable_type("Seller")
-    if user && !user.seller.approved?
+    if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager") 
       :not_approved 
     else 
       super # Use whatever other message 
