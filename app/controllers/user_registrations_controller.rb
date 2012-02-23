@@ -32,6 +32,10 @@ class UserRegistrationsController < Devise::RegistrationsController
         sign_in(resource_name, resource)
         respond_with resource, :location => redirect_location(resource_name, resource)
       else
+        if resource.role?("Seller")
+          user = User.find(resource.id)
+          ManagerMailer.new_seller_mail(user).deliver
+        end
         set_flash_message :notice, :inactive_signed_up, :reason => inactive_reason(resource) if is_navigational_format?
         expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
@@ -47,7 +51,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     
     # customized code begin
     role_ids = params[:user][:role_id]
-    if params[:user][:become_seller]
+    if params[:user][:become_seller] == "true"
       user_id = params[:user][:user_id]
       new_seller = Seller.new(:user_id => user_id)
       new_seller.save(:validate => false)
@@ -76,7 +80,7 @@ class UserRegistrationsController < Devise::RegistrationsController
           flash_key = :update_needs_confirmation
         end
         # customized code begin
-        if params[:user][:become_seller]
+        if params[:user][:become_seller] == "true"
           set_flash_message :notice, flash_key || :became_seller
         else
           set_flash_message :notice, flash_key || :updated

@@ -2,7 +2,7 @@
 
 <%
   # customized code begin
-  if @become_seller
+  if @become_seller == "true"
     resource_role = resource.roles.new
     resource_role.rolable = Seller.new
   end
