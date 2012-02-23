@@ -47,6 +47,14 @@ class UserRegistrationsController < Devise::RegistrationsController
     
     # customized code begin
     role_ids = params[:user][:role_id]
+    if params[:user][:become_seller]
+      user_id = params[:user][:user_id]
+      new_seller = Seller.new(:user_id => user_id)
+      new_seller.save(:validate => false)
+      new_role = Role.new(:user_id => user_id, :rolable_type => "Seller", :rolable_id => new_seller.id)
+      new_role.save(:validate => false)
+      role_ids.push(new_role.id)
+    end
     role_ids.each do |id|
       role = resource.roles.find(id)
       target_rolable = role.rolable
