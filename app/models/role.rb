@@ -8,7 +8,7 @@ class Role < ActiveRecord::Base
   belongs_to :manager, :class_name => "Manager",
                       :foreign_key => "rolable_id"
   
-  validates_associated_bubbling :rolable
-  
+  accepts_nested_attributes_for :rolable
+#  validates_associated_bubbling :rolable  
   attr_accessible :rolable_id, :rolable_type, :user_id
 end

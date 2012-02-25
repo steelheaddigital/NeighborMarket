@@ -3,10 +3,12 @@
 
 en:
   activerecord:
+    models:
+      role: ""
     attributes:
       user:  
         login: "Username or email"
         roles: ""
-      role:
         rolable: ""
-        
+
+          

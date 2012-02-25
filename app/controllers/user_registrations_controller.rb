@@ -2,6 +2,15 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def new
     resource = build_resource({})
+    role = resource.roles.build
+    if params[:user][:user_type].downcase == "buyer"
+      role.rolable = Buyer.new
+    end
+    if params[:user][:user_type].downcase == "seller"
+      role.rolable = Seller.new
+    end
+    
+
     respond_with resource
     
     authorize! :manage, :manager if params[:user][:user_type] == "manager"

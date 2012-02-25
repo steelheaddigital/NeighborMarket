@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
   has_many :roles
-  
+  accepts_nested_attributes_for :roles
   validates :username, :uniqueness => true
   validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
-  validates_associated_bubbling :roles
+# validates_associated_bubbling :roles
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable

@@ -1,3 +1,3 @@
 class Manager < ActiveRecord::Base
-  has_many :roles, :as => :rolable
+  has_one :role, :as => :rolable
 end
