@@ -8,7 +8,11 @@ en:
     attributes:
       user:  
         login: "Username or email"
-        roles: ""
-        rolable: ""
-
-          
+        roles: 
+          rolable:
+            payment_instructions: "Payment Instructions"
+            delivery_instructions: "Delivery Instructions"
+          seller:
+            payment_instructions: "Payment Instructions"
+          buyer: 
+            delivery_instructions: "Delivery Instructions"

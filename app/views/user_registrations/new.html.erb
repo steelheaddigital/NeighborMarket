@@ -1,23 +1,4 @@
 <h2>Sign up</h2>
-<%
-  # customized code begin
-
-  #params[:user][:user_type] ||= 'buyer'
-
-  #if ["buyer", "seller", "manager"].include? params[:user][:user_type].downcase
-    #child_class_name = params[:user][:user_type].downcase.camelize
-    #user_type = params[:user][:user_type].downcase
-  #else
-    #child_class_name = "Buyer"
-    #user_type = "buyer"
-  #end
-
-  #resource_role = resource.roles.new
-  #resource_role.rolable = child_class_name.constantize.new
-
-  # customized code end
-%>
-
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <p class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
@@ -66,6 +47,23 @@
     <% rolable_type = params[:user][:user_type] %>
     <%= fields_for role.rolable do |rf| %>
       <% render :partial => "#{rolable_type.downcase.underscore}_fields", :locals => { :f => rf } %>
+    <% end %>
+  <% end %>
+  
+  <% resource.roles.each do |role| %>
+    <% if params[:user][:user_type] == "Buyer" %>
+      <% f.fields_for :roles do |rf| %>
+        <% rf.fields_for :buyer do |s|  %>
+          <% render :partial => "buyer_fields", :locals => { :f => s } %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if params[:user][:user_type] == "Seller" %>
+      <% f.fields_for :roles do |rf| %>
+        <% rf.fields_for :seller do |b|  %>
+          <% render :partial => "seller_fields", :locals => { :f => b } %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 

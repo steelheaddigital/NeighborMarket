@@ -9,7 +9,7 @@
 User.delete_all
 user = User.new(
   :username => "manager",
-  :email => "manager@manage.com",
+  :email => "tmooney3979@gmail.com",
   :password   => 'Abc123!', 
   :password_confirmation => 'Abc123!', 
   :first_name => "Test",
@@ -17,26 +17,19 @@ user = User.new(
   :initial => "M",
   :phone => "503-123-4567",
   :address => "123 Test St.",
+  :city => "Portland",
   :state => "OR",
   :country => "USA",
   :zip => "97218"
 )
 
 Manager.create
-buyer = Buyer.new(
-  :delivery_instructions => "Blah"
-)
-buyer.save(:validate => false)
 
 user.roles.build(
   :rolable_id => 1,
   :rolable_type => "Manager"
 )
 
-user.roles.build(
-  :rolable_id => 1,
-  :rolable_type => "Buyer"
-)
 
 user.save(:validate => false)
 

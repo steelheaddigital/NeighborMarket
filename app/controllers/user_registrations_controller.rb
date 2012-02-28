@@ -9,7 +9,6 @@ class UserRegistrationsController < Devise::RegistrationsController
     if params[:user][:user_type].downcase == "seller"
       role.rolable = Seller.new
     end
-    
 
     respond_with resource
     
@@ -21,7 +20,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     build_resource
 
     # customized code begin
-
+    
     # create a new child instance depending on the given user type
     child_class = params[:user][:user_type].camelize.constantize
     resource_role = resource.roles.new
@@ -57,40 +56,16 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    
-    # customized code begin
-    role_ids = params[:user][:role_id]
-    if params[:user][:become_seller] == "true"
-      user_id = params[:user][:user_id]
-      new_seller = Seller.new(:user_id => user_id)
-      new_seller.save(:validate => false)
-      new_role = Role.new(:user_id => user_id, :rolable_type => "Seller", :rolable_id => new_seller.id)
-      new_role.save(:validate => false)
-      role_ids.push(new_role.id)
-    end
-    role_ids.each do |id|
-      role = resource.roles.find(id)
-      target_rolable = role.rolable
-      target_rolable_type = role.rolable_type.camelize.constantize
-      rolable_type_params = params[target_rolable_type.to_s.underscore.to_sym]
-      
-      unless rolable_type_params.nil?
-        rolable_type_params.keys.each do |key|
-          attribute_to_update = key.to_s.underscore.to_sym
-          target_rolable.update_attributes attribute_to_update => rolable_type_params[attribute_to_update]
-        end
-      end
-    end
-    # customized code end
-    
+    @become_seller = params[:become_seller]
     if resource.update_with_password(params[resource_name])
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
           flash_key = :update_needs_confirmation
         end
         # customized code begin
-        if params[:user][:become_seller] == "true"
+        if params[:become_seller] == "true"
           set_flash_message :notice, flash_key || :became_seller
+          ManagerMailer.new_seller_mail(user).deliver
         else
           set_flash_message :notice, flash_key || :updated
         end
@@ -113,9 +88,13 @@ class UserRegistrationsController < Devise::RegistrationsController
     users_inactive_signup_path
   end
   
-  #Overrid devise edit method so that we know if this user is already a buyer, but becoming a seller
+  #Override devise edit method so that we know if this user is already a buyer, but becoming a seller
   def edit
     @become_seller = params[:become_seller]
+    if @become_seller == "true"
+      role = resource.roles.build
+      role.rolable = role.build_seller
+    end
   end
   
 end

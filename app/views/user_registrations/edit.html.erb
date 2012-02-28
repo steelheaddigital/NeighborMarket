@@ -1,19 +1,9 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
-
-<%
-  # customized code begin
-  if @become_seller == "true"
-    resource_role = resource.roles.new
-    resource_role.rolable = Seller.new
-  end
-  # customized code end
-%>
-
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <p class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
   <%= devise_error_messages! %>
-  <%  if @become_seller %>
+  <% if @become_seller %>
     <p class="notice">Please add payment instructions to your profile</p>
   <%  end %>
   
@@ -59,22 +49,19 @@
   <div><%= f.label "About Me" %>
   <%= f.text_area :aboutme %></div>
 
-  <%#  customized code begin %>
-  <% resource.roles.each do |role| %>
-    <% rolable_type = role.rolable_type %>
-    <%= fields_for role.rolable do |rf| %>
-      <% render :partial => "#{rolable_type.downcase.underscore}_fields", :locals => { :f => rf } %>
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :buyer do |s|  %>
+      <% render :partial => "buyer_fields", :locals => { :f => s } %>
     <% end %>
   <% end %>
-    
-  <% resource.roles.each do |role| %>
-    <% if !role.id.blank? %>
-      <%= f.hidden_field "role_id][", :value => role.id %>
+
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :seller do |b|  %>
+      <% render :partial => "seller_fields", :locals => { :f => b } %>
     <% end %>
-  <% end %> 
-  
-  <%= f.hidden_field "user_id", :value => resource.id %>  
-  <%= f.hidden_field "become_seller", :value => @become_seller %>
+  <% end %>
+
+  <%= hidden_field_tag "become_seller", @become_seller %>
   <% # customized code end %>
 
   <div><%= f.submit "Update" %></div>
