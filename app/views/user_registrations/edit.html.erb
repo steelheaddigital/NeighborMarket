@@ -48,20 +48,31 @@
 
   <div><%= f.label "About Me" %>
   <%= f.text_area :aboutme %></div>
-
-  <%= f.fields_for :roles do |rf| %>
-    <%= rf.fields_for :buyer do |s|  %>
-      <% render :partial => "buyer_fields", :locals => { :f => s } %>
+  
+    <%= f.fields_for :roles do |rf| %>
+      <% if rf.object.rolable_type == "Buyer" %>
+        <%= rf.fields_for :buyer do |b|  %>
+          <%= render :partial => "buyer_fields", :locals => { :f => b } %>
+        <% end %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <%= f.fields_for :roles do |rf| %>
-    <%= rf.fields_for :seller do |b|  %>
-      <% render :partial => "seller_fields", :locals => { :f => b } %>
+    <%= f.fields_for :roles do |rf| %>
+      <% if rf.object.rolable_type == "Seller" %>
+        <%= rf.fields_for :seller do |s|  %>
+          <%= render :partial => "seller_fields", :locals => { :f => s } %>
+        <% end %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <%= hidden_field_tag "become_seller", @become_seller %>
+    <%= f.fields_for :roles do |rf| %>
+      <% if rf.object.rolable_type == "Manager" %>
+        <%= rf.fields_for :manager do |m|  %>
+          <%= render :partial => "manager_fields", :locals => { :f => m } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
   <% # customized code end %>
 
   <div><%= f.submit "Update" %></div>

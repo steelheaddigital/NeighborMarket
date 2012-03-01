@@ -27,7 +27,7 @@
               <% if user_signed_in? %>
                 <li><%= link_to('Edit registration', edit_user_registration_url) %></li>
                 <% if current_user.role?("Buyer") && !current_user.role?("Seller")%>
-                  <li><%= link_to('Become a seller', edit_user_registration_url(:become_seller => true))  %></li>
+                  <li><%= link_to('Become a seller', become_seller_url)  %></li>
                 <% end %>
               <% else %>
                 <li><%= link_to('Sign up as a buyer', buyer_sign_up_url)  %></li>

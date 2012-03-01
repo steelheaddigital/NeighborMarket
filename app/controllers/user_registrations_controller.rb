@@ -65,7 +65,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         # customized code begin
         if params[:become_seller] == "true"
           set_flash_message :notice, flash_key || :became_seller
-          ManagerMailer.new_seller_mail(user).deliver
+          ManagerMailer.new_seller_mail(resource).deliver
         else
           set_flash_message :notice, flash_key || :updated
         end
@@ -75,7 +75,14 @@ class UserRegistrationsController < Devise::RegistrationsController
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords resource
-      respond_with resource
+#      respond_with resource
+      respond_with_navigational(resource) do
+        if params[:become_seller] == "true" # or flash[:change_password]
+          render_with_scope :become_seller
+        else
+          render_with_scope :edit
+        end
+      end
     end
   end
 
@@ -88,13 +95,10 @@ class UserRegistrationsController < Devise::RegistrationsController
     users_inactive_signup_path
   end
   
-  #Override devise edit method so that we know if this user is already a buyer, but becoming a seller
-  def edit
-    @become_seller = params[:become_seller]
-    if @become_seller == "true"
-      role = resource.roles.build
-      role.rolable = role.build_seller
-    end
+  def become_seller
+    authenticate_scope!
+    role = resource.roles.build
+    role.rolable = role.build_seller
   end
   
 end

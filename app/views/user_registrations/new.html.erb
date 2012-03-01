@@ -50,20 +50,21 @@
     <% end %>
   <% end %>
   
-  <% resource.roles.each do |role| %>
-    <% if params[:user][:user_type] == "Buyer" %>
-      <% f.fields_for :roles do |rf| %>
-        <% rf.fields_for :buyer do |s|  %>
-          <% render :partial => "buyer_fields", :locals => { :f => s } %>
-        <% end %>
-      <% end %>
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :buyer do |s|  %>
+      <% render :partial => "buyer_fields", :locals => { :f => s } %>
     <% end %>
-    <% if params[:user][:user_type] == "Seller" %>
-      <% f.fields_for :roles do |rf| %>
-        <% rf.fields_for :seller do |b|  %>
-          <% render :partial => "seller_fields", :locals => { :f => b } %>
-        <% end %>
-      <% end %>
+  <% end %>
+
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :seller do |b|  %>
+      <% render :partial => "seller_fields", :locals => { :f => b } %>
+    <% end %>
+  <% end %>
+    
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :manager do |b|  %>
+      <% render :partial => "manager_fields", :locals => { :f => b } %>
     <% end %>
   <% end %>
 

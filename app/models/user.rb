@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :roles
-  accepts_nested_attributes_for :roles
+  has_many :roles, :dependent => :destroy
+  accepts_nested_attributes_for :roles, :allow_destroy => true 
   validates :username, :uniqueness => true
   validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
   
