@@ -9,7 +9,7 @@ class AddFieldsToUsers < ActiveRecord::Migration
     add_column :users, :city, :string
     add_column :users, :state, :string
     add_column :users, :country, :string
-    add_column :users, :zip, :int
+    add_column :users, :zip, :string
     add_column :users, :aboutme, :text
   end
 end
