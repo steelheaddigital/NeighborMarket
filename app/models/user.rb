@@ -2,8 +2,24 @@ class User < ActiveRecord::Base
   has_many :roles, :dependent => :destroy
   accepts_nested_attributes_for :roles, :allow_destroy => true 
   validates :username, :uniqueness => true
-  validates :username, :first_name, :last_name, :initial, :address, :city, :state, :country, :zip, :presence => true
-  
+  validates :username, 
+            :first_name, 
+            :last_name, 
+            :initial, 
+            :address, 
+            :city, 
+            :state, 
+            :country, 
+            :zip, :presence => true
+  validates :phone, :presence => true, :if => :seller?
+  validates_format_of :phone,
+                      :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
+                      :message => "must be valid phone number",
+                      :if => :phone?
+  validates_format_of :zip,
+                      :with => %r{\d{5}(-\d{4})?},
+                      :message => "should be like 12345 or 12345-1234"
+      
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -50,4 +66,22 @@ class User < ActiveRecord::Base
       false
     end
   end
+  
+  def seller?
+    self.roles.each do |role|
+      if role.rolable_type == "Seller"
+        return true
+      end
+      return false
+    end
+  end
+  
+  def phone?
+    if self.phone == nil || self.phone == ""
+      return false
+    else
+      return true
+    end
+  end
+  
 end
