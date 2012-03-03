@@ -14,12 +14,10 @@
 ActiveRecord::Schema.define(:version => 20120219162659) do
 
   create_table "buyers", :force => true do |t|
-    t.integer "user_id"
-    t.text    "delivery_instructions"
+    t.text "delivery_instructions"
   end
 
   create_table "managers", :force => true do |t|
-    t.integer "user_id"
   end
 
   create_table "roles", :force => true do |t|
@@ -29,7 +27,6 @@ ActiveRecord::Schema.define(:version => 20120219162659) do
   end
 
   create_table "sellers", :force => true do |t|
-    t.integer "user_id"
     t.text    "payment_instructions"
     t.boolean "approved",             :default => false, :null => false
   end
@@ -56,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20120219162659) do
     t.string   "city"
     t.string   "state"
     t.string   "country"
-    t.integer  "zip"
+    t.string   "zip"
     t.text     "aboutme"
   end
 

@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
     if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager") 
       :not_approved 
     else 
-      super # Use whatever other message 
+      super 
     end 
   end
   
