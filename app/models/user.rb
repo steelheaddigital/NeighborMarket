@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   validates_format_of :zip,
                       :with => %r{\d{5}(-\d{4})?},
                       :message => "should be like 12345 or 12345-1234"
-      
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -27,11 +27,11 @@ class User < ActiveRecord::Base
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
-  attr_accessor :login
+  attr_accessor :login, :become_seller
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :roles_attributes
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :roles_attributes, :become_seller
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
       super # Use whatever other message 
     end 
   end
-
+  
   def role?(role)
     if self.roles.find_by_rolable_type(role)
       true
@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   
   def seller?
     self.roles.each do |role|
-      if role.rolable_type == "Seller"
+      if role.rolable_type == "Seller" || self.become_seller
         return true
       end
       return false

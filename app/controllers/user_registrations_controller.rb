@@ -57,6 +57,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     @become_seller = params[:become_seller]
+    resource.become_seller = @become_seller
     if resource.update_with_password(params[resource_name])
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?

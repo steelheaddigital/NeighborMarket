@@ -9,7 +9,7 @@
 User.delete_all
 user = User.new(
   :username => "manager",
-  :email => "tmooney3979@gmail.com",
+  :email => "gmpmanagertest@gmail.com",
   :password   => 'Abc123!', 
   :password_confirmation => 'Abc123!', 
   :first_name => "Test",
@@ -18,8 +18,8 @@ user = User.new(
   :phone => "503-123-4567",
   :address => "123 Test St.",
   :city => "Portland",
-  :state => "OR",
-  :country => "USA",
+  :state => "Oregon",
+  :country => "United States",
   :zip => "97218"
 )
 

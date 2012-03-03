@@ -21,7 +21,7 @@ GardenMarketplace::Application.configure do
     :address              => "mail.steelheaddigital.com",
     :port                 =>  25,
     :domain               => 'steelheaddigital.com',
-    :user_name            => 'tom@steelheaddigital.com',
+    :user_name            => 'admin@steelheaddigital.com',
     :password             => 'farDro3h',
     :authentication       => :login,
     :enable_starttls_auto => true,

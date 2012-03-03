@@ -8,6 +8,11 @@
   
   <div><%= f.label "Current Password (we need your current password to confirm your changes)"%>
   <%= f.password_field :current_password %></div>
+  
+  <div>
+    <%= f.label "Phone*" %>
+    <%= f.telephone_field :phone %>
+  </div>  
     
   <%= f.fields_for :roles do |rf| %>
     <%= rf.hidden_field :rolable_type %>
