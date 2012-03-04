@@ -58,7 +58,24 @@
       <% render :partial => "#{rolable_type.downcase.underscore}_fields", :locals => { :f => rf } %>
     <% end %>
   <% end %>
+  
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :buyer do |s|  %>
+      <% render :partial => "buyer_fields", :locals => { :f => s } %>
+    <% end %>
+  <% end %>
 
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :seller do |b|  %>
+      <% render :partial => "seller_fields", :locals => { :f => b } %>
+    <% end %>
+  <% end %>
+    
+  <%= f.fields_for :roles do |rf| %>
+    <%= rf.fields_for :manager do |b|  %>
+      <% render :partial => "manager_fields", :locals => { :f => b } %>
+    <% end %>
+  <% end %>
   <%= hidden_field :user, :user_type, :value => params[:user][:user_type] %>
   <% # customized code end %>
 
