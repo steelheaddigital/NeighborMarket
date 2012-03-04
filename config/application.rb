@@ -43,19 +43,5 @@ module GardenMarketplace
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-    config.action_mailer.raise_delivery_errors = true
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.perform_deliveries = true
-    config.action_mailer.smtp_settings = {
-      :address              => "mail.steelheaddigital.com",
-      :port                 =>  25,
-      :domain               => 'steelheaddigital.com',
-      :user_name            => 'admin@steelheaddigital.com',
-      :password             => 'farDro3h',
-      :authentication       => :login,
-      :enable_starttls_auto => true,
-      :openssl_verify_mode  => 'none'
-    }
   end
 end

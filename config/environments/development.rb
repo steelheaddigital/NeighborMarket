@@ -13,7 +13,6 @@ GardenMarketplace::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
@@ -23,7 +22,7 @@ GardenMarketplace::Application.configure do
     :domain               => 'steelheaddigital.com',
     :user_name            => 'admin@steelheaddigital.com',
     :password             => 'farDro3h',
-    :authentication       => :login,
+    :authentication       => 'plain',
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'
   }

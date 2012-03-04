@@ -42,7 +42,7 @@ class UserRegistrationsController < Devise::RegistrationsController
       else
         if resource.role?("Seller")
           user = User.find(resource.id)
-          ManagerMailer.new_seller_mail(user).deliver
+          send_new_seller_email(user)
         end
         set_flash_message :notice, :inactive_signed_up, :reason => inactive_reason(resource) if is_navigational_format?
         expire_session_data_after_sign_in!
@@ -100,6 +100,14 @@ class UserRegistrationsController < Devise::RegistrationsController
     authenticate_scope!
     role = resource.roles.build
     role.rolable = role.build_seller
+  end
+  
+  def send_new_seller_email(user)
+      managers = Role.find_all_by_rolable_type("Manager")
+      managers.each do |manager|
+        manager_user = User.find(manager.user_id)
+        ManagerMailer.new_seller_mail(user, manager_user).deliver
+      end
   end
   
 end

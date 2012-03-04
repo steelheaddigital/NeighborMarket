@@ -58,4 +58,19 @@ GardenMarketplace::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
+  #configure mail settings
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+    :address              => "mail.steelheaddigital.com",
+    :port                 =>  25,
+    :domain               => 'steelheaddigital.com',
+    :user_name            => 'admin@steelheaddigital.com',
+    :password             => 'farDro3h',
+    :authentication       => 'plain',
+    :enable_starttls_auto => true,
+    :openssl_verify_mode  => 'none'
+  }
+  
 end
