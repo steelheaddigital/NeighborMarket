@@ -66,7 +66,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         # customized code begin
         if params[:become_seller] == "true"
           set_flash_message :notice, flash_key || :became_seller
-          ManagerMailer.new_seller_mail(resource).deliver
+          send_new_seller_email(resource)
         else
           set_flash_message :notice, flash_key || :updated
         end
