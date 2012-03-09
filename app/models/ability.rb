@@ -28,6 +28,5 @@ class Ability
     user ||= User.new # guest user (not logged in)
     can :manage, ManagementController if user.role? :Manager
     can :manage, User if user.role? :Manager
-    can :manage, Seller if user.role? :Manager
   end
 end

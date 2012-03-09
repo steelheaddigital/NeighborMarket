@@ -76,6 +76,15 @@ class User < ActiveRecord::Base
     end
   end
   
+  def approved_seller?
+    self.roles.each do |role|
+      if role.rolable_type == "Seller" && role.seller.approved
+        return true
+      end
+      return false
+    end
+  end
+  
   def phone?
     if self.phone == nil || self.phone == ""
       return false

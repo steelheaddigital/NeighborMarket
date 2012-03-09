@@ -12,6 +12,6 @@ class UsersController < ApplicationController
       SellerMailer.seller_approved_mail(user).deliver
       redirect_to management_index_url, :notice => "Seller successfully approved!"
     end
-    authorize! :manage, Seller
+    authorize! :manage, User
   end
 end

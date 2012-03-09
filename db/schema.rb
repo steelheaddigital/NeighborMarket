@@ -28,7 +28,8 @@ ActiveRecord::Schema.define(:version => 20120219162659) do
 
   create_table "sellers", :force => true do |t|
     t.text    "payment_instructions"
-    t.boolean "approved",             :default => false, :null => false
+    t.boolean "approved",               :default => false,    :null => false
+    t.string  "listing_approval_style", :default => "manual", :null => false
   end
 
   create_table "users", :force => true do |t|
