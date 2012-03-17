@@ -2,9 +2,26 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    authorize! :show, @user
+    authorize! :manage, @user
   end
 
+  def edit
+    @user = User.find(params[:id])
+    authorize! :manage, @user
+  end
+  
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "Successfully updated User."
+      redirect_to management_index_url
+    else
+      render :action => 'edit'
+    end
+    
+    authorize! :manage, @user
+  end
+  
   def approve_seller
     user = User.find(params[:id])
     role = user.roles.find_by_rolable_type("Seller")

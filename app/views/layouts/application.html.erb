@@ -38,10 +38,8 @@
         </div>
       </div>
   </div>
-<div id="MainContent">
-  <div class="hero-unit">
-    <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
-  </div>
+<div id="MainContent" class="container-fluid">
+  <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
 </div>
 </body>
 </html>

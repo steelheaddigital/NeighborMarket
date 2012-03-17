@@ -1,0 +1,51 @@
+<style>
+  .hidden{
+    display: none;
+  }
+</style>
+<div class="row-fluid">
+  <div class="span6">
+    <%= form_tag(management_user_search_results_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
+      <label>Search Condition</label>
+      <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
+      <span class="inline-help">Enter a username, first name, or last name</span>
+      <label>Role Type</label>
+      <%= select_tag "role", "<option>Manager</option><option>Seller</option><option>Buyer</option>".html_safe, :include_blank => true, :id => "RoleTypeSelect" %>
+      <label id="SellerApprovalStyleLabel" class="hidden">Seller Approval Style</label>
+      <%= select_tag "seller_approval_style", "<option>manual</option><option>auto</option>".html_safe, :include_blank => true, :class => 'hidden' %>
+      <label id="SellerApprovedLabel" class="hidden">Seller Approved</label>
+      <%= select_tag "seller_approved", "<option>true</option><option>false</option>".html_safe, :include_blank => true, :class => 'hidden' %>
+      <p><%= submit_tag("Search", :class => 'btn') %></p>
+    <% end %>
+  </div>
+</div>
+<div id="ManagerSearchResults" class="row-fluid">
+</div>
+
+<script type="text/javascript">
+  $(function(){
+       $("#UserSearchForm").submit(function(){
+           var queryString = $(this).serialize();
+           var url = $(this).attr("action");
+           $("#ManagerSearchResults").load(url+"?"+queryString);
+           return false;
+       });
+  });
+  
+  $(function(){
+      $("#RoleTypeSelect").change(function(){
+        if($(this).val() == "Seller"){
+          $("#SellerApprovalStyleLabel").show();
+          $("#seller_approval_style").show();
+          $("#SellerApprovedLabel").show();
+          $("#seller_approved").show();
+        }
+        else{
+          $("#SellerApprovalStyleLabel").hide();
+          $("#seller_approval_style").hide();
+          $("#SellerApprovedLabel").hide();
+          $("#seller_approved").hide();
+        }
+      });
+  });
+</script>

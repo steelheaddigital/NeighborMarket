@@ -76,21 +76,34 @@ class User < ActiveRecord::Base
     end
   end
   
-  def approved_seller?
-    self.roles.each do |role|
-      if role.rolable_type == "Seller" && role.seller.approved
-        return true
-      end
-      return false
-    end
-  end
-  
   def phone?
     if self.phone == nil || self.phone == ""
       return false
     else
       return true
     end
+  end
+  
+  def self.search(keywords, role, seller_approved, seller_approval_style)
+    
+    scope = self
+    
+    if(keywords.present?)
+      scope = scope.where('first_name LIKE ? OR last_name LIKE ? OR username LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
+    end
+    if(role.present?)
+      scope = scope.where('roles.rolable_type = ?', "#{role}").includes(:roles)
+    end
+    if(seller_approved.present?)
+      scope = scope.where('sellers.approved = ?', seller_approved).includes(:roles => :seller)
+    end
+    if(seller_approval_style.present?)
+      scope = scope.where('sellers.listing_approval_style = ?', "#{seller_approval_style}").includes(:roles => :seller)
+    end
+    
+    scope.all
+    
+#    where('(first_name LIKE ? OR last_name LIKE ? OR username LIKE ? OR ? = "%%") AND (roles.rolable_type = ? OR ? = '""') AND (sellers.approved = ? OR ? = "") AND (sellers.listing_approval_style = ? OR ? = "")', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%", "%#{keywords}%", "#{role}", "#{role}", seller_approved, seller_approved, "#{seller_approval_style}", "#{seller_approval_style}").includes(:roles => :seller)
   end
   
 end

@@ -1,14 +1,10 @@
-<% if @user.seller? && !@user.approved_seller? %>
-  <%= button_to "Approve Seller", :action => "approve_seller" %>
-<% end %>
-
 <p>
   <b>User Name:</b>
   <%= @user.username %>
 </p>
 
 <p>
-  <b>Address:</b>
+  <b>Email: </b>
   <%= @user.email %>
 </p>
 
@@ -63,6 +59,6 @@
 </p>
 
 <% @user.roles.each do |role| %>
-  <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_show_fields", :locals => { :user => role } %>
+  <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
 <% end %>
 
