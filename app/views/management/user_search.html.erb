@@ -4,7 +4,7 @@
   }
 </style>
 <div class="row-fluid">
-  <div class="span6">
+  <div class="span12">
     <%= form_tag(management_user_search_results_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
       <label>Search Condition</label>
       <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
@@ -19,33 +19,10 @@
     <% end %>
   </div>
 </div>
-<div id="ManagerSearchResults" class="row-fluid">
+<div class="row-fluid">
+  <div id="ManagerSearchResults" class="span6">
+  </div>
+  <div id="UserDetail" class="span6">
+  </div>
 </div>
 
-<script type="text/javascript">
-  $(function(){
-       $("#UserSearchForm").submit(function(){
-           var queryString = $(this).serialize();
-           var url = $(this).attr("action");
-           $("#ManagerSearchResults").load(url+"?"+queryString);
-           return false;
-       });
-  });
-  
-  $(function(){
-      $("#RoleTypeSelect").change(function(){
-        if($(this).val() == "Seller"){
-          $("#SellerApprovalStyleLabel").show();
-          $("#seller_approval_style").show();
-          $("#SellerApprovedLabel").show();
-          $("#seller_approved").show();
-        }
-        else{
-          $("#SellerApprovalStyleLabel").hide();
-          $("#seller_approval_style").hide();
-          $("#SellerApprovedLabel").hide();
-          $("#seller_approved").hide();
-        }
-      });
-  });
-</script>

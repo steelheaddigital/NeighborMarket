@@ -1,5 +1,5 @@
 <div class="row-fluid">
-  <div class="span10">
+  <div class="span6">
     <h3>Sellers awaiting approval</h3>
     <p class="notice"><%= flash[:notice] %></p>
     <%= flash[:alert] %>
@@ -19,10 +19,12 @@
             <td><%=role.user.first_name%></td>
             <td><%=role.user.last_name%></td>
             <td><%=role.user.address%></td>
-            <td><%=link_to "Show Details and Approve", edit_user_path(role.user.id)%>
+            <td><%= link_to_function "Show Details and Edit", "LoadUserDetail('#{edit_user_path(role.user.id)}')"%></td>
           </tr>
         <%end%>
       </tbody>
     </table>
+  </div>
+  <div id="UserDetail" class="span6">
   </div>
 </div>

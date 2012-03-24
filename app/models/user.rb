@@ -103,7 +103,6 @@ class User < ActiveRecord::Base
     
     scope.all
     
-#    where('(first_name LIKE ? OR last_name LIKE ? OR username LIKE ? OR ? = "%%") AND (roles.rolable_type = ? OR ? = '""') AND (sellers.approved = ? OR ? = "") AND (sellers.listing_approval_style = ? OR ? = "")', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%", "%#{keywords}%", "#{role}", "#{role}", seller_approved, seller_approved, "#{seller_approval_style}", "#{seller_approval_style}").includes(:roles => :seller)
   end
   
 end

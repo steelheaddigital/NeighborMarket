@@ -8,6 +8,11 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     authorize! :manage, @user
+    
+    #if the view is being loaded via ajax, don't render the layout
+    respond_to do |format|
+      format.js { render :layout => false }
+    end
   end
   
   def update
