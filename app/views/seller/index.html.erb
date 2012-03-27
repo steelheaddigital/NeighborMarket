@@ -1,0 +1,23 @@
+<div class="subnav">
+    <ul class="nav nav-pills">
+      <li><a onclick="LoadNewInventory();" href="javascript:void(0);">Add New Inventory Item</a></li>
+      <li></li>
+    </ul>
+  </div>
+</div>
+<div class="container-fluid">
+  <p class="notice"><%= flash[:notice] %></p>
+  <%= flash[:alert] %>
+</div>
+<div id="SellerContent" class="container-fluid">
+  
+</div>
+
+<script type="text/javascript">
+  
+  function LoadNewInventory(){
+    url = '<%=  new_inventory_path %>'
+    $('#SellerContent').load(url);
+  };
+  
+</script>

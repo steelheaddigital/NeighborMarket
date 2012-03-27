@@ -15,11 +15,15 @@ GardenMarketplace::Application.routes.draw do
     end
   end
   
-  resources :management, :only => ["index"] 
+  resources :management, :only => ["index"]
   
   match 'management/approve_sellers' => 'management#approve_sellers'
   match 'management/user_search' => 'management#user_search'
   match 'management/user_search_results' => 'management#user_search_results'
+  
+  resources :inventories
+  
+  resources :seller, :only => ["index"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

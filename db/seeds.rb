@@ -30,9 +30,21 @@ user.roles.build(
   :rolable_type => "Manager"
 )
 
-
 user.save(:validate => false)
 
+vegetable = TopLevelTaxonomy.new(
+  :name => 'Vegetable',
+  :description => 'Vegetables'
+)
 
 
+vegetable.second_level_taxonomy.build([
+    { :name => 'Carrot',
+      :description => 'Carrots'},
+    { :name => 'Cabbage',
+      :description => 'Cabbages'},
+  ]
+)
+
+vegetable.save
 

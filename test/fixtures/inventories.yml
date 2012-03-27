@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  top_level_taxonomy_id: 1
+  second_level_taxonomy_id: 1
+  user_id: 1
+  name: MyString
+  price: 9.99
+  quantity_available: MyString
+  description: MyText
+
+two:
+  top_level_taxonomy_id: 1
+  second_level_taxonomy_id: 1
+  user_id: 1
+  name: MyString
+  price: 9.99
+  quantity_available: MyString
+  description: MyText
