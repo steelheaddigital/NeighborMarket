@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TopLevelTaxonomyTest < ActiveSupport::TestCase
+class SecondLevelCategoryTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

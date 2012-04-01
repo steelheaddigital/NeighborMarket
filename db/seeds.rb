@@ -32,13 +32,13 @@ user.roles.build(
 
 user.save(:validate => false)
 
-vegetable = TopLevelTaxonomy.new(
+vegetable = TopLevelCategory.new(
   :name => 'Vegetable',
   :description => 'Vegetables'
 )
 
 
-vegetable.second_level_taxonomy.build([
+vegetable.second_level_categories.build([
     { :name => 'Carrot',
       :description => 'Carrots'},
     { :name => 'Cabbage',

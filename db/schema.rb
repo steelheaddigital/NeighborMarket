@@ -18,11 +18,12 @@ ActiveRecord::Schema.define(:version => 20120326015907) do
   end
 
   create_table "inventories", :force => true do |t|
-    t.integer  "top_level_taxonomy_id"
-    t.integer  "second_level_taxonomy_id"
+    t.integer  "top_level_category_id"
+    t.integer  "second_level_category_id"
     t.integer  "user_id"
     t.string   "name"
     t.decimal  "price"
+    t.string   "price_unit"
     t.string   "quantity_available"
     t.text     "description"
     t.datetime "created_at"
@@ -38,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20120326015907) do
     t.string  "rolable_type"
   end
 
-  create_table "second_level_taxonomies", :force => true do |t|
-    t.integer  "top_level_taxonomy_id"
+  create_table "second_level_categories", :force => true do |t|
+    t.integer  "top_level_category_id"
     t.string   "name"
     t.text     "description"
     t.datetime "created_at"
@@ -52,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20120326015907) do
     t.string  "listing_approval_style", :default => "manual", :null => false
   end
 
-  create_table "top_level_taxonomies", :force => true do |t|
+  create_table "top_level_categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.datetime "created_at"

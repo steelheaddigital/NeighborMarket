@@ -1,11 +1,12 @@
 class CreateInventories < ActiveRecord::Migration
   def change
     create_table :inventories do |t|
-      t.integer :top_level_taxonomy_id
-      t.integer :second_level_taxonomy_id
+      t.integer :top_level_category_id
+      t.integer :second_level_category_id
       t.integer :user_id
       t.string :name
-      t.decimal :price
+      t.decimal :price, :precision => 8, :scale => 2
+      t.string :price_unit
       t.string :quantity_available
       t.text :description
 

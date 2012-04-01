@@ -21,6 +21,8 @@ GardenMarketplace::Application.routes.draw do
   match 'management/user_search' => 'management#user_search'
   match 'management/user_search_results' => 'management#user_search_results'
   
+  
+  match 'inventories/get_second_level_category' => 'inventories#get_second_level_category'
   resources :inventories
   
   resources :seller, :only => ["index"]

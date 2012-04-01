@@ -3,11 +3,11 @@ function LoadUserDetail(url){
 };
 
  $(document).on("submit", "#EditUserForm", function(event){
-     var data = $(this).serialize();;
+     var data = $(this).serialize();
      var url = $(this).attr("action");
      
      $.post(url, data, function(){
-         $("#UserDetail").html("<p class=\"notice\">User Successfully Updated</p>")
+         $("#UserDetail").html("<p class=\"notice\">User Successfully Updated</p>");
      });
      
      return false;
