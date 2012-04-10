@@ -7,7 +7,7 @@ class CreateInventories < ActiveRecord::Migration
       t.string :name
       t.decimal :price, :precision => 8, :scale => 2
       t.string :price_unit
-      t.string :quantity_available
+      t.integer :quantity_available
       t.text :description
 
       t.timestamps

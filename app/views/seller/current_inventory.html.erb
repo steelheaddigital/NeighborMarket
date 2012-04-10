@@ -1,0 +1,28 @@
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+        <th>Top Level Category</th>
+        <th>Second Level Category</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%@current_inventory.each do |inventory|%>
+      <tr>
+        <td style="display:none"><%= inventory.id%></td>
+        <td><%= inventory.top_level_category.description%></td>
+        <td><%= inventory.second_level_category.description%></td>
+        <td><%= inventory.name%></td>
+        <td><%= number_to_currency(inventory.price).to_s + " per " + inventory.price_unit%></td>
+        <td><%= inventory.quantity_available%> </td>
+        <!--<td><%#= link_to_function "Show Details and Edit", "LoadUserDetail('#{edit_user_path(user.id)}')"%></td> -->
+        <td>Edit</td>
+        <td>Delete</td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>

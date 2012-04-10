@@ -71,7 +71,7 @@
     <% if rf.object.rolable_type == "Seller" %>
       <%= rf.fields_for :seller do |s|  %>
           <div><%= s.label "Seller Approved" %>
-          <%= s.select(:listing_approval_style, [['true', 'true'],['false', 'false']]) %></div>
+          <%= s.select(:approved, [['true', 'true'],['false', 'false']]) %></div>
           <div><%= s.label "Listing Approval Style" %>
           <%= s.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
       <% end %>

@@ -17,6 +17,9 @@
               <% if user_signed_in? && current_user.role?("Manager")%>
                   <li><%= link_to('Manage', management_index_path) %></li>
               <% end %>
+              <% if user_signed_in? && current_user.approved_seller? %>
+                  <li><%= link_to('Sell', seller_index_path) %></li>
+              <% end %>   
             </ul>
             <ul class="navbar-text pull-right nav">
               <% if user_signed_in? %>

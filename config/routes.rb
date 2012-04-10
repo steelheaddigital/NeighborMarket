@@ -23,8 +23,9 @@ GardenMarketplace::Application.routes.draw do
   
   
   match 'inventories/get_second_level_category' => 'inventories#get_second_level_category'
-  resources :inventories
+  resources :inventories 
   
+  match "seller/current_inventory" => "seller#current_inventory"
   resources :seller, :only => ["index"]
   
   # The priority is based upon order of creation:

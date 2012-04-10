@@ -85,6 +85,15 @@ class User < ActiveRecord::Base
     end
   end
   
+  def approved_seller?
+    self.roles.each do |role|
+      if role.rolable_type == "Seller" && role.seller.approved
+        return true
+      end
+      return false
+    end
+  end
+  
   def self.search(keywords, role, seller_approved, seller_approval_style)
     
     scope = self

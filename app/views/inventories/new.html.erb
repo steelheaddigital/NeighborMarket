@@ -9,7 +9,7 @@
       </div>
       <div>
         <%= f.label "Second Level Category *" %>
-        <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true})  %>
+        <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true}, {:disabled => "disabled"})  %>
       </div>
       <div>
         <%= f.label :name %>
@@ -39,30 +39,3 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  
-  $(document).on("change", "#inventory_top_level_category_id", function() {
-    
-    var url = '/inventories/get_second_level_category'
-    var data = {id:$(this).val()};
-    
-    $.get(url ,data, function(data){
-      $("#inventory_second_level_category_id").empty();
-      $("#inventory_second_level_category_id").append("<option value=\"\" selected=\"selected\"></option>");
-      $.each(data, function(index, value) {
-        $("#inventory_second_level_category_id").append("<option value = " + value.id + ">" + value.description + "</option>");
-      });
-      $("#inventory_second_level_category_id").removeAttr("disabled");
-    });
-  });
-  
-  $(document).on("submit", "#new_inventory", function(){
-    var postData = $(this).serialize();
-    var url = $(this).attr("action");
-    $.post(url, postData, function(data){
-      $("#SellerContent").html(data);
-    });
-    return false;
-  });
-  
-</script>

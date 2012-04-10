@@ -1,6 +1,7 @@
 <div class="subnav">
     <ul class="nav nav-pills">
       <li><a onclick="LoadNewInventory();" href="javascript:void(0);">Add New Inventory Item</a></li>
+      <li><a onclick="LoadCurrentInventory();" href="javascript:void(0);">Current Inventory</a></li>
       <li></li>
     </ul>
   </div>
@@ -16,8 +17,14 @@
 <script type="text/javascript">
   
   function LoadNewInventory(){
-    url = '<%=  new_inventory_path %>'
+    var url = '<%= new_inventory_path %>'
     $('#SellerContent').load(url);
+  };
+  
+  function LoadCurrentInventory(){
+    var url = '<%= seller_current_inventory_path %>'
+    var data = {user_id: '<%= current_user.id %>'}
+    $('#SellerContent').load(url, data);
   };
   
 </script>

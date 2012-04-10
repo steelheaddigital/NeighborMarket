@@ -1,5 +1,6 @@
 class InventoriesController < ApplicationController
-    
+  load_and_authorize_resource
+  
   def new
     @inventory = Inventory.new
     @user_id = current_user.id
@@ -7,7 +8,6 @@ class InventoriesController < ApplicationController
     @second_level_categories = {}
     
     respond_to do |format|
-      format.html {render}
       format.js { render :layout => false }
     end
   end
@@ -26,7 +26,6 @@ class InventoriesController < ApplicationController
       if @inventory.save
         format.js { render :nothing => true }
       else
-        format.html { render :new }
         format.js { render :new, :layout => false }
       end
     end
@@ -35,7 +34,7 @@ class InventoriesController < ApplicationController
   
   def get_second_level_category
     
-    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(params[:id])
+    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(params[:category_id])
     
     render :json => @second_level_categories
         

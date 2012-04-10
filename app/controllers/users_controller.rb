@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
+  load_and_authorize_resource
   
   def show
     @user = User.find(params[:id])
-    authorize! :manage, @user
   end
 
   def edit
@@ -23,8 +23,7 @@ class UsersController < ApplicationController
     else
       render :action => 'edit'
     end
-    
-    authorize! :manage, @user
+  
   end
   
   def approve_seller
@@ -34,6 +33,5 @@ class UsersController < ApplicationController
       SellerMailer.seller_approved_mail(user).deliver
       redirect_to management_index_url, :notice => "Seller successfully approved!"
     end
-    authorize! :manage, User
   end
 end
