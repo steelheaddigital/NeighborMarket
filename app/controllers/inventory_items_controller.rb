@@ -1,8 +1,8 @@
-class InventoriesController < ApplicationController
+class InventoryItemsController < ApplicationController
   load_and_authorize_resource
   
   def new
-    @inventory = Inventory.new
+    @item = InventoryItem.new
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = {}
     
@@ -12,17 +12,17 @@ class InventoriesController < ApplicationController
   end
   
   def create
-    @inventory = Inventory.new(params[:inventory])
+    @item = InventoryItem.new(params[:inventory_item])
     @top_level_categories = TopLevelCategory.all
-    if(@inventory.top_level_category)
-      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@inventory.top_level_category.id)
+    if(@item.top_level_category)
+      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     else
       @second_level_categories = {}
     end
     
     
     respond_to do |format|
-      if @inventory.save
+      if @item.save
         format.js { render :nothing => true }
       else
         format.js { render :new, :layout => false }
@@ -32,9 +32,9 @@ class InventoriesController < ApplicationController
   end
   
   def edit
-    @inventory = Inventory.find(params[:id])
+    @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
-    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@inventory.top_level_category.id)
+    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     
     respond_to do |format|
       format.html {render :layout => false }
@@ -43,17 +43,17 @@ class InventoriesController < ApplicationController
   end
   
   def update
-    @inventory = Inventory.find(params[:id])
+    @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
-    if(@inventory.top_level_category)
-      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@inventory.top_level_category.id)
+    if(@item.top_level_category)
+      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     else
       @second_level_categories = {}
     end
     
     
     respond_to do |format|
-      if @inventory.update_attributes(params[:inventory])
+      if @item.update_attributes(params[:inventory_item])
         format.js { render :nothing => true }
       else
         format.js { render :edit, :layout => false }
@@ -62,7 +62,7 @@ class InventoriesController < ApplicationController
   end
   
   def destroy
-    inventory = Inventory.find(params[:id])
+    inventory = InventoryItem.find(params[:id])
     inventory.destroy
 
     respond_to do |format|

@@ -33,7 +33,7 @@ class Ability
     
     if user.role? :Seller
       can :manage, Seller
-      can :manage, Inventory
+      can :manage, InventoryItem
     end
   end
 end

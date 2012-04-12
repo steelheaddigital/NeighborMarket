@@ -11,20 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326015907) do
+ActiveRecord::Schema.define(:version => 20120326015908) do
 
   create_table "buyers", :force => true do |t|
     t.text "delivery_instructions"
   end
 
-  create_table "inventories", :force => true do |t|
+  create_table "inventory_items", :force => true do |t|
     t.integer  "top_level_category_id"
     t.integer  "second_level_category_id"
     t.integer  "user_id"
     t.string   "name"
-    t.decimal  "price"
+    t.decimal  "price",                    :precision => 8, :scale => 2
     t.string   "price_unit"
-    t.string   "quantity_available"
+    t.integer  "quantity_available"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"

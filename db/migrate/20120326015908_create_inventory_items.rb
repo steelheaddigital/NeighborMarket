@@ -1,6 +1,6 @@
-class CreateInventories < ActiveRecord::Migration
+class CreateInventoryItems < ActiveRecord::Migration
   def change
-    create_table :inventories do |t|
+    create_table :inventory_items do |t|
       t.integer :top_level_category_id
       t.integer :second_level_category_id
       t.integer :user_id

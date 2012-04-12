@@ -17,32 +17,33 @@ function DeleteInventoryItem(url){
     var deleteConfirm = confirm("Are you sure you want to delete this inventory item?");
     if (deleteConfirm == true){
         $.post(url, {_method: 'delete'}, function(){
-            RefreshInventory();
+            $("#InventoryNotice").html("Inventory item successfully deleted!");
+            var url = '/seller/current_inventory'
+            $('#SellerContent').load(url);
         });
     }
 }
 
 function RefreshInventory(){
-    var url = '/seller/current_inventory'
-    LoadCurrentInventory(url);
+
 }
 
-$(document).on("change", "#inventory_top_level_category_id", function() {
+$(document).on("change", "#inventory_item_top_level_category_id", function() {
 
-    var url = '/inventories/get_second_level_category'
+    var url = '/inventory_items/get_second_level_category'
     var data = {category_id:$(this).val()};
 
     $.get(url ,data, function(data){
-      $("#inventory_second_level_category_id").empty();
-      $("#inventory_second_level_category_id").append("<option value=\"\" selected=\"selected\"></option>");
+      $("#inventory_item_second_level_category_id").empty();
+      $("#inventory_item_second_level_category_id").append("<option value=\"\" selected=\"selected\"></option>");
       $.each(data, function(index, value) {
-        $("#inventory_second_level_category_id").append("<option value = " + value.id + ">" + value.description + "</option>");
+        $("#inventory_item_second_level_category_id").append("<option value = " + value.id + ">" + value.description + "</option>");
       });
-      $("#inventory_second_level_category_id").removeAttr("disabled");
+      $("#inventory_item_second_level_category_id").removeAttr("disabled");
     });
 });
 
-$(document).on("submit", "#new_inventory", function(){
+$(document).on("submit", "#new_inventory_item", function(){
     var postData = $(this).serialize();
     var url = $(this).attr("action");
     $.ajax({
@@ -63,7 +64,7 @@ $(document).on("submit", "#new_inventory", function(){
     return false;
 });
 
-$(document).on("submit", "#edit_inventory", function(){
+$(document).on("submit", "#edit_inventory_item", function(){
     var postData = $(this).serialize();
     var url = $(this).attr("action");
     $.ajax({
@@ -73,7 +74,9 @@ $(document).on("submit", "#edit_inventory", function(){
        cache: false,
        dataType: "html",
        success: function(data){
-           RefreshInventory();
+           var url = '/seller/current_inventory'
+           $('#InventoryNotice').empty();
+           LoadCurrentInventory(url);
            $("#InventoryDetail").html(data);
            $("#InventoryNotice").html("Inventory item successfully updated!")
        },

@@ -11,15 +11,15 @@
     </tr>
   </thead>
   <tbody>
-    <%@current_inventory.each do |inventory|%>
+    <%@current_inventory.each do |item|%>
       <tr>
-        <td><%= inventory.top_level_category.description%></td>
-        <td><%= inventory.second_level_category.description%></td>
-        <td><%= inventory.name%></td>
-        <td><%= number_to_currency(inventory.price).to_s + " per " + inventory.price_unit%></td>
-        <td><%= inventory.quantity_available%> </td>
-        <td><%= link_to_function "Edit", "LoadInventoryDetail('#{edit_inventory_path(inventory.id)}')"%></td>
-        <td><%= link_to_function "Delete", "DeleteInventoryItem('#{inventory_path(inventory.id)}')"%></td>
+        <td><%= item.top_level_category.description%></td>
+        <td><%= item.second_level_category.description%></td>
+        <td><%= item.name%></td>
+        <td><%= number_to_currency(item.price).to_s + " per " + item.price_unit%></td>
+        <td><%= item.quantity_available%> </td>
+        <td><%= link_to_function "Edit", "LoadInventoryDetail('#{edit_inventory_item_path(item.id)}')"%></td>
+        <td><%= link_to_function "Delete", "DeleteInventoryItem('#{inventory_item_path(item.id)}')"%></td>
       </tr>
     <%end%>
   </tbody>
