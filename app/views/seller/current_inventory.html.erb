@@ -13,16 +13,15 @@
   <tbody>
     <%@current_inventory.each do |inventory|%>
       <tr>
-        <td style="display:none"><%= inventory.id%></td>
         <td><%= inventory.top_level_category.description%></td>
         <td><%= inventory.second_level_category.description%></td>
         <td><%= inventory.name%></td>
         <td><%= number_to_currency(inventory.price).to_s + " per " + inventory.price_unit%></td>
         <td><%= inventory.quantity_available%> </td>
-        <!--<td><%#= link_to_function "Show Details and Edit", "LoadUserDetail('#{edit_user_path(user.id)}')"%></td> -->
-        <td>Edit</td>
-        <td>Delete</td>
+        <td><%= link_to_function "Edit", "LoadInventoryDetail('#{edit_inventory_path(inventory.id)}')"%></td>
+        <td><%= link_to_function "Delete", "DeleteInventoryItem('#{inventory_path(inventory.id)}')"%></td>
       </tr>
     <%end%>
   </tbody>
 </table>
+

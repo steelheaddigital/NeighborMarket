@@ -11,30 +11,7 @@
         <%= f.label "Second Level Category *" %>
         <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true}, {:disabled => "disabled"})  %>
       </div>
-      <div>
-        <%= f.label :name %>
-        <%= f.text_field :name %>
-      </div>
-      <div>
-        <%= f.label "Price *" %>
-        <%= f.text_field :price, :class => "input-small" %>
-        <label style="display:inline-block;">per</label>
-        <div style="display:inline-block">
-          <%= f.select(:price_unit, {"each" => "each","lb." => "lb."}, {}, :class => "input-small") %>
-        </div>
-      </div>
-      <div>
-        <%= f.label "Quantity Available *" %>
-        <%= f.text_field :quantity_available %>
-      </div>
-      <div>
-        <%= f.label :description %>
-        <%= f.text_area :description, :size => "10x10" %>
-      </div>
-
-      <%= f.hidden_field :user_id, :value => @user_id %>
-
-      <%= f.submit("Submit", :class => 'btn') %>
+      <%= render :partial => 'form', :locals => { :f => f } %>
     <%  end %>
   </div>
 </div>

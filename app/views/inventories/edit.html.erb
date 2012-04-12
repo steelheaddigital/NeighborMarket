@@ -1,6 +1,17 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
-
-<%= "edit.html" %>
+<h2>Edit Inventory Item</h2>
+<div class="row-fluid"
+  <div class="span6">
+    <%= form_for(@inventory, :html => { :id => 'edit_inventory', :class => 'well span6' }) do |f| %>
+    <%= f.error_messages %>
+      <div>
+        <%= f.label "Top Level Category *"   %>
+        <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name) %>
+      </div>
+      <div>
+        <%= f.label "Second Level Category *" %>
+        <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]})  %>
+      </div>
+      <%= render :partial => 'form', :locals => { :f => f } %>
+    <%  end %>
+  </div>
+</div>

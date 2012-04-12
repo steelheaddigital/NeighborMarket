@@ -1,30 +1,17 @@
 <div class="subnav">
     <ul class="nav nav-pills">
-      <li><a onclick="LoadNewInventory();" href="javascript:void(0);">Add New Inventory Item</a></li>
-      <li><a onclick="LoadCurrentInventory();" href="javascript:void(0);">Current Inventory</a></li>
+      <li><a onclick="LoadNewInventory('<%= new_inventory_path %>');" href="javascript:void(0);">Add New Inventory Item</a></li>
+      <li><a onclick="LoadCurrentInventory('<%= seller_current_inventory_path %>');" href="javascript:void(0);">Current Inventory</a></li>
       <li></li>
     </ul>
   </div>
 </div>
 <div class="container-fluid">
+  <p id="InventoryNotice" class="notice"></p>
   <p class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
 </div>
 <div id="SellerContent" class="container-fluid">
-  
 </div>
-
-<script type="text/javascript">
-  
-  function LoadNewInventory(){
-    var url = '<%= new_inventory_path %>'
-    $('#SellerContent').load(url);
-  };
-  
-  function LoadCurrentInventory(){
-    var url = '<%= seller_current_inventory_path %>'
-    var data = {user_id: '<%= current_user.id %>'}
-    $('#SellerContent').load(url, data);
-  };
-  
-</script>
+<div id="InventoryDetail" class="container-fluid">
+</div>

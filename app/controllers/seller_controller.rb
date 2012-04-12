@@ -7,7 +7,8 @@ class SellerController < ApplicationController
   
   def current_inventory
     
-    @current_inventory = Inventory.find_all_by_user_id(params[:user_id])
+    user_id = current_user.id
+    @current_inventory = Inventory.find_all_by_user_id(user_id)
     
     respond_to do |format|
       format.js { render :layout => false }
