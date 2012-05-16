@@ -28,4 +28,23 @@ class ManagementController < ApplicationController
     end
   end
   
+  def categories
+    @categories = TopLevelCategory.all
+    
+    respond_to do |format|
+      format.html { render :layout => false }
+      format.js { render :layout => false }
+    end
+    
+  end
+  
+  def second_level_categories
+    @categories = SecondLevelCategory.all
+    
+    respond_to do |format|
+      format.js { render :categories, :layout => false }
+    end
+    
+  end
+  
 end

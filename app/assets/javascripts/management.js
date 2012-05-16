@@ -1,13 +1,75 @@
-function LoadUserDetail(url){
-    $("#UserDetail").load(url);
-};
+function LoadManagementDialog(url){
+    
+    $("#Modal").load(url, function() 
+        {$("#ManagementNotice").empty();
+    }).modal('show');
+}
+
+function CloseManagementDialog(){
+    $("#Modal").modal('hide');
+}
+
+function LoadManagementContent(url, reset){
+    $('#ManagementContent').load(url, function(){
+        if(reset == true){
+            $("#ManagementNotice").empty();
+        }   
+    });
+}
+
+function DeleteCategory(url){
+    
+    var deleteConfirm = confirm("Are you sure you want to delete this category?");
+    
+    if(deleteConfirm == true){
+        $.post(url, {_method: 'delete'}, function() {
+               LoadManagementContent('/management/categories');
+               $("#ManagementNotice").html("Category Successfully Deleted");
+           }
+        );
+    }
+}
+
+ $(document).on("submit", "#TopLevelCategoryForm", function(event){
+     var data = $(this).serialize();
+     var url = $(this).attr("action");
+     
+     $.post(url, data, function(){
+         CloseManagementDialog();
+         LoadManagementContent('/management/categories');
+         $("#ManagementNotice").html("Categories Successfully Updated");
+     });
+     
+     return false;
+ });
+ 
+  $(document).on("submit", "#SecondLevelCategoryForm", function(event){
+     var data = $(this).serialize();
+     var url = $(this).attr("action");
+     
+     $.post(url, data, function(){
+         CloseManagementDialog();
+         LoadManagementContent('/management/categories');
+         $("#ManagementNotice").html("Categories Successfully Updated");
+     });
+     
+     return false;
+ });
 
  $(document).on("submit", "#EditUserForm", function(event){
      var data = $(this).serialize();
      var url = $(this).attr("action");
      
      $.post(url, data, function(){
-         $("#UserDetail").html("<p class=\"notice\">User Successfully Updated</p>");
+         var approveSellers = $("#ApproveSellers");
+         
+         //if we are on the Approve Sellers screen, then refresh the Approve Seller table
+         if(approveSellers.length > 0){
+             $('#ManagementContent').load('/management/approve_sellers');
+         }
+         
+         CloseDialog();
+         $("#ManagementNotice").html("User Successfully Updated");
      });
      
      return false;

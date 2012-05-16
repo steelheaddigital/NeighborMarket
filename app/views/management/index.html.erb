@@ -1,27 +1,22 @@
 <div class="subnav">
     <ul class="nav nav-pills">
-      <li><a onclick="LoadApproveSellers();" href="javascript:void(0);">Approve Sellers</a></li>
-      <li><a onclick="LoadUserSearch();" href="javascript:void(0);">User Search</a></li>
+      <li><%= link_to_function "Approve Sellers", "LoadManagementContent('#{management_approve_sellers_path}', true)"%></li>
+      <li><%= link_to_function "User Search", "LoadManagementContent('#{management_user_search_path}', true)"%></li>
+      <li><%= link_to_function "Manage Categories", "LoadManagementContent('#{management_categories_path}', true)"%></li>
       <li></li>
     </ul>
   </div>
 <div class="container-fluid">
-  <p class="notice"><%= flash[:notice] %></p>
+  <p id="ManagementNotice" class="notice"><%= flash[:notice] %></p>
   <%= flash[:alert] %>
 </div>
 <div id="ManagementContent" class="container-fluid">
+  
+</div>
+<div id="Modal">
+  
 </div>
 
-<script type="text/javascript">
-  
-  function LoadApproveSellers(){
-    url = '<%=  management_approve_sellers_path %>'
-    $('#ManagementContent').load(url);
-  };
-
-  function LoadUserSearch(){
-    url = '<%=  management_user_search_path %>'
-    $('#ManagementContent').load(url);
-  };
-  
+<script>
+  $("#Modal").modal({show:false});
 </script>

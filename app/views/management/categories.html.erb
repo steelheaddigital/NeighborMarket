@@ -1,0 +1,46 @@
+<div class="row-fluid">
+  <div class="span8">
+    <h3>Categories</h3>
+    <p class="notice"><%= flash[:notice] %></p>
+    <%= flash[:alert] %>
+    <div>
+      <div>
+        <%= button_to_function "New Top Level Category", "LoadManagementDialog('#{new_top_level_category_path}')"%>
+      </div>
+        <div class="accordion-group">
+          <span class="table-bordered category-heading category-cell">Name</span>
+          <span class="table-bordered category-heading category-cell">Edit</span>
+          <span class="table-bordered category-heading category-cell">Delete</span>
+          <span class="table-bordered category-heading category-cell">Second Level</span>
+        </div>
+        <%@categories.each do |category|%>
+        <div class="accordion-group">
+          <div class="accordion-heading">
+              <span class="table-bordered category-cell"><%=category.name%></span>
+              <span class="table-bordered category-cell"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_top_level_category_path(category.id)}')"%></span>
+              <span class="table-bordered category-cell"><%= link_to_function "Delete", "DeleteCategory('#{top_level_category_path(category.id)}')"%></span>
+              <span class="table-bordered category-cell"><a href="#" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></td></span>
+          </div>
+              <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse in">
+                  <div style="margin-top: 10px;">
+                    <%= button_to_function "New Second Level Category", "LoadManagementDialog('#{new_second_level_category_path(:id => category.id)}')"%>
+                  </div>
+                  <span class="table-bordered category-heading category-cell">Name</span>
+                  <span class="table-bordered category-heading category-cell">Edit</span>
+                  <span class="table-bordered category-heading category-cell">Delete</span>
+                  <%category.second_level_categories.each do |second_level_category|%>
+                    <div>
+                      <span class="table-bordered category-cell"><%=second_level_category.name%></span>
+                      <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_second_level_category_path(second_level_category.id)}')"%></a></span>
+                      <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Delete", "DeleteCategory('#{second_level_category_path(second_level_category.id)}')"%></a></span>
+                    </div>
+                  <%end%>
+              </div>
+        </div>
+        <%end%>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(".collapse").collapse();
+</script>

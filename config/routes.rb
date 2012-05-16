@@ -1,4 +1,9 @@
 GardenMarketplace::Application.routes.draw do
+  
+  get "second_level_categories/edit"
+
+  get "second_level_categories/new"
+
   get "home/index"
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'UserRegistrations' }
@@ -15,18 +20,26 @@ GardenMarketplace::Application.routes.draw do
     end
   end
   
-  resources :management, :only => ["index"]
-  
   match 'management/approve_sellers' => 'management#approve_sellers'
   match 'management/user_search' => 'management#user_search'
   match 'management/user_search_results' => 'management#user_search_results'
-  
+  match 'management/categories' => 'management#categories'
+  resources :management, :only => ["index"]
   
   match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'
   resources :inventory_items
   
   match "seller/current_inventory" => "seller#current_inventory"
   resources :seller, :only => ["index"]
+  
+  resources :top_level_categories do
+    member do
+      get "new_second_level_category"
+      post "create_second_level_category"
+    end
+  end
+  
+  resources :second_level_categories 
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

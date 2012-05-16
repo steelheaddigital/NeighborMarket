@@ -48,3 +48,19 @@ vegetable.second_level_categories.build([
 
 vegetable.save
 
+
+preserves = TopLevelCategory.new(
+  :name => 'Preserves',
+  :description => 'Canned Stuff'
+)
+
+
+preserves.second_level_categories.build([
+    { :name => 'Strawberry Jam',
+      :description => 'Good stuff made out of strawberries'},
+    { :name => 'Pickles',
+      :description => 'Homemade Pickes'},
+  ]
+)
+
+preserves.save

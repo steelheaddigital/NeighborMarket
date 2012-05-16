@@ -13,7 +13,7 @@
         <td><%= user.first_name%></td>
         <td><%= user.last_name%></td>
         <td><%= user.address%></td>
-        <td><%= link_to_function "Show Details and Edit", "LoadUserDetail('#{edit_user_path(user.id)}')"%></td>
+        <td><%= link_to_function "Show Details and Edit", "LoadDialog('#{edit_user_path(user.id)}')"%></td>
       </tr>
     <%end%>
   </tbody>

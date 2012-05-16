@@ -1,87 +1,89 @@
-<h2>Edit User</h2>
-<%= form_for(@user, :url => user_path, :class => 'well', :html => { :id => 'EditUserForm' }) do |f| %>
-  <p class="notice"><%= flash[:notice] %></p>
-  <%= flash[:alert] %>
-  
-  <p>
-    <b>User Name:</b>
-    <%= @user.username %>
-  </p>
+<div class="modal" style="max-height:95%; margin-top: -25%;">
+  <div class="modal-body">
+    <%= form_for(@user, :url => user_path, :html => { :id => 'EditUserForm', :class => 'well' }) do |f| %>
+      <p class="notice"><%= flash[:notice] %></p>
+      <%= flash[:alert] %>
 
-  <p>
-    <b>Email: </b>
-    <%= @user.email %>
-  </p>
+      <p>
+        <b>User Name:</b>
+        <%= @user.username %>
+      </p>
 
-  <p>
-    <b>First Name:</b>
-    <%= @user.first_name %>
-  </p>
+      <p>
+        <b>Email: </b>
+        <%= @user.email %>
+      </p>
 
-  <p>
-    <b>Last Name:</b>
-    <%= @user.last_name %>
-  </p>
+      <p>
+        <b>First Name:</b>
+        <%= @user.first_name %>
+      </p>
 
-  <p>
-    <b>Initial:</b>
-    <%= @user.initial %>
-  </p>
+      <p>
+        <b>Last Name:</b>
+        <%= @user.last_name %>
+      </p>
 
-  <p>
-    <b>Phone:</b>
-    <%= @user.phone %>
-  </p>
+      <p>
+        <b>Initial:</b>
+        <%= @user.initial %>
+      </p>
 
-  <p>
-    <b>Address:</b>
-    <%= @user.address %>
-  </p>
+      <p>
+        <b>Phone:</b>
+        <%= @user.phone %>
+      </p>
 
-  <p>
-    <b>City:</b>
-    <%= @user.city %>
-  </p>
+      <p>
+        <b>Address:</b>
+        <%= @user.address %>
+      </p>
 
-  <p>
-    <b>State:</b>
-    <%= @user.state %>
-  </p>
+      <p>
+        <b>City:</b>
+        <%= @user.city %>
+      </p>
 
-  <p>
-    <b>Country:</b>
-    <%= @user.country %>
-  </p>
+      <p>
+        <b>State:</b>
+        <%= @user.state %>
+      </p>
 
-  <p>
-    <b>Zip:</b>
-    <%= @user.zip %>
-  </p>
+      <p>
+        <b>Country:</b>
+        <%= @user.country %>
+      </p>
 
-  <p>
-    <b>About Me:</b>
-    <%= @user.aboutme %>
-  </p>
+      <p>
+        <b>Zip:</b>
+        <%= @user.zip %>
+      </p>
 
-  <% @user.roles.each do |role| %>
-    <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
-  <% end %>
-  
-  <%= f.fields_for :roles do |rf| %>
-    <% if rf.object.rolable_type == "Seller" %>
-      <%= rf.fields_for :seller do |s|  %>
-          <div><%= s.label "Seller Approved" %>
-          <%= s.select(:approved, [['true', 'true'],['false', 'false']]) %></div>
-          <div><%= s.label "Listing Approval Style" %>
-          <%= s.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
+      <p>
+        <b>About Me:</b>
+        <%= @user.aboutme %>
+      </p>
+
+      <% @user.roles.each do |role| %>
+        <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
       <% end %>
+
+      <%= f.fields_for :roles do |rf| %>
+        <% if rf.object.rolable_type == "Seller" %>
+          <%= rf.fields_for :seller do |s|  %>
+              <div><b><%= s.label "Seller Approved" %></b>
+              <%= s.select(:approved, [['true', 'true'],['false', 'false']]) %></div>
+              <div><b><%= s.label "Listing Approval Style" %></b>
+              <%= s.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <div>
+        <%= f.submit("Save", :class => 'btn') %>
+        <input type="button" value="Cancel" class="btn" onclick="CloseDialog();"></input>
+      </div>
     <% end %>
-  <% end %>
-
-  <div><%= f.submit "Update" %></div>
-<% end %>
-
-  <script type="text/javascript">
-
-  </script>
-
+    </div
+  </div>
+</div>
