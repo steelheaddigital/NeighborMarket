@@ -33,21 +33,21 @@
 
   <div><%= f.label "Address" %>
   <%= f.text_field :address %></div>
-
+  
   <div><%= f.label "City" %>
   <%= f.text_field :city %></div>
-
-  <div><%= f.label "Country" %>
-  <%= f.country_select(:country, "US") %></div>
     
   <div><%= f.label "State" %>
   <%= f.state_select :state %></div>
 
+  <div><%= f.label "Country" %>
+  <%= f.country_select(:country, "US") %></div>
+  
   <div><%= f.label "Zip" %>
   <%= f.text_field :zip %></div>
 
   <div><%= f.label "About Me" %>
-  <%= f.text_area :aboutme %></div>
+  <%= f.text_area :aboutme, :rows => 20  %></div>
   
     <%= f.fields_for :roles do |rf| %>
       <% if rf.object.rolable_type == "Buyer" %>

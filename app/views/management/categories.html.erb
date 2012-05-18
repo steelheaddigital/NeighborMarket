@@ -28,13 +28,15 @@
                   <span class="table-bordered category-heading category-cell">Name</span>
                   <span class="table-bordered category-heading category-cell">Edit</span>
                   <span class="table-bordered category-heading category-cell">Delete</span>
-                  <%category.second_level_categories.each do |second_level_category|%>
-                    <div>
-                      <span class="table-bordered category-cell"><%=second_level_category.name%></span>
-                      <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_second_level_category_path(second_level_category.id)}')"%></a></span>
-                      <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Delete", "DeleteCategory('#{second_level_category_path(second_level_category.id)}')"%></a></span>
-                    </div>
-                  <%end%>
+                  <div style ="padding-bottom: 10px;">
+                    <%category.second_level_categories.each do |second_level_category|%>
+                      <div>
+                        <span class="table-bordered category-cell"><%=second_level_category.name%></span>
+                        <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_second_level_category_path(second_level_category.id)}')"%></a></span>
+                        <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Delete", "DeleteCategory('#{second_level_category_path(second_level_category.id)}')"%></a></span>
+                      </div>
+                    <%end%>
+                  </div>
               </div>
         </div>
         <%end%>
