@@ -47,7 +47,7 @@
   <%= f.text_field :zip %></div>
 
   <div><%= f.label "About Me" %>
-  <%= f.text_area :aboutme, :rows => 20  %></div>
+  <%= f.text_area :aboutme, :rows => 10  %></div>
   
     <%= f.fields_for :roles do |rf| %>
       <% if rf.object.rolable_type == "Buyer" %>

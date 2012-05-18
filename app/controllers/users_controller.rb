@@ -17,21 +17,23 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    if @user.update_attributes(params[:user])
-      flash[:notice] = "Successfully updated User."
-      redirect_to management_index_url
-    else
-      render :action => 'edit'
+    previous_seller_approved = @user.approved_seller?
+    
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        
+        new_seller_approved = @user.approved_seller?
+        
+        if(previous_seller_approved == false && new_seller_approved == true)
+          SellerMailer.seller_approved_mail(@user).deliver
+        end
+        
+        format.js { render :nothing => true }
+      else
+        format.js { render :edit, :layout => false }
+      end
     end
   
   end
-  
-  def approve_seller
-    user = User.find(params[:id])
-    role = user.roles.find_by_rolable_type("Seller")
-    if role.seller.update_attributes(:approved => true)
-      SellerMailer.seller_approved_mail(user).deliver
-      redirect_to management_index_url, :notice => "Seller successfully approved!"
-    end
-  end
+
 end
