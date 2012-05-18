@@ -1,4 +1,6 @@
 class SecondLevelCategoriesController < ApplicationController
+  load_and_authorize_resource
+  
   def new
     @top_level_category = TopLevelCategory.find(params[:id])
     @category = @top_level_category.second_level_categories.build

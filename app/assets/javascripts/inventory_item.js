@@ -1,3 +1,13 @@
+function LoadInventoryDialog(url){
+    $("#InventoryModal").load(url, function() 
+        {$("#InventoryNotice").empty();
+    }).modal('show');
+}
+
+function CloseInventoryDialog(){
+    $("#InventoryModal").modal('hide');
+}
+
 function LoadNewInventory(url){
     $('#InventoryNotice').empty();
     $('#SellerContent').load(url);
@@ -8,11 +18,6 @@ function LoadCurrentInventory(url){
     $('#SellerContent').load(url);
 }
   
-function LoadInventoryDetail(url){
-    $('#InventoryNotice').empty();
-    $("#InventoryDetail").load(url);
-}
-
 function DeleteInventoryItem(url){
     var deleteConfirm = confirm("Are you sure you want to delete this inventory item?");
     if (deleteConfirm == true){
@@ -24,9 +29,6 @@ function DeleteInventoryItem(url){
     }
 }
 
-function RefreshInventory(){
-
-}
 
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 
@@ -55,11 +57,7 @@ $(document).on("submit", "#new_inventory_item", function(){
        success: function(data){
            $("#SellerContent").html(data);
            $("#InventoryNotice").html("Inventory item successfully added!")
-       },
-       error: function() { 
-           alert("Error");
-       }
-           
+       }   
     });
     return false;
 });
@@ -79,11 +77,8 @@ $(document).on("submit", "#edit_inventory_item", function(){
            LoadCurrentInventory(url);
            $("#InventoryDetail").html(data);
            $("#InventoryNotice").html("Inventory item successfully updated!")
-       },
-       error: function() { 
-           alert("Error editing inventory");
-       }
-           
+           CloseInventoryDialog();
+       }   
     });
     return false;
 });

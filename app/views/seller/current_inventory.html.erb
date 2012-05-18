@@ -18,7 +18,7 @@
         <td><%= item.name%></td>
         <td><%= number_to_currency(item.price).to_s + " per " + item.price_unit%></td>
         <td><%= item.quantity_available%></td>
-        <td><%= link_to_function "Edit", "LoadInventoryDetail('#{edit_inventory_item_path(item.id)}')"%></td>
+        <td><%= link_to_function "Edit", "LoadInventoryDialog('#{edit_inventory_item_path(item.id)}')"%></td>
         <td><%= link_to_function "Delete", "DeleteInventoryItem('#{inventory_item_path(item.id)}')"%></td>
       </tr>
     <%end%>

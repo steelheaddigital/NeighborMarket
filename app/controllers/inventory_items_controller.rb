@@ -37,7 +37,6 @@ class InventoryItemsController < ApplicationController
     @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     
     respond_to do |format|
-      format.html {render :layout => false }
       format.js { render :layout => false }
     end
   end

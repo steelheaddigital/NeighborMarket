@@ -19,7 +19,7 @@
             <td><%=role.user.first_name%></td>
             <td><%=role.user.last_name%></td>
             <td><%=role.user.address%></td>
-            <td><%= link_to_function "Show Details and Edit", "LoadUserDetail('#{edit_user_path(role.user.id)}')"%></td>
+            <td><%= link_to_function "Show Details and Edit", "LoadManagementDialog('#{edit_user_path(role.user.id)}')"%></td>
           </tr>
         <%end%>
       </tbody>

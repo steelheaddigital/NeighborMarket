@@ -65,10 +65,10 @@ function DeleteCategory(url){
          
          //if we are on the Approve Sellers screen, then refresh the Approve Seller table
          if(approveSellers.length > 0){
-             $('#ManagementContent').load('/management/approve_sellers');
+             LoadManagementContent('/management/approve_sellers');
          }
          
-         CloseDialog();
+         CloseManagementDialog();
          $("#ManagementNotice").html("User Successfully Updated");
      });
      

@@ -32,12 +32,7 @@ GardenMarketplace::Application.routes.draw do
   match "seller/current_inventory" => "seller#current_inventory"
   resources :seller, :only => ["index"]
   
-  resources :top_level_categories do
-    member do
-      get "new_second_level_category"
-      post "create_second_level_category"
-    end
-  end
+  resources :top_level_categories 
   
   resources :second_level_categories 
   

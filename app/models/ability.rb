@@ -29,6 +29,8 @@ class Ability
     if user.role? :Manager
       can :manage, :all
       can :manage, ManagementController
+      can :manage, TopLevelCategory
+      can :manage, SecondLevelCategory
     end
     
     if user.role? :Seller
