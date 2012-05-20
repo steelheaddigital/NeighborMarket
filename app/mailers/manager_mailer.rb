@@ -4,6 +4,6 @@ class ManagerMailer < ActionMailer::Base
   def new_seller_mail(user, manager)
     @user = user
     mail( :to => manager.email, 
-          :subject => "New seller has signed up at the Garden Marketplace - Pending Verification" )
+          :subject => "New seller has signed up at the Neighbor Market - Pending Verification" )
   end
 end
