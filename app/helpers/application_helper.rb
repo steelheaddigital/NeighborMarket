@@ -26,4 +26,8 @@ module ApplicationHelper
 
     html.html_safe
   end
+  
+  def get_top_level_categories
+    TopLevelCategory.all
+  end
 end

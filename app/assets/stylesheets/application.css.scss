@@ -7,8 +7,20 @@
  *= require twitter/bootstrap
 */
 
-body{
-    padding-top:90px;
+#MainSearchForm
+{
+    margin-top: 4px; 
+    margin-left: 10px; 
+}
+
+.mainSearchBarEnd
+{
+    border-left: 1px solid #E5E5E5;
+}
+
+#MainContent
+{
+    margin-top:90px;
 }
 
 .field_with_errors {

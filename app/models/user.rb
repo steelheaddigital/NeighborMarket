@@ -98,8 +98,10 @@ class User < ActiveRecord::Base
     
     scope = self
     
+    keywordList = keywords.downcase.split(/ /)
+    
     if(keywords.present?)
-      scope = scope.where('first_name LIKE ? OR last_name LIKE ? OR username LIKE ?', "%#{keywords}%", "%#{keywords}%", "%#{keywords}%")
+      scope = scope.where('LOWER(first_name) IN(?) OR LOWER(last_name) IN(?) OR LOWER(username) IN(?)', keywordList, keywordList, keywordList)
     end
     if(role.present?)
       scope = scope.where('roles.rolable_type = ?', "#{role}").includes(:roles)

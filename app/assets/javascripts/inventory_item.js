@@ -29,6 +29,26 @@ function DeleteInventoryItem(url){
     }
 }
 
+$(document).on("submit", "#MainSearchForm", function(event) {
+   
+   event.preventDefault();
+   $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+   
+   var url = '/inventory_items/search'
+   var postData = $(this).serialize();
+   
+   $.ajax({
+       type: 'GET',
+       url: url,
+       data: postData,
+       cache: false,
+       dataType: 'html',
+       success: function(data){
+           $("#MainContent").html(data);
+       }
+    });
+    return false;
+});
 
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 

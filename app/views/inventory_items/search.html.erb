@@ -1,0 +1,21 @@
+<%@InventoryItems.each do |item|%>
+
+<div class="well row" style="margin-left:0;">
+  <div class="span3">
+    No Image Available
+  </div>
+  <div class="span9">
+    <h3><% if(item.name == nil || item.name == "") %>
+          <%=  item.top_level_category.name %>
+        <%else%>
+          <%= item.name %>
+        <%end%>    
+    </h3>
+    <p><%= item.description %></p>
+    <p>Quantity Available:  <%= item.quantity_available %></p>
+    <p>Price:  <%= number_to_currency(item.price).to_s + " per " + item.price_unit %></p>
+    <p>Sold By:  <a href="#"><%= item.user.first_name + " " + item.user.last_name %></a></p>
+  </div>
+</div>
+
+<%end%>

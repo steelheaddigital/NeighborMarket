@@ -1,5 +1,6 @@
 class InventoryItemsController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource :only => :search
   
   def new
     @item = InventoryItem.new
@@ -75,6 +76,16 @@ class InventoryItemsController < ApplicationController
     
     render :json => @second_level_categories
         
+  end
+  
+  def search
+    @InventoryItems = InventoryItem.search(params[:keywords])
+    
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
   end
   
 end

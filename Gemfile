@@ -8,9 +8,9 @@ gem 'rails', '3.1.3'
 gem 'pg'
 gem 'devise'
 gem 'cancan'
-gem 'less-rails-bootstrap'
 gem 'carmen'
 gem 'dynamic_form'
+gem 'debugger'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -18,9 +18,9 @@ group :assets do
   gem 'sass-rails',   '~> 3.1.5'
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'jquery-rails'
+  gem 'less-rails-bootstrap'
 end
-
-gem 'jquery-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -41,8 +41,43 @@
         </div>
       </div>
   </div>
+  <div class="subnav subnav-fixed">
+  <ul class ="nav nav-pills">
+    <li class="dropdown" id="MainCategoriesMenu">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="MainCategoriesMenu">
+      Browse Categories
+      <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+        <% @TopLevelCategories = get_top_level_categories %>
+        <% @TopLevelCategories.each do |category| %>
+          <li><a href="#"><%= category.name %></a></li>
+        <%  end %>
+      </ul>
+    </li>
+    <li>
+      <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
+        <input name="keywords" type="text"></input>
+        <button type="submit" class="btn">Search</button>
+      </form>
+    </li>
+    <li class="dropdown mainSearchBarEnd" style="float:right;">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="MainCategoriesMenu">
+      <i class="icon-shopping-cart"></i>
+      Shopping Cart
+      <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+
+      </ul>
+    </li>
+  </ul>
+</div>
 <div id="MainContent" class="container-fluid">
   <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
 </div>
+<script>
+  $('.dropdown-toggle').dropdown();
+</script>
 </body>
 </html>
