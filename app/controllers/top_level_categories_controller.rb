@@ -5,6 +5,7 @@ class TopLevelCategoriesController < ApplicationController
     @category = TopLevelCategory.new
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
     
@@ -15,8 +16,10 @@ class TopLevelCategoriesController < ApplicationController
     
     respond_to do |format|
       if @category.save
+        format.html { redirect_to management_categories_path, notice: 'Category successfully updated!'}
         format.js { render :nothing => true }
       else
+        format.html { render "new" }
         format.js { render :new, :layout => false }
       end
     end
@@ -27,6 +30,7 @@ class TopLevelCategoriesController < ApplicationController
     @category = TopLevelCategory.find(params[:id])
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -36,9 +40,11 @@ class TopLevelCategoriesController < ApplicationController
   
     respond_to do |format|
       if @category.update_attributes(params[:top_level_category])
+        format.html { redirect_to management_categories_path, notice: 'Category successfully updated!'}
         format.js { render :nothing => true }
       else
-        format.js { render :edit, :layout => false }
+        format.html { render "edit" }
+        format.js { render :new, :layout => false }
       end
     end
     
@@ -49,6 +55,7 @@ class TopLevelCategoriesController < ApplicationController
     @category.destroy
 
     respond_to do |format|
+      format.html{ redirect_to management_categories_path, notice: 'Category successfully updated!' }
       format.js { render :nothing => true }
     end
   end

@@ -1,23 +1,2 @@
-<div class="subnav">
-    <ul class="nav nav-pills">
-      <li><a onclick="LoadNewInventory('<%= new_inventory_item_path %>');" href="javascript:void(0);">Add New Inventory Item</a></li>
-      <li><a onclick="LoadCurrentInventory('<%= seller_current_inventory_path %>');" href="javascript:void(0);">Current Inventory</a></li>
-      <li></li>
-    </ul>
-  </div>
-</div>
-<div class="container-fluid">
-  <p id="InventoryNotice" class="notice"></p>
-  <p class="notice"><%= flash[:notice] %></p>
-  <%= flash[:alert] %>
-</div>
-<div id="SellerContent" class="container-fluid">
-</div>
-<div id="InventoryDetail" class="container-fluid">
-</div>
-<div id="InventoryModal">
-</div>
+<%= render :partial => "inventory", :locals => {:current_inventory => @current_inventory} %>
 
-<script>
-  $("#InventoryModal").modal({show:false});
-</script>

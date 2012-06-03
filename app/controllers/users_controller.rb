@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     
     #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -28,8 +29,10 @@ class UsersController < ApplicationController
           SellerMailer.seller_approved_mail(@user).deliver
         end
         
+        format.html { redirect_to management_index_path, notice: 'User successfully updated!'}
         format.js { render :nothing => true }
       else
+        format.html { render "new" }
         format.js { render :edit, :layout => false }
       end
     end

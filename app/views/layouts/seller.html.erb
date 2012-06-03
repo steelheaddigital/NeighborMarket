@@ -1,0 +1,23 @@
+<%content_for :MainContent do %>
+<div class="subnav">
+    <ul class="nav nav-pills">
+      <li><%= link_to "Current Inventory", seller_current_inventory_path %></a></li>
+      <li></li>
+    </ul>
+</div>
+<div class="container-fluid">
+  <p id="InventoryNotice" class="notice">
+    <%= flash[:notice] %>
+  </p>
+  <%= flash[:alert] %>
+</div>
+<div id="SellerContent" class="container-fluid">
+  <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
+</div>
+<div id="InventoryModal" class="modal hide fade">
+</div>
+<script>
+  $("#InventoryModal").modal({show: false});
+</script>
+<%  end %>
+<%= render :template => 'Layouts/application' %>

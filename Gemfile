@@ -11,7 +11,7 @@ gem 'cancan'
 gem 'carmen'
 gem 'dynamic_form'
 gem 'debugger'
-
+gem 'therubyracer'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -19,7 +19,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
-  gem 'less-rails-bootstrap'
+  gem 'less-rails-bootstrap', '>= 2.0.12'
 end
 
 # To use ActiveModel has_secure_password

@@ -7,6 +7,16 @@
  *= require twitter/bootstrap
 */
 
+span form
+{
+    margin:0;
+}
+
+td form
+{
+    margin:0;
+}
+
 #MainSearchForm
 {
     margin-top: 4px; 
@@ -16,11 +26,6 @@
 .mainSearchBarEnd
 {
     border-left: 1px solid #E5E5E5;
-}
-
-#MainContent
-{
-    margin-top:90px;
 }
 
 .field_with_errors {

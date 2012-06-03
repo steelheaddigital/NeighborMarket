@@ -1,10 +1,10 @@
 <%@InventoryItems.each do |item|%>
 
-<div class="well row" style="margin-left:0;">
-  <div class="span3">
-    No Image Available
+<div class="well row-fluid" style="padding-right:0; padding-left: 0">
+  <div class="span2">
+    <p style="padding-left: 19px;">No Image Available</p>
   </div>
-  <div class="span9">
+  <div class="span10">
     <h3><% if(item.name == nil || item.name == "") %>
           <%=  item.top_level_category.name %>
         <%else%>

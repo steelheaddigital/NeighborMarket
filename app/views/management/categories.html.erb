@@ -1,39 +1,27 @@
 <div class="row-fluid">
   <div class="span8">
-    <h3>Categories</h3>
-    <p class="notice"><%= flash[:notice] %></p>
-    <%= flash[:alert] %>
     <div>
       <div>
-        <%= button_to_function "New Top Level Category", "LoadManagementDialog('#{new_top_level_category_path}')"%>
+        <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn", :method => "get"} %>
       </div>
-        <div class="accordion-group">
-          <span class="table-bordered category-heading category-cell">Name</span>
-          <span class="table-bordered category-heading category-cell">Edit</span>
-          <span class="table-bordered category-heading category-cell">Delete</span>
-          <span class="table-bordered category-heading category-cell">Second Level</span>
-        </div>
         <%@categories.each do |category|%>
         <div class="accordion-group">
           <div class="accordion-heading">
-              <span class="table-bordered category-cell"><%=category.name%></span>
-              <span class="table-bordered category-cell"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_top_level_category_path(category.id)}')"%></span>
-              <span class="table-bordered category-cell"><%= link_to_function "Delete", "DeleteCategory('#{top_level_category_path(category.id)}')"%></span>
-              <span class="table-bordered category-cell"><a href="#" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></td></span>
+              <span class="category-cell"><%=category.name%></span>
+              <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:id => "EditTopLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+              <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:id => "DeleteTopLevelCategoryButton"}, :confirm => "Are you sure you want to delete this category and all of its sub-categories?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
+              <span class="category-cell"><a href="#" class ="btn" style="padding-right:10px; padding-left:10px;" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></span>
           </div>
               <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse in">
                   <div style="margin-top: 10px;">
-                    <%= button_to_function "New Second Level Category", "LoadManagementDialog('#{new_second_level_category_path(:id => category.id)}')"%>
+                    <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:id => "NewSecondLevelCategoryButton"}, :class => "btn", :method => "get"} %>
                   </div>
-                  <span class="table-bordered category-heading category-cell">Name</span>
-                  <span class="table-bordered category-heading category-cell">Edit</span>
-                  <span class="table-bordered category-heading category-cell">Delete</span>
                   <div style ="padding-bottom: 10px;">
                     <%category.second_level_categories.each do |second_level_category|%>
-                      <div>
-                        <span class="table-bordered category-cell"><%=second_level_category.name%></span>
-                        <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Edit", "LoadManagementDialog('#{edit_second_level_category_path(second_level_category.id)}')"%></a></span>
-                        <span class="table-bordered category-cell"><a href="#"><%= link_to_function "Delete", "DeleteCategory('#{second_level_category_path(second_level_category.id)}')"%></a></span>
+                      <div> 
+                        <span class="category-cell"><%= second_level_category.name%></span>
+                        <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:id => "EditSecondLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+                        <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:id => "DeleteSecondLevelCategoryButton"}, :confirm => "Are you sure you want to delete this category?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
                       </div>
                     <%end%>
                   </div>

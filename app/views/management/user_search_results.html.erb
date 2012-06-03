@@ -13,7 +13,7 @@
         <td><%= user.first_name%></td>
         <td><%= user.last_name%></td>
         <td><%= user.address%></td>
-        <td><%= link_to_function "Show Details and Edit", "LoadManagementDialog('#{edit_user_path(user.id)}')"%></td>
+        <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "users", :id => user.id}, {:form => {:id => "EditUsersButton"}, :method => "get"} %></td>
       </tr>
     <%end%>
   </tbody>

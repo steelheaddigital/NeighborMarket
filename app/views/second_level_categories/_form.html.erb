@@ -1,5 +1,6 @@
 <%= form_for(@category, :html => {:id => 'SecondLevelCategoryForm', :class => 'well' }) do |f| %>
-  <%=  f.hidden_field :top_level_category_id %>
+<div class="modal-body well">
+  <%= f.error_messages %>
   <div>
     <%=  f.label :name %>
     <%=  f.text_field :name %>
@@ -8,8 +9,9 @@
     <%= f.label :description %>
     <%= f.text_area :description, :rows => 10 %>
   </div>
-  <div>
-    <%= f.submit("Save", :class => 'btn') %>
-    <input type="button" value="Cancel" class="btn" onclick="CloseManagementDialog();"></input>
+ </div>
+  <div class="modal-footer">
+    <a class="btn" data-dismiss="modal" href="#">Close</a>
+    <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
   </div>
 <%  end %>

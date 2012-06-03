@@ -1,9 +1,4 @@
 GardenMarketplace::Application.routes.draw do
-  
-  get "second_level_categories/edit"
-
-  get "second_level_categories/new"
-
   get "home/index"
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'UserRegistrations' }

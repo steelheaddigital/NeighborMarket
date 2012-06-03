@@ -1,4 +1,6 @@
 function LoadInventoryDialog(url){
+    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+    
     $("#InventoryModal").load(url, function() 
         {$("#InventoryNotice").empty();
     }).modal('show');
@@ -16,17 +18,6 @@ function LoadNewInventory(url){
 function LoadCurrentInventory(url){
     $('#InventoryNotice').empty();
     $('#SellerContent').load(url);
-}
-  
-function DeleteInventoryItem(url){
-    var deleteConfirm = confirm("Are you sure you want to delete this inventory item?");
-    if (deleteConfirm == true){
-        $.post(url, {_method: 'delete'}, function(){
-            $("#InventoryNotice").html("Inventory item successfully deleted!");
-            var url = '/seller/current_inventory'
-            $('#SellerContent').load(url);
-        });
-    }
 }
 
 $(document).on("submit", "#MainSearchForm", function(event) {
@@ -65,6 +56,16 @@ $(document).on("change", "#inventory_item_top_level_category_id", function() {
     });
 });
 
+
+$(document).on("submit", "#NewInventoryItemButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadInventoryDialog(url);
+    
+    return false;
+});
+
 $(document).on("submit", "#new_inventory_item", function(){
     var postData = $(this).serialize();
     var url = $(this).attr("action");
@@ -76,9 +77,20 @@ $(document).on("submit", "#new_inventory_item", function(){
        dataType: "html",
        success: function(data){
            $("#SellerContent").html(data);
-           $("#InventoryNotice").html("Inventory item successfully added!")
+           LoadCurrentInventory('/seller/current_inventory');
+           $("#InventoryNotice").html("Inventory item successfully added!");
+           CloseInventoryDialog();
        }   
     });
+    return false;
+});
+
+$(document).on("submit", "#EditInventoryItemButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadInventoryDialog(url);
+    
     return false;
 });
 
@@ -92,9 +104,8 @@ $(document).on("submit", "#edit_inventory_item", function(){
        cache: false,
        dataType: "html",
        success: function(data){
-           var url = '/seller/current_inventory'
            $('#InventoryNotice').empty();
-           LoadCurrentInventory(url);
+           LoadCurrentInventory('/seller/current_inventory');
            $("#InventoryDetail").html(data);
            $("#InventoryNotice").html("Inventory item successfully updated!")
            CloseInventoryDialog();

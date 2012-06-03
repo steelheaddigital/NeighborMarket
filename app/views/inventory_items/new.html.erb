@@ -1,7 +1,9 @@
-<h2>New Inventory Item</h2>
-<div class="row-fluid"
-  <div class="span6">
-    <%= form_for(@item, :html => { :class => 'well span6' }) do |f| %>
+<div class="modal-header">
+  <button class="close" data-dismiss="modal" type="button">×</button>
+  <h3 id="InventoryHeading">New Inventory Item</h3>
+</div>
+<%= form_for(@item) do |f| %>
+<div class="modal-body well">
     <%= f.error_messages %>
       <div>
         <%= f.label "Top Level Category *"   %>
@@ -12,7 +14,9 @@
         <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true}, {:disabled => "disabled"})  %>
       </div>
       <%= render :partial => 'form', :locals => { :f => f } %>
-    <%  end %>
-  </div>
 </div>
-
+<div class="modal-footer">
+  <a class="btn" data-dismiss="modal" href="#">Close</a>
+  <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
+</div>
+<% end %>

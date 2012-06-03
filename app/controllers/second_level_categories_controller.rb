@@ -6,6 +6,7 @@ class SecondLevelCategoriesController < ApplicationController
     @category = @top_level_category.second_level_categories.build
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
     
@@ -17,8 +18,10 @@ class SecondLevelCategoriesController < ApplicationController
     
     respond_to do |format|
       if @top_level_category.save
+        format.html { redirect_to management_categories_path, notice: 'Category successfully updated!'}
         format.js { render :nothing => true }
       else
+        format.html { render "new" }
         format.js { render :new, :layout => false }
       end
     end
@@ -29,6 +32,7 @@ class SecondLevelCategoriesController < ApplicationController
     @category = SecondLevelCategory.find(params[:id])
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -38,21 +42,23 @@ class SecondLevelCategoriesController < ApplicationController
   
     respond_to do |format|
       if @category.update_attributes(params[:second_level_category])
+        format.html { redirect_to management_categories_path, notice: 'Category successfully updated!'}
         format.js { render :nothing => true }
       else
+        format.html { render "edit" }
         format.js { render :edit, :layout => false }
       end
     end
-    
   end
-  
+    
   def destroy
     @category = SecondLevelCategory.find(params[:id])
     @category.destroy
 
     respond_to do |format|
+      format.html{ redirect_to management_categories_path, notice: 'Category successfully deleted!' }
       format.js { render :nothing => true }
     end
   end
-
+  
 end

@@ -8,6 +8,7 @@ class InventoryItemsController < ApplicationController
     @second_level_categories = {}
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -24,8 +25,10 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.save
+        format.html { redirect_to seller_index_path, notice: 'Inventory item successfully created!'}
         format.js { render :nothing => true }
       else
+        format.html { render "new" }
         format.js { render :new, :layout => false }
       end
     end
@@ -38,6 +41,7 @@ class InventoryItemsController < ApplicationController
     @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     
     respond_to do |format|
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -54,8 +58,10 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])
+        format.html { redirect_to seller_index_path, notice: 'Inventory item successfully updated!'}
         format.js { render :nothing => true }
       else
+        format.html { render "edit" }
         format.js { render :edit, :layout => false }
       end
     end
@@ -66,6 +72,7 @@ class InventoryItemsController < ApplicationController
     inventory.destroy
 
     respond_to do |format|
+      format.html {redirect_to seller_index_path, notice: "Inventory item successfully deleted!" }
       format.js { render :nothing => true }
     end
   end

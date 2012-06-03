@@ -1,4 +1,5 @@
 function LoadManagementDialog(url){
+    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
     
     $("#Modal").load(url, function() 
         {$("#ManagementNotice").empty();
@@ -10,6 +11,8 @@ function CloseManagementDialog(){
 }
 
 function LoadManagementContent(url, reset){
+    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+    
     $('#ManagementContent').load(url, function(){
         if(reset == true){
             $("#ManagementNotice").empty();
@@ -24,7 +27,7 @@ function DeleteCategory(url){
     if(deleteConfirm == true){
         $.post(url, {_method: 'delete'}, function() {
                LoadManagementContent('/management/categories');
-               $("#ManagementNotice").html("Category Successfully Deleted");
+               $("#ManagementNotice").html("Category successfully deleted!");
            }
         );
     }
@@ -37,7 +40,7 @@ function DeleteCategory(url){
      $.post(url, data, function(){
          CloseManagementDialog();
          LoadManagementContent('/management/categories');
-         $("#ManagementNotice").html("Categories Successfully Updated");
+         $("#ManagementNotice").html("Categories successfully updated!");
      });
      
      return false;
@@ -50,7 +53,7 @@ function DeleteCategory(url){
      $.post(url, data, function(){
          CloseManagementDialog();
          LoadManagementContent('/management/categories');
-         $("#ManagementNotice").html("Categories Successfully Updated");
+         $("#ManagementNotice").html("Categories successfully updated!");
      });
      
      return false;
@@ -69,7 +72,7 @@ function DeleteCategory(url){
          }
          
          CloseManagementDialog();
-         $("#ManagementNotice").html("User Successfully Updated");
+         $("#ManagementNotice").html("User successfully updated!");
      });
      
      return false;
@@ -91,8 +94,83 @@ $(document).on("change", "#RoleTypeSelect", function(){
 });
 
 $(document).on("submit", "#UserSearchForm", function(){
+   $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+   
    var queryString = $(this).serialize();
    var url = $(this).attr("action");
    $("#ManagerSearchResults").load(url+"?"+queryString);
+   
    return false;
+});
+
+$(document).on("click", "#UserSearchNav", function(event){
+   event.preventDefault();
+   var url = $(this).attr("href")
+   
+   LoadManagementContent(url, true);
+   
+   return false;
+});
+
+$(document).on("click", "#ApproveSellersNav", function(event){
+   event.preventDefault();
+   var url = $(this).attr("href")
+   
+   LoadManagementContent(url, true);
+   
+   return false;
+});
+
+$(document).on("click", "#ManageCategoriesNav", function(event){
+   event.preventDefault();
+   var url = $(this).attr("href")
+   
+   LoadManagementContent(url, true);
+   
+   return false;
+});
+
+$(document).on("submit", "#EditUsersButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadManagementDialog(url);
+    
+    return false;
+});
+
+$(document).on("submit", "#NewTopLevelCategoryButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadManagementDialog(url);
+    
+    return false;
+});
+
+$(document).on("submit", "#NewSecondLevelCategoryButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadManagementDialog(url);
+    
+    return false;
+});
+
+$(document).on("submit", "#EditTopLevelCategoryButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadManagementDialog(url);
+    
+    return false;
+});
+
+$(document).on("submit", "#EditSecondLevelCategoryButton", function(event){
+    event.preventDefault();
+    
+    var url = $(this).attr("action");
+    LoadManagementDialog(url);
+    
+    return false;
 });
