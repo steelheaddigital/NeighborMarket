@@ -27,6 +27,7 @@ $(document).on("submit", "#MainSearchForm", function(event) {
    
    var url = '/inventory_items/search'
    var postData = $(this).serialize();
+   $("#MainContent").empty();
    
    $.ajax({
        type: 'GET',

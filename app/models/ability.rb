@@ -28,6 +28,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.role? :Manager
       can :manage, :all
+      can :manage, User
       can :manage, ManagementController
       can :manage, TopLevelCategory
       can :manage, SecondLevelCategory

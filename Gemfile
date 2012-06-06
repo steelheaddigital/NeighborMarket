@@ -12,6 +12,8 @@ gem 'carmen'
 gem 'dynamic_form'
 gem 'debugger'
 gem 'therubyracer'
+gem 'will_paginate', '~> 3.0'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

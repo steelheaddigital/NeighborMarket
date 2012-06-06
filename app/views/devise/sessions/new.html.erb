@@ -1,7 +1,7 @@
-<h2>Sign in</h2>
-
 <div class="row-fluid">
-  <div class ="span4 well">
+  <div class="span4"></div>
+  <div class ="span4 well" style="min-width:260px;">
+    <h2 style="margin-bottom: 10px;">Sign In</h2>
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
       <span><%= flash[:notice] %>
       <%= flash[:alert] %></span>

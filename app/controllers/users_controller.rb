@@ -1,13 +1,23 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
+  skip_authorize_resource :only => :show_public
   
   def show
     @user = User.find(params[:id])
   end
 
+  def show_public
+    @user = User.find(params[:id])
+    
+    respond_to do |format|
+      
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
   def edit
     @user = User.find(params[:id])
-    authorize! :manage, @user
     
     #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|

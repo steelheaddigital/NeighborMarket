@@ -1,6 +1,7 @@
 class InventoryItemsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => :search
+  require 'will_paginate/array'
   
   def new
     @item = InventoryItem.new
@@ -86,9 +87,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def search
-    @InventoryItems = InventoryItem.search(params[:keywords])
-    
-    
+    @InventoryItems = InventoryItem.search(params[:keywords]).paginate(:page => params[:page], :per_page => 5)
+
     respond_to do |format|
       format.html
       format.js { render :layout => false }

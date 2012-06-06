@@ -1,5 +1,5 @@
 <%@InventoryItems.each do |item|%>
-
+<% seller_name = item.user.first_name + " " + item.user.last_name %>
 <div class="well row-fluid" style="padding-right:0; padding-left: 0">
   <div class="span2">
     <p style="padding-left: 19px;">No Image Available</p>
@@ -14,8 +14,8 @@
     <p><%= item.description %></p>
     <p>Quantity Available:  <%= item.quantity_available %></p>
     <p>Price:  <%= number_to_currency(item.price).to_s + " per " + item.price_unit %></p>
-    <p>Sold By:  <a href="#"><%= item.user.first_name + " " + item.user.last_name %></a></p>
+    <p>Sold By:  <%= link_to(seller_name, show_public_user_path(item.user.id)) %></p>
   </div>
 </div>
-
 <%end%>
+<%= will_paginate @InventoryItems %>
