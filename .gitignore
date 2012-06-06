@@ -14,3 +14,4 @@
 /log/*.log
 /tmp
 /nbproject/private/
+.DS_Store
