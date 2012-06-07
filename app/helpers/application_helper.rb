@@ -28,6 +28,18 @@ module ApplicationHelper
   end
   
   def get_top_level_categories
-    TopLevelCategory.all
+    
+    #Get the distinct second level categories
+    ids = SecondLevelCategory.group(:id)
+    
+    #Add the top level category id to a new array for each distinct second level category
+    idArray = Array.new
+    ids.each do |category|
+      idArray.push(category.top_level_category_id)
+    end
+    
+    #return only the top level categories that have associated second level categories
+    return TopLevelCategory.find(idArray)
+    
   end
 end

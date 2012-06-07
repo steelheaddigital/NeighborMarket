@@ -5,7 +5,6 @@
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-</head>
 <body>
     <div class="navbar navbar-fluid-top" style="min-width:635px;">
       <div class="navbar-inner">
@@ -30,11 +29,11 @@
               <% if user_signed_in? %>
                 <li><%= link_to('Edit registration', edit_user_registration_url) %></li>
                 <% if current_user.role?("Buyer") && !current_user.role?("Seller")%>
-                  <li><%= link_to('Become a seller', become_seller_url)  %></li>
+                  <li><%= link_to('Become a seller', become_seller_url) %></li>
                 <% end %>
               <% else %>
-                <li><%= link_to('Sign up as a buyer', buyer_sign_up_url)  %></li>
-                <li><%= link_to('Sign up as a seller', seller_sign_up_url)  %></li>
+                <li><%= link_to('Sign up as a buyer', buyer_sign_up_url) %></li>
+                <li><%= link_to('Sign up as a seller', seller_sign_up_url) %></li>
               <% end %>
             </ul>
           </div>
@@ -52,7 +51,15 @@
         <ul class="dropdown-menu">
           <% @TopLevelCategories = get_top_level_categories %>
           <% @TopLevelCategories.each do |category| %>
-            <li><a href="#"><%= category.name %></a></li>
+            <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
+              <ul class="dropdown-menu">
+                <% category.second_level_categories.each do |category|%>
+                <li>
+                    <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
+                </li>
+                <% end %>
+              </ul>
+            </li>
           <%  end %>
         </ul>
       </li>

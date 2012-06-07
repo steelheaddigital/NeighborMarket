@@ -1,6 +1,6 @@
 class InventoryItemsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => :search
+  skip_authorize_resource :only => [:search, :browse]
   require 'will_paginate/array'
   
   def new
@@ -92,6 +92,15 @@ class InventoryItemsController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => false }
+    end
+  end
+  
+  def browse
+    @InventoryItems = InventoryItem.find_all_by_second_level_category_id(params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
+    
+    respond_to do |format|
+      format.html { render :search }
+      format.js { render :search, :layout => false }
     end
   end
   
