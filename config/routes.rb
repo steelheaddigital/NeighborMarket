@@ -25,6 +25,7 @@ GardenMarketplace::Application.routes.draw do
   match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'
   match 'inventory_items/search' => 'inventory_items#search'
   match 'inventory_items/browse' => 'inventory_items#browse'
+  resources :inventory_items
   
   match "seller/current_inventory" => "seller#current_inventory"
   resources :seller, :only => ["index"]
