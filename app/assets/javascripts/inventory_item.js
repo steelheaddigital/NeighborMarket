@@ -29,6 +29,7 @@ $(document).on("submit", "#MainSearchForm", function(event) {
    var postData = $(this).serialize();
    $("#MainContent").empty();
    
+   $("#Loading").show();
    $.ajax({
        type: 'GET',
        url: url,
@@ -37,6 +38,7 @@ $(document).on("submit", "#MainSearchForm", function(event) {
        dataType: 'html',
        success: function(data){
            $("#MainContent").html(data);
+           $("#Loading").hide();
        }
     });
     return false;

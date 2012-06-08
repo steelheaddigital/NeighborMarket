@@ -82,6 +82,12 @@
     </ul>
   </div>
 </div>
+ <div id="Loading" class="row-fluid" style="display:none; margin-top: 30px;">
+    <div class="span6"></div>
+    <div>
+      <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
+    </div>
+  </div>
 <div id="MainContent" class="container-fluid">
   <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
 </div>
