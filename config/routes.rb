@@ -12,7 +12,7 @@ GardenMarketplace::Application.routes.draw do
   resources :users do 
     member do
       post "approve_seller"
-      get "show_public"
+      get "public"
     end
   end
   

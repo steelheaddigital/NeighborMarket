@@ -1,64 +1,68 @@
-<p>
-  <b>User Name:</b>
-  <%= @user.username %>
-</p>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <p>
+      <b>User Name:</b>
+      <%= @user.username %>
+    </p>
 
-<p>
-  <b>Email: </b>
-  <%= @user.email %>
-</p>
+    <p>
+      <b>Email: </b>
+      <%= @user.email %>
+    </p>
 
-<p>
-  <b>First Name:</b>
-  <%= @user.first_name %>
-</p>
+    <p>
+      <b>First Name:</b>
+      <%= @user.first_name %>
+    </p>
 
-<p>
-  <b>Last Name:</b>
-  <%= @user.last_name %>
-</p>
+    <p>
+      <b>Last Name:</b>
+      <%= @user.last_name %>
+    </p>
 
-<p>
-  <b>Initial:</b>
-  <%= @user.initial %>
-</p>
+    <p>
+      <b>Initial:</b>
+      <%= @user.initial %>
+    </p>
 
-<p>
-  <b>Phone:</b>
-  <%= @user.phone %>
-</p>
+    <p>
+      <b>Phone:</b>
+      <%= @user.phone %>
+    </p>
 
-<p>
-  <b>Address:</b>
-  <%= @user.address %>
-</p>
+    <p>
+      <b>Address:</b>
+      <%= @user.address %>
+    </p>
 
-<p>
-  <b>City:</b>
-  <%= @user.city %>
-</p>
+    <p>
+      <b>City:</b>
+      <%= @user.city %>
+    </p>
 
-<p>
-  <b>State:</b>
-  <%= @user.state %>
-</p>
+    <p>
+      <b>State:</b>
+      <%= @user.state %>
+    </p>
 
-<p>
-  <b>Country:</b>
-  <%= @user.country %>
-</p>
+    <p>
+      <b>Country:</b>
+      <%= @user.country %>
+    </p>
 
-<p>
-  <b>Zip:</b>
-  <%= @user.zip %>
-</p>
+    <p>
+      <b>Zip:</b>
+      <%= @user.zip %>
+    </p>
 
-<p>
-  <b>About Me:</b>
-  <%= @user.aboutme %>
-</p>
+    <p>
+      <b>About Me:</b>
+      <%= @user.aboutme %>
+    </p>
 
-<% @user.roles.each do |role| %>
-  <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
-<% end %>
+    <% @user.roles.each do |role| %>
+      <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
+    <% end %>
+  </div>
+</div>
 

@@ -1,19 +1,32 @@
 <%content_for :MainContent do %>
-<div class="subnav">
-    <ul class="nav nav-pills">
-      <li><%= link_to "Current Inventory", seller_current_inventory_path %></a></li>
-      <li></li>
-    </ul>
-</div>
-<div class="container-fluid">
-  <p id="InventoryNotice" class="notice">
-    <%= flash[:notice] %>
-  </p>
-  <%= flash[:alert] %>
-</div>
-<div id="SellerContent" class="container-fluid">
-  <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
-</div>
+<div class ="container-fluid">
+  <div class="subnav">
+      <ul class="nav nav-pills">
+        <li><%= link_to "Current Inventory", seller_current_inventory_path %></a></li>
+        <li></li>
+      </ul>
+  </div>
+  <div class="container-fluid" style="margin-top: 15px;">
+    <div class="row-fluid">
+      <div id="SellerLoadingImage" style="display:none">
+        <div class="span6"></div>
+        <div>
+          <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
+        </div>
+      </div>
+      <div id="InventoryNotice" class="alert" style="display:none;">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+      </div>
+      <p class="notice">
+        <%= flash[:notice] %>
+        <%= flash[:alert] %>
+      </p>
+    </div>
+  </div>
+  <div id="SellerContent" class="container-fluid">
+    <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
+  </div>
+  </div>
 <div id="InventoryModal" class="modal hide fade">
 </div>
 <script>

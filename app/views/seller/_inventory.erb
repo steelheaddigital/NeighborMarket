@@ -1,28 +1,30 @@
-<%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn", :method => "get"} %>
-<table class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-        <th>Top Level Category</th>
-        <th>Second Level Category</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th></th>
-        <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%@current_inventory.each do |item|%>
+<div class="row-fluid">
+  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn", :method => "get"} %>
+  <table class="table table-bordered table-condensed">
+    <thead>
       <tr>
-        <td><%= item.top_level_category.description%></td>
-        <td><%= item.second_level_category.description%></td>
-        <td><%= item.name%></td>
-        <td><%= number_to_currency(item.price).to_s + " per " + item.price_unit%></td>
-        <td><%= item.quantity_available%></td>
-        <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:id => "EditInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>
-        <td><%= button_to "Delete", { :action => "destroy", :controller => "inventory_items", :id => item.id}, {:form => {:id => "DeleteInventoryItemButton"}, :confirm => "Are you sure you want to delete this inventory item?", :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
+          <th>Top Level Category</th>
+          <th>Second Level Category</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th></th>
+          <th></th>
       </tr>
-    <%end%>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <%@current_inventory.each do |item|%>
+        <tr>
+          <td><%= item.top_level_category.description%></td>
+          <td><%= item.second_level_category.description%></td>
+          <td><%= item.name%></td>
+          <td><%= number_to_currency(item.price).to_s + " per " + item.price_unit%></td>
+          <td><%= item.quantity_available%></td>
+          <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>
+          <td><%= button_to "Delete", { :action => "destroy", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
 

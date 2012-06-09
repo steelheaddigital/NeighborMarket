@@ -19,7 +19,7 @@
             <td><%=role.user.first_name%></td>
             <td><%=role.user.last_name%></td>
             <td><%=role.user.address%></td>
-            <td><%= link_to_function "Show Details and Edit", "LoadManagementDialog('#{edit_user_path(role.user.id)}')"%></td>
+            <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "users", :id => role.user.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
           </tr>
         <%end%>
       </tbody>

@@ -1,6 +1,7 @@
 <%= form_for(@category, :html => {:id => 'SecondLevelCategoryForm', :class => 'well' }) do |f| %>
 <div class="modal-body well">
   <%= f.error_messages %>
+  <%= f.hidden_field :top_level_category_id %>
   <div>
     <%=  f.label :name %>
     <%=  f.text_field :name %>

@@ -69,7 +69,7 @@
           <button type="submit" class="btn">Search</button>
         </form>
       </li>
-      <li class="dropdown mainSearchBarEnd" style="float:right;">
+      <li class="dropdown mainSearchBarEnd pull-right">
         <a class="dropdown-toggle" data-toggle="dropdown" href="MainCategoriesMenu">
         <i class="icon-shopping-cart"></i>
         Shopping Cart
@@ -82,12 +82,12 @@
     </ul>
   </div>
 </div>
- <div id="Loading" class="row-fluid" style="display:none; margin-top: 30px;">
-    <div class="span6"></div>
-    <div>
-      <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
-    </div>
+<div id="Loading" class="row-fluid" style="display:none; margin-top: 30px;">
+  <div class="span6"></div>
+  <div>
+    <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
   </div>
+</div>
 <div id="MainContent" class="container-fluid">
   <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
 </div>
