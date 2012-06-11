@@ -32,6 +32,31 @@ user.roles.build(
 
 user.save(:validate => false)
 
+seller = User.new(
+  :username => "Seller1",
+  :email => "seller1@test.com",
+  :password   => 'Abc123!', 
+  :password_confirmation => 'farDro3h', 
+  :first_name => "Seller",
+  :last_name => "One",
+  :initial => "S",
+  :phone => "503-123-4567",
+  :address => "123 Test St.",
+  :city => "Portland",
+  :state => "Oregon",
+  :country => "United States",
+  :zip => "97218"
+)
+
+Seller.create
+
+seller.roles.build(
+  :rolable_id => 2,
+  :rolable_type => "Seller"
+)
+
+seller.save(:validate => false)
+
 vegetable = TopLevelCategory.new(
   :name => 'Vegetable',
   :description => 'Vegetables'

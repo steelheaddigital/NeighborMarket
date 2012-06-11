@@ -32,7 +32,11 @@ GardenMarketplace::Application.routes.draw do
   
   resources :top_level_categories 
   
-  resources :second_level_categories 
+  resources :second_level_categories
+  
+  resources :cart_items, :only => ["create"]
+  
+  resources :cart, :only => ["index"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

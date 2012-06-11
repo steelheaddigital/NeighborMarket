@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div class ="row-fluid">
+    <p class ="notice"><%= notice %></p>
+    <div class="span6">
+      <h2>Your Cart</h2>
+      <ul>
+        <% @cart.cart_items.each do |item| %>
+          <li><%= item.quantity %> &times; <%= item.inventory_item.name %> </li>
+        <%  end %>
+      </ul>
+    </div>
+  </div>
+</div>
+

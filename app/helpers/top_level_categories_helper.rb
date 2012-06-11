@@ -1,2 +1,0 @@
-module TopLevelCategoriesHelper
-end

@@ -10,7 +10,6 @@ gem 'devise'
 gem 'cancan'
 gem 'carmen'
 gem 'dynamic_form'
-gem 'debugger'
 gem 'therubyracer'
 gem 'will_paginate', '~> 3.0'
 
@@ -34,7 +33,10 @@ end
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'debugger'
+#gem 'ruby-debug'
+#gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'ruby-debug-ide19'
 
 group :test do
   # Pretty printed test output

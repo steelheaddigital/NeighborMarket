@@ -16,12 +16,11 @@
         <p><%= item.description %></p>
         <p>Quantity Available:  <%= item.quantity_available %></p>
         <p>Price:  <%= number_to_currency(item.price).to_s + " per " + item.price_unit %></p>
-        <p>Sold By:  <%= link_to(seller_name, public_user_path(item.user.id), :class => "soldByLink") %></p>
+        <p>Sold By:  <%= link_to(seller_name, public_user_path(item.user.id)) %></p>
+        <p><%= button_to "Add To Cart", cart_items_path(inventory_item_id: item),{:form => {:class => "addToCartButton"}, :class => "btn btn-primary"}%> </p>
       </div>
     </div>
     <%end%>
-    <div class="pagination">
-      <%= will_paginate @InventoryItems %>
-    </div>
+    <%= will_paginate @InventoryItems %>
   </div>
 </div>

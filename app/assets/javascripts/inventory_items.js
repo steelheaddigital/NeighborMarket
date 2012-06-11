@@ -1,25 +1,3 @@
-$(document).on("click", ".soldByLink", function(event) {
-
-   event.preventDefault();
-   $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
-   
-   var url = $(this).attr("href")
-   
-   $("#MainContent").empty();
-   $("#Loading").show();
-   
-   $.ajax({
-       type: 'GET',
-       url: url,
-       dataType: 'html',
-       success: function(data){
-           $("#MainContent").html(data);
-           $("#Loading").hide();
-       }
-    });
-    return false;
-});
-
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 
     var url = '/inventory_items/get_second_level_category'
