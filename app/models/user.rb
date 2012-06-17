@@ -1,7 +1,10 @@
 class User < ActiveRecord::Base
   has_many :roles, :dependent => :destroy
   has_many :inventory_items, :dependent => :destroy
-  accepts_nested_attributes_for :roles, :allow_destroy => true 
+  has_many :carts, :dependent => :destroy
+  
+  accepts_nested_attributes_for :roles, :allow_destroy => true
+  
   validates :username, :uniqueness => true
   validates :username, 
             :first_name, 

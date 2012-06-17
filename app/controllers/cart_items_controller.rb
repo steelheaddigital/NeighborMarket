@@ -11,7 +11,7 @@ class CartItemsController < ApplicationController
     
     respond_to do |format|
       if @cart_item.save
-        format.html { redirect_to cart_index_path, notice: 'Item successfully added!'}
+        format.html { redirect_to cart_index_path }
         format.js { render :nothing => true }
       else
         format.html { render "new" }

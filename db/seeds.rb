@@ -48,10 +48,11 @@ seller = User.new(
   :zip => "97218"
 )
 
-Seller.create
+Seller.create!(:payment_instructions => "Pay Me", :approved => "true", :listing_approval_style => "auto")
+
 
 seller.roles.build(
-  :rolable_id => 2,
+  :rolable_id => 1,
   :rolable_type => "Seller"
 )
 

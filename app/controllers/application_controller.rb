@@ -7,7 +7,13 @@ class ApplicationController < ActionController::Base
     Cart.find(session[:cart_id])
     
   rescue ActiveRecord::RecordNotFound
-    cart = Cart.create
+    
+    if(user_signed_in?)
+      cart = Cart.create(:user_id => current_user.id)
+    else
+      cart = Cart.create()
+    end
+    
     session[:cart_id] = cart.id
     cart
   end
