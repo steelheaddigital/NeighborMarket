@@ -30,7 +30,7 @@ module ApplicationHelper
   def get_top_level_categories
     
     #Get the distinct second level categories
-    ids = SecondLevelCategory.select("top_level_category_id").group(:id)
+    ids = SecondLevelCategory.select(:top_level_category_id).group(:id, :top_level_category_id)
     
     #Add the top level category id to a new array for each distinct second level category
     idArray = Array.new
