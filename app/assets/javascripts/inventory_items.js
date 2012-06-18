@@ -30,7 +30,6 @@ $(document).on("submit", "#new_inventory_item", function(){
     var url = $(this).attr("action"); 
     var items = new InventoryItems();
     
-    items.CloseInventoryDialog();
     $("#SellerLoadingImage").show();
     $.ajax({
        type: "POST",
@@ -43,7 +42,40 @@ $(document).on("submit", "#new_inventory_item", function(){
            items.LoadCurrentInventory('/seller/current_inventory');
            $("#InventoryNotice").html("Inventory item successfully added!").show();
            $("#SellerLoadingImage").hide();
-       }   
+           items.CloseInventoryDialog();
+       },
+       error: function(request){
+           $("#SellerLoadingImage").hide();
+           $("#InventoryModal").html(request.responseText).modal('show');
+       }
+    });
+    return false;
+});
+
+$(document).on("submit", "#edit_inventory_item", function(){
+    var postData = $(this).serialize();
+    var url = $(this).attr("action");
+    var items = new InventoryItems();
+    
+    $("#SellerLoadingImage").show();
+    $.ajax({
+       type: "POST",
+       url: url,
+       data: postData,
+       cache: false,
+       dataType: "html",
+       success: function(data){
+           $('#InventoryNotice').empty();
+           items.LoadCurrentInventory('/seller/current_inventory');
+           $("#InventoryDetail").html(data);
+           $("#InventoryNotice").html("Inventory item successfully updated!").show();
+           $("#SellerLoadingImage").hide();
+           items.CloseInventoryDialog();
+       },
+       error: function(request){
+           $("#SellerLoadingImage").hide();
+           $("#InventoryModal").html(request.responseText).modal('show');
+       }
     });
     return false;
 });
@@ -79,30 +111,6 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
            }
         );
     }
-});
-
-$(document).on("submit", "#edit_inventory_item", function(){
-    var postData = $(this).serialize();
-    var url = $(this).attr("action");
-    var items = new InventoryItems();
-    
-    items.CloseInventoryDialog();
-    $("#SellerLoadingImage").show();
-    $.ajax({
-       type: "POST",
-       url: url,
-       data: postData,
-       cache: false,
-       dataType: "html",
-       success: function(data){
-           $('#InventoryNotice').empty();
-           items.LoadCurrentInventory('/seller/current_inventory');
-           $("#InventoryDetail").html(data);
-           $("#InventoryNotice").html("Inventory item successfully updated!").show();
-           $("#SellerLoadingImage").hide();
-       }   
-    });
-    return false;
 });
 
 function InventoryItems(){

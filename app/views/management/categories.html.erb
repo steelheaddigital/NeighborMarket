@@ -16,7 +16,7 @@
                   <div style="margin-top: 10px;">
                     <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn", :method => "get"} %>
                   </div>
-                  <div style ="padding-bottom: 10px;">
+                  <div class="well" style ="padding-bottom: 10px;">
                     <%category.second_level_categories.each do |second_level_category|%>
                       <div> 
                         <span class="category-cell"><%= second_level_category.name%></span>

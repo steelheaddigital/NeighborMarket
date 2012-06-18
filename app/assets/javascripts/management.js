@@ -6,13 +6,7 @@
      var url = $(this).attr("action");
      var mgmt = new Management();
      
-     mgmt.CloseManagementDialog();
-     $("#ManagementLoading").show();
-     $.post(url, data, function(){
-         mgmt.LoadManagementContent('/management/categories');
-         $("#ManagementNotice").html("Categories successfully updated!").show();
-         $("#ManagementLoading").hide();
-     });
+     mgmt.SubmitCategoryForm(url, data);
      
      return false;
  });
@@ -25,13 +19,7 @@
      var url = $(this).attr("action");
      var mgmt = new Management();
      
-     mgmt.CloseManagementDialog();
-     $("#ManagementLoading").show();
-     $.post(url, data, function(){
-         mgmt.LoadManagementContent('/management/categories');
-         $("#ManagementNotice").html("Categories successfully updated!").show();
-         $("#ManagementLoading").hide();
-     });
+     mgmt.SubmitCategoryForm(url, data);
      
      return false;
  });
@@ -208,6 +196,25 @@ function Management(){
  
     var self = this;
  
+    this.SubmitCategoryForm = function(url, data){
+       $.ajax({
+           type: "POST",
+           url: url,
+           data: data,
+           cache: false,
+           dataType: "html",
+           success: function(){
+             mgmt.LoadManagementContent('/management/categories');
+             mgmt.CloseManagementDialog();
+             $("#ManagementNotice").html("Categories successfully updated!").show();
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#Modal").html(request.responseText).modal('show');
+           }
+        });
+    }
+    
     this.LoadManagementDialog = function(url){
         $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 

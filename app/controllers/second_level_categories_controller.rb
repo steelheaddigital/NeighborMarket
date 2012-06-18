@@ -22,7 +22,7 @@ class SecondLevelCategoriesController < ApplicationController
         format.js { render :nothing => true }
       else
         format.html { render "new" }
-        format.js { render :new, :layout => false }
+        format.js { render :new, :layout => false, :status => 403 }
       end
     end
     
@@ -46,7 +46,7 @@ class SecondLevelCategoriesController < ApplicationController
         format.js { render :nothing => true }
       else
         format.html { render "edit" }
-        format.js { render :edit, :layout => false }
+        format.js { render :edit, :layout => false, :status => 403 }
       end
     end
   end

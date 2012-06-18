@@ -1,5 +1,6 @@
 <div class="container-fluid">
   <h2>Your Cart</h2>
+    <p class="notice"><%= flash[:notice] %></p>
     <%@cart.cart_items.each do |item|%>
     <div class="well row-fluid" style="padding-right:0; padding-left: 0">
       <div class="span2">
@@ -11,7 +12,7 @@
           <tr>
             <th></th>
             <th>Price</th>
-            <th>Quanity</th>
+            <th>Quantity</th>
           </tr>
         </thead>
           <tbody>
@@ -22,6 +23,7 @@
             </tr>
           </tbody>
         </table>
+        <%= button_to "Delete", { :action => "destroy", :controller => "cart_items", :id => item.id}, {:form => {:class => "deleteCartItemButton"}, :method => "delete", :class => "btn btn-danger"} %>
       </div>
     </div>
     <%end%>

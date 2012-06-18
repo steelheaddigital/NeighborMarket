@@ -6,8 +6,9 @@ class CartItemsController < ApplicationController
   
   def create
     @cart = current_cart
-    inventory_item = InventoryItem.find(params[:inventory_item_id])
-    @cart_item = @cart.add_inventory_item(inventory_item.id)
+    inventory_item_id = params[:inventory_item_id]
+    quantity = params[:quantity]
+    @cart_item = @cart.add_inventory_item(inventory_item_id, quantity)
     
     respond_to do |format|
       if @cart_item.save
@@ -19,6 +20,16 @@ class CartItemsController < ApplicationController
       end
     end
     
+  end
+  
+  def destroy
+    @cart_item = CartItem.find(params[:id])
+    @cart_item.destroy
+
+    respond_to do |format|
+      format.html{ redirect_to cart_index_path, notice: 'Item successfully removed from your cart!' }
+      format.js { render :nothing => true }
+    end
   end
   
 end

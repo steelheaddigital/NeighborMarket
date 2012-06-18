@@ -34,7 +34,7 @@ GardenMarketplace::Application.routes.draw do
   
   resources :second_level_categories
   
-  resources :cart_items, :only => ["create"]
+  resources :cart_items, :only => ["create", "destroy"]
   
   resources :cart, :only => ["index"]
   

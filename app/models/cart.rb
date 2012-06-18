@@ -4,13 +4,13 @@ class Cart < ActiveRecord::Base
   
   attr_accessible :user_id
   
-  def add_inventory_item(inventory_item_id)
+  def add_inventory_item(inventory_item_id, quantity)
     current_item = cart_items.find_by_inventory_item_id(inventory_item_id)
     
      if current_item
-       current_item.quantity += 1
+       current_item.quantity += quantity.to_i
      else
-       current_item = self.cart_items.build(:inventory_item_id => inventory_item_id)
+       current_item = self.cart_items.build(:inventory_item_id => inventory_item_id, :quantity => quantity.to_i)
      end
      
     current_item
