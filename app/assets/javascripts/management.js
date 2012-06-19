@@ -63,7 +63,7 @@ $(document).on("change", "#RoleTypeSelect", function(){
     }
     });
 
-$(document).on("submit", "#UserSearchForm", function(){
+$(document).on("submit", "#UserSearchForm", function(event){
     event.preventDefault();
     $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 
