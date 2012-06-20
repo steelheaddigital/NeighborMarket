@@ -13,5 +13,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/nbproject/private/
+
+#ignore the Netbeans project files
+/nbproject
+
+#ignore the OSX files
 .DS_Store
