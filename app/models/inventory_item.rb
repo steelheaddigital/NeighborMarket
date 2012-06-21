@@ -21,21 +21,21 @@ class InventoryItem < ActiveRecord::Base
   def self.search(keywords)
     scope = self
     
-    keywordList = keywords.downcase.split(/ /)
+    keyword_list = keywords.split(/ /).join("|")
     
-    top_level_category = TopLevelCategory.where('LOWER(name) IN(?)', keywordList).first
+      top_level_category = TopLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
     if(top_level_category)
       top_level_category_id = top_level_category.id
     end
     
     
-    second_level_category = SecondLevelCategory.where('LOWER(name) IN(?)', keywordList).first
+    second_level_category = SecondLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
     if(second_level_category)
       second_level_category_id = second_level_category.id
     end
     
     if(keywords.present?)
-      scope = scope.where('top_level_category_id = ? OR second_level_category_id = ? OR LOWER(name) LIKE ? OR LOWER(description) LIKE ?', top_level_category_id, second_level_category_id, "%#{keywords}%", "%#{keywords}%")
+      scope = scope.where('top_level_category_id = ? OR second_level_category_id = ? OR to_tsvector(name) @@ to_tsquery(?) OR to_tsvector(description) @@ to_tsquery(?)', top_level_category_id, second_level_category_id, keyword_list, keyword_list)
     end
     
     scope.all
