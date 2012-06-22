@@ -21,6 +21,7 @@ class InventoryItem < ActiveRecord::Base
   def self.search(keywords)
     scope = self
     
+    #split the incoming keywords on space and then join them with the PGSQL OR operator
     keyword_list = keywords.split(/ /).join("|")
     
       top_level_category = TopLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first

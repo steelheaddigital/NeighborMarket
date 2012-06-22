@@ -41,41 +41,43 @@
       </div>
   </div>
   <div class="container-fluid" style="min-width:600px;">
-    <div class="subnav">
-    <ul class ="nav nav-pills" >
-      <li class="dropdown" id="MainCategoriesMenu">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        Browse Categories
-        <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <% @TopLevelCategories = get_top_level_categories %>
-          <% @TopLevelCategories.each do |category| %>
-            <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
-              <ul class="dropdown-menu">
-                <% category.second_level_categories.each do |category|%>
-                <li>
-                    <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
-                </li>
-                <% end %>
-              </ul>
-            </li>
-          <%  end %>
-        </ul>
-      </li>
-      <li>
-        <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
-          <input name="keywords" type="text"></input>
-          <button type="submit" class="btn">Search</button>
-        </form>
-      </li>
-      <li class="mainSearchBarEnd pull-right">
-        <a href= "<%= cart_index_path %>" >
-        <i class="icon-shopping-cart"></i>
-        Shopping Cart
-        </a>
-      </li>
-    </ul>
+    <div class="row-fluid">
+      <div class="subnav">
+      <ul class ="nav nav-pills" >
+        <li class="dropdown" id="MainCategoriesMenu">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          Browse Categories
+          <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <% @TopLevelCategories = get_top_level_categories %>
+            <% @TopLevelCategories.each do |category| %>
+              <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
+                <ul class="dropdown-menu">
+                  <% category.second_level_categories.each do |category|%>
+                  <li>
+                      <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
+                  </li>
+                  <% end %>
+                </ul>
+              </li>
+            <%  end %>
+          </ul>
+        </li>
+        <li>
+          <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
+            <input name="keywords" type="text"></input>
+            <button type="submit" class="btn">Search</button>
+          </form>
+        </li>
+        <li class="mainSearchBarEnd pull-right">
+          <a href= "<%= cart_index_path %>" >
+          <i class="icon-shopping-cart"></i>
+          Shopping Cart
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <div id="Loading" class="row-fluid" style="display:none; margin-top: 30px;">
@@ -85,7 +87,9 @@
   </div>
 </div>
 <div id="MainContent" class="container-fluid">
-  <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
+  <div class="row-fluid">
+    <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
+  </div>
 </div>
 <script>
   $('.dropdown-toggle').dropdown();
