@@ -40,8 +40,8 @@ $(document).on("submit", "#EditUserForm", function(event){
      if(approveSellers.length > 0){
          mgmt.LoadManagementContent('/management/approve_sellers');
      }
-
-     $("#ManagementNotice").html("User successfully updated!").show();
+     
+     utils.ShowAlert($("#ManagementNotice"), "User successfully updated!");
      $("#ManagementLoading").hide();
     });
 
@@ -206,7 +206,7 @@ function Management(){
            success: function(){
              mgmt.LoadManagementContent('/management/categories');
              mgmt.CloseManagementDialog();
-             $("#ManagementNotice").html("Categories successfully updated!").show();
+             $("#ManagementNotice").append("Categories successfully updated!").show();
              $("#ManagementLoading").hide();
            },
            error: function(request){
@@ -246,7 +246,7 @@ function Management(){
             
             $.post(url, {_method: 'delete'}, function() {
                    self.LoadManagementContent('/management/categories', false);
-                   $("#ManagementNotice").html("Category successfully deleted!").show();
+                   $("#ManagementNotice").append("Category successfully deleted!").show();
                    $("#ManagementLoading").hide();
                }
             );

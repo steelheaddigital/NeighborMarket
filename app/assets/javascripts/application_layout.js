@@ -21,6 +21,7 @@ $(document).on("click", ".secondLevelBrowseMenu", function(event){
     return false;
    
 });
+
 $(document).on("submit", "#MainSearchForm", function(event) {
    
    event.preventDefault();
