@@ -27,7 +27,7 @@ class CartItemsController < ApplicationController
     @cart_item.destroy
 
     respond_to do |format|
-      format.html{ redirect_to cart_index_path, notice: 'Item successfully removed from your cart!' }
+      format.html{ redirect_to cart_index_path }
       format.js { render :nothing => true }
     end
   end

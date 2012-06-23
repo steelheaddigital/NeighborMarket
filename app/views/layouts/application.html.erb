@@ -71,7 +71,7 @@
           </form>
         </li>
         <li class="mainSearchBarEnd pull-right">
-          <a href= "<%= cart_index_path %>" >
+          <a id ="CartButton" href= "<%= cart_index_path %>" >
           <i class="icon-shopping-cart"></i>
           Shopping Cart
           </a>
@@ -86,8 +86,8 @@
     <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
   </div>
 </div>
-<div id="MainContent" class="container-fluid">
-  <div class="row-fluid">
+<div class="container-fluid">
+  <div id="MainContent" class="row-fluid">
     <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
   </div>
 </div>

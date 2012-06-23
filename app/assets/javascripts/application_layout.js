@@ -1,3 +1,13 @@
+$(document).on("click", "#CartButton", function(event){
+    
+    event.preventDefault();
+    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+    
+    var url = $(this).attr("href");
+    
+    $("#MainContent").load(url);
+});
+
 $(document).on("click", ".secondLevelBrowseMenu", function(event){
    
    event.preventDefault();

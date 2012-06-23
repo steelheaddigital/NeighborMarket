@@ -2,7 +2,6 @@
   <div class="row-fluid">
     <div class="span12">
       <div id="AddToCartNotice" class="alert" style="display:none;">
-        <a class="close" data-dismiss="alert" href="#">×</a>
       </div>
       <%@InventoryItems.each do |item|%>
       <% seller_name = item.user.first_name + " " + item.user.last_name %>
