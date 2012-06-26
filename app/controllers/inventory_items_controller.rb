@@ -2,6 +2,7 @@ class InventoryItemsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => [:search, :browse]
   require 'will_paginate/array'
+  include CrowdMap
   
   def new
     @item = InventoryItem.new
@@ -17,15 +18,18 @@ class InventoryItemsController < ApplicationController
   def create
     @item = InventoryItem.new(params[:inventory_item])
     @top_level_categories = TopLevelCategory.all
+    
     if(@item.top_level_category)
       @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     else
       @second_level_categories = {}
     end
     
-    
     respond_to do |format|
       if @item.save
+        if params["crowdmap"]
+          CrowdMap.post_item_to_crowdmap(@item)
+        end
         format.html { redirect_to seller_index_path, notice: 'Inventory item successfully created!'}
         format.js { render :nothing => true }
       else
@@ -50,12 +54,12 @@ class InventoryItemsController < ApplicationController
   def update
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
+    
     if(@item.top_level_category)
       @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
     else
       @second_level_categories = {}
     end
-    
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])

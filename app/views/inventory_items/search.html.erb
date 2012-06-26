@@ -10,11 +10,8 @@
             <p>No Image Available</p>
           </div>
           <div class="span10">
-            <h3><% if(item.name == nil || item.name == "") %>
-                  <%=  item.top_level_category.name %>
-                <%else%>
-                  <%= item.name %>
-                <%end%>    
+            <h3>
+              <%= item_name(item) %>
             </h3>
             <p><%= item.description %></p>
             <p>Quantity Available:  <%= item.quantity_available %></p>
