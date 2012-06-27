@@ -6,7 +6,7 @@ one:
   second_level_category_id: 1
   user_id: 1
   name: MyString
-  price: 9.99
+  price: 10.00
   quantity_available: MyString
   description: MyText
 
@@ -16,6 +16,6 @@ two:
   second_level_category_id: 1
   user_id: 1
   name: MyString
-  price: 9.99
+  price: 10.00
   quantity_available: MyString
   description: MyText
