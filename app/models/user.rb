@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
       end
   end 
 
+  #override the devise method to display the inactive message for unapproved sellers who attempt to log in
   def inactive_message
     user = self.roles.find_by_rolable_type("Seller")
     if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager") 
@@ -76,8 +77,8 @@ class User < ActiveRecord::Base
       if role.rolable_type == "Seller" || self.become_seller
         return true
       end
-      return false
     end
+    return false
   end
   
   def phone?
@@ -93,8 +94,8 @@ class User < ActiveRecord::Base
       if role.rolable_type == "Seller" && role.seller.approved
         return true
       end
-      return false
     end
+    return false
   end
   
   def self.search(keywords, role, seller_approved, seller_approval_style)

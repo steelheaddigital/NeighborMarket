@@ -4,8 +4,38 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+manager:
+  id: 1
+  user_id: 1
+  rolable_id: 1
+  rolable_type: Manager
+
+approved_seller:
+  id: 2
+  user_id: 2
+  rolable_id: 1
+  rolable_type: Seller
+  
+unapproved_seller:
+  id: 3
+  user_id: 3
+  rolable_id: 2
+  rolable_type: Seller
+
+buyer:
+  id: 4
+  user_id: 4
+  rolable_id: 1
+  rolable_type: Buyer
+
+unapproved_sellerbuyer_buyer:
+  id: 5
+  user_id: 5
+  rolable_id: 2
+  rolable_type: Buyer
+
+unapproved_sellerbuyer_seller:
+  id: 6
+  user_id: 5
+  rolable_id: 3
+  rolable_type: Seller

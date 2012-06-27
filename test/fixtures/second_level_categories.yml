@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
+  id: 1
   name: MyString
+  top_level_category_id: 1
   description: MyText
 
 two:
+  id: 2
   name: MyString
+  top_level_category_id: 2
   description: MyText
