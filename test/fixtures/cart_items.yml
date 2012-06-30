@@ -5,8 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  id: 1
-  cart_id: 1
-  inventory_item_id: 1
+  cart: full
+  inventory_item: one
   quantity: 10
 

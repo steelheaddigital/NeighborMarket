@@ -4,7 +4,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
   def setup
-    @user  = User.find(1)
+    @user  = users(:manager_user)
     sign_in @user
   end
   
@@ -14,8 +14,48 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   end
 
   test "should get edit" do
-    get(:edit, { :id => "1"})
+    category = top_level_categories(:vegetable)
+    get(:edit, { :id => category.id})
     assert_response :success
   end
 
+  test "should create top level category" do
+    
+    assert_difference 'TopLevelCategory.count' do
+      post :create, :top_level_category => { :name => 'Fruit', :description => 'Fruity'}
+    end
+    
+    assert_not_nil :category
+    assert_not_nil :top_level_category
+    assert_redirected_to management_categories_path
+    assert_equal 'Category successfully updated!', flash[:notice]
+    
+  end
+  
+  test "should update second level category" do
+    
+    category = top_level_categories(:vegetable)
+    
+    post :update, :id => category.id, :top_level_category => { :name => 'Changed Carrots' }
+    
+    assert_not_nil :category
+    assert_not_nil :top_level_category
+    assert_redirected_to management_categories_path
+    assert_equal 'Category successfully updated!', flash[:notice]
+    
+  end
+
+  test "should destroy second level category" do
+    
+    category = top_level_categories(:preserves)
+    
+    assert_difference 'TopLevelCategory.count', -1 do
+      post :destroy, :id => category.id
+    end
+    
+    assert_not_nil :category
+    assert_redirected_to management_categories_path
+    assert_equal 'Category successfully deleted!', flash[:notice]
+    
+  end
 end

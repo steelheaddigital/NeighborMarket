@@ -204,9 +204,9 @@ function Management(){
            cache: false,
            dataType: "html",
            success: function(){
-             mgmt.LoadManagementContent('/management/categories');
-             mgmt.CloseManagementDialog();
-             $("#ManagementNotice").append("Categories successfully updated!").show();
+             self.LoadManagementContent('/management/categories');
+             self.CloseManagementDialog();
+             utils.ShowAlert($("#ManagementNotice"), "Categories successfully updated!")
              $("#ManagementLoading").hide();
            },
            error: function(request){

@@ -55,30 +55,12 @@ class TopLevelCategoriesController < ApplicationController
     @category.destroy
 
     respond_to do |format|
-      format.html{ redirect_to management_categories_path, notice: 'Category successfully updated!' }
-      format.js { render :nothing => true }
-    end
-  end
-
-  def new_second_level_category
-    @top_level_category = TopLevelCategory.find(params[:id])
-    @category = @top_level_category.second_level_categories.build
-    
-    respond_to do |format|
-      format.js { render :layout => false }
-    end
-    
-  end
-  
-  def create_second_level_category
-    @top_level_category = TopLevelCategory.find(params[:id])
-    @category = @top_level_category.second_level_categories.build(params[:second_level_category])
-    
-    respond_to do |format|
-      if @top_level_category.save
+      if @category.destroy
+        format.html{ redirect_to management_categories_path, notice: 'Category successfully deleted!' }
         format.js { render :nothing => true }
       else
-        format.js { render :new, :layout => false }
+        format.html{ redirect_to management_categories_path, notice: 'Unable to delete the category' }
+        format.js { render :nothing => true, :status => 403 }
       end
     end
   end

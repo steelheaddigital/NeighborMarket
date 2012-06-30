@@ -5,9 +5,8 @@
 # below each fixture, per the syntax in the comments below
 #
 full:
-  id: 1
-  user_id: 4
+  user: buyer_user
+  
   
 empty:
-  id: 2
-  user_id: 4
+  user: buyer_user

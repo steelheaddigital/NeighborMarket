@@ -1,16 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-approved:
-  id: 1
+approved_seller:
   payment_instructions: MyText
   approved: True
 
-unapproved:
-  id: 2
+unapproved_seller:
   payment_instructions: MyText
   approved: False
 
 unapproved_seller_buyer:
-  id: 3
   payment_instructions: MyText
   approved: False

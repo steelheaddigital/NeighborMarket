@@ -4,45 +4,48 @@ class CartTest < ActiveSupport::TestCase
    
   test "add_inventory_item adds to quantity if item already in cart" do
    
-      cart = Cart.find(1)
+      cart = carts(:full)
+      item = inventory_items(:one)
       
-      result = cart.add_inventory_item(1, 10)
+      result = cart.add_inventory_item(item.id, 10)
     
       assert_not_nil result
-      assert_equal(result.cart_id, 1)
-      assert_equal(result.inventory_item_id, 1)
       assert_equal(result.quantity, 20)
+      assert_equal(result.inventory_item.name, "Carrot")
     
    end
    
   test "add_inventory_item adds item if not already in cart" do
    
-      cart = Cart.find(1)
+      cart = carts(:full)
+      item = inventory_items(:two)
       
-      result = cart.add_inventory_item(2, 10)
+      result = cart.add_inventory_item(item.id, 10)
     
       assert_not_nil result
-      assert_equal(result.inventory_item_id, 2)
       assert_equal(result.quantity, 10)
+      assert_equal(result.inventory_item.name, "Jam")
     
   end
   
   test "add_inventory_item adds item if cart is empty" do
    
-      cart = Cart.find(2)
+      cart = carts(:empty)
+      item = inventory_items(:two)
       
-      result = cart.add_inventory_item(2, 10)
+      result = cart.add_inventory_item(item.id, 10)
     
       assert_not_nil result
-      assert_equal(result.inventory_item_id, 2)
       assert_equal(result.quantity, 10)
     
   end
   
   test "total_price returns correct result" do
    
-      cart = Cart.find(1)  
-      cart.add_inventory_item(2, 10)
+      cart = carts(:full)
+      item = inventory_items(:two)
+      
+      cart.add_inventory_item(item.id, 10)
     
       result = cart.total_price
     

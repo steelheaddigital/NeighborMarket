@@ -53,12 +53,17 @@ class SecondLevelCategoriesController < ApplicationController
     
   def destroy
     @category = SecondLevelCategory.find(params[:id])
-    @category.destroy
-
+    
     respond_to do |format|
-      format.html{ redirect_to management_categories_path, notice: 'Category successfully deleted!' }
-      format.js { render :nothing => true }
+      if @category.destroy
+        format.html{ redirect_to management_categories_path, notice: 'Category successfully deleted!' }
+        format.js { render :nothing => true }
+      else
+        format.html{ redirect_to management_categories_path, notice: 'Unable to delete the category' }
+        format.js { render :nothing => true, :status => 403 }
+      end
     end
+
   end
   
 end

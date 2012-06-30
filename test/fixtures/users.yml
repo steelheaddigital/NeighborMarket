@@ -4,8 +4,7 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-manager:
- id: 1
+manager_user:
  email: test@test.com
  username: manager
  first_name: Manager
@@ -19,8 +18,7 @@ manager:
  zip: 97218
  aboutme: Test
  
-approved_seller:
- id: 2
+approved_seller_user:
  email: approvedseller@test.com
  username: approvedseller
  first_name: Approved
@@ -34,8 +32,7 @@ approved_seller:
  zip: 97218
  aboutme: Test
  
-unapproved_seller:
- id: 3
+unapproved_seller_user:
  email: unapprovedseller@test.com
  username: unapprovedseller
  first_name: Unapproved
@@ -49,8 +46,7 @@ unapproved_seller:
  zip: 97218
  aboutme: Test
  
-buyer:
- id: 4
+buyer_user:
  email: buyer@test.com
  username: buyer
  first_name: Buyer
@@ -64,8 +60,7 @@ buyer:
  zip: 97218
  aboutme: Test
  
-unapproved_seller_buyer:
- id: 5
+unapproved_seller_buyer_user:
  email: unapprovedsellerbuyer@test.com
  username: unapprovedsellerbuyer
  first_name: Unapprovedsellerbuyer

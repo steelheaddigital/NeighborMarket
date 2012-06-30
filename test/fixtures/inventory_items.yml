@@ -1,21 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  id: 1
-  top_level_category_id: 1
-  second_level_category_id: 1
-  user_id: 1
-  name: MyString
+  top_level_category: vegetable
+  second_level_category: carrot
+  user: buyer_user
+  name: Carrot
   price: 10.00
   quantity_available: MyString
   description: MyText
 
 two:
-  id: 2
-  top_level_category_id: 1
-  second_level_category_id: 1
-  user_id: 1
-  name: MyString
+  top_level_category: preserves
+  second_level_category: jam
+  user: buyer_user
+  name: Jam
   price: 10.00
   quantity_available: MyString
   description: MyText
