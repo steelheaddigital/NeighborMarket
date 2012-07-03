@@ -34,8 +34,8 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
       post :create, :second_level_category => { :name => 'Cabbage', :description => 'some cabbages', :top_level_category_id => top_level_category.id}
     end
     
-    assert_not_nil :category
-    assert_not_nil :top_level_category
+    assert_not_nil assigns(:category)
+    assert_not_nil assigns(:top_level_category)
     assert_redirected_to management_categories_path
     assert_equal 'Category successfully updated!', flash[:notice]
     

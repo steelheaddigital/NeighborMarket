@@ -36,7 +36,7 @@ class Ability
     
     if user.role? :Seller
       can :manage, Seller
-      can :manage, InventoryItem
+      can :manage, InventoryItem, :user_id => user.id
     end
   end
 end

@@ -14,11 +14,19 @@
     <%= f.telephone_field :phone %>
   </div>  
     
-  <%= f.fields_for :roles do |rf| %>
-    <%= rf.hidden_field :rolable_type %>
-    <%= rf.fields_for :seller do |s|  %>
-      <% render :partial => "seller_fields", :locals => { :f => s } %>
-    <% end %>
+  <%#= f.fields_for :roles do |rf| %>
+    <%#= rf.fields_for :seller do |s|  %>
+      <%#= s.object.id %>
+      <%#= render :partial => "seller_fields", :locals => { :f => s } %>
+    <%# end %>
+  <%# end %>
+  
+  <%= f.fields_for resource.roles do |rf| %>
+  <%=  debug rf.object %>
+      <%= rf.fields_for :seller do |s|  %>
+        <%=  debug s.object %>
+        <%= render :partial => "seller_fields", :locals => { :f => s } %>
+      <% end %>
   <% end %>
 
   <%= hidden_field_tag "become_seller", "true" %>

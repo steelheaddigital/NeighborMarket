@@ -1,4 +1,5 @@
 class UserRegistrationsController < Devise::RegistrationsController
+  prepend_before_filter :authenticate_scope!, :only => [:become_seller]
   
   def new
     resource = build_resource({})
@@ -56,8 +57,16 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    @become_seller = params[:become_seller]
-    resource.become_seller = @become_seller
+    if params[:become_seller]
+      resource.become_seller = true
+#      params[:user][:roles_attributes].values.each do |item|
+#        @seller_attributes = item[:seller_attributes]
+#      end
+#      
+#      seller = Seller.new(@seller_attributes)
+#      seller_role = resource.roles.build
+#      seller_role.rolable = seller
+    end
     if resource.update_with_password(params[resource_name])
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
@@ -79,7 +88,7 @@ class UserRegistrationsController < Devise::RegistrationsController
 #      respond_with resource
       respond_with_navigational(resource) do
         if params[:become_seller] == "true" # or flash[:change_password]
-          render_with_scope :become_seller
+          render :become_seller
         else
           render_with_scope :edit
         end
@@ -97,9 +106,10 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def become_seller
-    authenticate_scope!
-    role = resource.roles.build
-    role.rolable = role.build_seller
+     role = resource.roles.build(:rolable_type => "Seller")
+     role.rolable = role.build_seller
+    
+     render :become_seller
   end
   
   def send_new_seller_email(user)

@@ -25,8 +25,8 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
       post :create, :top_level_category => { :name => 'Fruit', :description => 'Fruity'}
     end
     
-    assert_not_nil :category
-    assert_not_nil :top_level_category
+    assert_not_nil assigns(:category)
+    assert_not_nil assigns(:top_level_category)
     assert_redirected_to management_categories_path
     assert_equal 'Category successfully updated!', flash[:notice]
     

@@ -23,12 +23,9 @@ user = User.new(
   :zip => "97218"
 )
 
-Manager.create
-
-user.roles.build(
-  :rolable_id => 1,
-  :rolable_type => "Manager"
-)
+new_manager = Manager.new
+manager_role = user.roles.build
+manager_role.rolable = new_manager
 
 user.save(:validate => false)
 
@@ -48,13 +45,9 @@ seller = User.new(
   :zip => "97218"
 )
 
-Seller.create!(:payment_instructions => "Pay Me", :approved => "true", :listing_approval_style => "auto")
-
-
-seller.roles.build(
-  :rolable_id => 1,
-  :rolable_type => "Seller"
-)
+new_seller = Seller.new(:payment_instructions => "Pay Me", :approved => "true", :listing_approval_style => "auto")
+seller_role = seller.roles.build
+seller_role.rolable = new_seller
 
 seller.save(:validate => false)
 

@@ -3,7 +3,7 @@
 one:
   top_level_category: vegetable
   second_level_category: carrot
-  user: buyer_user
+  user: approved_seller_user
   name: Carrot
   price: 10.00
   quantity_available: MyString
@@ -12,7 +12,7 @@ one:
 two:
   top_level_category: preserves
   second_level_category: jam
-  user: buyer_user
+  user: unapproved_seller_user
   name: Jam
   price: 10.00
   quantity_available: MyString

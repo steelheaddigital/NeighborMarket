@@ -16,7 +16,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def create
-    @item = InventoryItem.new(params[:inventory_item])
+    user = current_user
+    @item = user.inventory_items.new(params[:inventory_item])
     @top_level_categories = TopLevelCategory.all
     
     if(@item.top_level_category)

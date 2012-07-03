@@ -19,105 +19,69 @@ class UserTest < ActiveSupport::TestCase
                        :aboutme => "Test")
      
    end
-  
+   
+   test "should validate valid user" do
+     assert @user.valid?
+   end
+   
    test "should not save user without user name" do
      @user.username = nil
     
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user without first name" do
      @user.first_name = nil
 
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user without last name" do
      @user.last_name = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user without Initial" do
      @user.initial = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
 
    test "should not save user without Address" do
      @user.address = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
 
    test "should not save user without City" do
      @user.city = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user without Zip" do
      @user.zip = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
   
    test "should not save user without State" do
      @user.state = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user without Country" do
      @user.country = nil
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
   
    test "should not save user with invalid zip" do
      @user.zip = "Foo"
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end  
   
    test "should not save Buyer without delivery instructions" do
@@ -125,10 +89,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Buyer.new(:delivery_instructions => nil)
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
 
    test "should not save seller without payment instructions" do
@@ -136,10 +96,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Seller.new(:payment_instructions => nil)
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end 
 
    test "should not save seller without phone number" do
@@ -148,10 +104,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Seller.new(:payment_instructions => "Pay Me")
 
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save seller with invalid phone number" do
@@ -160,10 +112,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Seller.new(:payment_instructions => "Pay Me")
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should save user other than seller without phone" do
@@ -172,10 +120,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Buyer.new(:delivery_instructions => "Bring me the stuff.")
      
      assert @user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
    test "should not save user other than seller with invalid phone" do
@@ -184,10 +128,6 @@ class UserTest < ActiveSupport::TestCase
      role.rolable = Buyer.new(:delivery_instructions => "Bring me the stuff.")
      
      assert !@user.valid?
-     
-     @user.errors.each do |error|
-       Rails::logger.debug error.to_s
-     end
    end
    
   test "active_for_authentication? returns true if seller is approved" do
@@ -195,10 +135,6 @@ class UserTest < ActiveSupport::TestCase
      user = users(:approved_seller_user)
     
      result = user.active_for_authentication?
-     
-     assert user.seller?
-     assert result
-
   end
   
   test "active_for_authentication? returns false if seller is not approved" do

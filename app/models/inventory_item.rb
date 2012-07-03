@@ -4,7 +4,7 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :second_level_category
   has_many :cart_items
   
-  attr_accessible :id, :top_level_category_id, :second_level_category_id, :user_id, :name, :price, :price_unit, :quantity_available, :description
+  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description
   
   validates :top_level_category_id, 
     :second_level_category_id,
