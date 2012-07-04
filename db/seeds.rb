@@ -23,9 +23,9 @@ user = User.new(
   :zip => "97218"
 )
 
-new_manager = Manager.new
-manager_role = user.roles.build
-manager_role.rolable = new_manager
+manager_role = Role.new
+manager_role.name = "manager"
+user.roles << manager_role
 
 user.save(:validate => false)
 
@@ -33,7 +33,7 @@ seller = User.new(
   :username => "Seller1",
   :email => "seller1@test.com",
   :password   => 'Abc123!', 
-  :password_confirmation => 'farDro3h', 
+  :password_confirmation => 'Abc123!', 
   :first_name => "Seller",
   :last_name => "One",
   :initial => "S",
@@ -42,14 +42,41 @@ seller = User.new(
   :city => "Portland",
   :state => "Oregon",
   :country => "United States",
-  :zip => "97218"
+  :zip => "97218",
+  :payment_instructions => "Pay me please",
+  :approved_seller => "true",
+  :listing_approval_style => "auto"
 )
 
-new_seller = Seller.new(:payment_instructions => "Pay Me", :approved => "true", :listing_approval_style => "auto")
-seller_role = seller.roles.build
-seller_role.rolable = new_seller
+seller_role = Role.new
+seller_role.name = "seller"
+seller.roles << seller_role
 
 seller.save(:validate => false)
+
+
+buyer = User.new(
+  :username => "Buyer1",
+  :email => "buyer1@test.com",
+  :password   => 'Abc123!', 
+  :password_confirmation => 'Abc123!', 
+  :first_name => "Buyer",
+  :last_name => "One",
+  :initial => "S",
+  :phone => "503-123-4567",
+  :address => "123 Test St.",
+  :city => "Portland",
+  :state => "Oregon",
+  :country => "United States",
+  :zip => "97218",
+  :delivery_instructions => "Bring me the stuff"
+)
+
+buyer_role = Role.new
+buyer_role.name = "buyer"
+buyer.roles << buyer_role
+
+buyer.save(:validate => false)
 
 vegetable = TopLevelCategory.new(
   :name => 'Vegetable',

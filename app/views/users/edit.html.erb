@@ -64,20 +64,23 @@
       <%= @user.aboutme %>
     </p>
 
-    <% @user.roles.each do |role| %>
-      <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
-    <% end %>
+    <% if @user.seller? %>
+      <b>Payment Instructions:</b>
+      <%= @user.payment_instructions %>
+    <%end%>
 
-    <%= f.fields_for :roles do |rf| %>
-      <% if rf.object.rolable_type == "Seller" %>
-        <%= rf.fields_for :seller do |s|  %>
-            <div><b><%= s.label "Seller Approved" %></b>
-            <%= s.select(:approved, [['true', 'true'],['false', 'false']]) %></div>
-            <div><b><%= s.label "Listing Approval Style" %></b>
-            <%= s.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
-        <% end %>
-      <% end %>
-    <% end %>
+    <% if @user.buyer? %>
+      <b>Delivery Instructions:</b>
+      <%= @user.delivery_instructions %>
+    <%end%>
+      
+    <% if @user.seller? %>
+      <div><b><%= f.label "Seller Approved" %></b>
+      <%= f.select(:approved_seller, [['true', 'true'],['false', 'false']]) %></div>
+      <div><b><%= f.label "Listing Approval Style" %></b>
+      <%= f.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
+    <%end%>
+   
 </div>
 <div class="modal-footer">
   <a class="btn" data-dismiss="modal" href="#">Close</a>

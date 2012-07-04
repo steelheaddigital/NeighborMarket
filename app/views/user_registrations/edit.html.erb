@@ -59,29 +59,15 @@
       <div><%= f.label "About Me" %>
       <%= f.text_area :aboutme, :rows => 10  %></div>
 
-      <%= f.fields_for :roles do |rf| %>
-        <% if rf.object.rolable_type == "Buyer" %>
-          <%= rf.fields_for :buyer do |b|  %>
-            <%= render :partial => "buyer_fields", :locals => { :f => b } %>
-          <% end %>
-        <% end %>
-      <% end %>
-
-      <%= f.fields_for :roles do |rf| %>
-        <% if rf.object.rolable_type == "Seller" %>
-          <%= rf.fields_for :seller do |s|  %>
-            <%= render :partial => "seller_fields", :locals => { :f => s } %>
-          <% end %>
-        <% end %>
-      <% end %>
-
-      <%= f.fields_for :roles do |rf| %>
-        <% if rf.object.rolable_type == "Manager" %>
-          <%= rf.fields_for :manager do |m|  %>
-            <%= render :partial => "manager_fields", :locals => { :f => m } %>
-          <% end %>
-        <% end %>
-      <% end %>
+      <% if resource.seller? %>
+        <div><%= f.label "Payment Instructions*" %>
+        <%= f.text_area :payment_instructions, :rows => 10 %></div>
+      <%end%>
+      
+      <% if resource.buyer? %>
+        <div><%= f.label "Delivery Instructions*" %>
+        <%= f.text_area :delivery_instructions, :rows => 10 %></div>
+      <%end%>
     </div>
     <% # customized code end %>
   </div>

@@ -14,12 +14,11 @@
       </thead>
       <tbody>
         <%@sellers.each do |seller|%>
-          <%role = Role.find_by_rolable_id_and_rolable_type(seller.id,"Seller") %>
           <tr>
-            <td><%=role.user.first_name%></td>
-            <td><%=role.user.last_name%></td>
-            <td><%=role.user.address%></td>
-            <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "users", :id => role.user.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
+            <td><%=seller.first_name%></td>
+            <td><%=seller.last_name%></td>
+            <td><%=seller.address%></td>
+            <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "users", :id => seller.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
           </tr>
         <%end%>
       </tbody>

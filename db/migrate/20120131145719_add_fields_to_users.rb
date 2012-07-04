@@ -11,5 +11,9 @@ class AddFieldsToUsers < ActiveRecord::Migration
     add_column :users, :country, :string
     add_column :users, :zip, :string
     add_column :users, :aboutme, :text
+    add_column :users, :delivery_instructions, :text
+    add_column :users, :payment_instructions, :text
+    add_column :users, :approved_seller, :boolean, :default => false, :null => false
+    add_column :users, :listing_approval_style, :string, :default => "manual", :null => false
   end
 end

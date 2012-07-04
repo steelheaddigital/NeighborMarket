@@ -6,7 +6,8 @@ class ManagementController < ApplicationController
   end
   
   def approve_sellers
-    @sellers = Seller.find_all_by_approved(false)
+    role = Role.find_by_name("Seller")
+    @sellers = role.users.where("approved_seller = false")
     
     #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|

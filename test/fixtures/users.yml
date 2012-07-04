@@ -17,6 +17,11 @@ manager_user:
  state: Oregon
  zip: 97218
  aboutme: Test
+ delivery_instructions: 
+ payment_instructions: 
+ approved_seller: true                   
+ listing_approval_style: manual
+ roles: manager_role
  
 approved_seller_user:
  email: approvedseller@test.com
@@ -31,6 +36,11 @@ approved_seller_user:
  state: Oregon
  zip: 97218
  aboutme: Test
+ delivery_instructions: 
+ payment_instructions: Test
+ approved_seller: true                       
+ listing_approval_style: auto
+ roles: seller_role
  
 unapproved_seller_user:
  email: unapprovedseller@test.com
@@ -45,6 +55,11 @@ unapproved_seller_user:
  state: Oregon
  zip: 97218
  aboutme: Test
+ delivery_instructions: 
+ payment_instructions: Test
+ approved_seller: false                       
+ listing_approval_style: manual 
+ roles: seller_role
  
 buyer_user:
  email: buyer@test.com
@@ -59,6 +74,11 @@ buyer_user:
  state: Oregon
  zip: 97218
  aboutme: Test
+ delivery_instructions: Test
+ payment_instructions: 
+ approved_seller: false                        
+ listing_approval_style: manual
+ roles: buyer_role
  
 unapproved_seller_buyer_user:
  email: unapprovedsellerbuyer@test.com
@@ -73,3 +93,8 @@ unapproved_seller_buyer_user:
  state: Oregon
  zip: 97218
  aboutme: Test
+ delivery_instructions: Test
+ payment_instructions: Test
+ approved_seller: false                       
+ listing_approval_style: manual
+ roles: buyer_role, seller_role

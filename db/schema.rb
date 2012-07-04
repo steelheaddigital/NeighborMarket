@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611004703) do
-
-  create_table "buyers", :force => true do |t|
-    t.text "delivery_instructions"
-  end
+ActiveRecord::Schema.define(:version => 20120703040916) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -44,13 +40,13 @@ ActiveRecord::Schema.define(:version => 20120611004703) do
     t.datetime "updated_at"
   end
 
-  create_table "managers", :force => true do |t|
+  create_table "roles", :force => true do |t|
+    t.string "name"
   end
 
-  create_table "roles", :force => true do |t|
+  create_table "roles_users", :id => false, :force => true do |t|
+    t.integer "role_id"
     t.integer "user_id"
-    t.integer "rolable_id"
-    t.string  "rolable_type"
   end
 
   create_table "second_level_categories", :force => true do |t|
@@ -61,12 +57,6 @@ ActiveRecord::Schema.define(:version => 20120611004703) do
     t.datetime "updated_at"
   end
 
-  create_table "sellers", :force => true do |t|
-    t.text    "payment_instructions"
-    t.boolean "approved",               :default => false,    :null => false
-    t.string  "listing_approval_style", :default => "manual", :null => false
-  end
-
   create_table "top_level_categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -75,8 +65,8 @@ ActiveRecord::Schema.define(:version => 20120611004703) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",       :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",       :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -98,6 +88,10 @@ ActiveRecord::Schema.define(:version => 20120611004703) do
     t.string   "country"
     t.string   "zip"
     t.text     "aboutme"
+    t.text     "delivery_instructions"
+    t.text     "payment_instructions"
+    t.boolean  "approved_seller",                       :default => false,    :null => false
+    t.string   "listing_approval_style",                :default => "manual", :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

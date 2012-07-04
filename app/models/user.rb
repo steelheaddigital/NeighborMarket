@@ -1,9 +1,7 @@
 class User < ActiveRecord::Base
-  has_many :roles, :dependent => :destroy
+  has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
-  
-  accepts_nested_attributes_for :roles, :allow_destroy => true
   
   validates :username, :uniqueness => true
   validates :username, 
@@ -16,6 +14,8 @@ class User < ActiveRecord::Base
             :country, 
             :zip, :presence => true
   validates :phone, :presence => true, :if => :seller?
+  validates :payment_instructions, :presence => true, :if => :seller?
+  validates :delivery_instructions, :presence => true, :if => :buyer?
   validates_format_of :phone,
                       :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
                       :message => "must be valid phone number",
@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :roles_attributes, :become_seller
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -45,10 +45,9 @@ class User < ActiveRecord::Base
   end
   
   def active_for_authentication?
-    user = self.roles.find_by_rolable_type("Seller")
     super && 
-      if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager")  
-        user.seller.approved?
+      if self.seller? && !self.approved_seller? && !self.buyer? && !self.manager?  
+        false
       else
         true
       end
@@ -56,8 +55,7 @@ class User < ActiveRecord::Base
 
   #override the devise method to display the inactive message for unapproved sellers who attempt to log in
   def inactive_message
-    user = self.roles.find_by_rolable_type("Seller")
-    if user && !user.seller.approved? && !self.role?("Buyer") && !self.role?("Manager") 
+    if self.seller? && !self.approved_seller? && !self.buyer? && !self.manager?   
       :not_approved 
     else 
       super 
@@ -65,16 +63,31 @@ class User < ActiveRecord::Base
   end
   
   def role?(role)
-    if self.roles.find_by_rolable_type(role)
-      true
-    else
-      false
-    end
+    is_role = !!self.roles.find_by_name(role)
+    return is_role
   end
   
   def seller?
     self.roles.each do |role|
-      if role.rolable_type == "Seller" || self.become_seller
+      if role.name == "seller" || self.become_seller
+        return true
+      end
+    end
+    return false
+  end
+  
+  def buyer?
+    self.roles.each do |role|
+      if role.name == "buyer"
+        return true
+      end
+    end
+    return false
+  end
+  
+  def manager?
+    self.roles.each do |role|
+      if role.name == "manager"
         return true
       end
     end
@@ -91,7 +104,7 @@ class User < ActiveRecord::Base
   
   def approved_seller?
     self.roles.each do |role|
-      if role.rolable_type == "Seller" && role.seller.approved
+      if role.name =="seller" && self.approved_seller
         return true
       end
     end

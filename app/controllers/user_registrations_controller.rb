@@ -1,15 +1,9 @@
 class UserRegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :authenticate_scope!, :only => [:become_seller]
+  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :edit, :update]
   
   def new
     resource = build_resource({})
-    role = resource.roles.build
-    if params[:user][:user_type].downcase == "buyer"
-      role.rolable = Buyer.new
-    end
-    if params[:user][:user_type].downcase == "seller"
-      role.rolable = Seller.new
-    end
+    add_resource_role(resource)
 
     respond_with resource
     
@@ -19,21 +13,10 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def create
     build_resource
-
-    # customized code begin
     
-    # create a new child instance depending on the given user type
-    child_class = params[:user][:user_type].camelize.constantize
-    resource_role = resource.roles.new
-    resource_role.rolable = child_class.new(params[child_class.to_s.underscore.to_sym])
+    add_resource_role(resource)
     
-    # first check if child instance is valid
-    # cause if so and the parent instance is valid as well
-    # it's all being saved at once
     valid = resource.valid?
-    valid = resource_role.rolable.valid? && valid
-
-    # customized code end
 
     if valid && resource.save    # customized code
       if resource.active_for_authentication?
@@ -41,7 +24,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         sign_in(resource_name, resource)
         respond_with resource, :location => redirect_location(resource_name, resource)
       else
-        if resource.role?("Seller")
+        if resource.role?("seller")
           user = User.find(resource.id)
           send_new_seller_email(user)
         end
@@ -57,15 +40,9 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    if params[:become_seller]
+    if params[:user][:become_seller] == "true"
       resource.become_seller = true
-#      params[:user][:roles_attributes].values.each do |item|
-#        @seller_attributes = item[:seller_attributes]
-#      end
-#      
-#      seller = Seller.new(@seller_attributes)
-#      seller_role = resource.roles.build
-#      seller_role.rolable = seller
+      add_role(resource, "seller")
     end
     if resource.update_with_password(params[resource_name])
       if is_navigational_format?
@@ -87,7 +64,7 @@ class UserRegistrationsController < Devise::RegistrationsController
       clean_up_passwords resource
 #      respond_with resource
       respond_with_navigational(resource) do
-        if params[:become_seller] == "true" # or flash[:change_password]
+        if params[:user][:become_seller] == "true"
           render :become_seller
         else
           render_with_scope :edit
@@ -106,18 +83,31 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def become_seller
-     role = resource.roles.build(:rolable_type => "Seller")
-     role.rolable = role.build_seller
-    
-     render :become_seller
+    add_role(resource, "seller")
   end
   
   def send_new_seller_email(user)
-      managers = Role.find_all_by_rolable_type("Manager")
+     managers = Role.find_by_name("manager").users 
       managers.each do |manager|
-        manager_user = User.find(manager.user_id)
-        ManagerMailer.new_seller_mail(user, manager_user).deliver
+        ManagerMailer.new_seller_mail(user, manager).deliver
       end
+  end
+  
+  private
+  
+  def add_resource_role(resource)
+    if params[:user][:user_type].downcase == "buyer"
+      add_role(resource, "buyer")
+    end
+    if params[:user][:user_type].downcase == "seller"
+      add_role(resource, "seller")
+    end
+  end
+  
+  def add_role(resource, role)
+      new_role = Role.new
+      new_role.name = role.downcase
+      resource.roles.build(new_role.attributes)
   end
   
 end

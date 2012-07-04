@@ -5,31 +5,13 @@
 # below each fixture, per the syntax in the comments below
 #
 manager_role:
-  user: manager_user
-  rolable: manager
-  rolable_type: Manager
+  users: manager_user
+  name: manager
 
-approved_seller:
-  user: approved_seller_user
-  rolable: approved_seller
-  rolable_type: Seller
-  
-unapproved_seller:
-  user: unapproved_seller_user
-  rolable: unapproved_seller
-  rolable_type: Seller
+seller_role:
+  users: approved_seller_user, unapproved_seller_buyer_user 
+  name: seller
 
-buyer:
-  user: buyer_user
-  rolable: buyer_one
-  rolable_type: Buyer
-
-unapproved_sellerbuyer_buyer:
-  user: unapproved_seller_buyer_user
-  rolable: buyer_two
-  rolable_type: Buyer
-
-unapproved_sellerbuyer_seller:
-  user: unapproved_seller_buyer_user
-  rolable: unapproved_seller_buyer
-  rolable_type: Seller
+buyer_role:
+  users: buyer_user, unapproved_seller_buyer_user
+  name: buyer

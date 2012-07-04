@@ -26,7 +26,8 @@ class Ability
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
     
     user ||= User.new # guest user (not logged in)
-    if user.role? :Manager
+
+    if user.role? :manager
       can :manage, :all
       can :manage, User
       can :manage, ManagementController
@@ -34,8 +35,7 @@ class Ability
       can :manage, SecondLevelCategory
     end
     
-    if user.role? :Seller
-      can :manage, Seller
+    if user.role? :seller
       can :manage, InventoryItem, :user_id => user.id
     end
   end

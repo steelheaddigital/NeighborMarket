@@ -34,11 +34,13 @@ class InventoryItemsControllerTest < ActionController::TestCase
   end
   
   test "should get edit" do
-    category = second_level_categories(:carrot)
-    get :edit, :id => category.id
+    item = inventory_items(:one)
+    get :edit, :id => item.id
     
     assert_response :success
-    assert_not_nil assigns(:category)
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
   end
   
 #  test "should update second level category" do

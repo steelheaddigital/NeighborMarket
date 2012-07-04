@@ -16,7 +16,11 @@ class UserTest < ActiveSupport::TestCase
                        :country => "United States",
                        :state => "Oregon",
                        :zip => "97218",
-                       :aboutme => "Test")
+                       :aboutme => "Test",
+                       :delivery_instructions => "Test",
+                       :payment_instructions => "Test",
+                       :approved_seller => false,                   
+                       :listing_approval_style => "manual")
      
    end
    
@@ -85,64 +89,71 @@ class UserTest < ActiveSupport::TestCase
    end  
   
    test "should not save Buyer without delivery instructions" do
-     role = @user.roles.new
-     role.rolable = Buyer.new(:delivery_instructions => nil)
+     new_role = Role.new
+     new_role.name = "buyer"
+     @user.roles.build(new_role.attributes)
+     @user.delivery_instructions = nil
      
      assert !@user.valid?
    end
 
-   test "should not save seller without payment instructions" do
-     role = @user.roles.new
-     role.rolable = Seller.new(:payment_instructions => nil)
+   test "should not save seller without payment instructions" do     
+     new_role = Role.new
+     new_role.name = "seller"
+     @user.roles.build(new_role.attributes)
+     @user.payment_instructions = nil
      
      assert !@user.valid?
    end 
 
    test "should not save seller without phone number" do
      @user.phone = nil
-     role = @user.roles.new
-     role.rolable = Seller.new(:payment_instructions => "Pay Me")
+     new_role = Role.new
+     new_role.name = "seller"
+     @user.roles.build(new_role.attributes)
 
      assert !@user.valid?
    end
    
    test "should not save seller with invalid phone number" do
      @user.phone = "Foo"
-     role = @user.roles.new
-     role.rolable = Seller.new(:payment_instructions => "Pay Me")
+     new_role = Role.new
+     new_role.name = "seller"
+     @user.roles.build(new_role.attributes)
      
      assert !@user.valid?
    end
    
    test "should save user other than seller without phone" do
      @user.phone = nil
-     role = @user.roles.new
-     role.rolable = Buyer.new(:delivery_instructions => "Bring me the stuff.")
+     new_role = Role.new
+     new_role.name = "buyer"
+     @user.roles.build(new_role.attributes)
      
      assert @user.valid?
    end
    
    test "should not save user other than seller with invalid phone" do
      @user.phone = "Foo"
-     role = @user.roles.new
-     role.rolable = Buyer.new(:delivery_instructions => "Bring me the stuff.")
+     new_role = Role.new
+     new_role.name = "buyer"
+     @user.roles.build(new_role.attributes)
      
      assert !@user.valid?
    end
    
   test "active_for_authentication? returns true if seller is approved" do
-     
      user = users(:approved_seller_user)
-    
+     
+     assert user.seller?
      result = user.active_for_authentication?
   end
   
   test "active_for_authentication? returns false if seller is not approved" do
-    
-    user = users(:unapproved_seller_user)
+     user = users(:unapproved_seller_user)
      
      result = user.active_for_authentication?
-    
+
      assert user.seller?
      assert !result
 
@@ -154,7 +165,7 @@ class UserTest < ActiveSupport::TestCase
     
      result = user.active_for_authentication?
     
-     assert user.role?("Buyer")
+     assert user.buyer?
      assert result
 
   end
@@ -164,9 +175,9 @@ class UserTest < ActiveSupport::TestCase
      user = users(:unapproved_seller_buyer_user)
     
      result = user.active_for_authentication?
-    
-     assert user.role?("Buyer")
-     assert user.role?("Seller")
+     
+     assert user.buyer?
+     assert user.seller?
      assert result
 
   end
@@ -187,8 +198,8 @@ class UserTest < ActiveSupport::TestCase
     
      result = user.active_for_authentication?
     
-     assert user.role?("Buyer")
-     assert user.role?("Seller")
+     assert user.buyer?
+     assert user.seller?
      assert_not_equal(result, :not_approved)
 
   end
@@ -214,6 +225,26 @@ class UserTest < ActiveSupport::TestCase
     
   end
   
+  test "buyer? returns true if user is buyer " do
+    
+    user = users(:buyer_user)
+    
+    result = user.buyer?
+    
+    assert result
+    
+  end
+  
+  test "manager? returns true if user is manager " do
+    
+    user = users(:manager_user)
+    
+    result = user.manager?
+    
+    assert result
+    
+  end
+   
   test "approved seller? returns true if user is an approved seller " do
    
     user = users(:approved_seller_user)
