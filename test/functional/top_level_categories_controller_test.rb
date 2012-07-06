@@ -58,4 +58,31 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
     assert_equal 'Category successfully deleted!', flash[:notice]
     
   end
+  
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+    
+    assert_raise CanCan::AccessDenied do
+      get :new
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = top_level_categories(:preserves)
+      get :edit, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = top_level_categories(:preserves)
+      post :update, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = top_level_categories(:preserves)
+      post :destroy, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      post :create
+    end
+  end
 end

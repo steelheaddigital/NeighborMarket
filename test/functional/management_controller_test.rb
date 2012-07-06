@@ -41,4 +41,28 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:categories)
   end
   
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+    
+    assert_raise CanCan::AccessDenied do
+      get :index
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :approve_sellers
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :user_search
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :user_search_results
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :categories
+    end
+  end
+  
 end

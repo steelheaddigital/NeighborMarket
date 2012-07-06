@@ -82,10 +82,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
   end
   
-  test "search returns inventory items"do
-    
-    top_level_category = top_level_categories(:vegetable)
-    
+  test "search returns inventory items"do    
     get :search, :keywords => "carrot"
     
     assert_response :success
@@ -102,6 +99,68 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:inventory_items)
     
+  end
+  
+  test "seller cannot access items other than their own" do
+    item = inventory_items(:two)
+    
+    assert_raise CanCan::AccessDenied do
+      get :edit, :id => item.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :update, :id => item.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :destroy, :id => item.id
+    end
+  end
+  
+  
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+    item = inventory_items(:one)
+    
+    assert_raise CanCan::AccessDenied do
+      get :new
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      post :create
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :edit, :id => item.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :update, :id => item.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :destroy, :id => item.id
+    end
+  end
+  
+  test "anonymous user can access browse" do
+    sign_out @user
+    second_level_category = second_level_categories(:carrot)
+    
+    get :browse, :second_level_category_id => second_level_category.id
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+  end
+  
+  test "anonymous user can access search" do
+    sign_out @user
+    top_level_category = top_level_categories(:vegetable)
+    
+    get :search, :keywords => "carrot"
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
   end
   
 end

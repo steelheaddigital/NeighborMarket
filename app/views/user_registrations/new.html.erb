@@ -62,15 +62,9 @@
       <div><%= f.label "About Me" %>
       <%= f.text_area :aboutme, :rows => 10 %></div>
 
-      <% if resource.seller? %>
-        <div><%= f.label "Payment Instructions*" %>
-        <%= f.text_area :payment_instructions, :rows => 10 %></div>
-      <%end%>
-      
-      <% if resource.buyer? %>
-        <div><%= f.label "Delivery Instructions*" %>
-        <%= f.text_area :delivery_instructions, :rows => 10 %></div>
-      <%end%>
+      <% resource.roles.each do |role| %>
+        <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
+      <% end %>
       
       <%= f.hidden_field :user_type, :value => params[:user][:user_type] %>
     </div>

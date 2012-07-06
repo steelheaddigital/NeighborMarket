@@ -68,4 +68,31 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     
   end
   
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+    
+    assert_raise CanCan::AccessDenied do
+      get :new
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = second_level_categories(:carrot)
+      get :edit, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = second_level_categories(:carrot)
+      post :update, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      category = second_level_categories(:carrot)
+      post :destroy, :id => category.id
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      post :create
+    end
+  end
+  
 end

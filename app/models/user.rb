@@ -103,12 +103,13 @@ class User < ActiveRecord::Base
   end
   
   def approved_seller?
-    self.roles.each do |role|
-      if role.name =="seller" && self.approved_seller
-        return true
-      end
-    end
-    return false
+    return self.seller? && self.approved_seller
+#    self.roles.each do |role|
+#      if role.name == "seller" && self.approved_seller == true
+#        return true
+#      end
+#    end
+#    return false
   end
   
   def self.search(keywords, role, seller_approved, seller_approval_style)

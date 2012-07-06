@@ -50,7 +50,7 @@ class UserRegistrationsController < Devise::RegistrationsController
           flash_key = :update_needs_confirmation
         end
         # customized code begin
-        if params[:become_seller] == "true"
+        if params[:user][:become_seller] == "true"
           set_flash_message :notice, flash_key || :became_seller
           send_new_seller_email(resource)
         else
@@ -62,7 +62,6 @@ class UserRegistrationsController < Devise::RegistrationsController
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords resource
-#      respond_with resource
       respond_with_navigational(resource) do
         if params[:user][:become_seller] == "true"
           render :become_seller

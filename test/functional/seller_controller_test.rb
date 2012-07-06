@@ -23,4 +23,17 @@ class SellerControllerTest < ActionController::TestCase
     assert_not_nil assigns(:current_inventory)
     
   end
+  
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+    
+    assert_raise CanCan::AccessDenied do
+      get :index
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :current_inventory
+    end
+  end
+  
 end

@@ -35,7 +35,7 @@ class Ability
       can :manage, SecondLevelCategory
     end
     
-    if user.seller?
+    if user.approved_seller?
       can :manage, SellerController
       can :manage, InventoryItem, :user_id => user.id
     end

@@ -64,15 +64,9 @@
       <%= @user.aboutme %>
     </p>
 
-    <% if @user.seller? %>
-      <b>Payment Instructions:</b>
-      <%= @user.payment_instructions %>
-    <%end%>
-
-    <% if @user.buyer? %>
-      <b>Delivery Instructions:</b>
-      <%= @user.delivery_instructions %>
-    <%end%>
+    <% @user.roles.each do |role| %>
+      <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :user => @user } %>
+    <% end %>
       
     <% if @user.seller? %>
       <div><b><%= f.label "Seller Approved" %></b>

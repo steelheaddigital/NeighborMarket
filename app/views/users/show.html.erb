@@ -61,7 +61,7 @@
     </p>
 
     <% @user.roles.each do |role| %>
-      <%= render :partial => "#{role.rolable_type.downcase.camelize.underscore}_fields", :locals => { :user => role } %>
+      <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :user => @user } %>
     <% end %>
   </div>
 </div>
