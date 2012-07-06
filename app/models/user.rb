@@ -121,13 +121,13 @@ class User < ActiveRecord::Base
       scope = scope.where('LOWER(first_name) IN(?) OR LOWER(last_name) IN(?) OR LOWER(username) IN(?)', keywordList, keywordList, keywordList)
     end
     if(role.present?)
-      scope = scope.where('roles.rolable_type = ?', "#{role}").includes(:roles)
+      scope = scope.where('roles.name = ?', "#{role.downcase}").includes(:roles)
     end
     if(seller_approved.present?)
-      scope = scope.where('sellers.approved = ?', seller_approved).includes(:roles => :seller)
+      scope = scope.where('approved_seller = ?', seller_approved)
     end
     if(seller_approval_style.present?)
-      scope = scope.where('sellers.listing_approval_style = ?', "#{seller_approval_style}").includes(:roles => :seller)
+      scope = scope.where('listing_approval_style = ?', "#{seller_approval_style}")
     end
     
     scope.all

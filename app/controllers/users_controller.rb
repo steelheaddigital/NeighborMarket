@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => :public
+  skip_authorize_resource :only => :public_show
   
   def show
     @user = User.find(params[:id])
   end
 
-  def public
+  def public_show
     @user = User.find(params[:id])
     
     respond_to do |format|

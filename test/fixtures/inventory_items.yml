@@ -17,3 +17,12 @@ two:
   price: 10.00
   quantity_available: MyString
   description: MyText
+
+not_in_cart:
+  top_level_category: vegetable
+  second_level_category: carrot
+  user: approved_seller_user
+  name: Carrot
+  price: 10.00
+  quantity_available: MyString
+  description: MyText

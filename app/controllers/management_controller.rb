@@ -6,8 +6,7 @@ class ManagementController < ApplicationController
   end
   
   def approve_sellers
-    role = Role.find_by_name("Seller")
-    @sellers = role.users.where("approved_seller = false")
+    @sellers = User.where("approved_seller = false AND roles.name = 'seller'").includes(:roles) 
     
     #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|
@@ -19,7 +18,7 @@ class ManagementController < ApplicationController
   def user_search
     
     respond_to do |format|
-      format.html {render "index"}
+      format.html {render :index}
       format.js { render :partial => "user_search", :layout => false }
     end
   end
@@ -39,15 +38,6 @@ class ManagementController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-    end
-    
-  end
-  
-  def second_level_categories
-    @categories = SecondLevelCategory.all
-    
-    respond_to do |format|
-      format.js { render :categories, :layout => false }
     end
     
   end

@@ -27,7 +27,7 @@ class Ability
     
     user ||= User.new # guest user (not logged in)
 
-    if user.role? :manager
+    if user.manager?
       can :manage, :all
       can :manage, User
       can :manage, ManagementController
@@ -35,7 +35,8 @@ class Ability
       can :manage, SecondLevelCategory
     end
     
-    if user.role? :seller
+    if user.seller?
+      can :manage, SellerController
       can :manage, InventoryItem, :user_id => user.id
     end
   end

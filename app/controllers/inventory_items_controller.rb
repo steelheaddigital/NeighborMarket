@@ -74,12 +74,16 @@ class InventoryItemsController < ApplicationController
   end
   
   def destroy
-    inventory = InventoryItem.find(params[:id])
-    inventory.destroy
-
+    @inventory = InventoryItem.find(params[:id])
+    
     respond_to do |format|
-      format.html {redirect_to seller_index_path, notice: "Inventory item successfully deleted!" }
-      format.js { render :nothing => true }
+      if @inventory.destroy
+        format.html{ redirect_to seller_index_path, notice: "Inventory item successfully deleted!" }
+        format.js { render :nothing => true }
+      else
+        format.html{ redirect_to seller_index_path, notice: 'Unable to delete the item' }
+        format.js { render :nothing => true, :status => 403 }
+      end
     end
   end
   
@@ -92,7 +96,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def search
-    @InventoryItems = InventoryItem.search(params[:keywords]).paginate(:page => params[:page], :per_page => 5)
+    @inventory_items = InventoryItem.search(params[:keywords]).paginate(:page => params[:page], :per_page => 5)
 
     respond_to do |format|
       format.html
@@ -101,7 +105,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse
-    @InventoryItems = InventoryItem.find_all_by_second_level_category_id(params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
+    @inventory_items = InventoryItem.find_all_by_second_level_category_id(params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
     
     respond_to do |format|
       format.html { render :search }

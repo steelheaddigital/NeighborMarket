@@ -43,30 +43,65 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:second_level_categories)
   end
   
-#  test "should update second level category" do
-#    
-#    category = second_level_categories(:carrot)
-#    
-#    post :update, :id => category.id, :second_level_category => { :name => 'Changed Carrots' }
-#    
-#    assert_not_nil :category
-#    assert_not_nil :second_level_category
-#    assert_redirected_to management_categories_path
-#    assert_equal 'Category successfully updated!', flash[:notice]
-#    
-#  end
-#
-#  test "should destroy second level category" do
-#    
-#    category = second_level_categories(:jam)
-#    
-#    assert_difference 'SecondLevelCategory.count', -1 do
-#      post :destroy, :id => category.id
-#    end
-#    
-#    assert_not_nil :category
-#    assert_redirected_to management_categories_path
-#    assert_equal 'Category successfully deleted!', flash[:notice]
-#    
-#  end
+  test "should update inventory item" do
+    
+    item = inventory_items(:one)
+    
+    post :update, :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_redirected_to seller_index_path
+    assert_equal 'Inventory item successfully updated!', flash[:notice]
+    
+  end
+
+  test "should destroy inventory item" do
+    
+    item = inventory_items(:not_in_cart)
+    
+    assert_difference 'InventoryItem.count', -1 do
+      post :destroy, :id => item.id
+    end
+    
+    assert_not_nil assigns(:inventory)
+    assert_redirected_to seller_index_path
+    assert_equal 'Inventory item successfully deleted!', flash[:notice]
+    
+  end
+  
+  test "get_second_level_category returns second level category"do
+    
+    top_level_category = top_level_categories(:vegetable)
+    
+    get :get_second_level_category, :category_id => top_level_category.id
+    
+    assert_response :success
+    assert_not_nil assigns(:second_level_categories)
+    
+  end
+  
+  test "search returns inventory items"do
+    
+    top_level_category = top_level_categories(:vegetable)
+    
+    get :search, :keywords => "carrot"
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+    
+  end
+  
+  test "browse returns inventory items"do
+    
+    second_level_category = second_level_categories(:carrot)
+    
+    get :browse, :second_level_category_id => second_level_category.id
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+    
+  end
+  
 end
