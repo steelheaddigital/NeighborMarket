@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
+  has_many :orders
   
   validates :username, :uniqueness => true
   validates :username, 

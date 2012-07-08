@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <h2>Your Order</h2>
+    <p class="notice"><%= flash[:notice] %></p>
+    <div class="well row-fluid" style="padding-right:0; padding-left: 0">
+      <div class="span12" style="padding-left: 15px; padding-right: 15px;">
+        <table class="table" >
+        <thead>  
+          <tr>
+            <th></th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Payment Instructions</th>
+          </tr>
+        </thead>
+          <tbody>
+            <%@order.cart_items.each do |item|%>
+            <tr>
+              <td><%= item.inventory_item.name %></td>
+              <td><%= number_to_currency(item.inventory_item.price)%> </td>
+              <td><%= item.quantity %></td>
+              <td><%= item.inventory_item.user.payment_instructions %>
+            </tr>
+            <%end%>
+            <tr>
+              <td style="font-weight:bold;">Total:</td>
+              <td><%= number_to_currency @cart.total_price %></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span1">
+        <%= button_to "Check Out", orders_path, method: :post, :class => "btn btn-primary" %>
+      </div>
+    </div>
+</div>

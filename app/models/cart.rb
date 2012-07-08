@@ -11,7 +11,8 @@ class Cart < ActiveRecord::Base
        current_item.quantity += quantity.to_i
      else
        current_item = self.cart_items.build(:inventory_item_id => inventory_item_id, :quantity => quantity.to_i)
-     end
+       current_item.cart_id = self.id
+    end
      
     current_item
   end
