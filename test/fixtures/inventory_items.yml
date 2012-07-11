@@ -6,7 +6,8 @@ one:
   user: approved_seller_user
   name: Carrot
   price: 10.00
-  quantity_available: MyString
+  price_unit: each
+  quantity_available: 10
   description: MyText
 
 two:
@@ -15,7 +16,8 @@ two:
   user: unapproved_seller_user
   name: Jam
   price: 10.00
-  quantity_available: MyString
+  price_unit: each
+  quantity_available: 10
   description: MyText
 
 not_in_cart:
@@ -24,5 +26,16 @@ not_in_cart:
   user: approved_seller_user
   name: Carrot
   price: 10.00
-  quantity_available: MyString
+  price_unit: each
+  quantity_available: 10
+  description: MyText
+  
+zero_quantity:
+  top_level_category: vegetable
+  second_level_category: carrot
+  user: approved_seller_user
+  name: zero carrot
+  price: 10.00
+  price_unit: each
+  quantity_available: 0
   description: MyText

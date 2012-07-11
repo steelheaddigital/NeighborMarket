@@ -6,11 +6,9 @@ class OrderTest < ActiveSupport::TestCase
     order.user_id = users(:buyer_user).id
     cart = carts(:full)
 
-#    assert_difference 'order.cart_items.count' do
+    assert_difference 'order.cart_items.size' do
       order.add_inventory_items_from_cart(cart)
-#    end
-
+    end
     assert_not_nil order.cart_items
-    
   end
 end

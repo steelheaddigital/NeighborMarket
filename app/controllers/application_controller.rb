@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  private
+  helper_method :current_cart
   
   def current_cart
     Cart.find(session[:cart_id])
@@ -9,13 +9,13 @@ class ApplicationController < ActionController::Base
   rescue ActiveRecord::RecordNotFound
     
     if(user_signed_in?)
-      cart = Cart.create(:user_id => current_user.id)
+      @cart = Cart.create(:user_id => current_user.id)
     else
-      cart = Cart.create()
+      @cart = Cart.create()
     end
     
-    session[:cart_id] = cart.id
-    cart
+    session[:cart_id] = @cart.id
+    @cart
   end
   
 end

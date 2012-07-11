@@ -26,6 +26,6 @@ class OrdersControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:order)
     assert_redirected_to home_index_url
-    assert_equal 'Thank you for your order', flash[:notice]
+    assert_equal 'Your order has been submitted. Thank You!', flash[:notice]
   end
 end

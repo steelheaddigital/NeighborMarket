@@ -1,0 +1,13 @@
+<div>
+  You must have a buyer account to place your order.  Please
+  <%if user_signed_in? %>
+      <%if current_user.seller?%>
+        <%= link_to("create a buyer account", become_buyer_path) %>
+        <%else%>
+      <%end%>
+    <%else%>
+      <%= link_to("log in", new_user_session_path) %> or 
+      <%= link_to "sign up", buyer_sign_up_path %>
+  <%end%>
+  to continue.
+</div>

@@ -105,7 +105,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse
-    @inventory_items = InventoryItem.find_all_by_second_level_category_id(params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
+    @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0", params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
     
     respond_to do |format|
       format.html { render :search }

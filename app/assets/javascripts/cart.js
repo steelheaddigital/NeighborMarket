@@ -6,6 +6,8 @@ $(document).on("submit", ".addToCartButton", function(event){
     
     $.post(url, data, function() {
            utils.ShowAlert($("#AddToCartNotice"), "Item added to your cart!")
+           var cart = new Cart();
+           cart.GetCount();
        }
     );
     
@@ -19,12 +21,12 @@ $(document).on("submit", ".deleteCartItemButton", function(event){
     
     var deleteConfirm = confirm("Are you sure you want to delete this item?");
     var url = $(this).attr("action");
-    var items = new InventoryItems();
     
     if(deleteConfirm == true){
         $.post(url, {_method: 'delete'}, function() {
                 var cart = new Cart();
                 cart.LoadCart();
+                cart.GetCount();
            }
         );
     }
@@ -32,8 +34,14 @@ $(document).on("submit", ".deleteCartItemButton", function(event){
 
 function Cart(){
     $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+    
     this.LoadCart = function(){
         $("#MainContent").load("/cart");
     }
-
+    
+    this.GetCount = function() {
+        $.getJSON("/cart/item_count", function(data){
+            $("#CartCount").html(data);
+        });
+    }
 }

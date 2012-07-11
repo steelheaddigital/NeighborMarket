@@ -1,5 +1,5 @@
 class UserRegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :edit, :update]
+  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update]
   
   def new
     resource = build_resource({})
@@ -44,6 +44,10 @@ class UserRegistrationsController < Devise::RegistrationsController
       resource.become_seller = true
       add_role(resource, "seller")
     end
+    if params[:user][:become_buyer] == "true"
+      resource.become_buyer = true
+      add_role(resource, "buyer")
+    end
     if resource.update_with_password(params[resource_name])
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
@@ -83,6 +87,10 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def become_seller
     add_role(resource, "seller")
+  end
+  
+  def become_buyer
+    add_role(resource, "buyer")
   end
   
   def send_new_seller_email(user)

@@ -6,6 +6,7 @@ GardenMarketplace::Application.routes.draw do
     match '/buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up
     match '/seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }, :as => :seller_sign_up
     match '/user/become_seller' => 'user_registrations#become_seller', :user => { :become_seller => true } , :as => :become_seller
+    match '/user/become_buyer' => 'user_registrations#become_buyer', :user => { :become_buyer => true } , :as => :become_buyer
     match '/user/inactive_signup' => 'user_registrations#inactive_signup'
   end
   
@@ -27,7 +28,7 @@ GardenMarketplace::Application.routes.draw do
   match 'inventory_items/browse' => 'inventory_items#browse'
   resources :inventory_items
   
-  match "seller/current_inventory" => "seller#current_inventory"
+  match 'seller/current_inventory' => 'seller#current_inventory'
   resources :seller, :only => ["index"]
   
   resources :top_level_categories 
@@ -36,9 +37,10 @@ GardenMarketplace::Application.routes.draw do
   
   resources :cart_items, :only => ["create", "destroy"]
   
+  match 'cart/item_count' => 'cart#item_count'
   resources :cart, :only => ["index"]
   
-  resources :orders
+  resources :orders, :only => ["new", "create"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

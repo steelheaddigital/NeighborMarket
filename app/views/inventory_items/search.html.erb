@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span12">
-      <div id="AddToCartNotice" class="alert" style="display:none;">
+      <div id="AddToCartNotice" class="alert fixed-alert">
       </div>
       <%@inventory_items.each do |item|%>
       <% seller_name = item.user.first_name + " " + item.user.last_name %>

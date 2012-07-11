@@ -32,11 +32,11 @@ class User < ActiveRecord::Base
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
-  attr_accessor :login, :become_seller
+  attr_accessor :login, :become_seller, :become_buyer
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -105,12 +105,6 @@ class User < ActiveRecord::Base
   
   def approved_seller?
     return self.seller? && self.approved_seller
-#    self.roles.each do |role|
-#      if role.name == "seller" && self.approved_seller == true
-#        return true
-#      end
-#    end
-#    return false
   end
   
   def self.search(keywords, role, seller_approved, seller_approval_style)

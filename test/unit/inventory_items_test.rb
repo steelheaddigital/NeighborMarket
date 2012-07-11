@@ -42,8 +42,8 @@ class InventoryItemsTest < ActiveSupport::TestCase
       assert !@item.valid?
    end
    
-   test "should not validate item with quantity available less than 1" do
-      @item.quantity_available = 0
+   test "should not validate item with quantity available less than 0" do
+      @item.quantity_available = -1
       
       assert !@item.valid?
    end
@@ -62,6 +62,21 @@ class InventoryItemsTest < ActiveSupport::TestCase
      item = inventory_items(:two)
       
      assert item.destroy
+   end
+   
+   test "decrement_quantity_available decrements quantity available" do
+      item = inventory_items(:one)
+     
+      assert_difference 'item.quantity_available', -2 do
+        item.decrement_quantity_available(2)
+      end
+   end
+   
+   test "search doesn't return result if quantity_availabe is 0" do
+     item = InventoryItem.search("zero")
+     
+     assert_equal 0, item.length
+     
    end
    
 end

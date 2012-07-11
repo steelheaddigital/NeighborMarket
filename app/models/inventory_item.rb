@@ -14,17 +14,17 @@ class InventoryItem < ActiveRecord::Base
     :presence => true
   
   validates :price, :numericality => {:greater_than_or_equal_to => 0.01}
-  validates :quantity_available, :numericality => {:greater_than_or_equal_to => 1}
+  validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
   
   before_destroy :ensure_not_referenced_by_any_cart_item
   
   def self.search(keywords)
-    scope = self
+    scope = self.where("quantity_available > 0")
     
     #split the incoming keywords on space and then join them with the PGSQL OR operator
     keyword_list = keywords.split(/ /).join("|")
     
-      top_level_category = TopLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
+    top_level_category = TopLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
     if(top_level_category)
       top_level_category_id = top_level_category.id
     end
@@ -41,6 +41,11 @@ class InventoryItem < ActiveRecord::Base
     
     scope.all
     
+  end
+  
+  def decrement_quantity_available(quantity)
+    self.quantity_available -= quantity unless self.quantity_available.zero?
+    self.save!
   end
   
   private
