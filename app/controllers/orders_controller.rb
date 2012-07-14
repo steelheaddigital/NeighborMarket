@@ -1,4 +1,7 @@
 class OrdersController < ApplicationController
+  load_and_authorize_resource
+  skip_authorize_resource :only => [:new]
+  
   def new
     
     if(!user_signed_in? || !current_user.buyer?)

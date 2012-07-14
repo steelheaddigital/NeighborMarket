@@ -28,4 +28,12 @@ class OrdersControllerTest < ActionController::TestCase
     assert_redirected_to home_index_url
     assert_equal 'Your order has been submitted. Thank You!', flash[:notice]
   end
+  
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
+        
+    assert_raise CanCan::AccessDenied do
+      post :create
+    end
+  end
 end

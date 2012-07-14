@@ -1,5 +1,5 @@
 class SellerController < ApplicationController
-  load_and_authorize_resource :class => SellerController
+  load_and_authorize_resource :class => InventoryItem
   
   def index
     user_id = current_user.id

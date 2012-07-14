@@ -29,15 +29,15 @@ class Ability
 
     if user.manager?
       can :manage, :all
-      can :manage, User
-      can :manage, ManagementController
-      can :manage, TopLevelCategory
-      can :manage, SecondLevelCategory
     end
     
     if user.approved_seller?
-      can :manage, SellerController
       can :manage, InventoryItem, :user_id => user.id
+    end
+    
+    if user.buyer?
+      can :create, Order
+      can :manage, Order, :user_id => user.id
     end
   end
 end
