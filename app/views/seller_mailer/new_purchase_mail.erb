@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p style="font-weight: bold;">Buyer Information</p>
+    <P>Name: <%= @buyer.first_name + " " + @buyer.last_name  %></p>
+    <p>Address: <%= @buyer.address + "," + @buyer.city + "," + @buyer.state + " " + @buyer.zip %> </p>
+    <p>Email: <%= @buyer.email %>
+    <p style="font-weight: bold; padding-top: 15px;">Purchase Information</p>
+    <table border=1 style="border-collapse: collapse;">
+        <thead>
+          <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%@cart_items.each do |item|%>
+            <tr>
+              <td><%= item_name(item.inventory_item)%></td>
+              <td style="text-align: center;"><%= item.quantity%></td>
+              <td><%= number_to_currency(item.inventory_item.price) + " " + "per" + " " + item.inventory_item.price_unit%></td>
+            </tr>
+          <%end%>
+        </tbody>
+    </table>
+</html>

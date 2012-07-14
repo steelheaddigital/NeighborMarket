@@ -26,10 +26,19 @@ class OrdersController < ApplicationController
         if @order.save
           
           #decrement the available inventory for each item in the order
+          sellers_array = Array.new
           @order.cart_items.each do |item|
             item.inventory_item.decrement_quantity_available(item.quantity)
+            sellers_array.push(item.inventory_item.user)
           end
           
+          #Send an email to each seller notifying them of the sale
+          sellers = sellers_array.uniq{|x| x.id}
+          sellers.each do |seller|
+            cart_items = @order.cart_items.select{|x| x.seller_id == seller.id}
+            SellerMailer.new_purchase_mail(seller, @order.user, cart_items).deliver
+          end
+        
           Cart.destroy(session[:cart_id])
           session[:cart_id] = nil
           format.html {redirect_to home_index_url, notice: 'Your order has been submitted. Thank You!'}

@@ -33,13 +33,13 @@ module ApplicationHelper
     ids = SecondLevelCategory.select(:top_level_category_id).group(:id, :top_level_category_id)
     
     #Add the top level category id to a new array for each distinct second level category
-    idArray = Array.new
+    id_array = Array.new
     ids.each do |category|
-      idArray.push(category.top_level_category_id)
+      id_array.push(category.top_level_category_id)
     end
     
     #return only the top level categories that have associated second level categories
-    return TopLevelCategory.find(idArray)
+    return TopLevelCategory.find(id_array)
     
   end
 end

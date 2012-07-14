@@ -10,7 +10,8 @@ class Cart < ActiveRecord::Base
      if current_item
        current_item.quantity += quantity.to_i
      else
-       current_item = self.cart_items.build(:inventory_item_id => inventory_item_id, :quantity => quantity.to_i)
+       inventory_item = InventoryItem.find(inventory_item_id)
+       current_item = self.cart_items.build(:inventory_item_id => inventory_item_id, :quantity => quantity.to_i, :seller_id => inventory_item.user_id)
        current_item.cart_id = self.id
     end
      
