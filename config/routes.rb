@@ -29,6 +29,7 @@ GardenMarketplace::Application.routes.draw do
   resources :inventory_items
   
   match 'seller/current_inventory' => 'seller#current_inventory'
+  match 'seller/orders' => 'seller#orders'
   resources :seller, :only => ["index"]
   
   resources :top_level_categories 

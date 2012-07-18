@@ -24,6 +24,14 @@ class SellerControllerTest < ActionController::TestCase
     
   end
   
+  test "should get orders" do
+    get :orders
+    
+    assert_response :success
+    assert_not_nil assigns(:cart_items)
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -33,6 +41,10 @@ class SellerControllerTest < ActionController::TestCase
     
     assert_raise CanCan::AccessDenied do
       get :current_inventory
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :orders
     end
   end
   

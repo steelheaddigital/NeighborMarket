@@ -17,8 +17,19 @@ class SellerController < ApplicationController
     @current_inventory = InventoryItem.find_all_by_user_id(user_id)
     
     respond_to do |format|
-      format.html {render "index"}
+      format.html { render "index" }
       format.js { render :partial => "inventory", :layout => false }
+    end
+    
+  end
+  
+  def orders
+    user_id = current_user.id
+    @cart_items = CartItem.joins(:inventory_item).where('inventory_items.user_id = ?', user_id)
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
     end
     
   end

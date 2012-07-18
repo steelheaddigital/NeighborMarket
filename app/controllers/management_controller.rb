@@ -6,7 +6,7 @@ class ManagementController < ApplicationController
   end
   
   def approve_sellers
-    @sellers = User.where("approved_seller = false AND roles.name = 'seller'").includes(:roles) 
+    @sellers = User.joins(:roles).where("approved_seller = false AND roles.name = 'seller'") 
     
     #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|

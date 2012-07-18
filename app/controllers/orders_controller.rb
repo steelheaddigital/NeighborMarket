@@ -38,7 +38,7 @@ class OrdersController < ApplicationController
           #Send an email to each seller notifying them of the sale
           sellers = sellers_array.uniq{|x| x.id}
           sellers.each do |seller|
-            cart_items = @order.cart_items.select{|x| x.seller_id == seller.id}
+            cart_items = @order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
             SellerMailer.new_purchase_mail(seller, @order.user, cart_items).deliver
           end
         

@@ -15,7 +15,7 @@ class CartItemsControllerTest < ActionController::TestCase
     assert_redirected_to cart_index_path
   end
   
-  test "should destory cart item" do
+  test "should destroy cart item" do
     cart_item = cart_items(:one)
     
     assert_difference 'CartItem.count', -1 do

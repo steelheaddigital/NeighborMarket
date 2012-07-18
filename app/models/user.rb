@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
       scope = scope.where('LOWER(first_name) IN(?) OR LOWER(last_name) IN(?) OR LOWER(username) IN(?)', keywordList, keywordList, keywordList)
     end
     if(role.present?)
-      scope = scope.where('roles.name = ?', "#{role.downcase}").includes(:roles)
+      scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}")
     end
     if(seller_approved.present?)
       scope = scope.where('approved_seller = ?', seller_approved)
