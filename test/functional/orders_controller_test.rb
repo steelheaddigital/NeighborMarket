@@ -13,7 +13,7 @@ class OrdersControllerTest < ActionController::TestCase
     session["cart_id"] = cart.id
     CartItem.create(cart: cart, inventory_item: inventory_items(:one))
     
-    get :new
+    post :new, :cart => {}
     
     assert :sucess
     assert_not_nil assigns(:order)

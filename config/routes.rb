@@ -41,7 +41,8 @@ GardenMarketplace::Application.routes.draw do
   match 'cart/item_count' => 'cart#item_count'
   resources :cart, :only => ["index"]
   
-  resources :orders, :only => ["new", "create"]
+  match 'orders/new' => 'orders#new', :via => "POST"
+  resources :orders, :only => ["create"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

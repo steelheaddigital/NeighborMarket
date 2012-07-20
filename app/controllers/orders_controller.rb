@@ -4,25 +4,29 @@ class OrdersController < ApplicationController
   
   def new
     
-    if(!user_signed_in? || !current_user.buyer?)
-      render :not_buyer
-      return
-    end
-    
-    @order = Order.new
     @cart = current_cart
-    @order.user_id = current_user.id
-    @order.cart_items = @cart.cart_items
-    
-    respond_to do |format|
-      format.html
-      format.js { render :layout => false }
+    #update the cart in case the user changed any quantitities
+    if @cart.update_attributes(params[:cart])
+      
+      if(!user_signed_in? || !current_user.buyer?)
+        render :not_buyer
+        return
+      end
+      
+      @order = current_user.orders.build
+      @order.cart_items = @cart.cart_items
+
+      respond_to do |format|
+        format.html
+        format.js { render :layout => false }
+      end
     end
+    
+
   end
   
   def create
-    @order = Order.new
-    @order.user_id = current_user.id
+    @order = current_user.orders.build
     @order.add_inventory_items_from_cart(current_cart)
     
     respond_to do |format|

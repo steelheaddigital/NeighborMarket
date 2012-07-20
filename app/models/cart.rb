@@ -1,8 +1,8 @@
 class Cart < ActiveRecord::Base
   has_many :cart_items
   belongs_to :user
-  
-  attr_accessible :user_id
+  accepts_nested_attributes_for :cart_items
+  attr_accessible :user_id, :cart_items_attributes
   
   def add_inventory_item(inventory_item_id, quantity)
     current_item = cart_items.find_by_inventory_item_id(inventory_item_id)
