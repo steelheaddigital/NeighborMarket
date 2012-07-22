@@ -1,6 +1,9 @@
 <%#= debug @inventory_items %>
 <div class="container-fluid">
-    <div class="well-fluid row-fluid" style="padding-right:0; padding-left: 0">
+    <div style="margin-bottom: 15px;">
+      <%= link_to "Printable Pick List (PDF)", seller_pick_list_path(:format => 'pdf'), {:class => 'btn'} %>
+    </div>
+    <div class="well row-fluid" style="padding-right:0; padding-left: 0">
         <table class="table" >
         <thead>  
           <tr>
@@ -19,9 +22,6 @@
             <%end%>
           </tbody>
         </table>
-      </div>
-      <div>
-        <p><%= link_to "Printable Pick List (PDF)", seller_pick_list_path(:format => 'pdf'), {:class => 'btn'} %></p>
       </div>
     </div>
 </div>
