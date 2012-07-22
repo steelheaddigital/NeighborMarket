@@ -1,0 +1,24 @@
+<%#= debug @inventory_items %>
+<div class="container-fluid">
+    <div class="well-fluid row-fluid" style="padding-right:0; padding-left: 0">
+        <table class="table" >
+        <thead>  
+          <tr>
+            <th>Item ID</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+          <tbody>
+            <%@inventory_items.each do |item|%>
+            <tr>
+              <td><%= item.id %></td>
+              <td><%= item.name %></td>
+              <td><%= item.sum %></td>
+            </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

@@ -85,7 +85,7 @@ $(document).on("click", "#UserSearchNav", function(event){
     var url = $(this).attr("href")
     var mgmt = new Management();
 
-    mgmt.SetActiveNavButton($(this));
+    utils.SetActiveNavButton($(this));
     mgmt.LoadManagementContent(url, true);
 
     return false;
@@ -97,7 +97,7 @@ $(document).on("click", "#ApproveSellersNav", function(event){
     var url = $(this).attr("href")
     var mgmt = new Management();
 
-    mgmt.SetActiveNavButton($(this));
+    utils.SetActiveNavButton($(this));
     mgmt.LoadManagementContent(url, true);
 
     return false;
@@ -109,7 +109,7 @@ $(document).on("click", "#ManageCategoriesNav", function(event){
     var url = $(this).attr("href")
     var mgmt = new Management();
 
-    mgmt.SetActiveNavButton($(this));
+    utils.SetActiveNavButton($(this));
     mgmt.LoadManagementContent(url, true);
 
     return false;
@@ -251,10 +251,5 @@ function Management(){
                }
             );
         }
-    }
-    
-    this.SetActiveNavButton = function(object){
-        object.parent().siblings().removeClass('active');
-        object.parent().addClass('active');
     }
 }

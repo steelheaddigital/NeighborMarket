@@ -24,11 +24,11 @@ class SellerControllerTest < ActionController::TestCase
     
   end
   
-  test "should get orders" do
-    get :orders
+  test "should get pick_list" do
+    get :pick_list
     
     assert_response :success
-    assert_not_nil assigns(:cart_items)
+    assert_not_nil assigns(:inventory_items)
     
   end
   
@@ -44,7 +44,7 @@ class SellerControllerTest < ActionController::TestCase
     end
     
     assert_raise CanCan::AccessDenied do
-      get :orders
+      get :pick_list
     end
   end
   

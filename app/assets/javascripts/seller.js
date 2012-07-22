@@ -1,3 +1,25 @@
+$(document).on("click", "#CurrentInventoryNav", function(event){
+    event.preventDefault();
+    var url = $(this).attr("href")
+    var seller = new Seller();
+
+    utils.SetActiveNavButton($(this));
+    seller.LoadSellerContent(url, true);
+
+    return false;
+});
+
+$(document).on("click", "#SellerOrdersNav", function(event){
+    event.preventDefault();
+    var url = $(this).attr("href")
+    var seller = new Seller();
+
+    utils.SetActiveNavButton($(this));
+    seller.LoadSellerContent(url, true);
+
+    return false;
+});
+
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 
     var url = '/inventory_items/get_second_level_category'
@@ -18,9 +40,9 @@ $(document).on("submit", "#NewInventoryItemButton", function(event){
     event.preventDefault();
     
     var url = $(this).attr("action");
-    var items = new InventoryItems();
+    var seller = new Seller();
     
-    items.LoadInventoryDialog(url);
+    seller.LoadInventoryDialog(url);
     
     return false;
 });
@@ -28,7 +50,7 @@ $(document).on("submit", "#NewInventoryItemButton", function(event){
 $(document).on("submit", "#new_inventory_item", function(){
     var postData = $(this).serialize();
     var url = $(this).attr("action"); 
-    var items = new InventoryItems();
+    var seller = new Seller();
     
     $("#SellerLoadingImage").show();
     $.ajax({
@@ -39,10 +61,10 @@ $(document).on("submit", "#new_inventory_item", function(){
        dataType: "html",
        success: function(data){
            $("#SellerContent").html(data);
-           items.LoadCurrentInventory('/seller/current_inventory');
+           seller.LoadCurrentInventory('/seller/current_inventory');
            utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully added!");
            $("#SellerLoadingImage").hide();
-           items.CloseInventoryDialog();
+           seller.CloseInventoryDialog();
        },
        error: function(request){
            $("#SellerLoadingImage").hide();
@@ -55,7 +77,7 @@ $(document).on("submit", "#new_inventory_item", function(){
 $(document).on("submit", "#edit_inventory_item", function(){
     var postData = $(this).serialize();
     var url = $(this).attr("action");
-    var items = new InventoryItems();
+    var seller = new Seller();
     
     $("#SellerLoadingImage").show();
     $.ajax({
@@ -66,11 +88,11 @@ $(document).on("submit", "#edit_inventory_item", function(){
        dataType: "html",
        success: function(data){
            $('#InventoryNotice').empty();
-           items.LoadCurrentInventory('/seller/current_inventory');
+           seller.LoadCurrentInventory('/seller/current_inventory');
            $("#InventoryDetail").html(data);
            utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully updated!");
            $("#SellerLoadingImage").hide();
-           items.CloseInventoryDialog();
+           seller.CloseInventoryDialog();
        },
        error: function(request){
            $("#SellerLoadingImage").hide();
@@ -84,9 +106,9 @@ $(document).on("submit", ".editInventoryItemButton", function(event){
     event.preventDefault();
     
     var url = $(this).attr("action");
-    var items = new InventoryItems();
+    var seller = new Seller();
     
-    items.LoadInventoryDialog(url);
+    seller.LoadInventoryDialog(url);
     
     return false;
 });
@@ -98,14 +120,14 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
     
     var deleteConfirm = confirm("Are you sure you want to delete this item?");
     var url = $(this).attr("action");
-    var items = new InventoryItems();
+    var seller = new Seller();
     
     if(deleteConfirm == true){
         $('#InventoryNotice').hide();
         $("#SellerLoadingImage").show();
 
         $.post(url, {_method: 'delete'}, function() {
-               items.LoadCurrentInventory('seller/current_inventory');
+               seller.LoadCurrentInventory('seller/current_inventory');
                utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully deleted!");
                $("#SellerLoadingImage").hide();
            }
@@ -113,7 +135,21 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
     }
 });
 
-function InventoryItems(){
+function Seller(){
+    var self = this;
+    
+    this.LoadSellerContent = function(url, reset){
+        $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+        $("#SellerLoadingImage").show();
+        
+        $('#SellerContent').load(url, function(){
+            if(reset == true){
+                $("#SellerNotice").hide();
+                $("#SellerLoadingImage").hide();
+            }   
+        }); 
+    }
+    
     this.LoadInventoryDialog = function(url){
         $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 

@@ -1,11 +1,10 @@
 <%content_for :MainContent do %>
 <div class ="container-fluid">
-  <div class="subnav">
-      <ul class="nav nav-pills">
-        <li class="active"><%= link_to "Current Inventory", seller_current_inventory_path %></a></li>
-        <li></li>
-      </ul>
-  </div>
+    <ul id="SellerTab" class="nav nav-pills">
+      <li class="active"><%= link_to "Current Inventory", seller_current_inventory_path, {:id => "CurrentInventoryNav"} %></a></li>
+      <li><%= link_to "Pick List", seller_pick_list_path, {:id => "SellerOrdersNav"} %></li>
+      <li></li>
+    </ul>
   <div class="container-fluid" style="margin-top: 15px;">
     <div class="row-fluid">
       <div id="SellerLoadingImage" style="display:none">
@@ -30,6 +29,7 @@
 </div>
 <script>
   $("#InventoryModal").modal({show: false});
+  $('#SellerTab').tabs()
 </script>
 <%  end %>
 <%= render :template => 'layouts/application' %>

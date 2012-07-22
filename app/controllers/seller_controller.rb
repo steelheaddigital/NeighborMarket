@@ -23,9 +23,12 @@ class SellerController < ApplicationController
     
   end
   
-  def orders
+  def pick_list
     user_id = current_user.id
-    @cart_items = CartItem.joins(:inventory_item).where('inventory_items.user_id = ?', user_id)
+    @inventory_items = InventoryItem.joins(:cart_items)
+                                    .where('inventory_items.user_id = ?', user_id)
+                                    .select('inventory_items.*, sum(cart_items.quantity)')
+                                    .group('inventory_items.id')
     
     respond_to do |format|
       format.html

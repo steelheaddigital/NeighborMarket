@@ -8,11 +8,7 @@ class OrdersControllerTest < ActionController::TestCase
     sign_in @user
   end
   
-  test "should get new" do
-    cart = Cart.create
-    session["cart_id"] = cart.id
-    CartItem.create(cart: cart, inventory_item: inventory_items(:one))
-    
+  test "should get new" do    
     post :new, :cart => {}
     
     assert :sucess

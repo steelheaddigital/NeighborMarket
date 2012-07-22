@@ -1,13 +1,11 @@
 <%content_for :MainContent do %>
 <div class="container-fluid">
-  <div class="subnav">
-      <ul class="nav nav-pills">
-        <li class="active"><%= link_to "User Search", management_user_search_path, {:id => "UserSearchNav"} %></li>
-        <li><%= link_to "Approve Sellers", management_approve_sellers_path, {:id => "ApproveSellersNav"} %></li>
-        <li><%= link_to "Manage Categories", management_categories_path, {:id => "ManageCategoriesNav"} %></li>
-        <li></li>
-      </ul>
-  </div>
+  <ul class="nav nav-pills">
+    <li class="active"><%= link_to "User Search", management_user_search_path, {:id => "UserSearchNav"} %></li>
+    <li><%= link_to "Approve Sellers", management_approve_sellers_path, {:id => "ApproveSellersNav"} %></li>
+    <li><%= link_to "Manage Categories", management_categories_path, {:id => "ManageCategoriesNav"} %></li>
+    <li></li>
+  </ul>
   <div class="container-fluid" style="margin-top: 15px;">
     <div class="row-fluid">
       <div id="ManagementLoading" style="display:none">
