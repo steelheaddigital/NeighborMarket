@@ -27,8 +27,8 @@ class SellerController < ApplicationController
     user_id = current_user.id
     @inventory_items = InventoryItem.joins(:cart_items)
                                     .where('inventory_items.user_id = ?', user_id)
-                                    .select('inventory_items.*, sum(cart_items.quantity)')
-                                    .group('inventory_items.id')
+                                    .select('inventory_items.id, inventory_items.name, sum(cart_items.quantity)')
+                                    .group('inventory_items.id, inventory_items.name')
     
     respond_to do |format|
       format.html
