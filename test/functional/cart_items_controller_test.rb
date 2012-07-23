@@ -19,7 +19,7 @@ class CartItemsControllerTest < ActionController::TestCase
     cart_item = cart_items(:one)
     
     assert_difference 'CartItem.count', -1 do
-      post :destroy,  :id => cart_item.id 
+      get :destroy,  :cart_item_id => cart_item.id 
     end
     
     assert_not_nil assigns(:cart_item)

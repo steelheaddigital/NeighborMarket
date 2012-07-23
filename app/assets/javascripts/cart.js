@@ -22,14 +22,16 @@ $(document).on("click", ".deleteCartItemButton", function(event){
     var deleteConfirm = confirm("Are you sure you want to delete this item?");
     var url = $(this).attr("href");
     
-    if(deleteConfirm == true){
-        $.post(url, {_method: 'delete'}, function() {
+    if(deleteConfirm === true){
+        $.get(url, function() {
                 var cart = new Cart();
                 cart.LoadCart();
                 cart.GetCount();
            }
         );
     }
+    
+    return false;
 });
 
 function Cart(){

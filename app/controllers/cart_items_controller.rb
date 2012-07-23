@@ -19,12 +19,16 @@ class CartItemsController < ApplicationController
   end
   
   def destroy
-    @cart_item = CartItem.find(params[:id])
-    @cart_item.destroy
+    @cart_item = CartItem.find(params[:cart_item_id])
 
     respond_to do |format|
-      format.html{ redirect_to cart_index_path }
-      format.js { render :nothing => true }
+      if @cart_item.destroy
+        format.html{ redirect_to cart_index_path, notice: "Cart item successfully deleted" }
+        format.js { render :nothing => true }
+      else
+        format.html{ redirect_to cart_index_path, notice: "Cart item could not be deleted" }
+        format.js { render :nothing => true, :status => 403  }
+      end
     end
   end
   
