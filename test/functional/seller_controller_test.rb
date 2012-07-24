@@ -32,6 +32,14 @@ class SellerControllerTest < ActionController::TestCase
     
   end
   
+  test "should get packing_list" do
+    get :packing_list
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -45,6 +53,10 @@ class SellerControllerTest < ActionController::TestCase
     
     assert_raise CanCan::AccessDenied do
       get :pick_list
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :packing_list
     end
   end
   

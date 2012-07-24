@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div style="margin-bottom: 15px;">
+    <%= link_to "Printable Packing List (PDF)", seller_packing_list_path(:format => 'pdf'), {:class => 'btn'} %>
+  </div>
+  <%@orders.each do |order|%>
+  <div class="well row-fluid">
+    <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.first_name + " " + order.user.last_name %></p>
+    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
+      <table class="table" >
+      <thead>  
+        <tr>
+          <th>Item ID</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+        <tbody>
+          <%order.cart_items.each do |item|%>
+          <tr>
+            <td><%= item.inventory_item.id %></td>
+            <td><%= item.inventory_item.name %></td>
+            <td><%= item.quantity %></td>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+  </div>
+  <%end%>
+</div>

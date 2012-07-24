@@ -9,7 +9,18 @@ $(document).on("click", "#CurrentInventoryNav", function(event){
     return false;
 });
 
-$(document).on("click", "#SellerOrdersNav", function(event){
+$(document).on("click", "#SellerPickListNav", function(event){
+    event.preventDefault();
+    var url = $(this).attr("href")
+    var seller = new Seller();
+
+    utils.SetActiveNavButton($(this));
+    seller.LoadSellerContent(url, true);
+
+    return false;
+});
+
+$(document).on("click", "#SellerPackingListNav", function(event){
     event.preventDefault();
     var url = $(this).attr("href")
     var seller = new Seller();

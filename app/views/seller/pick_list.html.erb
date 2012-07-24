@@ -1,27 +1,25 @@
-<%#= debug @inventory_items %>
 <div class="container-fluid">
-    <div style="margin-bottom: 15px;">
-      <%= link_to "Printable Pick List (PDF)", seller_pick_list_path(:format => 'pdf'), {:class => 'btn'} %>
-    </div>
-    <div class="well row-fluid" style="padding-right:0; padding-left: 0">
-        <table class="table" >
-        <thead>  
+  <div style="margin-bottom: 15px;">
+    <%= link_to "Printable Pick List (PDF)", seller_pick_list_path(:format => 'pdf'), {:class => 'btn'} %>
+  </div>
+  <div class="well row-fluid">
+      <table class="table" >
+      <thead>  
+        <tr>
+          <th>Item ID</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+        <tbody>
+          <%@inventory_items.each do |item|%>
           <tr>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Quantity</th>
+            <td><%= item.id %></td>
+            <td><%= item.name %></td>
+            <td><%= item.sum %></td>
           </tr>
-        </thead>
-          <tbody>
-            <%@inventory_items.each do |item|%>
-            <tr>
-              <td><%= item.id %></td>
-              <td><%= item.name %></td>
-              <td><%= item.sum %></td>
-            </tr>
-            <%end%>
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <%end%>
+        </tbody>
+      </table>
+  </div>
 </div>

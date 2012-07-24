@@ -25,10 +25,24 @@ class SellerController < ApplicationController
   
   def pick_list
     user_id = current_user.id
-    @inventory_items = InventoryItem.joins(:cart_items)
+    @inventory_items = InventoryItem.joins(:cart_items => :order)
                                     .where('inventory_items.user_id = ?', user_id)
                                     .select('inventory_items.id, inventory_items.name, sum(cart_items.quantity)')
                                     .group('inventory_items.id, inventory_items.name')
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+      format.pdf { render :layout => false }
+    end
+    
+  end
+  
+  def packing_list
+    user_id = current_user.id
+    @orders = Order.joins(:cart_items => :inventory_item)
+                   .where(:inventory_items => {:user_id => user_id})
+                   .group('orders.id')
     
     respond_to do |format|
       format.html
