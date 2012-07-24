@@ -41,8 +41,9 @@ class SellerController < ApplicationController
   def packing_list
     user_id = current_user.id
     @orders = Order.joins(:cart_items => :inventory_item)
+                   .select('orders.id, orders.user_id')
                    .where(:inventory_items => {:user_id => user_id})
-                   .group('orders.id')
+                   .group('orders.id, orders.user_id')
     
     respond_to do |format|
       format.html
