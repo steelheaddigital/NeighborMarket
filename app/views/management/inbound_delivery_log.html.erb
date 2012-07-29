@@ -1,4 +1,4 @@
-<%= form_tag management_save_delivery_log_path, :method => "POST" do |f| %>
+<%= form_tag management_save_delivery_log_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
   <div style="margin-bottom: 15px;">
     <%= link_to "Printable Inbound Delivery Log (PDF)", management_inbound_delivery_log_path(:format => 'pdf'), {:class => 'btn'} %>
   </div>

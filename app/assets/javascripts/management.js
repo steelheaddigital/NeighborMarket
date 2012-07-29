@@ -11,6 +11,19 @@ $(document).on("submit", "#TopLevelCategoryForm", function(event){
     return false;
 });
 
+$(document).on("submit", "#InboundDeliveryLogForm", function(event){
+
+    event.preventDefault();
+
+    var data = $(this).serialize();
+    var url = $(this).attr("action");
+    var mgmt = new Management();
+
+    mgmt.SubmitInboundDeliverLogForm(url, data);
+
+    return false;
+});
+
 $(document).on("submit", "#SecondLevelCategoryForm", function(event){
 
     event.preventDefault();
@@ -187,6 +200,25 @@ function Management(){
            },
            error: function(request){
             $("#Modal").html(request.responseText).modal('show');
+           }
+        });
+    }
+    
+    this.SubmitInboundDeliverLogForm = function(url, data){
+        $("#ManagementLoading").show();
+        $.ajax({
+           type: "POST",
+           url: url,
+           data: data,
+           cache: false,
+           dataType: "html",
+           success: function(){
+             self.LoadManagementContent('/management/inbound_delivery_log');
+             utils.ShowAlert($("#ManagementNotice"), "Delivery log successfully updated!")
+             $("#ManagementLoading").hide();
+           },
+           error: function(){
+            utils.ShowAlert($("#ManagementNotice"), "Delivery log could not be updated.");
            }
         });
     }
