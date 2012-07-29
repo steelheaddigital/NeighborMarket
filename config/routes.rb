@@ -21,6 +21,8 @@ GardenMarketplace::Application.routes.draw do
   match 'management/user_search' => 'management#user_search'
   match 'management/user_search_results' => 'management#user_search_results'
   match 'management/categories' => 'management#categories'
+  match 'management/inbound_delivery_log' => 'management#inbound_delivery_log'
+  match 'management/save_delivery_log' => 'management#save_delivery_log', :via => "POST"
   resources :management, :only => ["index"]
   
   match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'

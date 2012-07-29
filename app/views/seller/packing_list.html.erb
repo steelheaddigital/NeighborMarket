@@ -18,7 +18,7 @@
           <%order.cart_items.each do |item|%>
           <tr>
             <td><%= item.inventory_item.id %></td>
-            <td><%= item.inventory_item.name %></td>
+            <td><%= item_name(item.inventory_item) %></td>
             <td><%= item.quantity %></td>
           </tr>
           <%end%>

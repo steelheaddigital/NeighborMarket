@@ -15,7 +15,7 @@
           <%@inventory_items.each do |item|%>
           <tr>
             <td><%= item.id %></td>
-            <td><%= item.name %></td>
+            <td><%= item_name(item) %></td>
             <td><%= item.sum %></td>
           </tr>
           <%end%>

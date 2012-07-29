@@ -1,0 +1,35 @@
+<%= form_tag management_save_delivery_log_path, :method => "POST" do |f| %>
+  <div style="margin-bottom: 15px;">
+    <%= link_to "Printable Inbound Delivery Log (PDF)", management_inbound_delivery_log_path(:format => 'pdf'), {:class => 'btn'} %>
+  </div>
+  <div class="well-fluid row-fluid">
+    <div class="span12">
+      <table class="table">
+      <thead>  
+        <tr>
+          <th>Seller Name</th>
+          <th>Buyer Name</th>
+          <th>Item Name</th>
+          <th>Delivered?</th>
+        </tr>
+      </thead>
+        <tbody>
+          <% @items.each_with_index do |item, index| %>
+          <tr>
+            <td><%= item.seller_last_name + ", " + item.seller_first_name %> </td>
+            <td><%= item.buyer_last_name + ", " + item.buyer_first_name %> </td>
+            <td><%= item_name(item.inventory_item) %> </td>
+            <td><%= check_box_tag "cart_items[" + index.to_s + "][delivered]", "true", item.delivered %></td>
+            <%= hidden_field_tag "cart_items[" + index.to_s + "][id]", item.id %>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span1">
+      <%= submit_tag "Save", :class => 'btn btn-primary' %>
+    </div>
+  </div>
+<%end%>

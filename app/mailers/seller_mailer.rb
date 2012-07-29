@@ -1,5 +1,5 @@
 class SellerMailer < ActionMailer::Base
-  add_template_helper(InventoryItemsHelper)
+  add_template_helper(ApplicationHelper)
   default from: "admin@steelheaddigital.com"
 
   def seller_approved_mail(user)

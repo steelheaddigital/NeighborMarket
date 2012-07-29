@@ -1,4 +1,4 @@
-$(document).on("click", "#CurrentInventoryNav", function(event){
+$(document).on("click", ".sellerNav", function(event){
     event.preventDefault();
     var url = $(this).attr("href")
     var seller = new Seller();
@@ -9,27 +9,6 @@ $(document).on("click", "#CurrentInventoryNav", function(event){
     return false;
 });
 
-$(document).on("click", "#SellerPickListNav", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href")
-    var seller = new Seller();
-
-    utils.SetActiveNavButton($(this));
-    seller.LoadSellerContent(url, true);
-
-    return false;
-});
-
-$(document).on("click", "#SellerPackingListNav", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href")
-    var seller = new Seller();
-
-    utils.SetActiveNavButton($(this));
-    seller.LoadSellerContent(url, true);
-
-    return false;
-});
 
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 

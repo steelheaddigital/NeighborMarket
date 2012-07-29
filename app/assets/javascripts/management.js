@@ -80,38 +80,14 @@ $(document).on("submit", "#UserSearchForm", function(event){
     return false;
 });
 
-$(document).on("click", "#UserSearchNav", function(event){
+$(document).on("click", ".mgmtNav", function(event){
     event.preventDefault();
-    var url = $(this).attr("href")
     var mgmt = new Management();
+    var url = $(this).attr("href")
 
     utils.SetActiveNavButton($(this));
     mgmt.LoadManagementContent(url, true);
-
-    return false;
-});
-
-$(document).on("click", "#ApproveSellersNav", function(event){
-    event.preventDefault();
-
-    var url = $(this).attr("href")
-    var mgmt = new Management();
-
-    utils.SetActiveNavButton($(this));
-    mgmt.LoadManagementContent(url, true);
-
-    return false;
-});
-
-$(document).on("click", "#ManageCategoriesNav", function(event){
-    event.preventDefault();
-
-    var url = $(this).attr("href")
-    var mgmt = new Management();
-
-    utils.SetActiveNavButton($(this));
-    mgmt.LoadManagementContent(url, true);
-
+    
     return false;
 });
 

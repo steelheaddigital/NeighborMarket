@@ -41,6 +41,21 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:categories)
   end
   
+  test "should get inbound_delivery_log" do
+    get :inbound_delivery_log
+    
+    assert_response :success
+    assert_not_nil assigns (:items)
+  end
+  
+  test "should update inbound delivery log" do
+    cart_item = cart_items(:one)
+    post :save_delivery_log, :cart_items => {"0" => {:id => cart_item.id, :delivered => "true"}}
+    
+    assert_redirected_to management_inbound_delivery_log_path
+    assert_equal(true, cart_item.reload.delivered) 
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -62,6 +77,14 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_raise CanCan::AccessDenied do
       get :categories
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :inbound_delivery_log
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      post :save_delivery_log
     end
   end
   

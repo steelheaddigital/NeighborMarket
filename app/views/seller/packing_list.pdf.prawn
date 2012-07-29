@@ -29,7 +29,7 @@ pdf.move_down(30)
     order.cart_items.map do |item|
         items +=  [[
             item.inventory_item.id,
-            item.inventory_item.name,
+            item_name(item.inventory_item),
             item.quantity
           ]]
     end

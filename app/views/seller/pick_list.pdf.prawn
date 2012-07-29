@@ -6,7 +6,7 @@ items = [["ID", "Name", "Quantity"]]
 @inventory_items.map do |item|
 items +=  [[
     item.id,
-    item.name,
+    item_name(item),
     item.sum
   ]]
 end

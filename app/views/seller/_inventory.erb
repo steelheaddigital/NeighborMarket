@@ -17,7 +17,7 @@
         <tr>
           <td><%= item.top_level_category.description%></td>
           <td><%= item.second_level_category.description%></td>
-          <td><%= item.name%></td>
+          <td><%= item_name(item)%></td>
           <td><%= number_to_currency(item.price).to_s + " per " + item.price_unit%></td>
           <td><%= item.quantity_available%></td>
           <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>
