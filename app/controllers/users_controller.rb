@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => :public_show
+  skip_authorize_resource :only => [:public_show, :contact]
   
   def show
     @user = User.find(params[:id])
@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def public_show
     @user = User.find(params[:id])
+    @message = UserContactMessage.new
     
     respond_to do |format|
       
@@ -47,6 +48,20 @@ class UsersController < ApplicationController
       end
     end
   
+  end
+  
+  def contact
+    @message = UserContactMessage.new(params[:user_contact_message])
+    user = User.find(params[:id])
+    
+    if @message.valid?
+      UserMailer.user_contact_mail(user, @message).deliver
+      redirect_to(public_show_user_path(user), :notice => "Your message was successfully sent.")
+    else
+      flash.now.alert = "Please fill all fields."
+      render :public_show
+    end
+    
   end
 
 end

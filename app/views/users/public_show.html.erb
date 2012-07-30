@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span4 well">
+    <div class="span6 well">
       <p>
         <b>First Name:</b>
         <%= @user.first_name %>
@@ -15,6 +15,31 @@
         <b>About Me:</b>
         <%= @user.aboutme %>
       </p>
+    </div>
+    <div class="span6 well">
+      <p><h2>Contact</h2></p>
+      <p class="notice"><%= flash[:notice] %></p>
+      <%= form_for @message, :url => contact_user_path, :method => "POST" do |f|%>
+        <%= f.error_messages %>
+        <div>
+          <%= f.label "Your Email" %>
+          <%= f.text_field :email, {:class => 'input-xlarge'} %>
+        </div>
+
+        <div>
+          <%= f.label "Subject" %>
+          <%= f.text_field :subject, {:class => 'input-xlarge'} %>
+        </div>
+
+        <div>
+          <%= f.label "Message" %>
+          <%= f.text_area :body, {:class => 'input-xlarge', :rows => 10 }%>
+        </div>
+
+        <div>
+          <%= f.submit "Send", {:class => 'btn'} %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

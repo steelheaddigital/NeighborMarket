@@ -38,4 +38,5 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("Congratulations!  Your Seller account at Neighbor Market has been approved.", sent.body.to_s) 
     
   end
+  
 end

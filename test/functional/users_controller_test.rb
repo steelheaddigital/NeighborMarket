@@ -45,6 +45,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:user)
   end
   
+  test "should send contact" do
+    user = users(:approved_seller_user)
+    
+    post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
+    
+    assert_redirected_to public_show_user_url(user)
+    assert_not_nil assigns(:message)
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     user = users(:buyer_user)
@@ -70,6 +80,16 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:user)
+  end
+  
+  test "anonymous user can access contact" do
+    sign_out @user
+    user = users(:approved_seller_user)
+    
+    post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
+    
+    assert_redirected_to public_show_user_url(user)
+    assert_not_nil assigns(:message)
   end
   
 end

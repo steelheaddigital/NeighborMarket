@@ -1,5 +1,6 @@
 class SellerController < ApplicationController
   load_and_authorize_resource :class => InventoryItem
+  skip_authorize_resource :only => :contact
   
   def index
     user_id = current_user.id
@@ -50,7 +51,6 @@ class SellerController < ApplicationController
       format.js { render :layout => false }
       format.pdf { render :layout => false }
     end
-    
   end
   
 end
