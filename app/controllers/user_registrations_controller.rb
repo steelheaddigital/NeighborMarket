@@ -82,7 +82,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   #Override the devise method to send new sellers to a custom page
   def after_inactive_sign_up_path_for(resource)
-    users_inactive_signup_path
+    user_inactive_signup_path
   end
   
   def become_seller
