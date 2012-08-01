@@ -31,7 +31,7 @@ pdf.move_down(30)
             items +=  [[
                 item.inventory_item.id,
                 item_name(item.inventory_item),
-                item.quantity
+                "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"
               ]]
         end
     end

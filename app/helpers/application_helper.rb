@@ -45,11 +45,22 @@ module ApplicationHelper
   
   def item_name(inventory_item)
     
-      if(inventory_item.name == nil || inventory_item.name == "")
+      if inventory_item.name == nil || inventory_item.name == ""
         inventory_item.second_level_category.name 
       else
         inventory_item.name
       end  
     
-  end 
+  end
+  
+  def item_quantity_label(inventory_item, quantity)
+    if inventory_item.price_unit == "lb."
+      if quantity > 1
+        return "lbs."
+      else
+        return "lb."
+      end
+    end
+  end
+  
 end

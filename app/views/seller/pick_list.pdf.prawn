@@ -7,7 +7,7 @@ items = [["ID", "Name", "Quantity"]]
 items +=  [[
     item.id,
     item_name(item),
-    item.sum
+    "#{item.sum}#{" "}#{item_quantity_label(item, item.sum.to_i)}"
   ]]
 end
 

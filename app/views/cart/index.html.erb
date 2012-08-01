@@ -20,7 +20,7 @@
             <tr>
               <td><%= item_name(item.object.inventory_item) %> </td>
               <td><%= number_to_currency(item.object.inventory_item.price) %> </td>
-              <td><%= item.text_field :quantity, :class => "input-small" %></td>
+              <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
             </tr>
             
           </tbody>

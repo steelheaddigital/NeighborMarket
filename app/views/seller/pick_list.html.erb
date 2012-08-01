@@ -16,7 +16,7 @@
           <tr>
             <td><%= item.id %></td>
             <td><%= item_name(item) %></td>
-            <td><%= item.sum %></td>
+            <td><%= "#{item.sum}#{" "}#{item_quantity_label(item, item.sum.to_i)}" %></td>
           </tr>
           <%end%>
         </tbody>
