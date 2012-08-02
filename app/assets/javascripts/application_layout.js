@@ -1,17 +1,12 @@
 $(document).on("click", "#CartButton", function(event){
-    
     event.preventDefault();
-    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
-    
     var url = $(this).attr("href");
     
     $("#MainContent").load(url);
 });
 
 $(document).on("click", ".secondLevelBrowseMenu", function(event){
-   
    event.preventDefault();
-   $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
    
    var url = $(this).attr("href")
    
@@ -33,9 +28,7 @@ $(document).on("click", ".secondLevelBrowseMenu", function(event){
 });
 
 $(document).on("submit", "#MainSearchForm", function(event) {
-   
    event.preventDefault();
-   $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
    
    var url = '/inventory_items/search'
    var postData = $(this).serialize();

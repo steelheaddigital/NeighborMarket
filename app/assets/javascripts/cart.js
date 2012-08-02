@@ -4,20 +4,26 @@ $(document).on("submit", ".addToCartButton", function(event){
     var url = $(this).attr("action");
     var data = $(this).serialize();
     
-    $.post(url, data, function() {
+    $.ajax({
+       type: 'POST',
+       url: url,
+       data: data,
+       dataType: 'html',
+       success: function(data){
            utils.ShowAlert($("#AddToCartNotice"), "Item added to your cart!")
            var cart = new Cart();
            cart.GetCount();
+       },
+       error: function(xhr, status, error){
+           utils.ShowAlert($("#AddToCartNotice"), xhr.responseText)
        }
-    );
+    });
     
     return false;
 });
 
 $(document).on("click", ".deleteCartItemButton", function(event){
-    
     event.preventDefault();
-    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
     
     var deleteConfirm = confirm("Are you sure you want to delete this item?");
     var url = $(this).attr("href");
@@ -35,8 +41,6 @@ $(document).on("click", ".deleteCartItemButton", function(event){
 });
 
 function Cart(){
-    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
-    
     this.LoadCart = function(){
         $("#MainContent").load("/cart");
     }

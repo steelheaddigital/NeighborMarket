@@ -11,8 +11,9 @@ class CartItemsController < ApplicationController
         format.html { redirect_to cart_index_path }
         format.js { render :nothing => true }
       else
-        format.html { render "new" }
-        format.js { render :new, :layout => false }
+        message = @cart_item.errors.full_messages.first
+        format.html { redirect_to cart_index_path, notice: message }
+        format.js { render :text => "Item cannot be added to cart, " + message, :status => 403 }
       end
     end
     

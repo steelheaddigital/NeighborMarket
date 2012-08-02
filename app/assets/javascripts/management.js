@@ -78,7 +78,6 @@ $(document).on("change", "#RoleTypeSelect", function(){
 
 $(document).on("submit", "#UserSearchForm", function(event){
     event.preventDefault();
-    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 
     var queryString = $(this).serialize();
     var url = $(this).attr("action");
@@ -224,7 +223,6 @@ function Management(){
     }
     
     this.LoadManagementDialog = function(url){
-        $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 
         $("#Modal").load(url, function() 
             {$("#ManagementNotice").hide();
@@ -236,7 +234,6 @@ function Management(){
     }
 
     this.LoadManagementContent = function(url, reset){
-        $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 
         $('#ManagementContent').load(url, function(){
             if(reset == true){

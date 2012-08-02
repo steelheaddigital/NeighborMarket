@@ -20,9 +20,11 @@ class OrdersController < ApplicationController
         format.html
         format.js { render :layout => false }
       end
+    else
+      message = @cart.errors.full_messages.first
+      redirect_to cart_index_path, :notice => message
     end
     
-
   end
   
   def create

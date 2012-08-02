@@ -6,4 +6,12 @@ class CartItemTest < ActiveSupport::TestCase
     
     assert_equal item.total_price.to_s, "100.0"
   end
+  
+  test "quantity can't be greater than quantity available" do
+    inventory_item = inventory_items(:one)
+    item = CartItem.new(:inventory_item_id => inventory_item.id, :quantity => 11)
+    
+    assert !item.valid?
+  end
+  
 end

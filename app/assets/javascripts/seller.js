@@ -104,9 +104,7 @@ $(document).on("submit", ".editInventoryItemButton", function(event){
 });
 
 $(document).on("submit", ".deleteInventoryItemButton", function(event){
-    
     event.preventDefault();
-    $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
     
     var deleteConfirm = confirm("Are you sure you want to delete this item?");
     var url = $(this).attr("action");
@@ -126,10 +124,8 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
 });
 
 function Seller(){
-    var self = this;
     
     this.LoadSellerContent = function(url, reset){
-        $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
         $("#SellerLoadingImage").show();
         
         $('#SellerContent').load(url, function(){
@@ -141,8 +137,6 @@ function Seller(){
     }
     
     this.LoadInventoryDialog = function(url){
-        $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
-
         $("#InventoryModal").load(url, function() 
             {$("#InventoryNotice").hide();
         }).modal('show');
