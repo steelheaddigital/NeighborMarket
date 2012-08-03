@@ -80,6 +80,8 @@ class UserRegistrationsController < Devise::RegistrationsController
     
   end
   
+  private
+  
   #Override the devise method to send new sellers to a custom page
   def after_inactive_sign_up_path_for(resource)
     user_inactive_signup_path
@@ -99,8 +101,6 @@ class UserRegistrationsController < Devise::RegistrationsController
         ManagerMailer.new_seller_mail(user, manager).deliver
       end
   end
-  
-  private
   
   def add_resource_role(resource)
     if params[:user][:user_type].downcase == "buyer"

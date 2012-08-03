@@ -26,6 +26,7 @@ manager_user:
 approved_seller_user:
  email: approvedseller@test.com
  username: approvedseller
+ encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Approved
  last_name: Seller
  initial: T
@@ -64,6 +65,7 @@ unapproved_seller_user:
 buyer_user:
  email: buyer@test.com
  username: buyer
+ encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Buyer
  last_name: Test
  initial: T
