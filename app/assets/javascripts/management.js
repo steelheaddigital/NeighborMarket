@@ -17,9 +17,24 @@ $(document).on("submit", "#InboundDeliveryLogForm", function(event){
 
     var data = $(this).serialize();
     var url = $(this).attr("action");
+    var reloadUrl = '/management/inbound_delivery_log'
     var mgmt = new Management();
 
-    mgmt.SubmitInboundDeliverLogForm(url, data);
+    mgmt.SubmitDeliveryLogForm(url, data, reloadUrl);
+
+    return false;
+});
+
+$(document).on("submit", "#OutboundDeliveryLogForm", function(event){
+
+    event.preventDefault();
+
+    var data = $(this).serialize();
+    var url = $(this).attr("action");
+    var reloadUrl = '/management/outbound_delivery_log'
+    var mgmt = new Management();
+
+    mgmt.SubmitDeliveryLogForm(url, data, reloadUrl);
 
     return false;
 });
@@ -203,7 +218,7 @@ function Management(){
         });
     }
     
-    this.SubmitInboundDeliverLogForm = function(url, data){
+    this.SubmitDeliveryLogForm = function(url, data, reloadUrl){
         $("#ManagementLoading").show();
         $.ajax({
            type: "POST",
@@ -212,7 +227,7 @@ function Management(){
            cache: false,
            dataType: "html",
            success: function(){
-             self.LoadManagementContent('/management/inbound_delivery_log');
+             self.LoadManagementContent(reloadUrl);
              utils.ShowAlert($("#ManagementNotice"), "Delivery log successfully updated!")
              $("#ManagementLoading").hide();
            },

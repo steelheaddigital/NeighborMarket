@@ -58,7 +58,7 @@ class ManagementController < ApplicationController
     end
   end
   
-  def save_delivery_log
+  def save_inbound_delivery_log
     cart_items = params[:cart_items]
     
     #Loop through the cart_items array passed in and update the delivered attribute for each
@@ -73,6 +73,35 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
         format.html { redirect_to management_inbound_delivery_log_path, notice: 'Delivery Log Successfully Saved!'}
+        format.js { render :nothing => true }
+    end
+  end
+  
+  def outbound_delivery_log
+    @orders = Order.order(:user_id, :id)
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+      format.pdf { render :layout => false }
+    end
+  end
+  
+  def save_outbound_delivery_log
+    orders = params[:orders]
+    
+    #Loop through the orders array passed in and update the delivered attribute for each
+    orders.each do |order|
+      cart_item = Order.find(order[1][:id])
+      if(order[1][:complete])
+        cart_item.update_attribute(:complete, true)
+      else
+        cart_item.update_attribute(:complete, false)
+      end
+    end
+    
+    respond_to do |format|
+        format.html { redirect_to management_outbound_delivery_log_path, notice: 'Delivery Log Successfully Saved!'}
         format.js { render :nothing => true }
     end
   end

@@ -1,0 +1,37 @@
+<%= form_tag management_save_outbound_delivery_log_path, :method => "POST", :id => 'OutboundDeliveryLogForm' do |f| %>
+    <div class ="row-fluid" style="margin-bottom: 15px;">
+      <%= submit_tag "Save", :class => 'btn btn-primary' %>
+      <%= link_to "Printable Delivery Log (PDF)", management_outbound_delivery_log_path(:format => 'pdf'), {:class => 'btn'} %>
+    </div>
+    <%@orders.each_with_index do |order, index|%>
+    <div class="well row-fluid">
+      <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
+      <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.first_name + " " + order.user.last_name %></p>
+      <p><p><span style ="font-weight: bold">Order Complete: </span><%= check_box_tag "orders[" + index.to_s + "][complete]", "true", order.complete %></p>
+      <%= hidden_field_tag "orders[" + index.to_s + "][id]", order.id %>
+        <table class="table" >
+        <thead>  
+          <tr>
+            <th>Seller Name</th>
+            <th>Item ID</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+          <tbody>
+            <% order.cart_items.each do |item|%>
+            <tr>    
+                <td><%= item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name %>
+                <td><%= item.inventory_item.id %></td>
+                <td><%= item_name(item.inventory_item) %></td>
+                <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+            </tr>
+            <%end%>
+          </tbody>
+        </table>
+    </div>
+    <%end%>
+    <div class="row-fluid">
+      <%= submit_tag "Save", :class => 'btn btn-primary' %>
+    </div>
+<%end%>

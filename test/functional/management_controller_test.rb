@@ -50,10 +50,25 @@ class ManagementControllerTest < ActionController::TestCase
   
   test "should update inbound delivery log" do
     cart_item = cart_items(:one)
-    post :save_delivery_log, :cart_items => {"0" => {:id => cart_item.id, :delivered => "true"}}
+    post :save_inbound_delivery_log, :cart_items => {"0" => {:id => cart_item.id, :delivered => "true"}}
     
     assert_redirected_to management_inbound_delivery_log_path
     assert_equal(true, cart_item.reload.delivered) 
+  end
+  
+  test "should get outbound_delivery_log" do
+    get :outbound_delivery_log
+    
+    assert_response :success
+    assert_not_nil assigns (:orders)
+  end
+  
+  test "should update outbound delivery log" do
+    order = orders(:one)
+    post :save_outbound_delivery_log, :orders => {"0" => {:id => order.id, :complete => "true"}}
+    
+    assert_redirected_to management_outbound_delivery_log_path
+    assert_equal(true, order.reload.complete) 
   end
   
   test "anonymous user cannot access protected actions" do
@@ -84,7 +99,15 @@ class ManagementControllerTest < ActionController::TestCase
     end
     
     assert_raise CanCan::AccessDenied do
-      post :save_delivery_log
+      post :save_inbound_delivery_log
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :outbound_delivery_log
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      post :save_outbound_delivery_log
     end
   end
   
