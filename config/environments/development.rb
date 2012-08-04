@@ -21,7 +21,7 @@ GardenMarketplace::Application.configure do
     :port                 =>  25,
     :domain               => 'steelheaddigital.com',
     :user_name            => 'admin@steelheaddigital.com',
-    :password             => 'PortlandRock!',
+    :password             => '',
     :authentication       => 'plain',
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'
