@@ -44,7 +44,7 @@ class ManagementController < ApplicationController
   
   def inbound_delivery_log
     #Couldn't find a way to do the aliased subquery with ActiveRecord so just used raw SQL
-    @items = CartItem.all
+    @items = CartItem.joins(:order)
 
     respond_to do |format|
       format.html
