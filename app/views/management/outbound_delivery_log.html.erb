@@ -19,9 +19,9 @@
           </tr>
         </thead>
           <tbody>
-            <% order.cart_items.each do |item|%>
+            <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.last_name, cart_item.inventory_item.user.first_name]}.each do |item|%>
             <tr>    
-                <td><%= item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name %>
+                <td><%= item.inventory_item.user.last_name + ", " + item.inventory_item.user.first_name %>
                 <td><%= item.inventory_item.id %></td>
                 <td><%= item_name(item.inventory_item) %></td>
                 <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>

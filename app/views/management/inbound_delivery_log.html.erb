@@ -16,10 +16,10 @@
         </tr>
       </thead>
         <tbody>
-          <% @items.each_with_index do |item, index| %>
+          <% @items.sort_by{|item| [item.inventory_item.user.last_name, item.inventory_item.user.first_name, item.order.user.last_name, item.order.user.first_name]}.each_with_index do |item, index| %>
           <tr>
-            <td><%= item.seller_last_name + ", " + item.seller_first_name %> </td>
-            <td><%= item.buyer_last_name + ", " + item.buyer_first_name %> </td>
+            <td><%= item.inventory_item.user.last_name + ", " + item.inventory_item.user.first_name %> </td>
+            <td><%= item.order.user.last_name + ", " + item.order.user.first_name %> </td>
             <td><%= item_name(item.inventory_item) %> </td>
             <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %> </td>
             <td><%= check_box_tag "cart_items[" + index.to_s + "][delivered]", "true", item.delivered %></td>

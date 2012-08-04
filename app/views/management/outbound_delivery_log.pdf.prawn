@@ -36,9 +36,9 @@ pdf.move_down(30)
     pdf.move_down(10)
 
     items = [["Seller Name", "Item ID", "Item Name", "Quantity"]]
-    order.cart_items.map do |item|
+    order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.last_name, cart_item.inventory_item.user.first_name]}.map do |item|
         items +=  [[
-            item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name,
+            item.inventory_item.user.last_name + " " + item.inventory_item.user.first_name,
             item.inventory_item.id,
             item_name(item.inventory_item),
             "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"

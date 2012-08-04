@@ -44,12 +44,7 @@ class ManagementController < ApplicationController
   
   def inbound_delivery_log
     #Couldn't find a way to do the aliased subquery with ActiveRecord so just used raw SQL
-    sql = 'SELECT cart_items.*, inv.last_name AS seller_last_name, inv.first_name AS seller_first_name, orders.last_name AS buyer_last_name, orders.first_name AS buyer_first_name
-           FROM cart_items
-           INNER JOIN (SELECT inventory_items.id, inventory_items.name, users.last_name, users.first_name FROM inventory_items INNER JOIN users ON users.id = inventory_items.user_id) AS inv ON cart_items.inventory_item_id = inv.id 
-           INNER JOIN (SELECT orders.id, users.last_name, users.first_name FROM orders INNER JOIN users ON users.id = orders.user_id) AS orders ON orders.id = cart_items.order_id
-           ORDER BY inv.last_name, inv.first_name, orders.last_name, orders.first_name'
-    @items = CartItem.find_by_sql(sql)
+    @items = CartItem.all
 
     respond_to do |format|
       format.html
