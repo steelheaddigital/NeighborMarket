@@ -100,4 +100,14 @@ class ManagementController < ApplicationController
     end
   end
   
+  def buyer_invoices
+    @orders = Order.order(:user_id, :id)
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+      format.pdf { render :layout => false }
+    end
+  end
+  
 end

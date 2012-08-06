@@ -60,18 +60,7 @@ $(document).on("submit", "#EditUserForm", function(event){
     var mgmt = new Management();
 
     mgmt.CloseManagementDialog();
-    $("#ManagementLoading").show();
-    $.post(url, data, function(){
-     var approveSellers = $("#ApproveSellers");
-
-     //if we are on the Approve Sellers screen, then refresh the Approve Seller table
-     if(approveSellers.length > 0){
-         mgmt.LoadManagementContent('/management/approve_sellers');
-     }
-     
-     utils.ShowAlert($("#ManagementNotice"), "User successfully updated!");
-     $("#ManagementLoading").hide();
-    });
+    mgmt.SubmitEditUsersForm(url, data)
 
     return false;
 });
@@ -233,6 +222,31 @@ function Management(){
            },
            error: function(){
             utils.ShowAlert($("#ManagementNotice"), "Delivery log could not be updated.");
+           }
+        });
+    }
+    
+    this.SubmitEditUsersForm = function(url, data){
+        $("#ManagementLoading").show();
+        $.ajax({
+           type: "POST",
+           url: url,
+           data: data,
+           cache: false,
+           dataType: "html",
+           success: function(){
+             var approveSellers = $("#ApproveSellers");
+
+             //if we are on the Approve Sellers screen, then refresh the Approve Seller table
+             if(approveSellers.length > 0){
+                 self.LoadManagementContent('/management/approve_sellers');
+             }
+
+             utils.ShowAlert($("#ManagementNotice"), "User successfully updated!");
+             $("#ManagementLoading").hide();
+           },
+           error: function(){
+            $("#ManagementLoading").hide();
            }
         });
     }

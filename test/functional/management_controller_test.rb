@@ -71,6 +71,13 @@ class ManagementControllerTest < ActionController::TestCase
     assert_equal(true, order.reload.complete) 
   end
   
+  test "should get buyer_invoices" do
+    get :buyer_invoices
+    
+    assert_response :success
+    assert_not_nil assigns (:orders)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -108,6 +115,10 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_raise CanCan::AccessDenied do
       post :save_outbound_delivery_log
+    end
+    
+    assert_raise CanCan::AccessDenied do
+      get :buyer_invoices
     end
   end
   
