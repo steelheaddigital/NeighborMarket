@@ -1,5 +1,5 @@
 class Cart < ActiveRecord::Base
-  has_many :cart_items, :autosave => true
+  has_many :cart_items, :autosave => true, :dependent => :destroy
   belongs_to :user
   accepts_nested_attributes_for :cart_items
   attr_accessible :user_id, :cart_items_attributes

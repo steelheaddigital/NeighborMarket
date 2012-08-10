@@ -10,3 +10,7 @@ one:
   quantity: 10
   order: one
 
+no_order:
+  cart: no_order
+  inventory_item: one
+  quantity: 10

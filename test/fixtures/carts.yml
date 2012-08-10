@@ -10,3 +10,7 @@ full:
   
 empty:
   user: buyer_user
+
+
+no_order:
+  user: buyer_user

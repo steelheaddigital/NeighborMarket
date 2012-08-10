@@ -43,21 +43,17 @@ class SellerControllerTest < ActionController::TestCase
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
-    assert_raise CanCan::AccessDenied do
-      get :index
-    end
+    get :index
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :current_inventory
-    end
+    get :current_inventory
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :pick_list
-    end
+    get :pick_list
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :packing_list
-    end
+    get :packing_list
+    assert_redirected_to new_user_session_url
   end
   
 end

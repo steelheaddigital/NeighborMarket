@@ -59,17 +59,14 @@ class UsersControllerTest < ActionController::TestCase
     sign_out @user
     user = users(:buyer_user)
     
-    assert_raise CanCan::AccessDenied do
-      get :show, :id => user.id
-    end
+    get :show, :id => user.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :edit, :id => user.id
-    end
+    get :edit, :id => user.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      post :update, :id => user.id, :user => { :seller_approved => true }
-    end
+    post :update, :id => user.id, :user => { :seller_approved => true }
+    assert_redirected_to new_user_session_url
   end
   
   test "anonymous user can access public_show" do

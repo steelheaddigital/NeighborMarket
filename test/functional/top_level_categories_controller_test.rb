@@ -61,28 +61,24 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   
   test "anonymous user cannot access protected actions" do
     sign_out @user
+
+    get :new
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :new
-    end
+    category = top_level_categories(:preserves)
+    get :edit, :id => category.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      category = top_level_categories(:preserves)
-      get :edit, :id => category.id
-    end
+    category = top_level_categories(:preserves)
+    post :update, :id => category.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      category = top_level_categories(:preserves)
-      post :update, :id => category.id
-    end
     
-    assert_raise CanCan::AccessDenied do
-      category = top_level_categories(:preserves)
-      post :destroy, :id => category.id
-    end
+    category = top_level_categories(:preserves)
+    post :destroy, :id => category.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      post :create
-    end
+    post :create
+    assert_redirected_to new_user_session_url
   end
 end

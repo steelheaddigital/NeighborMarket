@@ -28,8 +28,7 @@ class OrdersControllerTest < ActionController::TestCase
   test "anonymous user cannot access protected actions" do
     sign_out @user
         
-    assert_raise CanCan::AccessDenied do
-      post :create
-    end
+    post :create
+    assert_redirected_to new_user_session_url
   end
 end

@@ -104,17 +104,14 @@ class InventoryItemsControllerTest < ActionController::TestCase
   test "seller cannot access items other than their own" do
     item = inventory_items(:two)
     
-    assert_raise CanCan::AccessDenied do
-      get :edit, :id => item.id
-    end
+    get :edit, :id => item.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :update, :id => item.id
-    end
+    get :update, :id => item.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :destroy, :id => item.id
-    end
+    get :destroy, :id => item.id
+    assert_redirected_to new_user_session_url
   end
   
   
@@ -122,25 +119,20 @@ class InventoryItemsControllerTest < ActionController::TestCase
     sign_out @user
     item = inventory_items(:one)
     
-    assert_raise CanCan::AccessDenied do
-      get :new
-    end
+    get :new
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      post :create
-    end
+    post :create
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :edit, :id => item.id
-    end
+    get :edit, :id => item.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :update, :id => item.id
-    end
+    get :update, :id => item.id
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :destroy, :id => item.id
-    end
+    get :destroy, :id => item.id
+    assert_redirected_to new_user_session_url
   end
   
   test "anonymous user can access browse" do

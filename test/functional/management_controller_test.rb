@@ -81,45 +81,35 @@ class ManagementControllerTest < ActionController::TestCase
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
-    assert_raise CanCan::AccessDenied do
-      get :index
-    end
+    get :index
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :approve_sellers
-    end
+    get :approve_sellers
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :user_search
-    end
+    get :user_search
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :user_search_results
-    end
+    get :user_search_results
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :categories
-    end
+    get :categories
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :inbound_delivery_log
-    end
+    get :inbound_delivery_log
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      post :save_inbound_delivery_log
-    end
+    post :save_inbound_delivery_log
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :outbound_delivery_log
-    end
+    get :outbound_delivery_log
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      post :save_outbound_delivery_log
-    end
+    post :save_outbound_delivery_log
+    assert_redirected_to new_user_session_url
     
-    assert_raise CanCan::AccessDenied do
-      get :buyer_invoices
-    end
+    get :buyer_invoices
+    assert_redirected_to new_user_session_url
   end
   
 end

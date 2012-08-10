@@ -16,7 +16,7 @@ class CartItemsControllerTest < ActionController::TestCase
   end
   
   test "should destroy cart item" do
-    cart_item = cart_items(:one)
+    cart_item = cart_items(:no_order)
     
     assert_difference 'CartItem.count', -1 do
       get :destroy,  :cart_item_id => cart_item.id 
