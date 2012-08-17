@@ -36,7 +36,7 @@ gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "prawnto_2", :require => "prawnto"
 gem "rufus-scheduler"
-
-
+gem "foreman"
+gem "paperclip", "~> 3.0"
 
 

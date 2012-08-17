@@ -19,6 +19,10 @@
   <%= f.text_area :description, :size => "10x10" %>
 </div>
 <div>
+  <%= f.label "Add a photo" %>
+  <%= f.file_field :photo %>
+</div>
+<div>
   <label>Post to Crowdmap</label>
   <%=  check_box_tag "crowdmap", 1%>
 </div>

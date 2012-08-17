@@ -7,7 +7,11 @@
       <% seller_name = item.user.first_name + " " + item.user.last_name %>
         <div class="well-fluid row-fluid">
           <div class="span2">
-            <p>No Image Available</p>
+            <%if item.photo?%>
+              <%= image_tag item.photo.url(:medium) %>
+            <%else%>
+              No Image Available
+            <%end%>
           </div>
           <div class="span10">
             <h3>

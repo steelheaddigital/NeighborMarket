@@ -3,8 +3,9 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :top_level_category
   belongs_to :second_level_category
   has_many :cart_items
+  has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
-  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description
+  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo
   
   validates :top_level_category_id, 
     :second_level_category_id,

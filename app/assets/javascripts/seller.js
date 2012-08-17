@@ -38,17 +38,17 @@ $(document).on("submit", "#NewInventoryItemButton", function(event){
 });
 
 $(document).on("submit", "#new_inventory_item", function(){
-    var postData = $(this).serialize();
-    var url = $(this).attr("action"); 
     var seller = new Seller();
     
     $("#SellerLoadingImage").show();
-    $.ajax({
-       type: "POST",
-       url: url,
-       data: postData,
-       cache: false,
+    $(this).ajaxSubmit({
        dataType: "html",
+       //Remove the file input if it's empty so paperclip doesn't choke'
+       beforeSerialize: function() {
+           if($("#inventory_item_photo").val() === ""){
+               $("#inventory_item_photo").remove();
+           }
+       },
        success: function(data){
            $("#SellerContent").html(data);
            seller.LoadCurrentInventory('/seller/current_inventory');
@@ -65,17 +65,17 @@ $(document).on("submit", "#new_inventory_item", function(){
 });
 
 $(document).on("submit", "#edit_inventory_item", function(){
-    var postData = $(this).serialize();
-    var url = $(this).attr("action");
     var seller = new Seller();
     
     $("#SellerLoadingImage").show();
-    $.ajax({
-       type: "POST",
-       url: url,
-       data: postData,
-       cache: false,
+    $(this).ajaxSubmit({
        dataType: "html",
+       //Remove the file input if it's empty so paperclip doesn't choke'
+       beforeSerialize: function() {
+           if($("#inventory_item_photo").val() === ""){
+               $("#inventory_item_photo").remove();
+           }
+       },
        success: function(data){
            $('#InventoryNotice').empty();
            seller.LoadCurrentInventory('/seller/current_inventory');

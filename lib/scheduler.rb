@@ -15,7 +15,7 @@
         
     def self.start_session_cleaner      
       @scheduler.every("1m") do
-          Session.destroy_all( ['updated_at <?', 1.hour.ago] )
+          Session.destroy_all( ['updated_at <?', 1.day.ago] )
       end
     end
   end
