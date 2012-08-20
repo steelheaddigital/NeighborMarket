@@ -5,7 +5,7 @@ var utils = {
     },
     
     SetActiveNavButton: function(object){
-        object.parent().siblings().removeClass('active');
+        object.parentsUntil(".nav .nav-pills").siblings().removeClass('active');
         object.parent().addClass('active');
     }
 }

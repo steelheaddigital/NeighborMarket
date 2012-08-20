@@ -78,6 +78,14 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:orders)
   end
   
+  test "should get order_cycle_settings" do
+    get :order_cycle
+    
+    assert_response :success
+    assert_not_nil assigns (:order_cycle_settings)
+    assert_not_nil assigns (:order_cycle)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     

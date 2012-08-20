@@ -184,9 +184,34 @@ $(document).on("submit", ".deleteSecondLevelCategoryButton", function(event){
     return false;
 });
 
+$(document).on("submit", "#OrderCycleSettingsForm", function(){
+    event.preventDefault()
+    var mgmt = new Management();
+    mgmt.SubmitOrderCycleSettingsForm($(this))
+    return false;
+})
+
+
 function Management(){
  
     var self = this;
+ 
+    this.SubmitOrderCycleSettingsForm = function(form){
+        $("#ManagementLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(){
+             self.LoadManagementContent('/management/order_cycle');
+             self.CloseManagementDialog();
+             utils.ShowAlert($("#ManagementNotice"), "Order cycle settings successfully updated!")
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#ManagementLoading").hide();
+            $("#Modal").html(request.responseText).modal('show');
+           }
+        });
+    }
  
     this.SubmitCategoryForm = function(url, data){
        $.ajax({

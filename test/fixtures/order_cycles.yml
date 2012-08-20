@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+not_current:
+  start_date: 2012-08-17 18:03:25
+  end_date: 2012-08-17 18:03:25
+  current: false
+
+current:
+  start_date: 2012-08-17 18:03:25
+  end_date: 2012-08-17 18:03:25
+  current: false

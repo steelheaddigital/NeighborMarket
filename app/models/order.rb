@@ -1,6 +1,12 @@
 class Order < ActiveRecord::Base
   has_many :cart_items, dependent: :destroy
   belongs_to :user
+  belongs_to :order_cycle
+  
+  before_save do |order|
+    order_cycle_id = OrderCycle.current_cycle
+    order.order_cycle_id = order_cycle_id
+  end
   
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|

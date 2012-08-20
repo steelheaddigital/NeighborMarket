@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120815124310) do
+ActiveRecord::Schema.define(:version => 20120819130102) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -28,6 +28,22 @@ ActiveRecord::Schema.define(:version => 20120815124310) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "inventory_items", :force => true do |t|
     t.integer  "top_level_category_id"
@@ -46,11 +62,25 @@ ActiveRecord::Schema.define(:version => 20120815124310) do
     t.datetime "photo_updated_at"
   end
 
+  create_table "order_cycle_settings", :force => true do |t|
+    t.boolean "recurring", :default => false
+    t.string  "interval"
+  end
+
+  create_table "order_cycles", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.boolean  "current"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orders", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "complete",   :default => false
+    t.boolean  "complete",       :default => false
+    t.integer  "order_cycle_id"
   end
 
   create_table "roles", :force => true do |t|

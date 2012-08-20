@@ -8,14 +8,14 @@
       start_session_cleaner
       
       puts "Scheduler started"
-      Rails.logger.info "Scheduler started"
+      Rails.logger.info "Scheduler started at " + DateTime.now.to_s
       
       @scheduler.join
     end
         
     def self.start_session_cleaner      
       @scheduler.every("1m") do
-          Session.destroy_all( ['updated_at <?', 1.day.ago] )
+          Session.destroy_all( ['updated_at <?', 1.hour.ago] )
       end
     end
   end

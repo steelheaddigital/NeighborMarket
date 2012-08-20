@@ -110,4 +110,42 @@ class ManagementController < ApplicationController
     end
   end
   
+  def order_cycle
+    
+    order_cycle_settings = OrderCycleSetting.first
+    order_cycle = OrderCycle.find_by_current(true)
+    
+    if order_cycle_settings
+      @order_cycle_settings = order_cycle_settings
+    else
+      @order_cycle_settings = OrderCycleSetting.new
+    end
+    
+    if order_cycle
+      @order_cycle = order_cycle
+    else
+      @order_cycle = OrderCycle.new
+    end
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def update_order_cycle
+    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
+    @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
+      
+    respond_to do |format|
+      if @order_cycle.save && @order_cycle_settings.save
+        format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "order_cycle" }
+        format.js { render :order_cycle, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
 end

@@ -38,5 +38,5 @@ gem "prawnto_2", :require => "prawnto"
 gem "rufus-scheduler"
 gem "foreman"
 gem "paperclip", "~> 3.0"
-
+gem "delayed_job_active_record"
 
