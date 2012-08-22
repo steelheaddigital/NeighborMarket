@@ -25,7 +25,7 @@
                   <li><%= link_to('Sell', seller_index_path) %></li>
               <% end %>   
             </ul>
-            <ul class="navbar-text pull-right nav">
+            <ul class="pull-right nav">
               <% if user_signed_in? %>
                 <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %></li>        
               <% else %>
@@ -49,55 +49,57 @@
       </div>
   </div>
   <div class="container-fluid">
+    <header class="subhead">
       <div class="subnav subnav-fixed" style="min-width:620px;">
-      <ul class ="nav nav-pills">
-        <li class="dropdown" id="MainCategoriesMenu">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Browse Categories
-          <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <% @TopLevelCategories = get_top_level_categories %>
-            <% @TopLevelCategories.each do |category| %>
-              <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
-                <ul class="dropdown-menu">
-                  <% category.second_level_categories.each do |category|%>
-                  <li>
-                      <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
-                  </li>
-                  <% end %>
-                </ul>
-              </li>
-            <%  end %>
-          </ul>
-        </li>
-        <li>
-          <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
-            <input name="keywords" type="text"></input>
-            <button type="submit" class="btn">Search</button>
-          </form>
-        </li>
-        <li class="mainSearchBarEnd pull-right">
-          <a id ="CartButton" href= "<%= cart_index_path %>" >
-          <i class="icon-shopping-cart"></i>
-          <span id="CartCount" class="badge badge-info pull-right" style="margin-left:10px;"><%= current_cart.cart_items.count %></span>
-          Shopping Cart
-          </a>
-        </li>
-      </ul>
+        <ul class ="nav nav-pills">
+          <li class="dropdown" id="MainCategoriesMenu">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Browse Categories
+            <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <% @TopLevelCategories = get_top_level_categories %>
+              <% @TopLevelCategories.each do |category| %>
+                <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
+                  <ul class="dropdown-menu">
+                    <% category.second_level_categories.each do |category|%>
+                    <li>
+                        <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
+                    </li>
+                    <% end %>
+                  </ul>
+                </li>
+              <%  end %>
+            </ul>
+          </li>
+          <li>
+            <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
+              <input name="keywords" type="text"></input>
+              <button type="submit" class="btn">Search</button>
+            </form>
+          </li>
+          <li class="pull-right">
+            <a id ="CartButton" href= "<%= cart_index_path %>" >
+            <i class="icon-shopping-cart"></i>
+            <span id="CartCount" class="badge badge-info pull-right" style="margin-left:10px;"><%= current_cart.cart_items.count %></span>
+            Shopping Cart
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+  <div id="Loading" class="row-fluid">
+    <div class="span6"></div>
+    <div>
+      <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
     </div>
   </div>
-<div id="Loading" class="row-fluid">
-  <div class="span6"></div>
-  <div>
-    <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
+    <div class="row-fluid">
+      <div id="MainContent" class="span-12">
+        <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
+      </div>
+    </div>
   </div>
-</div>
-<div class="container-fluid">
-  <div id="MainContent" class="row-fluid">
-    <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
-  </div>
-</div>
 <script>
   $('.dropdown-toggle').dropdown();
 </script>

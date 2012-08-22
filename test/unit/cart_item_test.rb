@@ -14,4 +14,14 @@ class CartItemTest < ActiveSupport::TestCase
     assert !item.valid?
   end
   
+  test "returns validation error if no current order cycle" do
+    current_order_cycle = OrderCycle.current_cycle
+    current_order_cycle.destroy
+    inventory_item = inventory_items(:one)
+    item = CartItem.new(:inventory_item_id => inventory_item.id, :quantity => 5)
+    
+    assert !item.valid?
+  end
+  
+  
 end

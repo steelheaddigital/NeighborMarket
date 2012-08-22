@@ -43,7 +43,8 @@ class ManagementController < ApplicationController
   end
   
   def inbound_delivery_log
-    @items = CartItem.joins(:order)
+    current_cycle_id = OrderCycle.current_cycle_id
+    @items = CartItem.joins(:order).where(:orders => {:order_cycle_id => current_cycle_id})
 
     respond_to do |format|
       format.html
@@ -72,7 +73,8 @@ class ManagementController < ApplicationController
   end
   
   def outbound_delivery_log
-    @orders = Order.order(:user_id, :id)
+    current_cycle_id = OrderCycle.current_cycle_id
+    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => current_cycle_id})
     
     respond_to do |format|
       format.html
@@ -101,7 +103,8 @@ class ManagementController < ApplicationController
   end
   
   def buyer_invoices
-    @orders = Order.order(:user_id, :id)
+    current_cycle_id = OrderCycle.current_cycle_id
+    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => current_cycle_id})
     
     respond_to do |format|
       format.html

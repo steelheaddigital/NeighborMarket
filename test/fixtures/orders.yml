@@ -1,4 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+current:
   user: buyer_user
+  order_cycle: current
+  
+not_current:
+  user: buyer_user
+  order_cycle: not_current

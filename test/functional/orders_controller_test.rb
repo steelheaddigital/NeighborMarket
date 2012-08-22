@@ -11,7 +11,7 @@ class OrdersControllerTest < ActionController::TestCase
   test "should get new" do    
     post :new, :cart => {}
     
-    assert :sucess
+    assert :success
     assert_not_nil assigns(:order)
   end
   

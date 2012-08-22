@@ -69,4 +69,8 @@ class OrderCycle < ActiveRecord::Base
   def self.current_cycle
     self.find_by_current(true)
   end
+  
+  def self.current_cycle_id
+    return current_cycle ? current_cycle.id : 0
+  end
 end

@@ -64,7 +64,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should update outbound delivery log" do
-    order = orders(:one)
+    order = orders(:current)
     post :save_outbound_delivery_log, :orders => {"0" => {:id => order.id, :complete => "true"}}
     
     assert_redirected_to management_outbound_delivery_log_path
