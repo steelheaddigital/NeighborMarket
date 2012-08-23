@@ -6,10 +6,7 @@ gem 'pg'
 
 group :development, :test do
   gem 'debugger'
-end
-
-group :production do
-  gem 'thin'
+  gem 'ruby-debug-passenger'
 end
 
 group :test do
@@ -39,4 +36,5 @@ gem "rufus-scheduler"
 gem "foreman"
 gem "paperclip", "~> 3.0"
 gem "delayed_job_active_record"
+gem "capistrano"
 

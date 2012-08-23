@@ -1,11 +1,13 @@
 <%content_for :MainContent do %>
 <div class ="container-fluid">
+  <div class ="subnav">
     <ul id="SellerTab" class="nav nav-pills">
       <li class="active"><%= link_to "Current Inventory", seller_current_inventory_path, {:class => "sellerNav"} %></a></li>
       <li><%= link_to "Pick List", seller_pick_list_path, {:class => "sellerNav"} %></li>
       <li><%= link_to "Packing List", seller_packing_list_path, {:class => "sellerNav"} %></li>
       <li></li>
     </ul>
+  </div>
   <div class="container-fluid" style="margin-top: 15px;">
     <div class="row-fluid">
       <div id="SellerLoadingImage" style="display:none">

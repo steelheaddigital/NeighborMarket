@@ -30,5 +30,5 @@ production:
   host: localhost
   database: GardenMarketplace_production
   username: postgres
-  password: farDro3h
+  password: Gr33nB3ans
 
