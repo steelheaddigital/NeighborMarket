@@ -11,7 +11,7 @@ set :deploy_to, "/home/nmpadm/neighbor_market/"
 #    Settings
 #############################################################
 
-default_run_options[:pty] = true
+#default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 set :use_sudo, false
 set :scm_verbose, true
@@ -23,7 +23,8 @@ set :rails_env, "production"
 
 set :user, "nmpadm"
 set :domain, "108.166.122.238"
-server domain, :app, :web
+role :app, domain
+role :web, domain
 role :db, domain, :primary => true
 
 #############################################################
