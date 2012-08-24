@@ -13,7 +13,7 @@ development:
   host: localhost
   database: GardenMarketplace_development
   username: postgres
-  password: farDro3h
+  password: 
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -23,12 +23,12 @@ test:
   host: localhost
   database: GardenMarketplace_test
   username: postgres
-  password: farDro3h
+  password: 
 
 production:
   adapter: postgresql
   host: localhost
   database: GardenMarketplace_production
   username: postgres
-  password: Gr33nB3ans
+  password: 
 
