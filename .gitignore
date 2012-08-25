@@ -17,5 +17,8 @@
 #ignore the Netbeans project files
 /nbproject
 
+#ignore the bundle file
+/vendor/bundle
+
 #ignore the OSX files
 .DS_Store
