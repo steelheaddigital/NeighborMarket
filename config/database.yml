@@ -29,6 +29,6 @@ production:
   adapter: postgresql
   host: localhost
   database: GardenMarketplace_production
-  username: postgres
+  username: nmpadm
   password: 
 

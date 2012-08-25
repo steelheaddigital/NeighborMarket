@@ -1,4 +1,5 @@
 require 'bundler/capistrano'
+load 'deploy/assets'
 
 #############################################################
 #    Application
@@ -38,10 +39,8 @@ set :deploy_via, :remote_cache
 #############################################################
 #    Rvm
 #############################################################
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
 set :rvm_ruby_string, '1.9.3'
-set :rvm_type, :user
 
 namespace :deploy do
   desc "cause Passenger to initiate a restart"
