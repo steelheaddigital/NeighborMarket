@@ -43,6 +43,8 @@ set :rvm_ruby_string, '1.9.3'
 
 after "deploy:update", "foreman:export"
 after "deploy:update", "foreman:restart"
+after "deploy", "deploy:migrate"
+after "deploy", "deploy:seed"
 
 namespace :foreman do
   desc "Export the Procfile to Ubuntu's upstart scripts"
