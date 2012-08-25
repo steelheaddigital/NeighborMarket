@@ -44,12 +44,11 @@ set :rvm_ruby_string, '1.9.3'
 after "deploy:update", "foreman:export"
 after "deploy:update", "foreman:restart"
 after "deploy", "deploy:migrate"
-after "deploy", "deploy:seed"
 
 namespace :foreman do
   desc "Export the Procfile to Ubuntu's upstart scripts"
   task :export, :roles => :app do
-    run "cd #{release_path} && sudo bundle exec foreman export upstart /etc/init -f ./Procfile.production -a #{application} -u #{user} -l #{shared_path}/log"
+    run "cd #{release_path} && rvmsudo bundle exec foreman export upstart /etc/init -f ./Procfile.production -a #{application} -u #{user} -l #{shared_path}/log"
   end
   
   desc "Start the application services"

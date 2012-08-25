@@ -18,9 +18,11 @@
 /nbproject
 
 /vender/bundle
+/public/system
 
 #ignore the OSX files
 .DS_Store
+/.git-rewrite/
 /vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/lib/%name%/
 /vendor/bundle/ruby/1.9.1/gems/prawnto_2-0.2.5/spec/dummy/.sass-cache/
 /vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/app/views/layouts/%name%/
