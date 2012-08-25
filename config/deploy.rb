@@ -32,7 +32,7 @@ role :db, domain, :primary => true
 #############################################################
 set :scm, :git
 set :branch, "master"
-set :repository, "nmpadm@108.166.122.238:neighbor_market/nmp.git"
+set :repository, "nmpadm@108.166.122.238:git/nmp.git"
 set :deploy_via, :remote_cache
 
 #############################################################
