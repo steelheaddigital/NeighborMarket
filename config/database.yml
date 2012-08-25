@@ -30,5 +30,4 @@ production:
   host: localhost
   database: GardenMarketplace_production
   username: nmpadm
-  password: 
-
+  password: Gr33nB3ans
