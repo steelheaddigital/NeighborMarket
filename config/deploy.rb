@@ -1,5 +1,4 @@
 require 'bundler/capistrano'
-load 'deploy/assets'
 
 #############################################################
 #    Application
@@ -47,6 +46,7 @@ namespace :deploy do
   task :restart do
     run "touch #{current_path}/tmp/restart.txt" 
   end
+  
   desc "reload the database with seed data"
   task :seed do
     run "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
