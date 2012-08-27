@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  domain: MyString
+  site_name: MyString
+  drop_point_address: MyString
+  drop_point_city: MyString
+  drop_point_state: MyString
+  drop_point_zip: 1
+
+two:
+  domain: MyString
+  site_name: MyString
+  drop_point_address: MyString
+  drop_point_city: MyString
+  drop_point_state: MyString
+  drop_point_zip: 1

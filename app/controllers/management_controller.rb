@@ -2,7 +2,9 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => ManagementController
   
   def index
-
+    @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
+    
+    render :action => "site_setting" 
   end
   
   def approve_sellers
@@ -19,7 +21,7 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html {render :index}
-      format.js { render :partial => "user_search", :layout => false }
+      format.js { render :layout => false }
     end
   end
   
@@ -114,21 +116,8 @@ class ManagementController < ApplicationController
   end
   
   def order_cycle
-    
-    order_cycle_settings = OrderCycleSetting.first
-    order_cycle = OrderCycle.find_by_current(true)
-    
-    if order_cycle_settings
-      @order_cycle_settings = order_cycle_settings
-    else
-      @order_cycle_settings = OrderCycleSetting.new
-    end
-    
-    if order_cycle
-      @order_cycle = order_cycle
-    else
-      @order_cycle = OrderCycle.new
-    end
+    @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
+    @order_cycle = OrderCycle.find_by_current(true) ? OrderCycle.find_by_current(true) : OrderCycle.new
     
     respond_to do |format|
       format.html
@@ -147,6 +136,29 @@ class ManagementController < ApplicationController
       else
         format.html { render "order_cycle" }
         format.js { render :order_cycle, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  def site_setting
+    @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def update_site_setting
+    @site_settings = SiteSetting.new_setting(params[:site_setting])
+    
+    respond_to do |format|
+      if @site_settings.save
+        format.html { redirect_to management_site_setting_path, notice: 'Site Settings Successfully Saved!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "site_setting" }
+        format.js { render :site_setting, :layout => false, :status => 403 }
       end
     end
   end

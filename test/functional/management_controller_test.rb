@@ -86,6 +86,28 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:order_cycle)
   end
   
+  test "should update order_cycle_settings" do
+    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => "01/01/12", :end_date => "01/02/12"}
+    
+    assert_response :success
+    assert_not_nil assigns (:order_cycle_settings)
+    assert_not_nil assigns (:order_cycle)
+  end
+  
+  test "should get site_settings" do
+    get :site_setting
+    
+    assert_response :success
+    assert_not_nil assigns (:site_settings)
+  end
+  
+  test "should update site_settings" do
+    post :update_site_setting, :site_setting => {:domain => "http://mysite.com", :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
+    
+    assert_redirected_to management_site_setting_path
+    assert_not_nil assigns (:site_settings)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -117,6 +139,15 @@ class ManagementControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     get :buyer_invoices
+    assert_redirected_to new_user_session_url
+    
+    get :order_cycle
+    assert_redirected_to new_user_session_url
+    
+    get :site_setting
+    assert_redirected_to new_user_session_url
+    
+    post :update_site_setting
     assert_redirected_to new_user_session_url
   end
   

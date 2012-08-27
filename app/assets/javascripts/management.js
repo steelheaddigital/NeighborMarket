@@ -191,6 +191,12 @@ $(document).on("submit", "#OrderCycleSettingsForm", function(){
     return false;
 })
 
+$(document).on("submit", "#SiteSettingsForm", function(){
+    event.preventDefault()
+    var mgmt = new Management();
+    mgmt.SubmitSiteSettingsForm($(this))
+    return false;
+})
 
 function Management(){
  
@@ -208,7 +214,24 @@ function Management(){
            },
            error: function(request){
             $("#ManagementLoading").hide();
-            $("#Modal").html(request.responseText).modal('show');
+            $("#ManagementContent").html(request.responseText);
+           }
+        });
+    }
+    
+    this.SubmitSiteSettingsForm = function(form){
+        $("#ManagementLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(){
+             self.LoadManagementContent('/management/site_setting');
+             self.CloseManagementDialog();
+             utils.ShowAlert($("#ManagementNotice"), "Site settings successfully updated!")
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#ManagementLoading").hide();
+            $("#ManagementContent").html(request.responseText);
            }
         });
     }

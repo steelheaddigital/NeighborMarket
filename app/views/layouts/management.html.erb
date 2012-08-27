@@ -2,7 +2,8 @@
 <div class="container-fluid">
   <div class="subnav">
     <ul class="nav nav-pills">
-      <li class="active"><%= link_to "User Search", management_user_search_path, {:class => "mgmtNav"} %></li>
+      <li class="active"><%= link_to "Site Settings", management_site_setting_path, {:class => "mgmtNav"} %></li>
+      <li><%= link_to "User Search", management_user_search_path, {:class => "mgmtNav"} %></li>
       <li><%= link_to "Approve Sellers", management_approve_sellers_path, {:class => "mgmtNav"} %></li>
       <li><%= link_to "Manage Categories", management_categories_path, {:class => "mgmtNav"} %></li>
       <li><%= link_to "Order Cycle Settings", management_order_cycle_path, {:class => "mgmtNav"} %></li>

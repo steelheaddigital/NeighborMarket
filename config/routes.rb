@@ -28,7 +28,9 @@ GardenMarketplace::Application.routes.draw do
   match 'management/save_outbound_delivery_log' => 'management#save_outbound_delivery_log', :via => "POST"
   match 'management/buyer_invoices' => 'management#buyer_invoices'
   match 'management/order_cycle' => 'management#order_cycle'
-  match 'management/update_order_cycle' => 'management#update_order_cycle'
+  match 'management/update_order_cycle' => 'management#update_order_cycle', :via => "POST"
+  match 'management/site_setting' => 'management#site_setting'
+  match 'management/update_site_setting' => 'management#update_site_setting', :via => "POST"
   resources :management, :only => ["index"]
   
   match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'
