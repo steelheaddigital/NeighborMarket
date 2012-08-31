@@ -1,8 +1,9 @@
 class OrderCycleSetting < ActiveRecord::Base
   
-  attr_accessible :recurring, :interval
+  attr_accessible :recurring, :interval, :padding, :padding_interval
   
   validates :interval, :presence => true, :if => 'recurring?'
+  validates :padding, :numericality => { :only_integer => true }
   
   def self.new_setting(settings)
     current_order_cycle_settings = self.first

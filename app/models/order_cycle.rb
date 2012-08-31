@@ -1,26 +1,17 @@
 class OrderCycle < ActiveRecord::Base
-  require 'order_cycle_job'
+  require 'order_cycle_end_job'
   has_many :orders 
   validate :start_date_not_before_today,
            :end_date_not_before_today,
            :end_date_not_before_start_date
   
-  attr_accessible :start_date, :end_date, :current
+  attr_accessible :start_date, :end_date, :status
   
   before_save do |cycle|
     current_order_cycle = cycle.current_cycle
     if current_order_cycle
-      current_order_cycle.update_column(:current, false)
+      current_order_cycle.update_column(:status, "complete")
     end
-    self.current = true
-  end
-  
-  after_save do |cycle|
-    job = OrderCycleJob.new
-    Delayed::Job.where(:queue => "order_cycle").each do |job|
-      job.destroy
-    end
-    Delayed::Job.enqueue(job, 0, cycle.end_date, :queue => 'order_cycle')
   end
   
   def self.new_cycle(order_cycle_params, order_cycle_settings)
@@ -31,7 +22,6 @@ class OrderCycle < ActiveRecord::Base
       order_cycle.end_date = order_cycle.start_date.advance(interval => 1)
     end
     
-    order_cycle.end_date = order_cycle.end_date + 23.hours + 59.minutes
     return order_cycle
   end
   
@@ -63,11 +53,11 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def current_cycle
-    OrderCycle.find_by_current(true)
+    OrderCycle.find_by_status("current")
   end
 
   def self.current_cycle
-    self.find_by_current(true)
+    self.find_by_status("current")
   end
   
   def self.current_cycle_id

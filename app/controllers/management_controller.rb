@@ -1,4 +1,5 @@
 class ManagementController < ApplicationController
+  require 'order_cycle_end_job'
   load_and_authorize_resource :class => ManagementController
   
   def index
@@ -117,7 +118,7 @@ class ManagementController < ApplicationController
   
   def order_cycle
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    @order_cycle = OrderCycle.find_by_current(true) ? OrderCycle.find_by_current(true) : OrderCycle.new
+    @order_cycle = OrderCycle.find_by_status("current")  ? OrderCycle.find_by_status("current") : OrderCycle.new
     
     respond_to do |format|
       format.html
@@ -128,9 +129,11 @@ class ManagementController < ApplicationController
   def update_order_cycle
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
     @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
+    @order_cycle.status = "current"
       
     respond_to do |format|
       if @order_cycle.save && @order_cycle_settings.save
+        queue_order_cycle_end_job(@order_cycle.end_date)
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
@@ -138,6 +141,14 @@ class ManagementController < ApplicationController
         format.js { render :order_cycle, :layout => false, :status => 403 }
       end
     end
+  end
+  
+  def queue_order_cycle_end_job(end_date)
+    job = OrderCycleEndJob.new
+    Delayed::Job.where(:queue => "order_cycle_end").each do |job|
+      job.destroy
+    end
+    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
   end
   
   def site_setting

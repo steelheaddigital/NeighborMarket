@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120827015735) do
+ActiveRecord::Schema.define(:version => 20120830122210) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -63,14 +63,16 @@ ActiveRecord::Schema.define(:version => 20120827015735) do
   end
 
   create_table "order_cycle_settings", :force => true do |t|
-    t.boolean "recurring", :default => false
+    t.boolean "recurring",        :default => false
     t.string  "interval"
+    t.integer "padding"
+    t.string  "padding_interval"
   end
 
   create_table "order_cycles", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.boolean  "current"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
