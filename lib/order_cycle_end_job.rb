@@ -6,8 +6,8 @@ class OrderCycleEndJob
     current_cycle = OrderCycle.find_by_status("current")
     current_cycle_settings = OrderCycleSetting.first
     if current_cycle_settings.recurring
-      padding = current_cycle_settings.padding_interval.to_sym
-      new_start_date = current_cycle.end_date.advance(padding => current_cycle_settings.padding_interval)
+      padding_interval = current_cycle_settings.padding_interval.to_sym
+      new_start_date = current_cycle.end_date.advance(padding_interval => current_cycle_settings.padding)
       new_cycle = OrderCycle.new_cycle({"start_date" => new_start_date.to_s, "status" => "pending"}, current_cycle_settings)
       new_cycle.save
       queue_start_job(new_start_date)
