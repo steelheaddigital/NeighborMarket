@@ -81,6 +81,7 @@ namespace :deploy do
   
   desc "reset the database"
   task :reset do
+    run "cd #{current_path}; bundle exec rake kill_postgres_connections RAILS_ENV=#{rails_env}"
     run "cd #{current_path}; bundle exec rake db:reset RAILS_ENV=#{rails_env}"
   end
   
