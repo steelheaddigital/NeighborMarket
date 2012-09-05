@@ -7,6 +7,7 @@ class CreateSiteSettings < ActiveRecord::Migration
       t.string :drop_point_city
       t.string :drop_point_state
       t.integer :drop_point_zip
+      t.string :time_zone
     end
   end
 end

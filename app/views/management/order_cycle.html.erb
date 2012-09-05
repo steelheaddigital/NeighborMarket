@@ -18,11 +18,11 @@
         </div>
         <div>
           <%= s.label "Recurring Interval" %>
-          <%= s.select(:interval, {"day" => "day","week" => "week", "month" => "month"}, {:include_blank => 'Please Select'}, :class => "input-medium") %>
+          <%= s.select(:interval, {"minute" => "minute", "day" => "day","week" => "week", "month" => "month"}, {:include_blank => 'Please Select'}, :class => "input-medium") %>
         </div>
         <div>
           <%= s.label "Padding" %>
-          <%= s.text_field :padding, :class => "input-small" %><span style="margin-left: 10px;"><%= s.select(:padding_interval, {"hours" => "hours","days" => "days"}, {}, :class => "input-small") %></span>
+          <%= s.text_field :padding, :class => "input-small" %><span style="margin-left: 10px;"><%= s.select(:padding_interval, {"minutes" => "minutes", "hours" => "hours","days" => "days"}, {}, :class => "input-small") %></span>
         </div>
       <% end %>
       <div class="row-fluid">

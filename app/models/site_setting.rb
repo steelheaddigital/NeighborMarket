@@ -7,7 +7,7 @@ class SiteSetting < ActiveRecord::Base
                       :with => %r{\d{5}(-\d{4})?},
                       :message => "should be like 12345 or 12345-1234"
   
-  attr_accessible  :domain, :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip
+  attr_accessible  :domain, :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone
   
   def self.new_setting(settings)
     current_site_settings = self.first

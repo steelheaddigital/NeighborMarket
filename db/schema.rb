@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20120830122210) do
     t.string  "drop_point_city"
     t.string  "drop_point_state"
     t.integer "drop_point_zip"
+    t.string  "time_zone"
   end
 
   create_table "top_level_categories", :force => true do |t|

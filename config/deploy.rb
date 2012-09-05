@@ -83,6 +83,12 @@ namespace :deploy do
   task :reset do
     run "cd #{current_path}; rake db:reset RAILS_ENV=#{rails_env}"
   end
+  
+  desc "loads sample data"
+  task :load_sample_data do
+    run "cd #{current_path}; rails runner script/load_users.rb RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; rails runner script/load_inventory_items.rb RAILS_ENV=#{rails_env}"
+  end
 end
 
 
