@@ -42,7 +42,5 @@ module GardenMarketplace
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/javascripts/lib"
-    
-    config.time_zone = "Pacific Time (US & Canada)"
   end
 end
