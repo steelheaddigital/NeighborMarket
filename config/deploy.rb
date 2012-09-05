@@ -76,18 +76,18 @@ namespace :deploy do
   
   desc "reload the database with seed data"
   task :seed do
-    run "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
   end
   
   desc "reset the database"
   task :reset do
-    run "cd #{current_path}; rake db:reset RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; bundle exec rake db:reset RAILS_ENV=#{rails_env}"
   end
   
   desc "loads sample data"
   task :load_sample_data do
-    run "cd #{current_path}; rails runner script/load_users.rb RAILS_ENV=#{rails_env}"
-    run "cd #{current_path}; rails runner script/load_inventory_items.rb RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; RAILS_ENV=#{rails_env} bundle exec rails runner script/load_users.rb"
+    run "cd #{current_path}; RAILS_ENV=#{rails_env} bundle exec rails runner script/load_inventory_items.rb"
   end
 end
 

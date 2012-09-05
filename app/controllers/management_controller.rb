@@ -118,7 +118,7 @@ class ManagementController < ApplicationController
   
   def order_cycle
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    @order_cycle = OrderCycle.find_by_status("current")  ? OrderCycle.find_by_status("current") : OrderCycle.new
+    @order_cycle = OrderCycle.find_by_status("current") ? OrderCycle.find_by_status("current") : OrderCycle.new
     
     respond_to do |format|
       format.html
