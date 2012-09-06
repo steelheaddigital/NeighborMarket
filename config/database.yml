@@ -11,7 +11,7 @@
 development:
   adapter: postgresql
   host: localhost
-  database: GardenMarketplace_development
+  database: NeighborMarket_development
   username: postgres
   password: 
 
@@ -21,13 +21,13 @@ development:
 test:
   adapter: postgresql
   host: localhost
-  database: GardenMarketplace_test
+  database: NeighborMarket_test
   username: postgres
   password: 
 
 production:
   adapter: postgresql
   host: localhost
-  database: GardenMarketplace_production
+  database: NeighborMarket_production
   username: nmpadm
   password: Gr33nB3ans

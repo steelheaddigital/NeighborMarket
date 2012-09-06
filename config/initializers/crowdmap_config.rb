@@ -1,1 +1,1 @@
-GardenMarketplace::Application.config.crowdmap_url = 'https://pdxfoodsystems.crowdmap.com/api'
+NeighborMarket::Application.config.crowdmap_url = 'https://pdxfoodsystems.crowdmap.com/api'

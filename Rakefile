@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-GardenMarketplace::Application.load_tasks
+NeighborMarket::Application.load_tasks
