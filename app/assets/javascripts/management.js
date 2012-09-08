@@ -184,26 +184,39 @@ $(document).on("submit", ".deleteSecondLevelCategoryButton", function(event){
     return false;
 });
 
-$(document).on("submit", "#OrderCycleSettingsForm", function(){
+$(document).on("click", ".cycleSettingsSubmit", function(event){
     event.preventDefault()
     var mgmt = new Management();
-    mgmt.SubmitOrderCycleSettingsForm($(this))
+    if($(this)[0].value === 'Start New Cycle'){
+        if(confirm("This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?")){
+            mgmt.SubmitOrderCycleSettingsForm($(this));
+        }
+    }
+    else{
+        mgmt.SubmitOrderCycleSettingsForm($(this));
+    }
+
     return false;
 })
 
-$(document).on("submit", "#SiteSettingsForm", function(){
+$(document).on("submit", "#SiteSettingsForm", function(event){
     event.preventDefault()
     var mgmt = new Management();
     mgmt.SubmitSiteSettingsForm($(this))
     return false;
 })
 
+
+
 function Management(){
  
     var self = this;
- 
-    this.SubmitOrderCycleSettingsForm = function(form){
+
+    this.SubmitOrderCycleSettingsForm = function(button){
         $("#ManagementLoading").show();
+        var input = $("<input type='hidden' />").attr("name", button[0].name).attr("value", button[0].value);
+        button.closest('form').append(input);
+        var form = button.closest('form');
         form.ajaxSubmit({
            dataType: "html",
            success: function(){

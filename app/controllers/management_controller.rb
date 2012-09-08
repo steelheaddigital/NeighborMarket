@@ -118,7 +118,15 @@ class ManagementController < ApplicationController
   
   def order_cycle
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    @order_cycle = OrderCycle.find_by_status("current") ? OrderCycle.find_by_status("current") : OrderCycle.new
+    
+    if OrderCycle.find_by_status("current")
+      @order_cycle = OrderCycle.find_by_status("current")
+    elsif 
+      OrderCycle.find_by_status("pending")
+      @order_cycle = OrderCycle.find_by_status("pending")
+    else
+      @order_cycle = OrderCycle.new
+    end
     
     respond_to do |format|
       format.html
@@ -128,11 +136,28 @@ class ManagementController < ApplicationController
   
   def update_order_cycle
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
-    @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
-    @order_cycle.status = "current"
+    if params[:commit] == 'Start New Cycle'
+      @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
+      @order_cycle.status = "current"
+    end
       
     respond_to do |format|
-      if @order_cycle.save && @order_cycle_settings.save
+      if (@order_cycle ? @order_cycle.save : true) &&  @order_cycle_settings.save
+        queue_order_cycle_end_job(@order_cycle.end_date) if @order_cycle
+        format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "order_cycle" }
+        format.js { render :order_cycle, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  def update_order_cycle_settings
+    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
+    
+    respond_to do |format|
+      if @order_cycle_settings.save
         queue_order_cycle_end_job(@order_cycle.end_date)
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
