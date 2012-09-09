@@ -1,6 +1,6 @@
 class InventoryItemsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => [:search, :browse]
+  skip_authorize_resource :only => [:search, :browse, :browse_all]
   require 'will_paginate/array'
   include CrowdMap
   
@@ -106,6 +106,15 @@ class InventoryItemsController < ApplicationController
   
   def browse
     @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0", params[:second_level_category_id]).paginate(:page => params[:page], :per_page => 5)
+    
+    respond_to do |format|
+      format.html { render :search }
+      format.js { render :search, :layout => false }
+    end
+  end
+  
+  def browse_all
+    @inventory_items = InventoryItem.all.paginate(:page => params[:page], :per_page => 5)
     
     respond_to do |format|
       format.html { render :search }

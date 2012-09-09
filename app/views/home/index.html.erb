@@ -1,2 +1,44 @@
-<p class="notice"><%= flash[:notice] %></p>
-
+<div class ="jumbotron masthead">
+  <div class ="container">
+    <h1><%= @site_name %> </h1>
+    <p>Welcome to the <%= @site_name %></p>
+  </div>
+</div>
+<div class="row-fluid marketing">
+  <div class="span4">
+    <div style ="font-size:50px; margin-bottom: 20px;">
+      <i class="icon-shopping-cart icon-large"></i>
+    </div>
+    <h2>Buy</h2>
+    <p>
+      Support the the local economy in your own neighborhood. Buy directly from your neighbors.
+    </p>
+    <p>
+      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-primary"  %>
+    </p>
+  </div>
+  <div class="span4">
+    <div style ="font-size:50px; margin-bottom: 20px;">
+      <i class="icon-money icon-large"></i>
+    </div>
+    <h2>Sell</h2>
+    <p>
+      Sell your homegrown vegetables and homemade goods directly to your neighbors.
+    </p>
+    <p>
+      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-primary" %>
+    </p>
+  </div>
+  <div class="span4">
+    <div style ="font-size:50px; margin-bottom: 20px;">
+      <i class="icon-search icon-large"></i>
+    </div>
+    <h2>Browse</h2>
+    <p>
+      Not ready to sign up yet?  Browse our inventory and see what your neighbors are making.
+    </p>
+    <p>
+      <%= link_to 'Browse the inventory', inventory_items_browse_all_url, :class => "btn btn-primary" %>
+    </p>
+  </div>
+</div>

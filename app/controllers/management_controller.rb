@@ -118,15 +118,7 @@ class ManagementController < ApplicationController
   
   def order_cycle
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    
-    if OrderCycle.find_by_status("current")
-      @order_cycle = OrderCycle.find_by_status("current")
-    elsif 
-      OrderCycle.find_by_status("pending")
-      @order_cycle = OrderCycle.find_by_status("pending")
-    else
-      @order_cycle = OrderCycle.new
-    end
+    @order_cycle = get_order_cycle
     
     respond_to do |format|
       format.html
@@ -139,6 +131,8 @@ class ManagementController < ApplicationController
     if params[:commit] == 'Start New Cycle'
       @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
       @order_cycle.status = "current"
+    else
+      @order_cycle = get_order_cycle
     end
       
     respond_to do |format|
@@ -151,6 +145,19 @@ class ManagementController < ApplicationController
         format.js { render :order_cycle, :layout => false, :status => 403 }
       end
     end
+  end
+  
+  def get_order_cycle
+      if OrderCycle.find_by_status("current")
+        order_cycle = OrderCycle.find_by_status("current")
+      elsif 
+        OrderCycle.find_by_status("pending")
+        order_cycle = OrderCycle.find_by_status("pending")
+      else
+        order_cycle = OrderCycle.new
+      end
+      
+      return order_cycle
   end
   
   def update_order_cycle_settings

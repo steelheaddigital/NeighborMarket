@@ -36,6 +36,7 @@ NeighborMarket::Application.routes.draw do
   match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'
   match 'inventory_items/search' => 'inventory_items#search'
   match 'inventory_items/browse' => 'inventory_items#browse'
+  match 'inventory_items/browse_all' => 'inventory_items#browse_all'
   resources :inventory_items
   
   match 'seller/current_inventory' => 'seller#current_inventory'

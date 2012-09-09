@@ -101,6 +101,14 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
   end
   
+  test "browse_all returns inventory items"do
+    get :browse_all
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+    
+  end
+  
   test "seller cannot access items other than their own" do
     item = inventory_items(:two)
     

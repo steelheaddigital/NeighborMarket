@@ -86,12 +86,19 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:order_cycle)
   end
   
-  test "should update order_cycle_settings" do
-    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => "01/01/12", :end_date => "01/02/12"}
+  test "should update order_cycle_settings and order cycle if commit equals 'Start New Cycle'" do
+    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current}, :commit => 'Start New Cycle'
     
     assert_response :success
     assert_not_nil assigns (:order_cycle_settings)
     assert_not_nil assigns (:order_cycle)
+  end
+  
+  test "should update order_cycle_settings but not order cycle if commit does not equal 'Start New Cycle'" do
+    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current}, :commit => 'Save Settings'
+    
+    assert_response :success
+    assert_not_nil assigns (:order_cycle_settings)
   end
   
   test "should get site_settings" do
