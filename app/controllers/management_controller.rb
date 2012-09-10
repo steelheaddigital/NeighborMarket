@@ -147,19 +147,6 @@ class ManagementController < ApplicationController
     end
   end
   
-  def get_order_cycle
-      if OrderCycle.find_by_status("current")
-        order_cycle = OrderCycle.find_by_status("current")
-      elsif 
-        OrderCycle.find_by_status("pending")
-        order_cycle = OrderCycle.find_by_status("pending")
-      else
-        order_cycle = OrderCycle.new
-      end
-      
-      return order_cycle
-  end
-  
   def update_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
     
@@ -173,14 +160,6 @@ class ManagementController < ApplicationController
         format.js { render :order_cycle, :layout => false, :status => 403 }
       end
     end
-  end
-  
-  def queue_order_cycle_end_job(end_date)
-    job = OrderCycleEndJob.new
-    Delayed::Job.where(:queue => "order_cycle_end").each do |job|
-      job.destroy
-    end
-    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
   end
   
   def site_setting
@@ -204,6 +183,29 @@ class ManagementController < ApplicationController
         format.js { render :site_setting, :layout => false, :status => 403 }
       end
     end
+  end
+  
+  private
+  
+  def get_order_cycle
+    if OrderCycle.find_by_status("current")
+      order_cycle = OrderCycle.find_by_status("current")
+    elsif 
+      OrderCycle.find_by_status("pending")
+      order_cycle = OrderCycle.find_by_status("pending")
+    else
+      order_cycle = OrderCycle.new
+    end
+
+    return order_cycle
+  end
+  
+  def queue_order_cycle_end_job(end_date)
+    job = OrderCycleEndJob.new
+    Delayed::Job.where(:queue => "order_cycle_end").each do |job|
+      job.destroy
+    end
+    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
   end
   
 end
