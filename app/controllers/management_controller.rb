@@ -136,7 +136,7 @@ class ManagementController < ApplicationController
     end
       
     respond_to do |format|
-      if (@order_cycle ? @order_cycle.save : true) &&  @order_cycle_settings.save
+      if @order_cycle_settings.save && (@order_cycle ? @order_cycle.save : true)
         queue_order_cycle_end_job(@order_cycle.end_date) if @order_cycle
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }

@@ -11,6 +11,14 @@
         <%= f.label :end_date %>
         <%= f.datetime_select :end_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
       </div>
+      <div>
+        <%= f.label :seller_delivery_date %>
+        <%= f.datetime_select :seller_delivery_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
+      </div>
+      <div>
+        <%= f.label :buyer_pickup_date %>
+        <%= f.datetime_select :buyer_pickup_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
+      </div>
       <%= fields_for @order_cycle_settings do |s|%>
         <div id="Recurring">
           <%= s.label "Recurring?" %>
