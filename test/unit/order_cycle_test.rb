@@ -6,12 +6,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      order_cycle = OrderCycle.new(:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
      assert order_cycle.valid?, order_cycle.errors.inspect
    end
-   
-   test "should not validate order cycle when start_date is less than today's date" do
-     order_cycle = OrderCycle.new(:start_date => Date.current - 1.day, :end_date => Date.current, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
-     assert !order_cycle.valid?, order_cycle.errors.inspect
-   end
-   
+      
    test "should not validate order cycle when end_date is less than today's date" do
      order_cycle = OrderCycle.new(:start_date => Date.current, :end_date => Date.current - 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
      assert !order_cycle.valid?, order_cycle.errors.inspect

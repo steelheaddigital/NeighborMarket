@@ -1,8 +1,7 @@
 class OrderCycle < ActiveRecord::Base
   require 'order_cycle_end_job'
   has_many :orders 
-  validate :start_date_not_before_today,
-           :end_date_not_before_today,
+  validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,
            :seller_delivery_date_not_after_next_cycle_start_date,
@@ -27,12 +26,6 @@ class OrderCycle < ActiveRecord::Base
     end
     
     return order_cycle
-  end
-  
-  def start_date_not_before_today
-    if start_date.to_date < Date.current
-      errors.add(:start_date, 'cannot be before today') 
-    end
   end
   
   def end_date_not_before_today
