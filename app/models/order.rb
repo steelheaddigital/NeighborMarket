@@ -4,7 +4,7 @@ class Order < ActiveRecord::Base
   belongs_to :order_cycle
   
   before_save do |order|
-    order_cycle_id = OrderCycle.current_cycle
+    order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id
   end
   
