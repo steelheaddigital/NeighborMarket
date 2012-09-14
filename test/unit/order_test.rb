@@ -11,4 +11,12 @@ class OrderTest < ActiveSupport::TestCase
     end
     assert_not_nil order.cart_items
   end
+  
+  test "total_price returns correct result" do
+      order = orders(:current)
+      cart = carts(:full)
+      order.add_inventory_items_from_cart(cart)
+      result = order.total_price
+      assert_equal(result.to_s, "100.0")
+  end
 end

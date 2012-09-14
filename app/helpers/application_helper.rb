@@ -67,13 +67,13 @@ module ApplicationHelper
     cycle = OrderCycle.current_cycle
     if cycle
       "<div class=\"alert orderCycleAlert\">
-      The current order cycle will end on #{cycle.end_date.strftime("%m/%d/%Y")} at #{cycle.end_date.strftime("%I:%M %p")}. Place your order now for delivery on #{cycle.buyer_pickup_date.strftime("%m/%d/%Y")} at #{cycle.buyer_pickup_date.strftime("%I:%M %p")}
+      The current order cycle will end on #{format_date_time(cycle.end_date)}. Place your order now for delivery on #{format_date_time(cycle.buyer_pickup_date)}
       </div>".html_safe
     else
       next_cycle = OrderCycle.find_by_status("pending")
       if next_cycle
         "<div class=\"alert orderCycleAlert\">
-        There is no current order cycle open. The next cycle will start on #{next_cycle.start_date.strftime("%m/%d/%Y")} at #{next_cycle.start_date.strftime("%I:%M %p")}. Orders for the next cycle are scheduled to be delivered on #{next_cycle.buyer_pickup_date.strftime("%m/%d/%Y")} at #{next_cycle.buyer_pickup_date.strftime("%I:%M %p")}
+        There is no current order cycle open. The next cycle will start on #{format_date_time(next_cycle.start_date)}. Orders for the next cycle are scheduled to be delivered on #{format_date_time(next_cycle.buyer_pickup_date)}
         </div>".html_safe
       else
         "<div class=\"alert orderCycleAlert\">
@@ -83,8 +83,8 @@ module ApplicationHelper
     end
   end
   
-  def current_order_cycle_end_date
-
+  def format_date_time(datetime)
+    "#{datetime.strftime("%m/%d/%Y")} at #{datetime.strftime("%I:%M %p")}"
   end
   
 end

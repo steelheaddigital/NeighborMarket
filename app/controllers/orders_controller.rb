@@ -50,11 +50,15 @@ class OrdersController < ApplicationController
         
           Cart.destroy(session[:cart_id])
           session[:cart_id] = nil
-          format.html {redirect_to home_index_url, notice: 'Your order has been submitted. Thank You!'}
+          
+          @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
+          @site_settings = SiteSetting.first
+          format.html {render :finish}
         else
           @cart = current_cart
           format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
         end
     end
   end
+  
 end

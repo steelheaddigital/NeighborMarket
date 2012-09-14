@@ -21,8 +21,9 @@ class OrdersControllerTest < ActionController::TestCase
     end
     
     assert_not_nil assigns(:order)
-    assert_redirected_to home_index_url
-    assert_equal 'Your order has been submitted. Thank You!', flash[:notice]
+    assert_not_nil assigns(:order_pickup_date)
+    assert_not_nil assigns(:site_settings)
+    assert :success
   end
   
   test "anonymous user cannot access protected actions" do

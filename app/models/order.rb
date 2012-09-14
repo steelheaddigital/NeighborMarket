@@ -13,6 +13,10 @@ class Order < ActiveRecord::Base
       item.cart_id = nil
       cart_items << item
     end
-    
   end
+  
+  def total_price
+    cart_items.to_a.sum { |item| item.total_price }
+  end
+  
 end

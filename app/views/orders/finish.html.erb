@@ -1,0 +1,17 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <h1>Thank You!</h1>
+    <h3 style="padding-bottom:15px;">Below is your order summary. You will also recieve an email containing this information.</h3>
+    <div class="row-fluid" style="padding-bottom: 15px;">
+      <div class="span8 orderFinishAddress">
+        <h5>Your order will be available for pickup on <%= format_date_time(@order_pickup_date) %> at the following address:</h5><br>
+        <div style="padding-left: 30px;">
+          <strong><%= @site_settings.drop_point_address %></strong><br>
+          <strong><%= @site_settings.drop_point_city + ", " + @site_settings.drop_point_state + " " + @site_settings.drop_point_zip.to_s %></strong><br>
+        </div>
+      </div>
+    </div>
+    <strong>*Please note the payment instructions for each item. You will need to have payment available at the time of pickup</strong>
+    <%= render "order" %>
+  </div>
+</div>
