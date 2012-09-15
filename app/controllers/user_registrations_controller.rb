@@ -70,7 +70,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         if params[:user][:become_seller] == "true"
           render :become_seller
         else
-          render_with_scope :edit
+          respond_with resource
         end
       end
     end
