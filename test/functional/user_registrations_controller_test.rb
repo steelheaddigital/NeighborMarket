@@ -40,7 +40,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     
     assert_redirected_to user_inactive_signup_path
     assert user.seller?
-    assert_equal 'You have signed up successfully. However, we could not sign you in because your account is not_approved.', flash[:notice]
+    assert_equal 'You have signed up successfully. However, we could not sign you in because your account is not yet approved.', flash[:notice]
   end
   
   test "should update user" do

@@ -40,13 +40,8 @@ class OrdersController < ApplicationController
             item.inventory_item.decrement_quantity_available(item.quantity)
             sellers_array.push(item.inventory_item.user)
           end
-          
-          #Send an email to each seller notifying them of the sale
-          sellers = sellers_array.uniq{|x| x.id}
-          sellers.each do |seller|
-            cart_items = @order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
-            SellerMailer.new_purchase_mail(seller, @order.user, cart_items).deliver
-          end
+        
+          send_emails(@order, sellers_array)
         
           Cart.destroy(session[:cart_id])
           session[:cart_id] = nil
@@ -59,6 +54,16 @@ class OrdersController < ApplicationController
           format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
         end
     end
+  end
+  
+  def send_emails(order, sellers_array)
+    #Send an email to each seller notifying them of the sale
+    sellers = sellers_array.uniq{|x| x.id}
+    sellers.each do |seller|
+      SellerMailer.delay.new_purchase_mail(seller, order)
+    end
+    
+#    BuyerMailer.order_mail(current_user, order).deliver
   end
   
 end
