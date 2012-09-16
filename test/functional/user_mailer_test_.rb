@@ -18,7 +18,7 @@ class UserMailerTest < ActionMailer::TestCase
     
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [user.email], sent.to
-    assert_equal "Neighbor Market - Testing this thang", sent.subject
+    assert_equal "Test Neighbor Market - Testing this thang", sent.subject
     assert_match("Test Message", sent.body.to_s) 
     
   end

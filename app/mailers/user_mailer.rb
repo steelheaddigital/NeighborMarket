@@ -3,9 +3,10 @@ class UserMailer < ActionMailer::Base
   
   def user_contact_mail(user, message)
     @message = message
+    site_settings = SiteSetting.first
     mail( :to => user.email,
           :reply_to => message.email,
-          :subject => "Neighbor Market - #{message.subject}")
+          :subject => "#{site_settings.site_name} - #{message.subject}")
   end
   
 end

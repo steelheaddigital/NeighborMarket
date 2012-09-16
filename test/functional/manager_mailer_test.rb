@@ -15,8 +15,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [manager.email], sent.to
-    assert_equal "New seller has signed up at the Neighbor Market - Pending Verification", sent.subject
-    assert_match("A new seller, Unapproved Seller,  has signed up at Neighbor Market", sent.body.to_s) 
-    
+    assert_equal "New seller has signed up at Test Neighbor Market - Pending Verification", sent.subject
+    assert_match("A new seller, Unapproved Seller,  has signed up at Test Neighbor Market", sent.body.to_s) 
   end
 end

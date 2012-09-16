@@ -98,7 +98,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   def send_new_seller_email(user)
      managers = Role.find_by_name("manager").users 
       managers.each do |manager|
-        ManagerMailer.new_seller_mail(user, manager).deliver
+        ManagerMailer.delay.new_seller_mail(user, manager)
       end
   end
   

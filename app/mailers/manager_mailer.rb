@@ -3,7 +3,8 @@ class ManagerMailer < ActionMailer::Base
   
   def new_seller_mail(user, manager)
     @user = user
+    @site_settings = SiteSetting.first
     mail( :to => manager.email, 
-          :subject => "New seller has signed up at the Neighbor Market - Pending Verification" )
+          :subject => "New seller has signed up at #{@site_settings.site_name} - Pending Verification" )
   end
 end
