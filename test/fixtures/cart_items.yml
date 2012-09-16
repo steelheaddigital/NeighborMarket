@@ -8,7 +8,7 @@ one:
   cart: full
   inventory_item: one
   quantity: 10
-  order: one
+  order: current
 
 no_order:
   cart: no_order

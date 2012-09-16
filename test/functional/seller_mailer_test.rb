@@ -7,11 +7,10 @@ class SellerMailerTest < ActionMailer::TestCase
   end
   
   test "new_purchase_email" do
-    buyer = users(:buyer_user)
     seller = users(:approved_seller_user)
-    cart = carts(:full)
+    order = orders(:current)
     
-    SellerMailer.new_purchase_mail(seller, buyer, cart.cart_items).deliver
+    SellerMailer.new_purchase_mail(seller, order).deliver
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?

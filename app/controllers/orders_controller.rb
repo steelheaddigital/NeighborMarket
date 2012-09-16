@@ -63,7 +63,7 @@ class OrdersController < ApplicationController
       SellerMailer.delay.new_purchase_mail(seller, order)
     end
     
-#    BuyerMailer.order_mail(current_user, order).deliver
+    BuyerMailer.delay.order_mail(current_user, order)
   end
   
 end
