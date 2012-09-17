@@ -16,6 +16,7 @@ class OrderCycleEndJob
       new_cycle = OrderCycle.new_cycle({"start_date" => new_start_date.to_s, "status" => "pending", "seller_delivery_date" => new_seller_delivery_date.to_s, "buyer_pickup_date" => new_buyer_pickup_date.to_s}, current_cycle_settings)
       new_cycle.save
       queue_start_job(new_start_date)
+      send_emails(current_cycle)
     else
       current_cycle.status = "complete"
       current_cycle.save
@@ -28,6 +29,13 @@ class OrderCycleEndJob
       job.destroy
     end
     Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
+  end
+  
+  def send_emails(order_cycle)
+    sellers = User.joins(:roles).where(:roles => {:name => 'seller'})
+    sellers.each do |seller|
+      SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    end
   end
   
 end

@@ -27,7 +27,7 @@ pdf.move_down(30)
 
     items = [["ID", "Name", "Quantity"]]
     order.cart_items.map do |item|
-        if item.inventory_item.user_id == current_user.id
+        if item.inventory_item.user_id == @seller.id
             items +=  [[
                 item.inventory_item.id,
                 item_name(item.inventory_item),

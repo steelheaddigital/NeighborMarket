@@ -1,5 +1,4 @@
-class UserMailer < ActionMailer::Base
-  default from: "admin@steelheaddigital.com"
+class UserMailer < BaseMailer
   
   def user_contact_mail(user, message)
     @message = message

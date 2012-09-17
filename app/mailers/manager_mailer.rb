@@ -1,5 +1,4 @@
-class ManagerMailer < ActionMailer::Base
-  default :from => "admin@steelheaddigital.com"
+class ManagerMailer < BaseMailer
   
   def new_seller_mail(user, manager)
     @user = user

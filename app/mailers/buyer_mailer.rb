@@ -1,6 +1,4 @@
-class BuyerMailer < ActionMailer::Base
-  add_template_helper(ApplicationHelper)
-  default from: "admin@steelheaddigital.com"
+class BuyerMailer < BaseMailer
   
   def order_mail(buyer, order)
     @order = order

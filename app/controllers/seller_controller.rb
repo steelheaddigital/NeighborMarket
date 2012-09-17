@@ -40,11 +40,11 @@ class SellerController < ApplicationController
   end
   
   def packing_list
-    user_id = current_user.id
+    @seller = current_user
     current_cycle_id = OrderCycle.current_cycle_id
     @orders = Order.joins(:cart_items => :inventory_item)
                    .select('orders.id, orders.user_id')
-                   .where(:inventory_items => {:user_id => user_id}, :orders => {:order_cycle_id => current_cycle_id})
+                   .where(:inventory_items => {:user_id => @seller.id}, :orders => {:order_cycle_id => current_cycle_id})
                    .group('orders.id, orders.user_id')
     
     respond_to do |format|

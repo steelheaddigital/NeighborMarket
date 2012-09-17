@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <div>
+      <p>The current order cycle at <%= @site_settings.site_name %> ended on <%= format_date_time(@order_cycle.end_date) %>.</p>
+      <p>Please <a href="<%= @site_settings.domain + "/users/sign_in" %>">log in</a> to update your inventory for the next order cycle.</p>
+      <p>You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on <%= format_date_time(@order_cycle.seller_delivery_date) %>. Your packing list and pick list are attached to this email.</p>
+      <p><strong>Drop Point Address:</strong></p>
+      <div style="padding-left: 30px;">
+        <%= @site_settings.drop_point_address %><br>
+        <%= @site_settings.drop_point_city + ", " + @site_settings.drop_point_state + " " + @site_settings.drop_point_zip.to_s %><br>
+      </div>
+    </div>
+  </body>
+</html>
