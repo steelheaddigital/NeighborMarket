@@ -10,10 +10,15 @@ class OrderCycleEndJob
       interval = current_cycle_settings.interval.pluralize.to_sym
       
       new_start_date = current_cycle.end_date.advance(padding_interval => current_cycle_settings.padding)
-      new_seller_delivery_date = current_cycle.seller_delivery_date.advance(interval => 1).advance(padding_interval => current_cycle_settings.padding)
-      new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(interval => 1).advance(padding_interval => current_cycle_settings.padding)
+      new_end_date = current_cycle.end_date.advance(interval => 1)
+      new_seller_delivery_date = current_cycle.seller_delivery_date.advance(interval => 1)
+      new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(interval => 1)
       
-      new_cycle = OrderCycle.new_cycle({"start_date" => new_start_date.to_s, "status" => "pending", "seller_delivery_date" => new_seller_delivery_date.to_s, "buyer_pickup_date" => new_buyer_pickup_date.to_s}, current_cycle_settings)
+      new_cycle = OrderCycle.new(:start_date => new_start_date,
+                                 :end_date => new_end_date,
+                                 :status => "pending",
+                                 :seller_delivery_date => new_seller_delivery_date, 
+                                 :buyer_pickup_date => new_buyer_pickup_date)
       new_cycle.save
       queue_start_job(new_start_date)
       send_emails(current_cycle)

@@ -14,7 +14,7 @@ class SellerMailer < BaseMailer
   end
   
   def order_cycle_end_mail(seller, order_cycle)
-    Time.zone = SiteSetting.first.time_zone if SiteSetting.first
+
     @site_settings = SiteSetting.first
     @seller = seller
     @order_cycle = order_cycle

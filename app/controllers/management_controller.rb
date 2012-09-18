@@ -129,7 +129,7 @@ class ManagementController < ApplicationController
   def update_order_cycle
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
     if params[:commit] == 'Start New Cycle'
-      @order_cycle = OrderCycle.new_cycle(params[:order_cycle], @order_cycle_settings)
+      @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
       @order_cycle.status = "current"
     else
       @order_cycle = get_order_cycle

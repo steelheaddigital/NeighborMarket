@@ -36,12 +36,12 @@ class OrderCycleTest < ActiveSupport::TestCase
      order_cycle = OrderCycle.new(:start_date =>Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current  + 3.days, :buyer_pickup_date => Date.current + 3.days)
      assert !order_cycle.valid?, order_cycle.errors.inspect
    end
-  
+   
    test "new_cycle returns new order_cycle" do
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
      order_cycle_settings = order_cycle_settings(:not_recurring)
      
-     new_cycle = OrderCycle.new_cycle(order_cycle_params, order_cycle_settings)
+     new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
      
      assert_not_nil(new_cycle)
      expected_end_date = Time.utc_time(2012,8,21)
@@ -53,7 +53,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-20"}
      order_cycle_settings = order_cycle_settings(:recurring)
      
-     new_cycle = OrderCycle.new_cycle(order_cycle_params, order_cycle_settings)
+     new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
      
      assert_not_nil(new_cycle)
      expected_end_date = Time.utc_time(2012,8,21)
