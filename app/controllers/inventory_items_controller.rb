@@ -97,7 +97,7 @@ class InventoryItemsController < ApplicationController
   
   def search
     @inventory_items = InventoryItem.search(params[:keywords])
-                                    .sort!{|a,b| a.created_at <=> b.created_at}
+                                    .sort!{|a,b| b.created_at <=> a.created_at}
                                     .paginate(:page => params[:page], :per_page => 5)
 
     respond_to do |format|
@@ -108,7 +108,7 @@ class InventoryItemsController < ApplicationController
   
   def browse
     @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0", params[:second_level_category_id])
-                                    .order("created_at")
+                                    .order("created_at DESC")
                                     .paginate(:page => params[:page], :per_page => 5)
                                     
     
