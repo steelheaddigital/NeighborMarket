@@ -26,10 +26,39 @@ class OrdersControllerTest < ActionController::TestCase
     assert :success
   end
   
+  test "should get edit" do
+    order = orders(:current)
+    get :edit, :id => order.id
+    
+    assert_response :success
+    assert_not_nil assigns(:order)
+  end
+  
+  test "should update order" do
+    
+    order = orders(:current)
+    
+    post :update, :id => order.id
+    
+    assert_not_nil :order
+    assert_redirected_to edit_order_path
+    assert_equal 'Order successfully updated!', flash[:notice]
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
+    
+    order = orders(:current)
         
     post :create
     assert_redirected_to new_user_session_url
+    
+    get :edit, :id => order.id 
+    assert_redirected_to new_user_session_url
+    
+    post :update, :id => order.id 
+    assert_redirected_to new_user_session_url
+    
   end
 end

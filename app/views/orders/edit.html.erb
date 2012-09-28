@@ -1,0 +1,10 @@
+<h2>Your Order</h2>
+<p class="notice"><%= flash[:notice] %></p>
+<%= form_for @order do |f| %>
+<%= render :partial => "cart/form", :locals => {:f => f} %>
+<div class="row-fluid">
+  <div class="span1">
+    <%= f.submit("Update Order", :class => 'btn btn-primary') %>
+  </div>
+</div>
+<% end %>

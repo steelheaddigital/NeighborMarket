@@ -2,48 +2,7 @@
   <h2>Your Cart</h2>
     <p class="notice"><%= flash[:notice] %></p>
     <%= form_for @cart, :url => orders_new_path, :method => "POST" do |f| %>
-    <%= f.fields_for :cart_items do |item| %>
-    <div class="well row-fluid" style="padding-right:0; padding-left: 0">
-      <div class="span2">
-        <p style="padding-left: 19px;">
-          <%if item.object.inventory_item.photo?%>
-            <%= image_tag item.object.inventory_item.photo.url(:medium) %>
-          <%else%>
-            No Image Available
-          <%end%>
-        </p>
-      </div>
-      <div class="span6">
-        <table class="table">
-        <thead>  
-          <tr>
-            <th></th>
-            <th>Price</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-          <tbody>
-            <tr>
-              <td><%= item_name(item.object.inventory_item) %> </td>
-              <td><%= number_to_currency(item.object.inventory_item.price) %> </td>
-              <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
-            </tr>
-            
-          </tbody>
-        </table>
-        <%= link_to "Delete", cart_item_destroy_path(item.object.id), :class => "btn btn-danger deleteCartItemButton" %>
-      </div>
-    </div>
-    <% end %>
-    <div class="row-fluid">
-      <div class ="span5"></div>
-      <div class="span1">
-        <span class="totalLabel" >Total:</span>
-      </div>     
-      <div class="span1">
-        <span class="totalCell"><%= number_to_currency @cart.total_price %></span>
-      </div>
-    </div>
+    <%= render :partial => "form", :locals => {:f => f} %>
     <div class="row-fluid">
       <div class="span1">
         <%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %>

@@ -3,7 +3,6 @@ class OrdersController < ApplicationController
   skip_authorize_resource :only => [:new]
   
   def new
-    
     @cart = current_cart
     #update the cart in case the user changed any quantitities
     if @cart.update_attributes(params[:cart])
@@ -53,6 +52,31 @@ class OrdersController < ApplicationController
           @cart = current_cart
           format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
         end
+    end
+  end
+  
+  def edit
+    @order = Order.find(params[:id])
+    @total_price = @order.total_price
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def update
+    @order = Order.find(params[:id])
+    @total_price = @order.total_price
+    
+    respond_to do |format|
+      if @order.update_attributes(params[:order])
+        format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "edit" }
+        format.js { render :edit, :layout => false, :status => 403 }
+      end
     end
   end
   

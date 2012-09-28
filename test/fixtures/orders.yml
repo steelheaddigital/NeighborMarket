@@ -5,5 +5,5 @@ current:
   order_cycle: current
   
 not_current:
-  user: buyer_user
+  user: buyer_user_not_current
   order_cycle: not_current

@@ -3,6 +3,9 @@ class Order < ActiveRecord::Base
   belongs_to :user
   belongs_to :order_cycle
   
+  accepts_nested_attributes_for :cart_items
+  attr_accessible :cart_items_attributes
+  
   before_save do |order|
     order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id

@@ -24,7 +24,10 @@
               <% end %>
               <% if user_signed_in? && current_user.approved_seller? %>
                   <li><%= link_to('Sell', seller_index_path) %></li>
-              <% end %>   
+              <% end %>
+              <% if user_signed_in? && current_user.buyer? %>
+                  <li><%= link_to('My Order', edit_order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.status = ?", 'current').first.id)) %></li>
+              <% end %> 
             </ul>
             <ul class="pull-right nav">
               <% if user_signed_in? %>

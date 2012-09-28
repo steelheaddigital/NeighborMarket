@@ -1,4 +1,5 @@
 NeighborMarket::Application.routes.draw do
+
   get "home/index"
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'user_registrations', :sessions => 'sessions' }
@@ -56,7 +57,7 @@ NeighborMarket::Application.routes.draw do
   resources :cart, :only => ["index"]
   
   match 'orders/new' => 'orders#new', :via => "POST"
-  resources :orders, :only => ["create"]
+  resources :orders, :only => ["create", "edit", "update"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
