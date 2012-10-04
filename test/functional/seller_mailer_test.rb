@@ -25,6 +25,25 @@ class SellerMailerTest < ActionMailer::TestCase
     
   end
   
+  test "updated_purchase_email" do
+    seller = users(:approved_seller_user)
+    order = orders(:current)
+    
+    SellerMailer.updated_purchase_mail(seller, order).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [seller.email], sent.to
+    assert_equal "An order containing your product has been updated at Test Neighbor Market", sent.subject
+    assert_match("Buyer Test", sent.body.to_s) 
+    assert_match("12345 Test St.", sent.body.to_s)
+    assert_match("buyer@test.com", sent.body.to_s)
+    assert_match("Carrot", sent.body.to_s)
+    assert_match("10", sent.body.to_s)
+    assert_match("$10.00", sent.body.to_s)
+    
+  end
+  
   test "seller_approved_mail" do
     seller = users(:unapproved_seller_user)
     

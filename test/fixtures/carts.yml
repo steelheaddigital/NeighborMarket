@@ -13,4 +13,4 @@ empty:
 
 
 no_order:
-  user: buyer_user
+  user: nil

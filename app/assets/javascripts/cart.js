@@ -22,7 +22,7 @@ $(document).on("submit", ".addToCartButton", function(event){
     return false;
 });
 
-$(document).on("click", ".deleteCartItemButton", function(event){
+$(document).on("click", "#Cart .deleteCartItemButton", function(event){
     event.preventDefault();
     
     var deleteConfirm = confirm("Are you sure you want to delete this item?");

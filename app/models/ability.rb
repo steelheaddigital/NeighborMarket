@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, session)
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
@@ -36,8 +36,21 @@ class Ability
     end
     
     if user.buyer?
-      can :create, Order
       can :manage, Order, :user_id => user.id
+      can :create, Order
+      
+      #can only destroy cart items in their own order
+      can :destroy, CartItem, :order => {:user => {:id => user.id}}
+   
+    end
+    
+    if user
+      
+      #Anyone can delete a cart_item that is in their session
+      if session[:cart_id]
+        cart = Cart.find(session[:cart_id])
+        can :destroy, CartItem if cart.cart_items.where("cart_id = ?", cart.id)
+      end
     end
   end
 end

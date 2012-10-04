@@ -25,9 +25,12 @@
               <% if user_signed_in? && current_user.approved_seller? %>
                   <li><%= link_to('Sell', seller_index_path) %></li>
               <% end %>
-              <% if user_signed_in? && current_user.buyer? %>
-                  <li><%= link_to('My Order', edit_order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.status = ?", 'current').first.id)) %></li>
-              <% end %> 
+              <% if user_signed_in? && current_user.buyer? && OrderCycle.current_cycle %>
+                  <li><%= link_to('My Order', edit_order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.status = ?", 'current').last.id)) %></li>
+              <% end %>
+              <% if user_signed_in? && current_user.buyer? && OrderCycle.pending_delivery && !OrderCycle.current_cycle %>
+                  <li><%= link_to('My Order', order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.buyer_pickup_date >= ?", DateTime.now.utc).last.id)) %></li>
+              <% end %>
             </ul>
             <ul class="pull-right nav">
               <% if user_signed_in? %>
@@ -36,7 +39,7 @@
                 <li><%= link_to('Login', new_user_session_path)  %></li>  
               <% end %>
               <% if user_signed_in? %>
-                <li><%= link_to('Edit registration', edit_user_registration_url) %></li>
+                <li><%= link_to('Edit profile', edit_user_registration_url) %></li>
                 <% if current_user.buyer? && !current_user.seller?%>
                   <li><%= link_to('Become a seller', become_seller_url) %></li>
                 <% end %>
@@ -98,6 +101,8 @@
     <div>
       <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
     </div>
+  </div>
+  <div id="ApplicationNotice" class="alert fixed-alert">
   </div>
     <div class="row-fluid">
       <div id="MainContent" class="span-12">

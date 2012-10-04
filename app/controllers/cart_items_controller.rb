@@ -1,4 +1,5 @@
 class CartItemsController < ApplicationController
+  load_and_authorize_resource :only => [:destroy]
   
   def create
     @cart = current_cart
@@ -21,11 +22,16 @@ class CartItemsController < ApplicationController
   
   def destroy
     @cart_item = CartItem.find(params[:cart_item_id])
-
+      
     respond_to do |format|
       if @cart_item.destroy
-        format.html{ redirect_to cart_index_path, notice: "Cart item successfully deleted" }
-        format.js { render :nothing => true }
+        if @cart_item.order_id
+          format.html{ redirect_to edit_order_path(@cart_item.order_id) }
+          format.js { render :nothing => true }
+        else
+          format.html{ redirect_to cart_index_path }
+          format.js { render :nothing => true }
+        end 
       else
         format.html{ redirect_to cart_index_path, notice: "Cart item could not be deleted" }
         format.js { render :nothing => true, :status => 403  }

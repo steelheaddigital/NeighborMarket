@@ -57,7 +57,7 @@ NeighborMarket::Application.routes.draw do
   resources :cart, :only => ["index"]
   
   match 'orders/new' => 'orders#new', :via => "POST"
-  resources :orders, :only => ["create", "edit", "update"]
+  resources :orders, :only => ["create", "edit", "update", "show"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

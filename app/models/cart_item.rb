@@ -2,7 +2,6 @@ class CartItem < ActiveRecord::Base
   belongs_to :cart
   belongs_to :inventory_item
   belongs_to :order
-  before_destroy :ensure_no_order
   
   attr_accessible :inventory_item_id, :quantity
   validate :validate_quantity,
@@ -19,13 +18,6 @@ class CartItem < ActiveRecord::Base
   end
   
   private
-  
-  def ensure_no_order
-    if !self.order
-      return true
-    end
-    return false
-  end
   
   def ensure_current_order_cycle
     if !OrderCycle.current_cycle

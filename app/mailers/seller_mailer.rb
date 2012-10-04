@@ -6,11 +6,15 @@ class SellerMailer < BaseMailer
   end
   
   def new_purchase_mail(seller, order)
-    @buyer = order.user
-    @cart_items = order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
     site_settings = SiteSetting.first
-    mail( :to => seller.email, 
-          :subject => "A purchase of your product has been made at #{site_settings.site_name}")
+    subject = "A purchase of your product has been made at #{site_settings.site_name}"
+    purchase_mail(seller, order, subject)
+  end
+  
+  def updated_purchase_mail(seller, order)
+    site_settings = SiteSetting.first
+    subject = "An order containing your product has been updated at #{site_settings.site_name}"
+    purchase_mail(seller, order, subject)
   end
   
   def order_cycle_end_mail(seller, order_cycle)
@@ -33,6 +37,15 @@ class SellerMailer < BaseMailer
     attachments['pick_list.pdf'] = pick_list
     mail( :to => seller.email, 
           :subject => "The current order cycle has ended at #{@site_settings.site_name}")
+  end
+  
+  private
+  
+  def purchase_mail(seller, order, subject)
+    @buyer = order.user
+    @cart_items = order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
+    mail( :to => seller.email, 
+          :subject => subject)
   end
   
 end

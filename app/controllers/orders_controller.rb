@@ -32,15 +32,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
         if @order.save
-          
-          #decrement the available inventory for each item in the order
-          sellers_array = Array.new
-          @order.cart_items.each do |item|
-            item.inventory_item.decrement_quantity_available(item.quantity)
-            sellers_array.push(item.inventory_item.user)
-          end
-        
-          send_emails(@order, sellers_array)
+          send_emails(@order, false)
         
           Cart.destroy(session[:cart_id])
           session[:cart_id] = nil
@@ -71,8 +63,10 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.update_attributes(params[:order])
+        send_emails(@order, true)
+        
         format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
-        format.js { render :nothing => true }
+        format.js { render :edit, :layout => false }
       else
         format.html { render "edit" }
         format.js { render :edit, :layout => false, :status => 403 }
@@ -80,14 +74,43 @@ class OrdersController < ApplicationController
     end
   end
   
-  def send_emails(order, sellers_array)
+  def show
+    @order = Order.find(params[:id])
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  private
+  
+  def send_emails(order, update)
     #Send an email to each seller notifying them of the sale
+    sellers_array = decrement_inventory(order)
     sellers = sellers_array.uniq{|x| x.id}
-    sellers.each do |seller|
-      SellerMailer.delay.new_purchase_mail(seller, order)
+    if update
+      sellers.each do |seller|
+        SellerMailer.delay.updated_purchase_mail(seller, order)
+      end
+    else
+      sellers.each do |seller|
+        SellerMailer.delay.new_purchase_mail(seller, order)
+      end
+    end
+
+    BuyerMailer.delay.order_mail(current_user, order)
+  end
+  
+  def decrement_inventory(order)
+    #decrement the available inventory for each item in the order
+    sellers_array = Array.new
+    order.cart_items.each do |item|
+      item.inventory_item.decrement_quantity_available(item.quantity)
+      sellers_array.push(item.inventory_item.user)
     end
     
-    BuyerMailer.delay.order_mail(current_user, order)
+    return sellers_array
   end
   
 end

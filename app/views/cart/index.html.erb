@@ -1,7 +1,8 @@
-<div class="container-fluid">
+<div id ="Cart" class="container-fluid">
   <h2>Your Cart</h2>
     <p class="notice"><%= flash[:notice] %></p>
     <%= form_for @cart, :url => orders_new_path, :method => "POST" do |f| %>
+    <%= f.error_messages %>
     <%= render :partial => "form", :locals => {:f => f} %>
     <div class="row-fluid">
       <div class="span1">

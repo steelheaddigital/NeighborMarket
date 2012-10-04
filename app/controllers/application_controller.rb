@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     Time.zone = SiteSetting.first.time_zone if SiteSetting.first
   end
   
+  def current_ability
+    @current_ability ||= Ability.new(current_user, session)
+  end
+  
   def current_cart
     Cart.find(session[:cart_id])
     

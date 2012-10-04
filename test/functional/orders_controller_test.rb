@@ -46,6 +46,16 @@ class OrdersControllerTest < ActionController::TestCase
     
   end
   
+  test "should show order" do
+    
+    order = orders(:current)
+    
+    get :show, :id => order.id
+    
+    assert_not_nil :order
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -58,6 +68,9 @@ class OrdersControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     post :update, :id => order.id 
+    assert_redirected_to new_user_session_url
+    
+    get :show, :id => order.id
     assert_redirected_to new_user_session_url
     
   end

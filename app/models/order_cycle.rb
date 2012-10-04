@@ -105,6 +105,10 @@ class OrderCycle < ActiveRecord::Base
     self.find_by_status("current")
   end
   
+  def self.pending_delivery
+    self.where("buyer_pickup_date >= ?", DateTime.now.utc).first
+  end
+  
   def self.current_cycle_id
     return current_cycle ? current_cycle.id : 0
   end
