@@ -10,6 +10,12 @@ one:
   quantity: 10
   order: current
 
+two:
+  cart: buyer_not_current
+  inventory_item: one
+  quantity: 10
+  order: not_current
+
 no_order:
   cart: no_order
   inventory_item: one

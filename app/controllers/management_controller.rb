@@ -128,31 +128,12 @@ class ManagementController < ApplicationController
   
   def update_order_cycle
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
-    if params[:commit] == 'Start New Cycle'
-      @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
-      @order_cycle.status = "current"
-    else
-      @order_cycle = get_order_cycle
-    end
+    @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
+    @order_cycle.status = "current"
       
     respond_to do |format|
-      if @order_cycle_settings.save && (@order_cycle ? @order_cycle.save : true)
-        queue_order_cycle_end_job(@order_cycle.end_date) if @order_cycle
-        format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
-        format.js { render :nothing => true }
-      else
-        format.html { render "order_cycle" }
-        format.js { render :order_cycle, :layout => false, :status => 403 }
-      end
-    end
-  end
-  
-  def update_order_cycle_settings
-    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
-    
-    respond_to do |format|
-      if @order_cycle_settings.save
-        queue_order_cycle_end_job(@order_cycle.end_date)
+      if @order_cycle_settings.save && (params[:commit] == 'Start New Cycle' ? @order_cycle.save : true)
+        queue_order_cycle_end_job(@order_cycle.end_date) if params[:commit] == 'Start New Cycle'
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else

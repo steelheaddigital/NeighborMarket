@@ -7,10 +7,11 @@
 full:
   user: buyer_user
   
-  
 empty:
   user: buyer_user
 
+buyer_not_current:
+  user: buyer_user_not_current
 
 no_order:
   user: nil

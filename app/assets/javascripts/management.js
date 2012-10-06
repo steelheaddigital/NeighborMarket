@@ -200,7 +200,7 @@ $(document).on("click", ".cycleSettingsSubmit", function(event){
 })
 
 $(document).on("submit", "#SiteSettingsForm", function(event){
-    event.preventDefault()
+    event.preventDefault();
     var mgmt = new Management();
     mgmt.SubmitSiteSettingsForm($(this))
     return false;

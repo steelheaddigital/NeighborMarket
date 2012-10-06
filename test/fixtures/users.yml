@@ -101,7 +101,27 @@ buyer_user_not_current:
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
- 
+
+buyer_user_no_order:
+ email: buyer3@test.com
+ username: buyer3
+ encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
+ first_name: Buyer
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ aboutme: Test
+ delivery_instructions: Test
+ payment_instructions: 
+ approved_seller: false                        
+ listing_approval_style: manual
+ roles: buyer_role
+
 unapproved_seller_buyer_user:
  email: unapprovedsellerbuyer@test.com
  username: unapprovedsellerbuyer

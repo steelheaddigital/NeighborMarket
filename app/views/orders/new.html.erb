@@ -1,5 +1,8 @@
 <div class="container-fluid">
   <h2>Your Order</h2>
+  <% if @current_order %>
+    <h4>*Includes items previously added to your order for this cycle</h4>
+  <%end%>
     <p class="notice"><%= flash[:notice] %></p>
     <%= render "order" %>
     <div class="row-fluid">

@@ -12,8 +12,14 @@ class OrdersController < ApplicationController
         return
       end
       
-      @order = current_user.orders.build
-      @order.cart_items = @cart.cart_items
+      @current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
+      if @current_order
+        @order = @current_order
+        @order.cart_items.concat(@cart.cart_items)
+      else
+        @order = current_user.orders.build
+        @order.cart_items = @cart.cart_items
+      end
 
       respond_to do |format|
         format.html
@@ -27,7 +33,14 @@ class OrdersController < ApplicationController
   end
   
   def create
-    @order = current_user.orders.build
+      
+    current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
+    if current_order
+      @order = current_order
+    else
+      @order = current_user.orders.build
+    end
+    
     @order.add_inventory_items_from_cart(current_cart)
     
     respond_to do |format|

@@ -25,11 +25,11 @@
               <% if user_signed_in? && current_user.approved_seller? %>
                   <li><%= link_to('Sell', seller_index_path) %></li>
               <% end %>
-              <% if user_signed_in? && current_user.buyer? && OrderCycle.current_cycle %>
-                  <li><%= link_to('My Order', edit_order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.status = ?", 'current').last.id)) %></li>
+              <% if @current_order_id %>
+                  <li><%= link_to('My Order', edit_order_path(@current_order_id)) %></li>
               <% end %>
-              <% if user_signed_in? && current_user.buyer? && OrderCycle.pending_delivery && !OrderCycle.current_cycle %>
-                  <li><%= link_to('My Order', order_path(:id => current_user.orders.joins(:order_cycle).where("order_cycles.buyer_pickup_date >= ?", DateTime.now.utc).last.id)) %></li>
+              <% if @completed_order_id %>
+                  <li><%= link_to('My Order', order_path(@completed_order_id)) %></li>
               <% end %>
             </ul>
             <ul class="pull-right nav">

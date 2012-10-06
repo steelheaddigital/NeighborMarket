@@ -106,7 +106,7 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def self.pending_delivery
-    self.where("buyer_pickup_date >= ?", DateTime.now.utc).first
+    self.where("buyer_pickup_date >= ? AND status = ?", DateTime.now.utc, "complete").first
   end
   
   def self.current_cycle_id

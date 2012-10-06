@@ -87,17 +87,17 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should update order_cycle_settings and order cycle if commit equals 'Start New Cycle'" do
-    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current, :seller_delivery_date => Date.current, :buyer_pickup_date => Date.current}, :commit => 'Start New Cycle'
+    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Start New Cycle'
     
-    assert_response :success
+    assert_redirected_to management_order_cycle_path
     assert_not_nil assigns (:order_cycle_settings)
     assert_not_nil assigns (:order_cycle)
   end
   
   test "should update order_cycle_settings but not order cycle if commit does not equal 'Start New Cycle'" do
-    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current, :seller_delivery_date => Date.current, :buyer_pickup_date => Date.current}, :commit => 'Save Settings'
+    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save Settings'
     
-    assert_response :success
+    assert_redirected_to management_order_cycle_path
     assert_not_nil assigns (:order_cycle_settings)
   end
   
