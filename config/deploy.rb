@@ -81,8 +81,7 @@ namespace :deploy do
   
   desc "reset the database"
   task :reset do
-    run "cd #{current_path}; bundle exec rake kill_postgres_connections RAILS_ENV=#{rails_env}"
-    run "cd #{current_path}; bundle exec rake db:reset RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; bundle exec ps xa | grep postgres: | grep NeighborMarket_production | grep -v grep | awk '{print $1}' | sudo xargs kill | rake db:reset RAILS_ENV=#{rails_env}"
   end
   
   desc "loads sample data"
