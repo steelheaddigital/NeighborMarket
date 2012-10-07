@@ -66,19 +66,13 @@ module ApplicationHelper
   def order_cycle_message
     cycle = OrderCycle.current_cycle
     if cycle
-      "<div class=\"alert orderCycleAlert\">
-      The current order cycle will end on #{format_date_time(cycle.end_date)}. Place your order now for delivery on #{format_date_time(cycle.buyer_pickup_date)}
-      </div>".html_safe
+      "The current order cycle will end on #{format_date_time(cycle.end_date)}. Place your order now for delivery on #{format_date_time(cycle.buyer_pickup_date)}"
     else
       next_cycle = OrderCycle.find_by_status("pending")
       if next_cycle
-        "<div class=\"alert orderCycleAlert\">
-        There is no current order cycle open. The next cycle will start on #{format_date_time(next_cycle.start_date)}. Orders for the next cycle are scheduled to be delivered on #{format_date_time(next_cycle.buyer_pickup_date)}
-        </div>".html_safe
+        "There is no current order cycle open. The next cycle will start on #{format_date_time(next_cycle.start_date)}. Orders for the next cycle are scheduled to be delivered on #{format_date_time(next_cycle.buyer_pickup_date)}"
       else
-        "<div class=\"alert orderCycleAlert\">
-        There is no current order cycle and none scheduled. Please check back later.
-        </div>".html_safe
+        "There is no current order cycle and none scheduled. Please check back later."
       end
     end
   end
