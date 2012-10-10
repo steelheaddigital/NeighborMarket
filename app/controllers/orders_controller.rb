@@ -96,6 +96,20 @@ class OrdersController < ApplicationController
     end
   end
   
+  def destroy
+    @order = Order.find(params[:id])
+          
+    respond_to do |format|
+      if @order.destroy
+        format.html{ redirect_to root_path, notice: "Order successfully cancelled" }
+        format.js { render :nothing => true }
+      else
+        format.html{ redirect_to edit_order_path(@order.id), notice: "Order could not be cancelled" }
+        format.js { render :nothing => true, :status => 403  }
+      end
+    end
+  end
+  
   private
   
   def send_emails(order, update)

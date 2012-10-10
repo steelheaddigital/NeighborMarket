@@ -82,6 +82,20 @@ class OrdersControllerTest < ActionController::TestCase
     
   end
   
+  test "should destroy order" do
+    
+    order = orders(:current)
+    
+    assert_difference 'Order.count', -1 do
+      post :destroy, :id => order.id
+    end
+    
+    assert_not_nil assigns(:order)
+    assert_redirected_to root_path
+    assert_equal 'Order successfully cancelled', flash[:notice]
+    
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
