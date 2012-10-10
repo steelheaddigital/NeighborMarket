@@ -9,6 +9,7 @@ class Order < ActiveRecord::Base
   before_save do |order|
     order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id
+    update_seller_inventory(order)
   end
   
   def add_inventory_items_from_cart(cart)
@@ -20,6 +21,19 @@ class Order < ActiveRecord::Base
   
   def total_price
     cart_items.to_a.sum { |item| item.total_price }
+  end
+  
+  private 
+  
+  def update_seller_inventory(order)
+    order.cart_items.each do |item|
+      if item.changed?
+        difference = item.quantity - item.quantity_was
+        item.inventory_item.decrement_quantity_available(difference)
+      else
+        item.inventory_item.decrement_quantity_available(item.quantity)
+      end
+    end
   end
   
 end

@@ -100,7 +100,7 @@ class OrdersController < ApplicationController
   
   def send_emails(order, update)
     #Send an email to each seller notifying them of the sale
-    sellers_array = decrement_inventory(order)
+    sellers_array = get_sellers(order)
     sellers = sellers_array.uniq{|x| x.id}
     if update
       sellers.each do |seller|
@@ -115,11 +115,9 @@ class OrdersController < ApplicationController
     BuyerMailer.delay.order_mail(current_user, order)
   end
   
-  def decrement_inventory(order)
-    #decrement the available inventory for each item in the order
+  def get_sellers(order)
     sellers_array = Array.new
     order.cart_items.each do |item|
-      item.inventory_item.decrement_quantity_available(item.quantity)
       sellers_array.push(item.inventory_item.user)
     end
     

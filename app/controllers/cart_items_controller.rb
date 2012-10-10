@@ -26,6 +26,7 @@ class CartItemsController < ApplicationController
     respond_to do |format|
       if @cart_item.destroy
         if @cart_item.order_id
+          @cart_item.inventory_item.increment_quantity_available(@cart_item.quantity)
           format.html{ redirect_to edit_order_path(@cart_item.order_id) }
           format.js { render :nothing => true }
         else

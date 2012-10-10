@@ -45,8 +45,13 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def decrement_quantity_available(quantity)
-    self.quantity_available -= quantity unless self.quantity_available.zero?
-    self.save!
+    self.quantity_available -= quantity
+    self.save
+  end
+  
+  def increment_quantity_available(quantity)
+    self.quantity_available += quantity
+    self.save
   end
   
   private

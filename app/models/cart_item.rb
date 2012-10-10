@@ -8,8 +8,14 @@ class CartItem < ActiveRecord::Base
            :ensure_current_order_cycle
   
   def validate_quantity
-    if self.quantity > inventory_item.quantity_available
-      errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available} for item #{inventory_item.name}")
+    if self.order
+      if (inventory_item.quantity_available + self.quantity_was) - self.quantity < 0
+        errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available + self.quantity_was} for item #{inventory_item.name}")
+      end
+    else
+      if inventory_item.quantity_available - self.quantity < 0
+        errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available} for item #{inventory_item.name}")
+      end
     end
   end
   
