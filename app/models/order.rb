@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  has_many :cart_items, dependent: :destroy
+  has_many :cart_items
   belongs_to :user
   belongs_to :order_cycle
   
@@ -10,6 +10,13 @@ class Order < ActiveRecord::Base
     order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id
     update_seller_inventory(order)
+  end
+  
+  before_destroy do |order|
+    order.cart_items.each do |item|
+      item.inventory_item.increment_quantity_available(item.quantity)
+      item.destroy
+    end
   end
   
   def add_inventory_items_from_cart(cart)
@@ -27,10 +34,12 @@ class Order < ActiveRecord::Base
   
   def update_seller_inventory(order)
     order.cart_items.each do |item|
-      if item.changed?
+      #if the quantity was changed and the cart_item is part of an order
+      if item.quantity_changed? and item.order_id
         difference = item.quantity - item.quantity_was
         item.inventory_item.decrement_quantity_available(difference)
-      else
+      #this is a new order
+      elsif order.id.nil?
         item.inventory_item.decrement_quantity_available(item.quantity)
       end
     end

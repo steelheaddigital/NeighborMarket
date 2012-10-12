@@ -113,5 +113,8 @@ class OrdersControllerTest < ActionController::TestCase
     get :show, :id => order.id
     assert_redirected_to new_user_session_url
     
+    post :destroy, :id => order.id
+    assert_redirected_to new_user_session_url
+    
   end
 end
