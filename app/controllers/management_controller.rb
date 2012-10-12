@@ -118,6 +118,7 @@ class ManagementController < ApplicationController
   
   def order_cycle
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
+    @order_cycle_settings.padding ||= 0
     @order_cycle = get_order_cycle
     
     respond_to do |format|
@@ -132,7 +133,7 @@ class ManagementController < ApplicationController
     @order_cycle.status = "current"
       
     respond_to do |format|
-      if @order_cycle_settings.save && (params[:commit] == 'Start New Cycle' ? @order_cycle.save : true)
+      if @order_cycle_settings.save and (params[:commit] == 'Start New Cycle' ? @order_cycle.save : true)
         queue_order_cycle_end_job(@order_cycle.end_date) if params[:commit] == 'Start New Cycle'
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }

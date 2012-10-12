@@ -4,9 +4,7 @@ class OrderCycle < ActiveRecord::Base
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,
-           :seller_delivery_date_not_after_next_cycle_start_date,
            :buyer_pickup_date_not_before_seller_delivery_date,
-           :buyer_pickup_date_not_after_next_cycle_start_date,
            :next_end_date_not_before_next_start_date,
            :next_end_date_not_before_now
   
@@ -56,24 +54,6 @@ class OrderCycle < ActiveRecord::Base
   def buyer_pickup_date_not_before_seller_delivery_date
     if buyer_pickup_date < seller_delivery_date
       errors.add(:buyer_pickup_date, 'cannot be before seller delivery date')
-    end
-  end
-  
-  def seller_delivery_date_not_after_next_cycle_start_date
-    if @current_cycle_settings.recurring
-      next_start_date = end_date.advance(@current_cycle_settings.padding_interval.to_sym => @current_cycle_settings.padding)
-      if next_start_date < seller_delivery_date
-        errors.add(:seller_delivery_date, 'cannot be after the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p"))
-      end
-    end
-  end
-  
-  def buyer_pickup_date_not_after_next_cycle_start_date
-    if @current_cycle_settings.recurring
-      next_start_date = end_date.advance(@current_cycle_settings.padding_interval.to_sym => @current_cycle_settings.padding)
-      if next_start_date < buyer_pickup_date
-        errors.add(:buyer_pickup_date, 'cannot be after the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p"))
-      end
     end
   end
   

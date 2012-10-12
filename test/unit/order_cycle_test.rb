@@ -26,16 +26,6 @@ class OrderCycleTest < ActiveSupport::TestCase
      order_cycle = OrderCycle.new(:start_date =>Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current  + 1.day, :buyer_pickup_date => Date.current)
      assert !order_cycle.valid?, order_cycle.errors.inspect
    end
-  
-   test "should not validate order cycle when buyer pickup date is after next calculated start date" do
-     order_cycle = OrderCycle.new(:start_date =>Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current  + 1.day, :buyer_pickup_date => Date.current + 3.days)
-     assert !order_cycle.valid?, order_cycle.errors.inspect
-   end
-   
-   test "should not validate order cycle when seller delivery date is after next calculated start date" do
-     order_cycle = OrderCycle.new(:start_date =>Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current  + 3.days, :buyer_pickup_date => Date.current + 3.days)
-     assert !order_cycle.valid?, order_cycle.errors.inspect
-   end
    
    test "new_cycle returns new order_cycle" do
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
