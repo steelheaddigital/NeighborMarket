@@ -33,10 +33,10 @@ gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "prawnto_2", :require => "prawnto"
-gem "rufus-scheduler"
 gem "foreman"
 gem "paperclip", "~> 3.0"
 gem "delayed_job_active_record"
 gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
+gem 'whenever', :require => false
 
