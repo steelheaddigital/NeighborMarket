@@ -1,4 +1,5 @@
 class InventoryItem < ActiveRecord::Base
+  acts_as_indexed :fields => [:name, :description, :top_level_category_name, :second_level_category_name]
   belongs_to :user
   belongs_to :top_level_category
   belongs_to :second_level_category
@@ -19,29 +20,17 @@ class InventoryItem < ActiveRecord::Base
   
   before_destroy :ensure_not_referenced_by_any_cart_item
   
+  def top_level_category_name
+    self.top_level_category.name
+  end
+  
+  def second_level_category_name
+    self.second_level_category.name
+  end
+  
   def self.search(keywords)
     scope = self.where("quantity_available > 0")
-    
-    #split the incoming keywords on space and then join them with the PGSQL OR operator
-    keyword_list = keywords.split(/ /).join("|")
-    
-    top_level_category = TopLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
-    if(top_level_category)
-      top_level_category_id = top_level_category.id
-    end
-    
-    
-    second_level_category = SecondLevelCategory.where('to_tsvector(name) @@ to_tsquery(?)', keyword_list).first
-    if(second_level_category)
-      second_level_category_id = second_level_category.id
-    end
-    
-    if(keywords.present?)
-      scope = scope.where('top_level_category_id = ? OR second_level_category_id = ? OR to_tsvector(name) @@ to_tsquery(?) OR to_tsvector(description) @@ to_tsquery(?)', top_level_category_id, second_level_category_id, keyword_list, keyword_list)
-    end
-    
-    scope.all
-    
+    scope.find_with_index(keywords)
   end
   
   def decrement_quantity_available(quantity)

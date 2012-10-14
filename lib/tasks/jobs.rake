@@ -6,8 +6,8 @@ namespace :jobs do
     if queued_jobs
       puts "executing jobs"
       queued_jobs.each do |job|
-        job.invoke_job
-        job.destroy
+        worker = Delayed::Worker.new
+        worker.run(job)
       end
     end
   end

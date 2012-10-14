@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  acts_as_indexed :fields => [:username, :first_name, :last_name]
   has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
@@ -111,11 +112,6 @@ class User < ActiveRecord::Base
     
     scope = self
     
-    keywordList = keywords.downcase.split(/ /)
-    
-    if(keywords.present?)
-      scope = scope.where('LOWER(first_name) IN(?) OR LOWER(last_name) IN(?) OR LOWER(username) IN(?)', keywordList, keywordList, keywordList)
-    end
     if(role.present?)
       scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}")
     end
@@ -125,8 +121,11 @@ class User < ActiveRecord::Base
     if(seller_approval_style.present?)
       scope = scope.where('listing_approval_style = ?', "#{seller_approval_style}")
     end
-    
-    scope.all
+    if(keywords.present?)
+      scope = scope.find_with_index(keywords)
+    else
+      scope.all
+    end
     
   end
   

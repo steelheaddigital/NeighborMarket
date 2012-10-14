@@ -38,4 +38,5 @@ gem "delayed_job_active_record"
 gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
 gem 'whenever', :require => false
+gem 'acts_as_indexed'
 
