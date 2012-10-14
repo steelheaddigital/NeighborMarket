@@ -133,8 +133,8 @@ class ManagementController < ApplicationController
     @order_cycle.status = "current"
       
     respond_to do |format|
-      if @order_cycle_settings.save and (params[:commit] == 'Start New Cycle' ? @order_cycle.save : true)
-        queue_order_cycle_end_job(@order_cycle.end_date) if params[:commit] == 'Start New Cycle'
+      if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save : true)
+        queue_order_cycle_end_job(@order_cycle.end_date) if params[:commit] == 'Save and Start New Cycle'
         format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
