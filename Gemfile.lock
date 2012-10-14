@@ -74,8 +74,6 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    foreman (0.58.0)
-      thor (>= 0.13.6)
     hashery (2.0.1)
     highline (1.6.15)
     hike (1.2.1)
@@ -197,7 +195,6 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   dynamic_form
-  foreman
   jquery-rails
   less-rails-bootstrap (>= 2.0.12)
   less-rails-bootswatch

@@ -33,7 +33,6 @@ gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "prawnto_2", :require => "prawnto"
-gem "foreman"
 gem "paperclip", "~> 3.0"
 gem "delayed_job_active_record"
 gem "capistrano"
