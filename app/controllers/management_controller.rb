@@ -184,7 +184,7 @@ class ManagementController < ApplicationController
   
   def queue_order_cycle_end_job(end_date)
     job = OrderCycleEndJob.new
-    Delayed::Job.where(:queue => "order_cycle_end").each do |job|
+    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
       job.destroy
     end
     Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
