@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910125003) do
+ActiveRecord::Schema.define(:version => 20121027143421) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -159,6 +159,10 @@ ActiveRecord::Schema.define(:version => 20120910125003) do
     t.text     "payment_instructions"
     t.boolean  "approved_seller",                       :default => false,    :null => false
     t.string   "listing_approval_style",                :default => "manual", :null => false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -1,6 +1,11 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span6 well">
+      <%if @user.photo?%>
+        <p>
+          <%= image_tag @user.photo.url(:medium) %>
+        </p>
+      <%end%>
       <p>
         <b>First Name:</b>
         <%= @user.first_name %>
