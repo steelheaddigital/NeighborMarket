@@ -5,6 +5,7 @@
 <%= form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
 <div class="modal-body">
   <%= f.error_messages %>
+  <div class="span6">
     <div>
       <%= f.label "Top Level Category *"   %>
       <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name) %>
@@ -14,6 +15,8 @@
       <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]})  %>
     </div>
     <%= render :partial => 'form', :locals => { :f => f } %>
+  </div>
+  <%= render :partial => 'form_right', :locals => { :f => f } %>
 </div>
 <div class="modal-footer">
   <a class="btn" data-dismiss="modal" href="#">Close</a>
