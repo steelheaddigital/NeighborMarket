@@ -47,7 +47,8 @@ set :rvm_ruby_string, '1.9.3'
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
-after "deploy", "deploy:migrate, deploy:refresh_site"
+after "deploy", "deploy:migrated"
+after "deploy", "deploy:refresh_site"
 
 namespace :deploy do
   desc "cause Passenger to initiate a restart"
@@ -73,7 +74,7 @@ namespace :deploy do
   
   desc "refreshes site so that first load is not slow"
   task :refresh_site do
-    run "cd #{current_path}; bundle exec rake refresh_site:refresh RAILS_ENV=#{rails_env}"
+    run "cd #{current_path}; bundle exec rake site_refresh:refresh RAILS_ENV=#{rails_env}"
   end
 end
 
