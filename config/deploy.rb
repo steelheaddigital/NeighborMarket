@@ -47,7 +47,7 @@ set :rvm_ruby_string, '1.9.3'
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
-after "deploy", "deploy:migrated"
+after "deploy", "deploy:migrate"
 after "deploy", "deploy:refresh_site"
 
 namespace :deploy do
