@@ -28,3 +28,7 @@ set :output, 'log/schedule.log'
 every 1.minute do
   rake 'jobs:execute'
 end
+
+every 15.minutes do
+  rake 'site_refresh:refresh'
+end
