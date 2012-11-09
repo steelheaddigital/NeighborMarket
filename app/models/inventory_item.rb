@@ -6,7 +6,7 @@ class InventoryItem < ActiveRecord::Base
   has_many :cart_items
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
-  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo
+  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted
   
   validates :top_level_category_id, 
     :second_level_category_id,
@@ -29,7 +29,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def self.search(keywords)
-    scope = self.where("quantity_available > 0")
+    scope = self.where("quantity_available > 0 AND is_deleted = false")
     scope.find_with_index(keywords)
   end
   
@@ -43,14 +43,31 @@ class InventoryItem < ActiveRecord::Base
     self.save
   end
   
+  def previous_cart_items
+    self.cart_items.joins(:order)
+                   .where("orders.order_cycle_id != ?", OrderCycle.current_cycle_id)
+  end
+  
+  def paranoid_destroy
+    
+    if self.previous_cart_items.empty?
+      return self.destroy
+    else
+      self.update_attribute(:is_deleted, true)
+      self.cart_items.joins(:order)
+                     .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
+                     .destroy_all
+      return true
+    end
+  end
+  
   private
   
   def ensure_not_referenced_by_any_cart_item
-    
     if cart_items.empty?
       return true
     else
-      errors.add(:base, "Cart Items Present")    
+      errors.add(:base, "Item cannot be destroyed: Cart Items present, use the paranoid_destroy method instead")    
       return false
     end
   end

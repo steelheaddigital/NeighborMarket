@@ -79,4 +79,21 @@ class InventoryItemsTest < ActiveSupport::TestCase
      
    end
    
+   test "paranoid destroy sets is_deleted attribute to true and deletes current cart_items when item has cart_items not in current order cycle" do     
+     item = inventory_items(:one)
+     cart_item = cart_items(:one)
+     item.paranoid_destroy
+     
+     assert InventoryItem.exists?(item)
+     assert !CartItem.exists?(cart_item)
+     assert item.is_deleted
+   end
+   
+   test "paranoid destroy destroys item when item has no cart_items in a previous order cycle" do     
+     item = inventory_items(:two)
+     item.paranoid_destroy
+     
+     assert !InventoryItem.exists?(item)
+   end
+   
 end

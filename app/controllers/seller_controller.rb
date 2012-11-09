@@ -4,7 +4,7 @@ class SellerController < ApplicationController
   
   def index
     user_id = current_user.id
-    @current_inventory = InventoryItem.where(:user_id => user_id).order("created_at DESC")
+    @current_inventory = InventoryItem.where(:user_id => user_id, :is_deleted => false).order("created_at DESC")
     
     respond_to do |format|
       format.html

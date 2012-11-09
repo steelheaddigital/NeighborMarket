@@ -77,7 +77,7 @@ class InventoryItemsController < ApplicationController
     @inventory = InventoryItem.find(params[:id])
     
     respond_to do |format|
-      if @inventory.destroy
+      if @inventory.paranoid_destroy
         format.html{ redirect_to seller_index_path, notice: "Inventory item successfully deleted!" }
         format.js { render :nothing => true }
       else
