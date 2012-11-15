@@ -41,17 +41,66 @@ class SellerController < ApplicationController
   
   def packing_list
     @seller = current_user
-    current_cycle_id = OrderCycle.current_cycle_id
-    @orders = Order.joins(:cart_items => :inventory_item)
-                   .select('orders.id, orders.user_id')
-                   .where(:inventory_items => {:user_id => @seller.id}, :orders => {:order_cycle_id => current_cycle_id})
-                   .group('orders.id, orders.user_id')
+    @orders = get_orders
     
     respond_to do |format|
       format.html
       format.js { render :layout => false }
       format.pdf { render :layout => false }
     end
+  end
+  
+  def remove_item_from_order
+    cart_item = CartItem.find(params[:cart_item_id])
+    @orders = get_orders
+    @seller = current_user
+    
+    respond_to do |format|
+      if cart_item.destroy
+        format.html { redirect_to seller_packing_list_path, notice: 'Item successfully deleted!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render :packing_list }
+        format.js { render :packing_list, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  def update_order
+    order = Order.find(params[:order_id])
+    success = false
+    @orders = get_orders
+    @seller = current_user
+    
+    if params[:commit] == 'Delete All Items'
+      order.cart_items.each do |item|
+        item.delete
+      end
+      success = true
+    else
+      success = order.update_attributes(params[:order])
+    end
+                   
+    respond_to do |format|
+      if success
+        format.html { redirect_to seller_packing_list_path, notice: 'Order successfully updated!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render :packing_list }
+        format.js { render :packing_list, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  private
+  
+  def get_orders
+    current_cycle_id = OrderCycle.current_cycle_id
+    seller = current_user
+    Order.joins(:cart_items => :inventory_item)
+         .select('orders.id, orders.user_id')
+         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => current_cycle_id})
+         .group('orders.id, orders.user_id')
   end
   
 end

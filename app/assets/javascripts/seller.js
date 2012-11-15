@@ -110,21 +110,78 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
     var url = $(this).attr("action");
     var seller = new Seller();
     
-    if(deleteConfirm == true){
+    if(deleteConfirm === true){
         $('#InventoryNotice').hide();
         $("#SellerLoadingImage").show();
 
         $.post(url, {_method: 'delete'}, function() {
                seller.LoadCurrentInventory('seller/current_inventory');
-               utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully deleted!");
+               utils.ShowAlert($("#SellerNotice"), "Inventory item successfully deleted!");
                $("#SellerLoadingImage").hide();
            }
         );
     }
+	
+	return false;
 });
+
+$(document).on("click", ".sellerDeleteOrderItem", function(event){
+	event.preventDefault();
+    var deleteConfirm = confirm("Are you sure you want to delete this item?");
+    var url = $(this).attr("href");
+    
+    if(deleteConfirm === true){
+        $('#InventoryNotice').hide();
+        $("#SellerLoadingImage").show();
+		
+        $.post(url, {_method: 'delete'}, function() {
+               $("#SellerContent").load('/seller/packing_list');
+               utils.ShowAlert($("#SellerNotice"), "Item successfully deleted!");
+               $("#SellerLoadingImage").hide();
+           }
+        );
+    }
+	
+	return false;
+});
+
+$(document).on("click", ".sellerUpdateOrderSubmit", function(event){
+    event.preventDefault()
+    var seller = new Seller();
+    if($(this)[0].value === 'Delete All Items'){
+        if(confirm("Are you sure you want to delete all items in this order?")){
+            seller.SubmitEditOrderForm($(this));
+        }
+    }
+    else{
+        seller.SubmitEditOrderForm($(this));
+    }
+
+    return false;
+
+})
 
 function Seller(){
     
+    this.SubmitEditOrderForm = function(button){
+        $("#SellerLoadingImage").show();
+        var input = $("<input type='hidden' />").attr("name", button[0].name).attr("value", button[0].value);
+        button.closest('form').append(input);
+        var form = button.closest('form');
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(){
+	         $("#SellerContent").load('/seller/packing_list');
+             utils.ShowAlert($("#SellerNotice"), "Order successfully updated!")
+             $("#SellerLoadingImage").hide();
+           },
+           error: function(request){
+            $("#SellerLoadingImage").hide();
+            $("#SellerContent").html(request.responseText);
+           }
+        });
+    }
+	
     this.LoadSellerContent = function(url, reset){
         $("#SellerLoadingImage").show();
         
@@ -138,7 +195,7 @@ function Seller(){
     
     this.LoadInventoryDialog = function(url){
         $("#InventoryModal").load(url, function() 
-            {$("#InventoryNotice").hide();
+            {$("#SellerNotice").hide();
         }).modal('show');
     }
 
@@ -152,7 +209,7 @@ function Seller(){
     }
 
     this.LoadCurrentInventory = function(url){
-        $('#InventoryNotice').hide();
+        $('SellerNotice').hide();
         $('#SellerContent').load(url);
     }
 }

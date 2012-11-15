@@ -4,28 +4,34 @@
   </div>
   <%@orders.each do |order|%>
   <div class="well row-fluid">
-    <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.first_name + " " + order.user.last_name %></p>
-    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
+    <%= form_for order, :url => seller_update_order_path(order), :html => { :id => "SellerUpdateOrderForm" } do |f| %>
+      <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.first_name + " " + order.user.last_name %></p>
+      <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
       <table class="table" >
-      <thead>  
-        <tr>
-          <th>Item ID</th>
-          <th>Item Name</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-        <tbody>
-          <% order.cart_items.each do |item|%>
+        <thead>  
           <tr>
-            <% if item.inventory_item.user_id == current_user.id %>      
-              <td><%= item.inventory_item.id %></td>
-              <td><%= item_name(item.inventory_item) %></td>
-              <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+            <th>Item ID</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= f.fields_for :cart_items do |item| %>
+          <tr>
+            <% if item.object.inventory_item.user_id == current_user.id %>      
+              <td><%= item.object.inventory_item.id %></td>
+              <td><%= item_name(item.object.inventory_item) %></td>
+              <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+              <td><%= link_to "Delete Item", seller_remove_item_from_order_path(item.object), :class => 'btn btn-danger sellerDeleteOrderItem'%></td>
             <% end %>
           </tr>
           <%end%>
         </tbody>
       </table>
+      <%= submit_tag "Update Order", :class => 'btn btn-primary sellerUpdateOrderSubmit' %>
+      <%= submit_tag "Delete All Items", :class => 'btn btn-danger sellerUpdateOrderSubmit' %>
+    <%end%>
   </div>
   <%end%>
 </div>
