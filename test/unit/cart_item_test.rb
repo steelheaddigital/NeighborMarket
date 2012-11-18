@@ -23,5 +23,12 @@ class CartItemTest < ActiveSupport::TestCase
     assert !item.valid?
   end
   
+  test "updates inventory_item quantity availabe on destroy" do
+    item = cart_items(:one)
+    
+    assert_difference "item.inventory_item.quantity_available", item.quantity do
+      item.destroy
+    end
+  end
   
 end

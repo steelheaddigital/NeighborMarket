@@ -57,8 +57,9 @@ class OrderTest < ActiveSupport::TestCase
   
   test "seller inventory increased by associated cart item quantity when order destroyed" do
     order = orders(:current)
+    inventory_item = order.cart_items.first.inventory_item
     
-    assert_difference 'order.cart_items.first.inventory_item.quantity_available', 10 do
+    assert_difference 'InventoryItem.find(inventory_item.id).quantity_available', 10 do
       order.destroy
     end
     

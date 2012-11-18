@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  has_many :cart_items
+  has_many :cart_items, :dependent => :destroy
   belongs_to :user
   belongs_to :order_cycle
   
@@ -10,13 +10,6 @@ class Order < ActiveRecord::Base
     order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id
     update_seller_inventory(order)
-  end
-  
-  before_destroy do |order|
-    order.cart_items.each do |item|
-      item.inventory_item.increment_quantity_available(item.quantity)
-      item.destroy
-    end
   end
   
   def add_inventory_items_from_cart(cart)

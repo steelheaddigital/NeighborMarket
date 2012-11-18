@@ -7,6 +7,12 @@ class CartItem < ActiveRecord::Base
   validate :validate_quantity,
            :ensure_current_order_cycle
   
+  before_destroy :update_inventory_item_quantities
+   
+  def update_inventory_item_quantities
+    self.inventory_item.increment_quantity_available(self.quantity)
+  end
+  
   def validate_quantity
     if self.order
       if (inventory_item.quantity_available + self.quantity_was) - self.quantity < 0

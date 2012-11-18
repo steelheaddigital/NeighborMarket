@@ -40,12 +40,16 @@ NeighborMarket::Application.routes.draw do
   match 'inventory_items/browse_all' => 'inventory_items#browse_all'
   resources :inventory_items
   
-  match 'seller/current_inventory' => 'seller#current_inventory'
+  # match 'seller/current_inventory' => 'seller#current_inventory'
   match 'seller/pick_list' => 'seller#pick_list'
   match 'seller/packing_list' => 'seller#packing_list'
   match 'seller/:cart_item_id/remove_item_from_order' => 'seller#remove_item_from_order', :via => "DELETE", :as => :seller_remove_item_from_order
   match 'seller/:order_id/update_order' => 'seller#update_order', :via => "PUT", :as => :seller_update_order
-  resources :seller, :only => ["index"]
+  resources :seller, :only => ["index"] do
+    collection do
+      get 'current_inventory'
+    end
+  end
   
   resources :top_level_categories 
   

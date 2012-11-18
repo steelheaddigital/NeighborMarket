@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <strong>One or more items in the below order for buyer <%= @order.user.first_name + " " + @order.user.last_name %> was modified or removed by the seller <%= @seller.first_name + " " + @seller.last_name %>.</strong>
+    <table border=1 style="border-collapse: collapse;">
+    <thead>  
+      <tr>
+        <th></th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Seller</th>
+        <th>Payment Instructions</th>
+      </tr>
+    </thead>
+      <tbody>
+        <%@order.cart_items.sort_by{|item| [item.inventory_item.user.last_name, item.inventory_item.user.first_name]}.each do |item|%>
+        <tr>
+          <td><%= item_name(item.inventory_item) %></td>
+          <td><%= number_to_currency(item.inventory_item.price)%> </td>
+          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+          <td><%= item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name %>
+          <td><%= item.inventory_item.user.payment_instructions %>
+        </tr>
+        <%end%>
+        <tr>
+          <td style="font-weight:bold;">Total:</td>
+          <td><%= number_to_currency @order.total_price %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

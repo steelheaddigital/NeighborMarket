@@ -38,7 +38,7 @@ approved_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: Test
+ payment_instructions: Test payment instructions
  approved_seller: true                       
  listing_approval_style: auto
  roles: seller_role

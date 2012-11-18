@@ -57,6 +57,7 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       if cart_item.destroy
+        send_order_modified_emails(@seller, cart_item.order)
         format.html { redirect_to seller_packing_list_path, notice: 'Item successfully deleted!'}
         format.js { render :nothing => true }
       else
@@ -74,7 +75,7 @@ class SellerController < ApplicationController
     
     if params[:commit] == 'Delete All Items'
       order.cart_items.each do |item|
-        item.delete
+        item.destroy if item.inventory_item.user == @seller
       end
       success = true
     else
@@ -83,6 +84,7 @@ class SellerController < ApplicationController
                    
     respond_to do |format|
       if success
+        send_order_modified_emails(@seller, order)
         format.html { redirect_to seller_packing_list_path, notice: 'Order successfully updated!'}
         format.js { render :nothing => true }
       else
@@ -93,6 +95,14 @@ class SellerController < ApplicationController
   end
   
   private
+  
+  def send_order_modified_emails(seller, order)
+    BuyerMailer.delay.order_modified_mail(seller, order)
+    managers = Role.find_by_name("manager").users 
+     managers.each do |manager|
+       ManagerMailer.delay.seller_modified_order_mail(seller, manager, order)
+     end
+  end
   
   def get_orders
     current_cycle_id = OrderCycle.current_cycle_id
