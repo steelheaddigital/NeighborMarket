@@ -47,7 +47,7 @@ class SellerControllerTest < ActionController::TestCase
       delete :remove_item_from_order, :cart_item_id => cart_item.id
     end
     
-    assert_redirected_to seller_packing_list_url
+    assert_redirected_to packing_list_seller_index_url
   end
   
   test "should update cart item when commit param is not delete all items" do
@@ -58,7 +58,7 @@ class SellerControllerTest < ActionController::TestCase
       post :update_order, :order_id => order.id, :order => {:cart_items_attributes => { "0" => {:id => cart_item.id, :quantity => 9 } } }
     end
     
-    assert_redirected_to seller_packing_list_url
+    assert_redirected_to packing_list_seller_index_url
   end
     
   test "should delete cart items when commit param is delete all items" do
@@ -69,7 +69,7 @@ class SellerControllerTest < ActionController::TestCase
       post :update_order, :order_id => order.id, :commit => "Delete All Items"
     end
 
-    assert_redirected_to seller_packing_list_url
+    assert_redirected_to packing_list_seller_index_url
   end
   
   test "anonymous user cannot access protected actions" do

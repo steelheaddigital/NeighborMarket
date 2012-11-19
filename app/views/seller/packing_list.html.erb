@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div style="margin-bottom: 15px;">
-    <%= link_to "Printable Packing List (PDF)", seller_packing_list_path(:format => 'pdf'), {:class => 'btn'} %>
+    <%= link_to "Printable Packing List (PDF)", packing_list_seller_index_path(:format => 'pdf'), {:class => 'btn'} %>
   </div>
   <%@orders.each do |order|%>
   <div class="well row-fluid">

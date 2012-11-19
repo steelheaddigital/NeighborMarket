@@ -36,7 +36,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:category)
     assert_not_nil assigns(:top_level_category)
-    assert_redirected_to management_categories_path
+    assert_redirected_to categories_management_index_path
     assert_equal 'Category successfully updated!', flash[:notice]
     
   end
@@ -49,7 +49,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     
     assert_not_nil :category
     assert_not_nil :second_level_category
-    assert_redirected_to management_categories_path
+    assert_redirected_to categories_management_index_path
     assert_equal 'Category successfully updated!', flash[:notice]
     
   end
@@ -63,7 +63,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     end
     
     assert_not_nil :category
-    assert_redirected_to management_categories_path
+    assert_redirected_to categories_management_index_path
     assert_equal 'Category successfully deleted!', flash[:notice]
     
   end

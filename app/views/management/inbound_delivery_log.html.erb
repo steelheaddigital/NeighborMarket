@@ -1,7 +1,7 @@
-<%= form_tag management_save_inbound_delivery_log_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
+<%= form_tag save_inbound_delivery_log_management_index_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
   <div class="row-fluid" style="margin-bottom: 15px;">
     <%= submit_tag "Save", :class => 'btn btn-primary' %>
-    <%= link_to "Printable Delivery Log (PDF)", management_inbound_delivery_log_path(:format => 'pdf'), {:class => 'btn'} %>
+    <%= link_to "Printable Delivery Log (PDF)", inbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
   </div>
   <div class="well-fluid row-fluid">
     <div class="span12">

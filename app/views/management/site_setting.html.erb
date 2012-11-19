@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="span6">
-    <%= form_for @site_settings, :url => management_update_site_setting_path, :method => :post, :html => { :id => "SiteSettingsForm", :class=>"well" } do |f| %>
+    <%= form_for @site_settings, :url => update_site_setting_management_index_path, :method => :post, :html => { :id => "SiteSettingsForm", :class=>"well" } do |f| %>
       <%= f.error_messages %>
       <div>
         <%= f.label "Domain (Example: http://mysite.com)" %>

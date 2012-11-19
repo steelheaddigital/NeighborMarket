@@ -70,7 +70,7 @@ class ManagementController < ApplicationController
     end
     
     respond_to do |format|
-        format.html { redirect_to management_inbound_delivery_log_path, notice: 'Delivery Log Successfully Saved!'}
+        format.html { redirect_to inbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
         format.js { render :nothing => true }
     end
   end
@@ -100,7 +100,7 @@ class ManagementController < ApplicationController
     end
     
     respond_to do |format|
-        format.html { redirect_to management_outbound_delivery_log_path, notice: 'Delivery Log Successfully Saved!'}
+        format.html { redirect_to outbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
         format.js { render :nothing => true }
     end
   end
@@ -135,7 +135,7 @@ class ManagementController < ApplicationController
     respond_to do |format|
       if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save : true)
         queue_order_cycle_end_job(@order_cycle.end_date) if params[:commit] == 'Save and Start New Cycle'
-        format.html { redirect_to management_order_cycle_path, notice: 'Order Cycle Settings Successfully Saved!'}
+        format.html { redirect_to order_cycle_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
         format.html { render "order_cycle" }
@@ -158,7 +158,7 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       if @site_settings.save
-        format.html { redirect_to management_site_setting_path, notice: 'Site Settings Successfully Saved!'}
+        format.html { redirect_to site_setting_management_index_path, notice: 'Site Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
         format.html { render "site_setting" }

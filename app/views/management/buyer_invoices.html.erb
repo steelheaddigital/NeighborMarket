@@ -1,5 +1,5 @@
 <div class ="row-fluid" style="margin-bottom: 15px;">
-  <%= link_to "Printable Invoices (PDF)", management_buyer_invoices_path(:format => 'pdf'), {:class => 'btn'} %>
+  <%= link_to "Printable Invoices (PDF)", buyer_invoices_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
 </div>
 <%@orders.each_with_index do |order, index|%>
   <div class="well row-fluid">

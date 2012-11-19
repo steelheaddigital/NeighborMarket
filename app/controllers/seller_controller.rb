@@ -58,7 +58,7 @@ class SellerController < ApplicationController
     respond_to do |format|
       if cart_item.destroy
         send_order_modified_emails(@seller, cart_item.order)
-        format.html { redirect_to seller_packing_list_path, notice: 'Item successfully deleted!'}
+        format.html { redirect_to packing_list_seller_index_path, notice: 'Item successfully deleted!'}
         format.js { render :nothing => true }
       else
         format.html { render :packing_list }
@@ -85,7 +85,7 @@ class SellerController < ApplicationController
     respond_to do |format|
       if success
         send_order_modified_emails(@seller, order)
-        format.html { redirect_to seller_packing_list_path, notice: 'Order successfully updated!'}
+        format.html { redirect_to packing_list_seller_index_path, notice: 'Order successfully updated!'}
         format.js { render :nothing => true }
       else
         format.html { render :packing_list }

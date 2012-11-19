@@ -19,35 +19,40 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  match 'management/approve_sellers' => 'management#approve_sellers'
-  match 'management/user_search' => 'management#user_search'
-  match 'management/user_search_results' => 'management#user_search_results'
-  match 'management/categories' => 'management#categories'
-  match 'management/inbound_delivery_log' => 'management#inbound_delivery_log'
-  match 'management/save_inbound_delivery_log' => 'management#save_inbound_delivery_log', :via => "POST"
-  match 'management/outbound_delivery_log' => 'management#outbound_delivery_log'
-  match 'management/save_outbound_delivery_log' => 'management#save_outbound_delivery_log', :via => "POST"
-  match 'management/buyer_invoices' => 'management#buyer_invoices'
-  match 'management/order_cycle' => 'management#order_cycle'
-  match 'management/update_order_cycle' => 'management#update_order_cycle', :via => "POST"
-  match 'management/site_setting' => 'management#site_setting'
-  match 'management/update_site_setting' => 'management#update_site_setting', :via => "POST"
-  resources :management, :only => ["index"]
+  resources :management, :only => ["index"] do
+    collection do
+      get 'approve_sellers'
+      get 'user_search'
+      get 'user_search_results'
+      get 'categories'
+      get 'inbound_delivery_log'
+      post 'save_inbound_delivery_log'
+      get 'outbound_delivery_log'
+      post 'save_outbound_delivery_log'
+      get 'buyer_invoices'
+      get 'order_cycle'
+      post 'update_order_cycle'
+      get 'site_setting'
+      post 'update_site_setting'
+    end
+  end
   
-  match 'inventory_items/get_second_level_category' => 'inventory_items#get_second_level_category'
-  match 'inventory_items/search' => 'inventory_items#search'
-  match 'inventory_items/browse' => 'inventory_items#browse'
-  match 'inventory_items/browse_all' => 'inventory_items#browse_all'
-  resources :inventory_items
+  resources :inventory_items do
+    collection do
+      get 'get_second_level_category'
+      get 'search'
+      get 'browse'
+      get 'browse_all'
+    end
+  end
   
-  # match 'seller/current_inventory' => 'seller#current_inventory'
-  match 'seller/pick_list' => 'seller#pick_list'
-  match 'seller/packing_list' => 'seller#packing_list'
   match 'seller/:cart_item_id/remove_item_from_order' => 'seller#remove_item_from_order', :via => "DELETE", :as => :seller_remove_item_from_order
   match 'seller/:order_id/update_order' => 'seller#update_order', :via => "PUT", :as => :seller_update_order
   resources :seller, :only => ["index"] do
     collection do
       get 'current_inventory'
+      get 'pick_list'
+      get 'packing_list'
     end
   end
   
@@ -59,11 +64,17 @@ NeighborMarket::Application.routes.draw do
     get 'destroy'
   end
   
-  match 'cart/item_count' => 'cart#item_count'
-  resources :cart, :only => ["index"]
+  resources :cart, :only => ["index"] do
+    collection do
+      get 'item_count'
+    end
+  end
   
-  match 'orders/new' => 'orders#new', :via => "POST"
-  resources :orders, :only => ["create", "edit", "update", "show", "destroy"]
+  resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
+    collection do
+      post 'new'
+    end
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

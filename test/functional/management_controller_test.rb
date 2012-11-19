@@ -52,7 +52,7 @@ class ManagementControllerTest < ActionController::TestCase
     cart_item = cart_items(:one)
     post :save_inbound_delivery_log, :cart_items => {"0" => {:id => cart_item.id, :delivered => "true"}}
     
-    assert_redirected_to management_inbound_delivery_log_path
+    assert_redirected_to inbound_delivery_log_management_index_path
     assert_equal(true, cart_item.reload.delivered) 
   end
   
@@ -67,7 +67,7 @@ class ManagementControllerTest < ActionController::TestCase
     order = orders(:current)
     post :save_outbound_delivery_log, :orders => {"0" => {:id => order.id, :complete => "true"}}
     
-    assert_redirected_to management_outbound_delivery_log_path
+    assert_redirected_to outbound_delivery_log_management_index_path
     assert_equal(true, order.reload.complete) 
   end
   
@@ -89,7 +89,7 @@ class ManagementControllerTest < ActionController::TestCase
   test "should update order_cycle_settings and order cycle if commit equals 'Start New Cycle'" do
     post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Start New Cycle'
     
-    assert_redirected_to management_order_cycle_path
+    assert_redirected_to order_cycle_management_index_path
     assert_not_nil assigns (:order_cycle_settings)
     assert_not_nil assigns (:order_cycle)
   end
@@ -97,7 +97,7 @@ class ManagementControllerTest < ActionController::TestCase
   test "should update order_cycle_settings but not order cycle if commit does not equal 'Start New Cycle'" do
     post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save Settings'
     
-    assert_redirected_to management_order_cycle_path
+    assert_redirected_to order_cycle_management_index_path
     assert_not_nil assigns (:order_cycle_settings)
   end
   
@@ -111,7 +111,7 @@ class ManagementControllerTest < ActionController::TestCase
   test "should update site_settings" do
     post :update_site_setting, :site_setting => {:domain => "http://mysite.com", :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
     
-    assert_redirected_to management_site_setting_path
+    assert_redirected_to site_setting_management_index_path
     assert_not_nil assigns (:site_settings)
   end
   

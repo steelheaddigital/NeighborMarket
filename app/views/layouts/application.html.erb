@@ -71,7 +71,7 @@
                   <ul class="dropdown-menu">
                     <% category.second_level_categories.each do |category|%>
                     <li>
-                        <a href="<%= inventory_items_browse_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
+                        <a href="<%= browse_inventory_items_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
                     </li>
                     <% end %>
                   </ul>
@@ -80,7 +80,7 @@
             </ul>
           </li>
           <li>
-            <form id="MainSearchForm" class="form-inline" action="<%= inventory_items_search_url %>">
+            <form id="MainSearchForm" class="form-inline" action="<%= search_inventory_items_url %>">
               <input name="keywords" type="text"></input>
               <button type="submit" class="btn">Search</button>
             </form>

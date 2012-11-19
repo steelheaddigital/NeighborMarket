@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="span6">
-    <%= form_tag(management_user_search_results_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
+    <%= form_tag(user_search_results_management_index_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
       <label>Search Condition</label>
       <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
       <span class="inline-help">Enter a username, first name, or last name</span>
