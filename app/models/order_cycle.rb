@@ -76,7 +76,6 @@ class OrderCycle < ActiveRecord::Base
     end
   end
   
-  
   def current_cycle
     OrderCycle.find_by_status("current")
   end
@@ -92,4 +91,9 @@ class OrderCycle < ActiveRecord::Base
   def self.current_cycle_id
     return current_cycle ? current_cycle.id : 0
   end
+  
+  def self.latest_cycle
+    self.where("status != ?", "pending").last
+  end
+  
 end

@@ -32,7 +32,7 @@ class Order < ActiveRecord::Base
         difference = item.quantity - item.quantity_was
         item.inventory_item.decrement_quantity_available(difference)
       #this is a new order
-      elsif order.id.nil?
+      else
         item.inventory_item.decrement_quantity_available(item.quantity)
       end
     end

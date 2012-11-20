@@ -31,13 +31,13 @@ class OrderTest < ActiveSupport::TestCase
     end
   end
   
-  test "seller inventory not changed when associated cart item quantity not changed" do
+  test "seller inventory decreased by associated cart item quantity when order exists" do
     
     order = orders(:current)
     cart_item_id = order.cart_items.first.id
     order.attributes = {:cart_items_attributes => [:id => cart_item_id, :quantity => 10]}
     
-    assert_no_difference 'order.cart_items.first.inventory_item.quantity_available' do
+    assert_difference 'order.cart_items.first.inventory_item.quantity_available', -10 do
       order.save
     end
     

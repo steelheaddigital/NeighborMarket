@@ -70,11 +70,8 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
-    collection do
-      post 'new'
-    end
-  end
+  match 'orders/new' => 'orders#new', :via => "POST"
+  resources :orders, :only => ["create", "edit", "update", "show", "destroy"]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
