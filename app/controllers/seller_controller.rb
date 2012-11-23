@@ -26,9 +26,10 @@ class SellerController < ApplicationController
   
   def pick_list
     order_cycle = OrderCycle.latest_cycle
-    @inventory_items = get_pick_list_inventory_items(order_cycle.id)
+    order_cycle_id = order_cycle.id ? order_cycle.id : 0
+    @inventory_items = get_pick_list_inventory_items(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
     
     respond_to do |format|
       format.html
@@ -51,8 +52,9 @@ class SellerController < ApplicationController
   
   def packing_list
     order_cycle = OrderCycle.latest_cycle
+    order_cycle_id = order_cycle.id ? order_cycle.id : 0
     @seller = current_user
-    @orders = get_packing_list_orders(order_cycle.id)
+    @orders = get_packing_list_orders(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.last
     @can_edit = order_cycle.status == "current"
@@ -65,10 +67,11 @@ class SellerController < ApplicationController
   
   def previous_packing_list
     order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    order_cycle_id = order_cycle.id ? order_cyle.id : 0
     @seller = current_user
-    @orders = get_packing_list_orders(order_cycle.id)
+    @orders = get_packing_list_orders(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
     @can_edit = order_cycle.status == "current"
     
     respond_to do |format|
