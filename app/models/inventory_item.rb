@@ -49,16 +49,20 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def paranoid_destroy
-    
+    current_cart_items = self.cart_items.joins(:order)
+                   .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
+  
+     #if the inventory item isn't associated with any previous orders then go ahead and destroy it,
+     #otherwise, set it's is_deleted property to true to maintain order history
+    send_order_modified_emails(self.user, current_cart_items)
+    current_cart_items.destroy_all
     if self.previous_cart_items.empty?
-      return self.destroy
+      success = self.destroy
     else
-      self.update_attribute(:is_deleted, true)
-      self.cart_items.joins(:order)
-                     .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
-                     .destroy_all
-      return true
+      success = self.update_attribute(:is_deleted, true)
     end
+    
+    return success
   end
   
   private
@@ -69,6 +73,16 @@ class InventoryItem < ActiveRecord::Base
     else
       errors.add(:base, "Item cannot be destroyed: Cart Items present, use the paranoid_destroy method instead")    
       return false
+    end
+  end
+  
+  def send_order_modified_emails(seller, cart_items)
+    cart_items.each do |item|
+      BuyerMailer.delay.order_modified_mail(seller, item.order)
+      managers = Role.find_by_name("manager").users 
+       managers.each do |manager|
+         ManagerMailer.delay.seller_modified_order_mail(seller, manager, item.order)
+       end
     end
   end
   

@@ -65,4 +65,10 @@ class OrderTest < ActiveSupport::TestCase
     
   end
   
+  test "returns validation error if order is not in current order_cycle" do
+    order = orders(:not_current)
+    
+    assert order.invalid?
+  end
+  
 end

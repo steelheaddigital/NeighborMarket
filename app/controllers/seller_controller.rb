@@ -25,34 +25,62 @@ class SellerController < ApplicationController
   end
   
   def pick_list
-    user_id = current_user.id
-    current_cycle_id = OrderCycle.latest_cycle.id
-    @inventory_items = InventoryItem.joins(:cart_items => :order)
-                                    .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', user_id, current_cycle_id)
-                                    .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
-                                    .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
+    order_cycle = OrderCycle.latest_cycle
+    @inventory_items = get_pick_list_inventory_items(order_cycle.id)
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-      format.pdf { render :layout => false }
     end
+  end
+  
+  def previous_pick_list
+    order_cycle_id = params[:selected_previous_order_cycle][:id]
+    @inventory_items = get_pick_list_inventory_items(order_cycle_id)
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
     
+    respond_to do |format|
+      format.html{render :pick_list}
+      format.js { render :pick_list, :layout => false }
+      format.pdf { render :pick_list, :layout => false }
+    end
   end
   
   def packing_list
+    order_cycle = OrderCycle.latest_cycle
     @seller = current_user
-    @orders = get_orders
+    @orders = get_packing_list_orders(order_cycle.id)
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.last
+    @can_edit = order_cycle.status == "current"
     
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-      format.pdf { render :layout => false }
+    end
+  end
+  
+  def previous_packing_list
+    order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    @seller = current_user
+    @orders = get_packing_list_orders(order_cycle.id)
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @can_edit = order_cycle.status == "current"
+    
+    respond_to do |format|
+      format.html{ render :packing_list}
+      format.js { render :packing_list, :layout => false }
+      format.pdf { render :packing_list, :layout => false }
     end
   end
   
   def remove_item_from_order
     cart_item = CartItem.find(params[:cart_item_id])
-    @orders = get_orders
+    @orders = get_packing_list_orders(cart_item.order.order_cycle.id)
     @seller = current_user
     
     respond_to do |format|
@@ -70,7 +98,7 @@ class SellerController < ApplicationController
   def update_order
     order = Order.find(params[:order_id])
     success = false
-    @orders = get_orders
+    @orders = get_packing_list_orders(order.order_cycle.id)
     @seller = current_user
     
     if params[:commit] == 'Delete All Items'
@@ -104,13 +132,20 @@ class SellerController < ApplicationController
      end
   end
   
-  def get_orders
-    current_cycle_id = OrderCycle.latest_cycle.id
+  def get_packing_list_orders(order_cycle_id)
     seller = current_user
     Order.joins(:cart_items => :inventory_item)
          .select('orders.id, orders.user_id')
-         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => current_cycle_id})
+         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle_id})
          .group('orders.id, orders.user_id')
+  end
+  
+  def get_pick_list_inventory_items(order_cycle_id)
+    user_id = current_user.id
+    InventoryItem.joins(:cart_items => :order)
+                  .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', user_id, order_cycle_id)
+                  .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
+                  .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
   end
   
 end

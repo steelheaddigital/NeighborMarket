@@ -81,4 +81,8 @@ module ApplicationHelper
     "#{datetime.strftime("%m/%d/%Y")} at #{datetime.strftime("%I:%M %p")}"
   end
   
+  def format_short_date(datetime)
+    "#{datetime.strftime("%m/%d/%Y")}"
+  end
+  
 end

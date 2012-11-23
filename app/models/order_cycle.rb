@@ -96,4 +96,8 @@ class OrderCycle < ActiveRecord::Base
     self.where("status != ?", "pending").last
   end
   
+  def self.last_ten_cycles
+    self.where("status != ?", "pending").last(10)
+  end
+  
 end

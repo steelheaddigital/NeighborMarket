@@ -37,6 +37,25 @@ $(document).on("submit", "#NewInventoryItemButton", function(event){
     return false;
 });
 
+$(document).on("submit", ".sellerListDatePicker", function(event){
+	event.preventDefault();
+	
+	$("#SellerLoadingImage").show();
+    $(this).ajaxSubmit({
+       dataType: "html",
+       success: function(response){
+		
+		
+		$("#SellerContent").html(response);
+        $("#SellerLoadingImage").hide();
+       },
+       error: function(request){
+        $("#SellerLoadingImage").hide();
+        $("#SellerContent").html(request.responseText);
+       }
+    });
+});
+
 $(document).on("submit", "#new_inventory_item", function(){
     var seller = new Seller();
     

@@ -53,6 +53,8 @@ NeighborMarket::Application.routes.draw do
       get 'current_inventory'
       get 'pick_list'
       get 'packing_list'
+      post 'previous_packing_list'
+      post 'previous_pick_list'
     end
   end
   
