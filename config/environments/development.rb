@@ -17,11 +17,11 @@ NeighborMarket::Application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {
-    :address              => "mail.steelheaddigital.com",
+    :address              => ,
     :port                 =>  25,
-    :domain               => 'steelheaddigital.com',
-    :user_name            => 'admin@steelheaddigital.com',
-    :password             => 'Portlandrock!',
+    :domain               => ,
+    :user_name            => ,
+    :password             => ,
     :authentication       => 'plain',
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'
