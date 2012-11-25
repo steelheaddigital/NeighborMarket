@@ -64,11 +64,11 @@ NeighborMarket::Application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.smtp_settings = {
-    :address              => ,
+    :address              => "mail.steelheaddigital.com",
     :port                 =>  25,
-    :domain               => ,
-    :user_name            => ,
-    :password             => ,
+    :domain               => 'steelheaddigital.com',
+    :user_name            => 'admin@steelheaddigital.com',
+    :password             => 'Portlandrock!',
     :authentication       => 'plain',
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'

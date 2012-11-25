@@ -19,6 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
+
 set :output, 'log/schedule.log'
 every 5.minutes do
   rake 'session_cleaner:clean'
@@ -29,6 +30,7 @@ every 1.minute do
   rake 'jobs:execute'
 end
 
-#every 5.minutes do
-#  rake 'site_refresh:refresh'
-#end
+set :output, 'log/schedule.log'
+every 5.minutes do
+  rake 'site_refresh:refresh'
+end
