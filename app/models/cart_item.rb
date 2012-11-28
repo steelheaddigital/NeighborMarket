@@ -10,7 +10,7 @@ class CartItem < ActiveRecord::Base
   before_destroy :update_inventory_item_quantities
    
   def update_inventory_item_quantities
-    self.inventory_item.increment_quantity_available(self.quantity)
+    self.inventory_item.increment_quantity_available(self.quantity) if self.order
   end
   
   def validate_quantity

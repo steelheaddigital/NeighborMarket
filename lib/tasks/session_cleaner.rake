@@ -1,5 +1,5 @@
 # Rakefile
-require_relative '../active_record_wrapper'
+require_relative 'active_record_wrapper'
 
 namespace :session_cleaner do
   desc "Cleans out old sessions"
