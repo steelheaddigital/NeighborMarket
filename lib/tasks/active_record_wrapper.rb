@@ -6,6 +6,8 @@ module ActiveRecordWrapper
 
   require_relative '../../app/models/site_setting'
   require_relative '../../app/models/session'
+  require_relative '../../app/models/cart'
+  require_relative '../../app/models/cart_item'
   
   env = ENV["RAILS_ENV"] ? ENV["RAILS_ENV"] : 'production'
   dbconfig = YAML::load(File.open('config/database.yml'))
