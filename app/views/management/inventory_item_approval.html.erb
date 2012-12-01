@@ -1,0 +1,36 @@
+<%= form_tag update_inventory_item_approval_management_index_path, :method => "POST", :id => 'InventoryItemApprovalForm' do |f| %>
+  <div class="well-fluid row-fluid">
+    <div class="span12">
+      <table class="table">
+      <thead>  
+        <tr>
+          <th>Seller Name</th>
+          <th>Item Name</th>
+		  <th>Top Level Category</th>
+		  <th>Second Level Category</th>
+          <th>Quantity Available</th>
+          <th>Price</th>
+		  <th>Approved</th>
+        </tr>
+      </thead>
+        <tbody>
+          <% @inventory_items.sort_by{|item| [item.user.last_name, item.user.first_name]}.each_with_index do |item, index| %>
+          <tr>
+            <td><%= item.user.last_name + ", " + item.user.first_name %> </td>
+            <td><%= item_name(item) %> </td>
+			<td><%= item.top_level_category.name %> </td>
+			<td><%= item.second_level_category.name %> </td>
+            <td><%= "#{item.quantity_available}#{" "}#{item_quantity_label(item, item.quantity_available)}" %> </td>
+			<td><%= number_to_currency(item.price).to_s + " per " + item.price_unit %> </td>
+            <td><%= check_box_tag "inventory_items[" + index.to_s + "][approved]", "true", item.approved %></td>
+            <%= hidden_field_tag "inventory_items[" + index.to_s + "][id]", item.id %>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <%= submit_tag "Update Items", :class => 'btn btn-primary' %>
+  </div>
+<%end%>

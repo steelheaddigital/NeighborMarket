@@ -18,6 +18,7 @@ class InventoryItemsController < ApplicationController
   def create
     user = current_user
     @item = user.inventory_items.new(params[:inventory_item])
+    @item.approved = false if user.listing_approval_style == 'manual'
     @top_level_categories = TopLevelCategory.all
     
     if(@item.top_level_category)
@@ -107,11 +108,10 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse
-    @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0", params[:second_level_category_id])
+    @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0 AND approved = true", params[:second_level_category_id])
                                     .order("created_at DESC")
                                     .paginate(:page => params[:page], :per_page => 5)
                                     
-    
     respond_to do |format|
       format.html { render :search }
       format.js { render :search, :layout => false }
@@ -119,7 +119,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse_all
-    @inventory_items = InventoryItem.order("created_at").paginate(:page => params[:page], :per_page => 5)
+    @inventory_items = InventoryItem.where("quantity_available > 0 AND approved = true")
+                                    .order("created_at DESC").paginate(:page => params[:page], :per_page => 5)
     
     respond_to do |format|
       format.html { render :search }

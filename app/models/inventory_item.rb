@@ -29,7 +29,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def self.search(keywords)
-    scope = self.where("quantity_available > 0 AND is_deleted = false")
+    scope = self.where("quantity_available > 0 AND is_deleted = false AND approved = true")
     scope.find_with_index(keywords)
   end
   

@@ -78,6 +78,21 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:orders)
   end
   
+  test "should get inventory_item_approval" do
+    get :inventory_item_approval
+    
+    assert_response :success
+    assert_not_nil assigns (:inventory_items)
+  end
+  
+  test "should update inventory item approval" do
+    inventory_item = inventory_items(:two)
+    post :update_inventory_item_approval, :inventory_items => {"0" => {:id => inventory_item.id, :approved => "true"}}
+    
+    assert_redirected_to inventory_item_approval_management_index_path
+    assert inventory_item.reload.approved
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -109,6 +124,12 @@ class ManagementControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     get :buyer_invoices
+    assert_redirected_to new_user_session_url
+    
+    get :inventory_item_approval
+    assert_redirected_to new_user_session_url
+    
+    post :update_inventory_item_approval
     assert_redirected_to new_user_session_url
   end
   

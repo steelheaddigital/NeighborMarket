@@ -115,4 +115,30 @@ class ManagementController < ApplicationController
     end
   end
   
+  def inventory_item_approval
+    @inventory_items = InventoryItem.where(:approved => false)
+    
+    respond_to do |format|
+      format.html
+      format.js {render :layout => false}
+    end
+  end
+  
+  def update_inventory_item_approval
+    inventory_items = params[:inventory_items]
+    inventory_items.each do |item|
+      inventory_item = InventoryItem.find(item[1][:id])
+      if(item[1][:approved])
+        inventory_item.update_attribute(:approved, true)
+      else
+        inventory_item.update_attribute(:approved, false)
+      end
+    end
+    
+    respond_to do |format|
+        format.html { redirect_to inventory_item_approval_management_index_path, notice: 'Inventory Items Successfully Updated!'}
+        format.js { render :nothing => true }
+    end
+  end
+  
 end

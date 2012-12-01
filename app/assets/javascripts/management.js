@@ -25,6 +25,19 @@ $(document).on("submit", "#InboundDeliveryLogForm", function(event){
     return false;
 });
 
+$(document).on("submit", "#InventoryItemApprovalForm", function(event){
+
+    event.preventDefault();
+
+    var data = $(this).serialize();
+    var url = $(this).attr("action");
+    var mgmt = new Management();
+
+    mgmt.SubmitDeliveryLogForm(url, data);
+
+    return false;
+});
+
 $(document).on("submit", "#OutboundDeliveryLogForm", function(event){
 
     event.preventDefault();
@@ -100,7 +113,8 @@ $(document).on("click", ".mgmtNav", function(event){
     event.preventDefault();
     var mgmt = new Management();
     var url = $(this).attr("href")
-
+	
+	$("#ManagementLoading").show();
     utils.SetActiveNavButton($(this));
     mgmt.LoadManagementContent(url, true);
     
@@ -264,6 +278,7 @@ function Management(){
            },
            error: function(request){
             $("#Modal").html(request.responseText).modal('show');
+			$("#ManagementLoading").hide();
            }
         });
     }
@@ -283,6 +298,25 @@ function Management(){
            },
            error: function(){
             utils.ShowAlert($("#ManagementNotice"), "Delivery log could not be updated.");
+			$("#ManagementLoading").hide();
+           }
+        });
+    }
+
+    this.SubmitInventoryItemApprovalForm = function(url, data){
+        $("#ManagementLoading").show();
+        $.ajax({
+           type: "POST",
+           url: url,
+           data: data,
+           cache: false,
+           dataType: "html",
+           success: function(){
+             utils.ShowAlert($("#ManagementNotice"), "Inventory items successfully updated!")
+             $("#ManagementLoading").hide();
+           },
+           error: function(){
+            utils.ShowAlert($("#ManagementNotice"), "Inventory items could not be updated.");
            }
         });
     }
@@ -328,7 +362,8 @@ function Management(){
         $('#ManagementContent').load(url, function(){
             if(reset == true){
                 $("#ManagementNotice").hide();
-            }   
+            }
+			$("#ManagementLoading").hide();
         });
     }
 
