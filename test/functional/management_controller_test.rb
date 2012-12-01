@@ -78,43 +78,6 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:orders)
   end
   
-  test "should get order_cycle_settings" do
-    get :order_cycle
-    
-    assert_response :success
-    assert_not_nil assigns (:order_cycle_settings)
-    assert_not_nil assigns (:order_cycle)
-  end
-  
-  test "should update order_cycle_settings and order cycle if commit equals 'Start New Cycle'" do
-    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Start New Cycle'
-    
-    assert_redirected_to order_cycle_management_index_path
-    assert_not_nil assigns (:order_cycle_settings)
-    assert_not_nil assigns (:order_cycle)
-  end
-  
-  test "should update order_cycle_settings but not order cycle if commit does not equal 'Start New Cycle'" do
-    post :update_order_cycle, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save Settings'
-    
-    assert_redirected_to order_cycle_management_index_path
-    assert_not_nil assigns (:order_cycle_settings)
-  end
-  
-  test "should get site_settings" do
-    get :site_setting
-    
-    assert_response :success
-    assert_not_nil assigns (:site_settings)
-  end
-  
-  test "should update site_settings" do
-    post :update_site_setting, :site_setting => {:domain => "http://mysite.com", :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
-    
-    assert_redirected_to site_setting_management_index_path
-    assert_not_nil assigns (:site_settings)
-  end
-  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -146,15 +109,6 @@ class ManagementControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     get :buyer_invoices
-    assert_redirected_to new_user_session_url
-    
-    get :order_cycle
-    assert_redirected_to new_user_session_url
-    
-    get :site_setting
-    assert_redirected_to new_user_session_url
-    
-    post :update_site_setting
     assert_redirected_to new_user_session_url
   end
   

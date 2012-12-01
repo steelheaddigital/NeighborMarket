@@ -30,11 +30,24 @@ NeighborMarket::Application.routes.draw do
       get 'outbound_delivery_log'
       post 'save_outbound_delivery_log'
       get 'buyer_invoices'
-      get 'order_cycle'
-      post 'update_order_cycle'
       get 'site_setting'
       post 'update_site_setting'
     end
+  end
+  
+  resources :order_cycle, :only => [] do
+    collection do 
+      get 'edit'
+      put 'update'
+    end
+  end
+  
+  resources :site_setting, :only => [] do
+    collection do
+      get 'edit'
+      put 'update'
+    end
+  
   end
   
   resources :inventory_items do

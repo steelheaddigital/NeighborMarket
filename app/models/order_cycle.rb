@@ -1,5 +1,4 @@
 class OrderCycle < ActiveRecord::Base
-  require 'order_cycle_end_job'
   has_many :orders 
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
@@ -11,14 +10,34 @@ class OrderCycle < ActiveRecord::Base
   attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date ,:status 
   
   before_validation :get_current_cycle_settings
+  before_save :set_current_order_cycle_to_complete,
+              :set_status
+  after_save :queue_jobs
+  
   def get_current_cycle_settings
     @current_cycle_settings = OrderCycleSetting.first
   end
   
-  before_save do |cycle|
-    current_order_cycle = cycle.current_cycle
+  def set_current_order_cycle_to_complete
+    current_order_cycle = current_cycle
     if current_order_cycle
       current_order_cycle.update_column(:status, "complete")
+    end
+  end
+  
+  def queue_jobs
+    if self.start_date > DateTime.now
+      queue_order_cycle_start_job(self.end_date)
+    else
+      queue_order_cycle_end_job(self.end_date)
+    end
+  end
+  
+  def set_status
+    if self.start_date > DateTime.now
+      self.status = "pending"
+    else
+      self.status = "current"
     end
   end
   
@@ -100,4 +119,22 @@ class OrderCycle < ActiveRecord::Base
     self.where("status != ?", "pending").last(10)
   end
   
+  
+  private
+  
+  def queue_order_cycle_start_job(end_date)
+    job = OrderCycleStartJob.new
+    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
+      job.destroy
+    end
+    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_start')
+  end
+  
+  def queue_order_cycle_end_job(end_date)
+    job = OrderCycleEndJob.new
+    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
+      job.destroy
+    end
+    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
+  end
 end

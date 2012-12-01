@@ -1,6 +1,6 @@
 <div class="row-fluid">
   <div class="span8">
-    <%= form_for @order_cycle, :url => update_order_cycle_management_index_path, :method => :post, :html => { :id => "OrderCycleSettingsForm", :class=>"well" } do |f| %>
+    <%= form_for @order_cycle, :url => order_cycle_index_path, :method => :post, :html => { :id => "OrderCycleSettingsForm", :class=>"well" } do |f| %>
       <%= f.error_messages %>
       <%= error_messages_for @order_cycle_settings %>
       <div>
