@@ -20,6 +20,14 @@ class OrderTest < ActiveSupport::TestCase
       assert_equal(result.to_s, "100.0")
   end
   
+  test "sub_totals returns correct result" do
+      order = orders(:current)
+      cart = carts(:full)
+      order.add_inventory_items_from_cart(cart)
+      result = order.sub_totals
+      assert_equal(result.first[1].to_s, "100.0")
+  end
+  
   test "seller inventory changed by difference in quantity when associated cart item changed" do
     
     order = orders(:current)

@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
         @order = current_user.orders.build
         @order.cart_items = @cart.cart_items
       end
-
+      
       respond_to do |format|
         format.html
         format.js { render :layout => false }
@@ -88,7 +88,7 @@ class OrdersController < ApplicationController
   end
   
   def show
-    @order = Order.find(params[:id])
+    @order = Order.find(params[:id])    
     
     respond_to do |format|
       format.html

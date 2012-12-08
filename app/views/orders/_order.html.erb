@@ -11,17 +11,28 @@
       </tr>
     </thead>
       <tbody>
-        <%@order.cart_items.sort_by{|item| [item.inventory_item.user.last_name, item.inventory_item.user.first_name]}.each do |item|%>
+		<%@order.sub_totals.each do |key, value|%>
+			<%seller_name = ""%>
+			<%@order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item| %>
+				<%seller_name = item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name%>
+				<tr>
+		          <td><%= item_name(item.inventory_item) %></td>
+		          <td><%= number_to_currency(item.inventory_item.price)%> </td>
+		          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+		          <td><%= seller_name %>
+		          <td><%= item.inventory_item.user.payment_instructions %>
+		        </tr>
+			<%end%>
+			<tr>
+				<td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
+				<td><%= number_to_currency(value)%>
+				<td></td>
+		        <td></td>
+		        <td></td>
+			</tr>
+		<%end%>
         <tr>
-          <td><%= item_name(item.inventory_item) %></td>
-          <td><%= number_to_currency(item.inventory_item.price)%> </td>
-          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-          <td><%= item.inventory_item.user.first_name + " " + item.inventory_item.user.last_name %>
-          <td><%= item.inventory_item.user.payment_instructions %>
-        </tr>
-        <%end%>
-        <tr>
-          <td style="font-weight:bold;">Total:</td>
+          <td style="font-weight:bold;">Grand Total:</td>
           <td><%= number_to_currency @order.total_price %></td>
           <td></td>
           <td></td>

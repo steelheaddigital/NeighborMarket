@@ -31,9 +31,10 @@ $(document).on("submit", "#InventoryItemApprovalForm", function(event){
 
     var data = $(this).serialize();
     var url = $(this).attr("action");
+	var reloadUrl = '/management/inventory_item_approval'
     var mgmt = new Management();
 
-    mgmt.SubmitDeliveryLogForm(url, data);
+    mgmt.SubmitInventoryItemApprovalForm(url, data, reloadUrl);
 
     return false;
 });
@@ -303,7 +304,7 @@ function Management(){
         });
     }
 
-    this.SubmitInventoryItemApprovalForm = function(url, data){
+    this.SubmitInventoryItemApprovalForm = function(url, data, reloadUrl){
         $("#ManagementLoading").show();
         $.ajax({
            type: "POST",
@@ -311,8 +312,9 @@ function Management(){
            data: data,
            cache: false,
            dataType: "html",
-           success: function(){
-             utils.ShowAlert($("#ManagementNotice"), "Inventory items successfully updated!")
+           success: function(content){
+			 self.LoadManagementContent(reloadUrl);
+             utils.ShowAlert($("#ManagementNotice"), "Inventory items successfully updated!");
              $("#ManagementLoading").hide();
            },
            error: function(){

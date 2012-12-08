@@ -25,6 +25,15 @@ class Order < ActiveRecord::Base
     cart_items.to_a.sum { |item| item.total_price }
   end
   
+  def sub_totals
+    sub_total = {}
+    cart_items.group_by{|item| item.inventory_item.user.id}.each do |key, value| 
+      total = value.map{|cart_item| cart_item.total_price}.reduce(:+)
+      sub_total[key] = total 
+    end
+    return sub_total
+  end
+  
   private 
   
   def ensure_current_order_cycle
