@@ -40,7 +40,7 @@ NeighborMarket::Application.routes.draw do
   resources :order_cycle, :only => [] do
     collection do 
       get 'edit'
-      put 'update'
+      post 'update'
     end
   end
   

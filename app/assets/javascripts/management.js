@@ -202,7 +202,7 @@ $(document).on("submit", ".deleteSecondLevelCategoryButton", function(event){
 $(document).on("click", ".cycleSettingsSubmit", function(event){
     event.preventDefault()
     var mgmt = new Management();
-    if($(this)[0].value === 'Start New Cycle'){
+    if($(this)[0].value === 'Save and Start New Cycle'){
         if(confirm("This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?")){
             mgmt.SubmitOrderCycleSettingsForm($(this));
         }
@@ -235,7 +235,7 @@ function Management(){
         form.ajaxSubmit({
            dataType: "html",
            success: function(){
-             self.LoadManagementContent('/management/order_cycle');
+             self.LoadManagementContent('/order_cycle/edit');
              self.CloseManagementDialog();
              utils.ShowAlert($("#ManagementNotice"), "Order cycle settings successfully updated!")
              $("#ManagementLoading").hide();
@@ -252,7 +252,7 @@ function Management(){
         form.ajaxSubmit({
            dataType: "html",
            success: function(){
-             self.LoadManagementContent('/management/site_setting');
+             self.LoadManagementContent('/site_setting/edit');
              self.CloseManagementDialog();
              utils.ShowAlert($("#ManagementNotice"), "Site settings successfully updated!")
              $("#ManagementLoading").hide();
