@@ -1,5 +1,3 @@
-require 'order_cycle_end_job'
-
 class OrderCycleController < ApplicationController
   load_and_authorize_resource
 

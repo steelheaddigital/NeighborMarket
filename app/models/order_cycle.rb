@@ -1,3 +1,6 @@
+require 'order_cycle_end_job'
+require 'order_cycle_start_job'
+
 class OrderCycle < ActiveRecord::Base
   has_many :orders 
   validate :end_date_not_before_today,
@@ -23,11 +26,15 @@ class OrderCycle < ActiveRecord::Base
     if current_order_cycle
       current_order_cycle.update_column(:status, "complete")
     end
+    pending_cycles = OrderCycle.where("status = ?", "pending")
+    pending_cycles.each do |cycle|
+      cycle.update_column(:status, "complete")
+    end
   end
   
   def queue_jobs
     if self.start_date > DateTime.now
-      queue_order_cycle_start_job(self.end_date)
+      queue_order_cycle_start_job(self.start_date)
     else
       queue_order_cycle_end_job(self.end_date)
     end
@@ -122,16 +129,17 @@ class OrderCycle < ActiveRecord::Base
   
   private
   
-  def queue_order_cycle_start_job(end_date)
+  def queue_order_cycle_start_job(start_date)
     job = OrderCycleStartJob.new
     Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
       job.destroy
     end
-    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_start')
+    Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
   end
   
   def queue_order_cycle_end_job(end_date)
     job = OrderCycleEndJob.new
+    debugger
     Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
       job.destroy
     end
