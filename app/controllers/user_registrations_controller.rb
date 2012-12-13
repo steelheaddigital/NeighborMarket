@@ -1,5 +1,6 @@
 class UserRegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update]
+  prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
+  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update, :destroy]
   
   def new
     resource = build_resource({})
@@ -34,7 +35,7 @@ class UserRegistrationsController < Devise::RegistrationsController
       end
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource) { render_with_scope :new }
+      respond_with resource
     end
   end
   
