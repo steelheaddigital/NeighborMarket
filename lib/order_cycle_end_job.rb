@@ -1,6 +1,4 @@
 class OrderCycleEndJob
-  require 'rails'
-  require 'order_cycle_start_job'
   
   def perform
     current_cycle = OrderCycle.find_by_status("current")
@@ -19,21 +17,15 @@ class OrderCycleEndJob
                                  :status => "pending",
                                  :seller_delivery_date => new_seller_delivery_date, 
                                  :buyer_pickup_date => new_buyer_pickup_date)
-      new_cycle.save
-      queue_start_job(new_start_date)
-      send_emails(current_cycle)
+                                 
+      if new_cycle.save
+        OrderCycle.queue_order_cycle_start_job(new_start_date)
+        send_emails(current_cycle)
+      end
     else
       current_cycle.status = "complete"
       current_cycle.save
     end
-  end
-  
-  def queue_start_job(start_date)
-    job = OrderCycleStartJob.new
-    Delayed::Job.where(:queue => "order_cycle_start").each do |job|
-      job.destroy
-    end
-    Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
   end
   
   def send_emails(order_cycle)

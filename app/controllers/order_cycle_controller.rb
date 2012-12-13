@@ -17,7 +17,7 @@ class OrderCycleController < ApplicationController
     @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
       
     respond_to do |format|
-      if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save : true)
+      if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save_and_set_status : true)
         format.html { redirect_to edit_order_cycle_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
