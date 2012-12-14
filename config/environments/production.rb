@@ -1,6 +1,8 @@
 NeighborMarket::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  app_config = YAML.load_file("#{Rails.root}/config/production.yml")
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -63,7 +65,7 @@ NeighborMarket::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { :host => 'demo.neighbormarket.org' }
+  config.action_mailer.default_url_options = { :host => app_config["host"] }
   ActionMailer::Base.default :from => 'admin@steelheaddigital.com'
   config.action_mailer.smtp_settings = {
     :address              => "mail.steelheaddigital.com",

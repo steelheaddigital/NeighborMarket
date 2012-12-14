@@ -1,12 +1,13 @@
 # Rakefile
 require "net/http"
-require_relative 'active_record_wrapper'
 
 namespace :site_refresh do
-  include ActiveRecordWrapper
   desc "keeps passenger alive for the site by making a request. Prevents slow initial loads"
   task :refresh do
-    domain = URI(SiteSetting.first.domain)
+    env = ENV["RAILS_ENV"] ? ENV["RAILS_ENV"] : 'production'
+    app_config = YAML::load(File.open("config/#{env}.yml"))
+    domain_string = "http://#{app_config['host']}"
+    domain = URI(domain_string)
     Net::HTTP.get(domain)
   end
 end
