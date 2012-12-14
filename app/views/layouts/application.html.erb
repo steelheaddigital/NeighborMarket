@@ -108,6 +108,10 @@
   </div>
     <div class="row-fluid">
       <div id="MainContent" class="span-12">
+		<div id ="FlashMessages" class="alert">
+			<%= flash[:notice] %>
+		    <%= flash[:alert] %>
+		</div>
         <%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
       </div>
     </div>

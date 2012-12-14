@@ -1,3 +1,13 @@
+$(document).ready(function() {
+	var length = $.trim($('#FlashMessages').html())
+	if(length){
+		$('#FlashMessages').show();
+	}
+	else{
+		$('#FlashMessages').hide();
+	}
+});
+
 $(document).on("click", "#CartButton", function(event){
     event.preventDefault();
     var url = $(this).attr("href");

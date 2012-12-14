@@ -28,6 +28,8 @@ NeighborMarket::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = { :host => 'test.neighbormarket.org' }
+  ActionMailer::Base.default :from => 'admin@steelheaddigital.com'
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -36,4 +38,5 @@ NeighborMarket::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
 end

@@ -22,6 +22,7 @@ manager_user:
  approved_seller: true                   
  listing_approval_style: manual
  roles: manager_role
+ confirmed_at: 2012-12-13 03:39:08.461402
  
 approved_seller_user:
  email: approvedseller@test.com
@@ -42,6 +43,7 @@ approved_seller_user:
  approved_seller: true                       
  listing_approval_style: auto
  roles: seller_role
+ confirmed_at: 2012-12-13 03:39:08.461402
  
 unapproved_seller_user:
  email: unapprovedseller@test.com
@@ -61,6 +63,7 @@ unapproved_seller_user:
  approved_seller: false                       
  listing_approval_style: manual 
  roles: seller_role
+ confirmed_at: 2012-12-13 03:39:08.461402
  
 buyer_user:
  email: buyer@test.com
@@ -81,6 +84,7 @@ buyer_user:
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
+ confirmed_at: 2012-12-13 03:39:08.461402
  
 buyer_user_not_current:
  email: buyer2@test.com
@@ -101,6 +105,7 @@ buyer_user_not_current:
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
+ confirmed_at: 2012-12-13 03:39:08.461402
 
 buyer_user_no_order:
  email: buyer3@test.com
@@ -121,6 +126,7 @@ buyer_user_no_order:
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
+ confirmed_at: 2012-12-13 03:39:08.461402
 
 unapproved_seller_buyer_user:
  email: unapprovedsellerbuyer@test.com
@@ -140,3 +146,44 @@ unapproved_seller_buyer_user:
  approved_seller: false                       
  listing_approval_style: manual
  roles: buyer_role, seller_role
+ confirmed_at: 2012-12-13 03:39:08.461402
+ 
+unconfirmed_seller_user:
+ email: unconfirmed_seller@test.com
+ username: unconfirmedseller
+ first_name: Manager
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ aboutme: Test
+ delivery_instructions: 
+ payment_instructions: 
+ approved_seller: false                   
+ listing_approval_style: manual
+ roles: seller_role
+ confirmation_token: 1
+ 
+unconfirmed_buyer_user:
+ email: unconfirmed_buyer@test.com
+ username: unconfirmedbuyer
+ first_name: Manager
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ aboutme: Test
+ delivery_instructions: 
+ payment_instructions: 
+ approved_seller: false                   
+ listing_approval_style: manual
+ roles: buyer_role
+ confirmation_token: 2

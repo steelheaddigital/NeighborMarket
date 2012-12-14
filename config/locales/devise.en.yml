@@ -57,6 +57,10 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+    user_confirmations:
+      user:
+        confirmed_but_not_approved: 'Your seller account has been confirmed but is awaiting approval from the site manager. You will receive an email when it is approved and you can sign in.'
+        confirmed: 'Your account was successfully confirmed. You are now signed in.'
     user_registrations:
       user:
         signed_up: 'Welcome! You have signed up successfully.'

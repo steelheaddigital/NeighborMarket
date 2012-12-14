@@ -18,7 +18,7 @@
             <td><%=seller.first_name%></td>
             <td><%=seller.last_name%></td>
             <td><%=seller.address%></td>
-            <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "users", :id => seller.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
+            <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "user", :id => seller.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
           </tr>
         <%end%>
       </tbody>

@@ -1,6 +1,5 @@
 class BaseMailer < ActionMailer::Base
-  add_template_helper(ApplicationHelper)
-  default from: "admin@steelheaddigital.com"
+  helper :application
   
   def initialize *args
     super(*args)

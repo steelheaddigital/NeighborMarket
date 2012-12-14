@@ -85,4 +85,8 @@ module ApplicationHelper
     "#{datetime.strftime("%m/%d/%Y")}"
   end
   
+  def site_name
+    SiteSetting.first.site_name
+  end
+  
 end

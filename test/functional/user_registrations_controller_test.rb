@@ -26,21 +26,19 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     
     user = User.find_by_email("create@create.com")
     
-    assert_redirected_to root_path
+    assert_redirected_to user_inactive_signup_path
     assert user.buyer?
-    assert_equal 'Welcome! You have signed up successfully.', flash[:notice]
   end
   
-  test "should respond with inactive signup if user type is seller" do
+  test "should respond with seller inactive signup if user type is seller" do
     assert_difference 'User.count' do
       post :create, :user => { :username => "createseller", :user_type => "seller", :email => "createseller@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :payment_instructions => "bring it" }
     end
     
     user = User.find_by_email("createseller@create.com")
     
-    assert_redirected_to user_inactive_signup_path
+    assert_redirected_to user_seller_inactive_signup_path
     assert user.seller?
-    assert_equal 'You have signed up successfully. However, we could not sign you in because your account is not yet approved.', flash[:notice]
   end
   
   test "should update user" do

@@ -29,7 +29,6 @@ class UserRegistrationsController < Devise::RegistrationsController
           user = User.find(resource.id)
           send_new_seller_email(user)
         end
-        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_navigational_format?
         expire_session_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
@@ -77,15 +76,21 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def seller_inactive_signup
+  end
+  
   def inactive_signup
-    
   end
   
   private
   
   #Override the devise method to send new sellers to a custom page
   def after_inactive_sign_up_path_for(resource)
-    user_inactive_signup_path
+    if resource.seller?
+      user_seller_inactive_signup_path 
+    else
+      user_inactive_signup_path
+    end
   end
   
   def become_seller

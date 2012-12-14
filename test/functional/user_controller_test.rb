@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UsersControllerTest < ActionController::TestCase
+class UserControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
   def setup
