@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  domain: http:\\test.neighbormarket.org
   site_name: Test Neighbor Market
   drop_point_address: 12345 Test Way
   drop_point_city: Portland

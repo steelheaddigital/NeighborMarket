@@ -3,10 +3,6 @@
     <%= form_for @site_settings, :url => site_setting_index_path, :method => :post, :html => { :id => "SiteSettingsForm", :class=>"well" } do |f| %>
       <%= f.error_messages %>
       <div>
-        <%= f.label "Domain (Example: http://mysite.com)" %>
-        <%= f.text_field :domain, :class => "input-xlarge" %>
-      </div>
-      <div>
         <%= f.label :site_name %>
         <%= f.text_field :site_name, :class => "input-xlarge" %>
       </div>

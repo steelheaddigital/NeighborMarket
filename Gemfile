@@ -29,7 +29,7 @@ group :assets do
   gem 'less-rails-fontawesome'
 end
 
-gem 'devise'
+gem 'devise', "~> 2.1.2"
 gem 'cancan'
 gem 'carmen'
 gem 'dynamic_form'

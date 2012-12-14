@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121213030856) do
+ActiveRecord::Schema.define(:version => 20121214130120) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(:version => 20121213030856) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "site_settings", :force => true do |t|
-    t.string  "domain"
     t.string  "site_name"
     t.string  "drop_point_address"
     t.string  "drop_point_city"

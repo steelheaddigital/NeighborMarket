@@ -16,7 +16,7 @@ class SiteSettingControllerTest < ActionController::TestCase
   end
   
   test "should update site_settings" do
-    post :update, :site_setting => {:domain => "http://mysite.com", :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
+    post :update, :site_setting => { :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
     
     assert_redirected_to edit_site_setting_index_path
     assert_not_nil assigns (:site_settings)
