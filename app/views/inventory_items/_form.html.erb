@@ -5,10 +5,10 @@
 <div>
   <%= f.label "Price *" %>
   <%= f.text_field :price, :class => "input-small" %>
-  <label style="display:inline-block;">per</label>
-  <div style="display:inline-block">
-    <%= f.select(:price_unit, {"each" => "each","lb." => "lb."}, {}, :class => "input-small") %>
-  </div>
+</div>
+<div>
+  <%= f.label "Units *" %>
+  <%= f.text_field :price_unit, :class => "input-small" %>
 </div>
 <div>
   <%= f.label "Quantity Available *" %>

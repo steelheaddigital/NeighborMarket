@@ -44,22 +44,28 @@ module ApplicationHelper
   end
   
   def item_name(inventory_item)
-    
-      if inventory_item.name == nil || inventory_item.name == ""
-        inventory_item.second_level_category.name 
-      else
-        inventory_item.name
-      end  
-    
+    if inventory_item.name == nil || inventory_item.name == ""
+      inventory_item.second_level_category.name 
+    else
+      inventory_item.name
+    end  
   end
   
   def item_quantity_label(inventory_item, quantity)
-    if inventory_item.price_unit == "lb."
+    if inventory_item.price_unit != "each"
       if quantity > 1
-        return "lbs."
+        return inventory_item.price_unit.singularize.pluralize
       else
-        return "lb."
+        return inventory_item.price_unit.singularize
       end
+    end
+  end
+  
+  def price_unit_label(inventory_item)
+    if inventory_item.price_unit != "each"
+      return "per #{inventory_item.price_unit.singularize}"
+    else
+      return inventory_item.price_unit.singularize
     end
   end
   

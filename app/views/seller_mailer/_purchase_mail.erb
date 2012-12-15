@@ -22,7 +22,7 @@
             <tr>
               <td><%= item_name(item.inventory_item)%></td>
               <td style="text-align: center;"><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"%></td>
-              <td><%= number_to_currency(item.inventory_item.price) + " " + "per" + " " + item.inventory_item.price_unit%></td>
+              <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
             </tr>
           <%end%>
         </tbody>

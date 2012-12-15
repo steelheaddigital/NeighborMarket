@@ -1,7 +1,7 @@
 NeighborMarket::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  app_config = YAML.load_file("#{Rails.root}/config/production.yml")
+  app_config = YAML.load_file("#{Rails.root}/production.yml")
 
   # Code is not reloaded between requests
   config.cache_classes = true

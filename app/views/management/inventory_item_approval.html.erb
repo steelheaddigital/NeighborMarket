@@ -21,7 +21,7 @@
 			<td><%= item.top_level_category.name %> </td>
 			<td><%= item.second_level_category.name %> </td>
             <td><%= "#{item.quantity_available}#{" "}#{item_quantity_label(item, item.quantity_available)}" %> </td>
-			<td><%= number_to_currency(item.price).to_s + " per " + item.price_unit %> </td>
+			<td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
             <td><%= check_box_tag "inventory_items[" + index.to_s + "][approved]", "true", item.approved %></td>
             <%= hidden_field_tag "inventory_items[" + index.to_s + "][id]", item.id %>
           </tr>

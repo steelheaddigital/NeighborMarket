@@ -6,7 +6,7 @@ NeighborMarket::Application.configure do
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
   
-  app_config = YAML.load_file("#{Rails.root}/config/test.yml")
+  app_config = YAML.load_file("#{Rails.root}/test.yml")
   
   config.cache_classes = true
 

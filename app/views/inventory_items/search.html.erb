@@ -19,10 +19,10 @@
             </h3>
             <p><%= item.description %></p>
             <p>Quantity Available:  <%= item.quantity_available %></p>
-            <p>Price:  <%= number_to_currency(item.price).to_s + " per " + item.price_unit %></p>
+            <p>Price:  <%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></p>
             <p>Sold By:  <%= link_to(seller_name, public_show_user_path(item.user.id)) %></p>
             <%= form_tag(cart_items_path(:inventory_item_id => item.id), :class => "addToCartButton") do %>
-              <p>Quantity: <input id="quantity" name="quantity" class="input-small" value="1"></input><span> <%= item_quantity_label(item, 2) %></span></p>
+            <p>Quantity: <input id="quantity" name="quantity" class="input-small" value="1"></input><span> <%= item_quantity_label(item, 2) %></span></p>
               <p><%= submit_tag("Add To Cart", :class => "btn btn-primary") %></p>
             <% end %>
           </div>
