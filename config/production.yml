@@ -1,1 +1,11 @@
-host: 'test.neighbormarket.org'
+host: 'demo.neighbormarket.org'
+default_from: 'admin@steelheaddigital.com'
+smtp_settings:
+    address: "mail.steelheaddigital.com"
+    port: 25
+    domain: 'steelheaddigital.com'
+    user_name: 'admin@steelheaddigital.com'
+    password: 'Portlandrock!'
+    authentication: 'plain'
+    enable_starttls_auto: true
+    openssl_verify_mode: 'none'

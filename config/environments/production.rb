@@ -66,16 +66,16 @@ NeighborMarket::Application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { :host => app_config["host"] }
-  ActionMailer::Base.default :from => 'admin@steelheaddigital.com'
+  ActionMailer::Base.default :from => app_config["default_from"]
   config.action_mailer.smtp_settings = {
-    :address              => "mail.steelheaddigital.com",
-    :port                 =>  25,
-    :domain               => 'steelheaddigital.com',
-    :user_name            => 'admin@steelheaddigital.com',
-    :password             => 'Portlandrock!',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true,
-    :openssl_verify_mode  => 'none'
+    :address              => app_config['smtp_settings']['address'],
+    :port                 => app_config['smtp_settings']['port'],
+    :domain               => app_config['smtp_settings']['domain'],
+    :user_name            => app_config['smtp_settings']['user_name'],
+    :password             => app_config['smtp_settings']['password'],
+    :authentication       => app_config['smtp_settings']['authentication'],
+    :enable_starttls_auto => app_config['smtp_settings']['enable_starttls_auto'],
+    :openssl_verify_mode  => app_config['smtp_settings']['openssl_verify_mode']
   }
   
   Paperclip.options[:command_path] = "/usr/bin/"
