@@ -27,4 +27,16 @@ class UserConfirmationsControllerTest < ActionController::TestCase
     assert_equal 'Your account was successfully confirmed. You are now signed in.', flash[:notice]
   end
   
+  test "Responds with auto_create_confirmed if user is auto created" do
+    user = User.new(:email => "autocreatetest@test.com")
+    user.auto_create_user
+    token = user.confirmation_token
+    
+    get :auto_create_confirmation, :confirmation_token => token
+    
+    assert_redirected_to edit_user_registration_path(:auto_create_update => true)
+    assert_equal 'Your account has been confirmed. Please complete your registration with the form below.', flash[:notice]
+    
+  end
+  
 end

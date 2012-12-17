@@ -38,7 +38,18 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
   end
   
+  def edit
+    resource.auto_create_update = params[:auto_create_update]
+    render :edit
+  end
+  
   def update
+    # required for settings form to submit when password is left blank
+    if params[:user][:password].blank?
+      params[:user].delete("password")
+      params[:user].delete("password_confirmation")
+    end
+    
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     if params[:user][:become_seller] == "true"
       resource.become_seller = true
@@ -48,7 +59,8 @@ class UserRegistrationsController < Devise::RegistrationsController
       resource.become_buyer = true
       add_role(resource, "buyer")
     end
-    if resource.update_with_password(params[resource_name])
+
+    if resource.update_attributes(params[resource_name])
       if is_navigational_format?
         if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
           flash_key = :update_needs_confirmation

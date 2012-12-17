@@ -10,6 +10,7 @@ NeighborMarket::Application.routes.draw do
     match '/user/become_buyer' => 'user_registrations#become_buyer', :user => { :become_buyer => true } , :as => :become_buyer
     match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup'
     match '/user/inactive_signup' => 'user_registrations#inactive_signup'
+    match '/user/auto_create_confirmation' => 'user_confirmations#auto_create_confirmation', :via => "GET"
   end
   
   resources :user do 
@@ -23,7 +24,7 @@ NeighborMarket::Application.routes.draw do
   resources :management, :only => ["index"] do
     collection do
       get 'approve_sellers'
-      get 'user_search'
+      get 'user_management'
       get 'user_search_results'
       get 'categories'
       get 'inbound_delivery_log'

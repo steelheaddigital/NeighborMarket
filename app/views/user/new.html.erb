@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <button class="close" data-dismiss="modal" type="button">×</button>
+  <h3 id="NewUserHeading">New User</h3>
+</div>
+<%= form_for @user, :url => { :action => "create" }, :html => { :id => 'NewUserForm' } do |f| %>
+<div class="modal-body">
+  <div class="modalErrorMessages"><%= f.error_messages %></div>
+  <div class="span6">
+    <div>
+      <%= f.label "Email" %>
+      <%= f.text_field :email, :class => "input-large" %>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a class="btn" data-dismiss="modal" href="#">Close</a>
+  <%= f.submit("Create User", :class => 'btn btn-primary') %>
+</div>
+<% end %>

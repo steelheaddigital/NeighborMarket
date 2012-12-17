@@ -221,11 +221,44 @@ $(document).on("submit", "#SiteSettingsForm", function(event){
     return false;
 })
 
+$(document).on("click", ".addNewUserButton", function(event){
+    event.preventDefault();
+
+    var url = $(this).attr("href");
+    var mgmt = new Management();
+
+    mgmt.LoadManagementDialog(url);
+
+    return false;
+});
+
+$(document).on("submit", "#NewUserForm", function(event){
+    event.preventDefault();
+    var mgmt = new Management();
+    mgmt.SubmitNewUserForm($(this))
+    return false;
+})
 
 
 function Management(){
  
     var self = this;
+
+    this.SubmitNewUserForm = function(form){
+        $("#ManagementLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(){
+             self.CloseManagementDialog();
+             utils.ShowAlert($("#ManagementNotice"), "User successfully added!")
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#ManagementLoading").hide();
+			$("#Modal").html(request.responseText).modal('show');
+           }
+        });
+    }
 
     this.SubmitOrderCycleSettingsForm = function(button){
         $("#ManagementLoading").show();

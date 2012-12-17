@@ -45,7 +45,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     user  = users(:buyer_user)
     sign_in user
     
-    put :update, :user => { :username => "updatebuyer", :email => "createseller@create.com", :current_password => "Abc123!", :first_name => "update", :last_name => "update", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it" }
+    put :update, :user => { :username => "updatebuyer", :email => "createseller@create.com", :first_name => "update", :last_name => "update", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it" }
     
     assert_redirected_to root_path
     assert_equal 'You updated your account successfully.', flash[:notice]
@@ -55,7 +55,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     user  = users(:buyer_user)
     sign_in user
     
-    put :update, :user => { :become_seller => "true", :current_password => "Abc123!", :payment_instructions => "bring it" }
+    put :update, :user => { :become_seller => "true", :payment_instructions => "bring it" }
     
     assert_redirected_to root_path
     assert user.seller?
@@ -66,7 +66,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     user  = users(:buyer_user)
     sign_in user
     
-    put :update, :user => { :become_buyer => "true", :current_password => "Abc123!", :delivery_instructions => "bring it" }
+    put :update, :user => { :become_buyer => "true", :delivery_instructions => "bring it" }
     
     assert_redirected_to root_path
     assert user.buyer?

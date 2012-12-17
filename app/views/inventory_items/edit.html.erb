@@ -4,7 +4,7 @@
 </div>
 <%= form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
 <div class="modal-body">
-  <%= f.error_messages %>
+  <div class="modalErrorMessages"><%= f.error_messages %></div>
   <div class="span6">
     <div>
       <%= f.label "Top Level Category *"   %>

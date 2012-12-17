@@ -21,8 +21,8 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:sellers)
   end
   
-  test "should get user_search" do
-    get :user_search
+  test "should get user_management" do
+    get :user_management
     
     assert_response :success
   end
@@ -102,7 +102,7 @@ class ManagementControllerTest < ActionController::TestCase
     get :approve_sellers
     assert_redirected_to new_user_session_url
     
-    get :user_search
+    get :user_management
     assert_redirected_to new_user_session_url
     
     get :user_search_results

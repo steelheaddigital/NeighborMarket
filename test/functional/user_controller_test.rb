@@ -8,6 +8,22 @@ class UserControllerTest < ActionController::TestCase
     sign_in @user
   end
   
+  test "should get new" do    
+    get :new
+    
+    assert_response :success
+    assert_not_nil assigns(:user)
+  end
+  
+  test "should create user" do
+    user = User.new(:email => "test@test.com")
+    
+    post :create, :user => {:email => "test@test.com"}
+    
+    assert_response :success
+    assert_not_nil assigns(:user)
+  end
+  
   test "should get show" do
     user = users(:buyer_user)
     
@@ -63,6 +79,12 @@ class UserControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     get :edit, :id => user.id
+    assert_redirected_to new_user_session_url
+    
+    get :new
+    assert_redirected_to new_user_session_url
+    
+    post :create, :user => {:email => "test@test.com"}
     assert_redirected_to new_user_session_url
     
     post :update, :id => user.id, :user => { :seller_approved => true }

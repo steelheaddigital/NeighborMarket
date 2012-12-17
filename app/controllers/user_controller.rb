@@ -17,6 +17,29 @@ class UserController < ApplicationController
     end
   end
   
+  def new
+    @user = User.new
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def create
+    @user = User.new(params[:user])
+    
+    respond_to do |format|
+      if @user.auto_create_user
+        format.html { redirect_to management_index_path, notice: 'User successfully created!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "new" }
+        format.js { render :new, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
   def edit
     @user = User.find(params[:id])
     
@@ -63,5 +86,5 @@ class UserController < ApplicationController
     end
     
   end
-
+  
 end

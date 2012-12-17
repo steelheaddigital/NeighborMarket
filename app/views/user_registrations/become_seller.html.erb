@@ -1,7 +1,5 @@
 <h2>Become Seller</h2>
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <p class="notice"><%= flash[:notice] %></p>
-  <%= flash[:alert] %>
   <%= devise_error_messages! %>
   
   <p style="font-weight:bold;">Please add payment instructions to your profile</p>

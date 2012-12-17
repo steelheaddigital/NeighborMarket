@@ -17,7 +17,7 @@ class ManagementController < ApplicationController
     end
   end
   
-  def user_search
+  def user_management
     
     respond_to do |format|
       format.html {render :index}

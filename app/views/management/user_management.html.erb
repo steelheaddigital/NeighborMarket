@@ -1,6 +1,10 @@
 <div class="row-fluid">
   <div class="span6">
+	  <div style="margin-bottom:10px;">
+	    <%= link_to "Add New User", {:controller => "user", :action => "new"}, {:class => 'btn addNewUserButton'} %>
+	  </div>
     <%= form_tag(user_search_results_management_index_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
+	  <h3>User Search</h3>
       <label>Search Condition</label>
       <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
       <span class="inline-help">Enter a username, first name, or last name</span>
@@ -24,4 +28,5 @@
     <div id="ManagerSearchResults" class="span6">
   </div>
 </div>
+
 

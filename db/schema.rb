@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121215213338) do
+ActiveRecord::Schema.define(:version => 20121216005914) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(:version => 20121215213338) do
     t.datetime "photo_updated_at"
     t.boolean  "is_deleted",                                             :default => false
     t.boolean  "approved",                                               :default => true
-    t.integer  "units"
   end
 
   create_table "order_cycle_settings", :force => true do |t|
@@ -168,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20121215213338) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.string   "auto_create_token"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

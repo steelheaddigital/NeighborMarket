@@ -40,10 +40,10 @@
               <% end %>
               <% if user_signed_in? %>
                 <li><%= link_to('Edit profile', edit_user_registration_url) %></li>
-                <% if current_user.buyer? && !current_user.seller?%>
+                <% if !current_user.seller?%>
                   <li><%= link_to('Become a seller', become_seller_url) %></li>
                 <% end %>
-                <% if current_user.seller? && !current_user.buyer?%>
+                <% if !current_user.buyer?%>
                   <li><%= link_to('Become a buyer', become_buyer_url) %></li>
                 <% end %>
               <% else %>

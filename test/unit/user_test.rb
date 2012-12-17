@@ -133,6 +133,62 @@ class UserTest < ActiveSupport::TestCase
      assert @user.valid?
    end
    
+   test "should not save existing user without password and password confirmation if auto_create_update is true" do
+    user = users(:approved_seller_user)
+    user.password = ''
+    user.password_confirmation = ''
+    user.auto_create_update = "true"
+   
+    assert !user.valid?
+   end
+   
+   test "should not save new user without password and password confirmation" do
+    @user.password = ''
+    @user.password_confirmation = ''
+   
+    assert !@user.valid?
+   end
+   
+   test "should not save new user with password of invalid length" do
+    @user.password = '12345'
+    @user.password_confirmation = '12345'
+   
+    assert !@user.valid?
+   end
+   
+   test "should not save new user without password confirmation" do
+    @user.password = '123456'
+    @user.password_confirmation = ''
+   
+    assert !@user.valid?
+   end
+   
+   test "should not save new user without email" do
+    @user.email = ''
+   
+    assert !@user.valid?
+   end
+   
+   test "should not save new user without unique email" do
+    @user.email = "test@test.com"
+   
+    assert !@user.valid?
+   end
+   
+   test "should not save new user with invalid email format" do
+    @user.email = "test.test.com"
+   
+    assert !@user.valid?
+   end
+   
+   test "should save user without password and password confirmation if not a new user and not auto_create_update is true" do
+    user = users(:approved_seller_user)
+    user.password = nil
+    user.password_confirmation = nil
+    
+    assert user.valid?
+   end
+   
    test "should not save user other than seller with invalid phone" do
      @user.phone = "Foo"
      new_role = Role.new
@@ -265,4 +321,13 @@ class UserTest < ActiveSupport::TestCase
     
   end
   
+  test "auto_create creates user with email only" do
+    user = User.new(:email => "someuser@test.com")
+    result = false
+    assert_difference "User.count" do
+      result = user.auto_create_user
+    end
+    assert result
+  end
+
 end

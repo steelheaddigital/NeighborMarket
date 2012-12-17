@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
-  has_many :orders
+  has_many :orders, :dependent => :destroy
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   validates :username, :uniqueness => true
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
             :city, 
             :state, 
             :country, 
-            :zip, :presence => true
+            :zip, :presence => true, :unless => :auto_create
   validates :phone, :presence => true, :if => :seller?
   validates :payment_instructions, :presence => true, :if => :seller?
   validates :delivery_instructions, :presence => true, :if => :buyer?
@@ -25,20 +25,38 @@ class User < ActiveRecord::Base
                       :if => :phone?
   validates_format_of :zip,
                       :with => %r{\d{5}(-\d{4})?},
-                      :message => "should be like 12345 or 12345-1234"
+                      :message => "should be like 12345 or 12345-1234",
+                      :unless => :auto_create
+  
+  validates_presence_of :email, :if => :email_required?
+  validates_uniqueness_of :email, :allow_blank => true, :if => :email_changed?
+  validates_format_of :email, :with => /\A[^@]+@[^@]+\z/, :allow_blank => true, :if => :email_changed?
+
+  validates_presence_of :password, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
+  validates_length_of :password, :within => 6..128, :allow_blank => true
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :timeoutable
+         :recoverable, :rememberable, :trackable, :confirmable, :timeoutable
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
   attr_accessor :login, :become_seller, :become_buyer
+  attr_writer :auto_create, :auto_create_update
+
+  def auto_create
+    @auto_create || false
+  end
+  
+  def auto_create_update
+    @auto_create_update || "false"
+  end
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :auto_create_update
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -63,6 +81,20 @@ class User < ActiveRecord::Base
     else 
       super 
     end 
+  end
+  
+  #Override the devise callback method that sends emails on create to send a different one for auto signups
+  def send_on_create_confirmation_instructions
+    send_devise_notification(:confirmation_instructions) if !auto_create
+    UserMailer.delay.auto_create_user_mail(self) if auto_create
+  end
+  
+  def password_required?
+    !auto_create && (!persisted? || !password.nil? || !password_confirmation.nil? || auto_create_update == "true")
+  end
+
+  def email_required?
+    true
   end
   
   def role?(role)
@@ -128,6 +160,11 @@ class User < ActiveRecord::Base
       scope.all
     end
     
+  end
+  
+  def auto_create_user
+    self.auto_create = true
+    return self.save
   end
   
 end
