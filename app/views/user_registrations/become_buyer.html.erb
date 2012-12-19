@@ -4,9 +4,6 @@
   
   <p style="font-weight:bold;">Please add delivery instructions to your profile</p>
   
-  <div><%= f.label "Current Password (we need your current password to confirm your changes)"%>
-  <%= f.password_field :current_password %></div>
-  
   <%= render :partial => "buyer_fields", :locals => { :f => f } %>
 
   <%= f.hidden_field :become_buyer, :value => true %>

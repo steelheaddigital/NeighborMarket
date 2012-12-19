@@ -187,3 +187,37 @@ unconfirmed_buyer_user:
  listing_approval_style: manual
  roles: buyer_role
  confirmation_token: 2
+
+auto_created_user:
+ email: autocreateduser@test.com
+ auto_created: true
+
+confirmed_auto_created_user:
+ email: confirmedautocreateduser@test.com
+ username: confirmedautocreateduser
+ first_name: Updated
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ auto_created: true
+ confirmed_at: 2012-12-13 03:39:08.461402
+
+updated_auto_created_user:
+ email: updatedautocreateduser@test.com
+ username: updatedautocreateduser
+ first_name: Updated
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ auto_created: true
+ auto_create_updated_at: 2012-12-13 03:39:08.461402

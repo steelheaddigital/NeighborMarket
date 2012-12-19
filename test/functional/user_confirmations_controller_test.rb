@@ -34,7 +34,7 @@ class UserConfirmationsControllerTest < ActionController::TestCase
     
     get :auto_create_confirmation, :confirmation_token => token
     
-    assert_redirected_to edit_user_registration_path(:auto_create_update => true)
+    assert_redirected_to edit_user_registration_path
     assert_equal 'Your account has been confirmed. Please complete your registration with the form below.', flash[:notice]
     
   end

@@ -51,6 +51,18 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     assert_equal 'You updated your account successfully.', flash[:notice]
   end
   
+  test "should update auto created user" do
+    user  = users(:confirmed_auto_created_user)
+    sign_in user
+    
+    put :update, :user => { :password => "Abc123", :password_confirmation => 'Abc123' }
+    user.reload
+    
+    assert_redirected_to root_path
+    assert_equal 'You updated your account successfully.', flash[:notice]
+    assert !user.auto_create_updated_at.nil?
+  end
+  
   test "should add seller role if user is becoming seller" do
     user  = users(:buyer_user)
     sign_in user

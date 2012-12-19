@@ -133,18 +133,24 @@ class UserTest < ActiveSupport::TestCase
      assert @user.valid?
    end
    
-   test "should not save existing user without password and password confirmation if auto_create_update is true" do
-    user = users(:approved_seller_user)
+   test "should not save existing user without password and password confirmation if auto_created and not yet updated" do
+    user = users(:auto_created_user)
     user.password = ''
     user.password_confirmation = ''
-    user.auto_create_update = "true"
    
     assert !user.valid?
    end
    
+   test "set_auto_created_updated_at updates auto_create_updated_at" do
+    user = users(:confirmed_auto_created_user)
+    user.set_auto_created_updated_at
+    
+    assert !user.auto_create_updated_at.nil?
+   end
+   
    test "should not save new user without password and password confirmation" do
-    @user.password = ''
-    @user.password_confirmation = ''
+    @user.password = nil
+    @user.password_confirmation = nil
    
     assert !@user.valid?
    end
@@ -181,8 +187,16 @@ class UserTest < ActiveSupport::TestCase
     assert !@user.valid?
    end
    
-   test "should save user without password and password confirmation if not a new user and not auto_create_update is true" do
+   test "should save user without password and password confirmation if not a new user and not auto_created pending update" do
     user = users(:approved_seller_user)
+    user.password = nil
+    user.password_confirmation = nil
+    
+    assert user.valid?
+   end
+   
+   test "should save user without password and password confirmation if auto_created but updated" do
+    user = users(:updated_auto_created_user)
     user.password = nil
     user.password_confirmation = nil
     
@@ -328,6 +342,8 @@ class UserTest < ActiveSupport::TestCase
       result = user.auto_create_user
     end
     assert result
+    assert user.auto_created
+    assert user.auto_create_updated_at.nil?
   end
 
 end

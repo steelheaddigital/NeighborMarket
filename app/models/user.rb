@@ -44,19 +44,22 @@ class User < ActiveRecord::Base
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
   attr_accessor :login, :become_seller, :become_buyer
-  attr_writer :auto_create, :auto_create_update
-
+  attr_writer :auto_create
+  
   def auto_create
     @auto_create || false
   end
   
-  def auto_create_update
-    @auto_create_update || "false"
-  end
-  
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :auto_create_update
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo
+  
+  def set_auto_created_updated_at
+    if auto_created && auto_create_updated_at.nil? && confirmed?
+      self.auto_create_updated_at = Time.current
+      self.save
+    end
+  end
   
   #override the devise authentication to use either username or email to login
   def self.find_for_database_authentication(warden_conditions)
@@ -85,12 +88,12 @@ class User < ActiveRecord::Base
   
   #Override the devise callback method that sends emails on create to send a different one for auto signups
   def send_on_create_confirmation_instructions
-    send_devise_notification(:confirmation_instructions) if !auto_create
-    UserMailer.delay.auto_create_user_mail(self) if auto_create
+    send_devise_notification(:confirmation_instructions) if !auto_created
+    UserMailer.delay.auto_create_user_mail(self) if auto_created
   end
   
   def password_required?
-    !auto_create && (!persisted? || !password.nil? || !password_confirmation.nil? || auto_create_update == "true")
+    !auto_create && (!persisted? || !password.nil? || !password_confirmation.nil? || (auto_created && auto_create_updated_at.nil?))
   end
 
   def email_required?
@@ -164,6 +167,7 @@ class User < ActiveRecord::Base
   
   def auto_create_user
     self.auto_create = true
+    self.auto_created = true
     return self.save
   end
   

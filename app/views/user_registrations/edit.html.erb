@@ -8,7 +8,6 @@
   </div>
   <div class="row-fluid">
     <div class="span3">
-	  <%= f.hidden_field :auto_create_update%>
 	
       <div><%= f.label "User Name*" %>
       <%= f.text_field :username %></div>
@@ -16,9 +15,14 @@
       <div><%= f.label "Email*" %>
       <%= f.email_field :email %></div>
 	   
-      <div><%= f.label "Password*" if resource.auto_create_update == "true" %>
-	  <%= f.label "Password (leave blank if you don't want to change it)" if resource.auto_create_update == "false" %>
-      <%= f.password_field :password %></div>
+      <div>
+	      <%if resource.auto_created && resource.auto_create_updated_at.nil?%>
+	        <%= f.label "Password*" %>
+	      <% else %>
+	        <%= f.label "Password (leave blank if you don't want to change it)" %>
+	      <% end %>
+      	  <%= f.password_field :password %>
+	  </div>
 
       <div><%= f.label "Password Confirmation*" %>
       <%= f.password_field :password_confirmation %></div>

@@ -38,11 +38,6 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
   end
   
-  def edit
-    resource.auto_create_update = params[:auto_create_update]
-    render :edit
-  end
-  
   def update
     # required for settings form to submit when password is left blank
     if params[:user][:password].blank?
@@ -75,6 +70,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         # customized code end
       end
       sign_in resource_name, resource, :bypass => true
+      resource.set_auto_created_updated_at
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords resource

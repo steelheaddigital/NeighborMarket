@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121216005914) do
+ActiveRecord::Schema.define(:version => 20121217134423) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -167,7 +167,8 @@ ActiveRecord::Schema.define(:version => 20121216005914) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "auto_create_token"
+    t.boolean  "auto_created",                          :default => false
+    t.datetime "auto_create_updated_at"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
