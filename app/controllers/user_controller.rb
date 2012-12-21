@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  require 'csv'
   load_and_authorize_resource
   skip_authorize_resource :only => [:public_show, :contact]
   
@@ -85,6 +86,37 @@ class UserController < ApplicationController
       render :public_show
     end
     
+  end
+  
+  def import
+    if params[:file].present?
+       infile = params[:file].read 
+       n, errs = 0, [] 
+       
+       CSV.parse(infile) do |row| 
+         n += 1 
+         # SKIP: header i.e. first row OR blank row 
+         next if n == 1 or row.join.blank?
+         user = User.new(:email => row[0])  
+         if !user.auto_create_user # try to create new user, otherwise collect error records to export
+           row << user.errors.full_messages.first
+           errs << row 
+         end 
+       end 
+     # Export Error file for later upload upon correction 
+      if errs.any? 
+         errFile = "errors_#{Date.today.strftime('%d%b%y')}.csv" 
+         errs.insert(0, ["email", "error"]) 
+         errCSV = CSV.generate do |csv| 
+           errs.each {|row| csv << row} 
+         end 
+         send_data errCSV, 
+          :type => 'text/csv; charset=iso-8859-1; header=present', 
+          :disposition => "attachment; filename=#{errFile}"
+       else 
+          redirect_to management_index_path, notice: "Users successfully uploaded!"
+       end
+    end
   end
   
 end

@@ -19,6 +19,10 @@ NeighborMarket::Application.routes.draw do
       post "contact"
       get "public_show"
     end
+    collection do
+      post "import"
+      get "upload_error_file"
+    end
   end
   
   resources :management, :only => ["index"] do

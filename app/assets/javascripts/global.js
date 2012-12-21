@@ -5,6 +5,8 @@ $(document).ajaxSend(function(event, request, settings) {
                 + "authenticity_token=" + encodeURIComponent( AUTH_TOKEN );
         request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     }
+
+	$("#FlashMessages").empty().hide();
 });
 
 // When I say html I really mean script for rails

@@ -1,22 +1,33 @@
 <div class="row-fluid">
-  <div class="span6">
+	<div class="span6">
+	    <%= form_tag(user_search_results_management_index_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
+		  <h3>User Search</h3>
+	      <label>Search Condition</label>
+	      <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
+	      <span class="inline-help">Enter a username, first name, or last name</span>
+	      <label>Role Type</label>
+	      <%= select_tag "role", "<option>Manager</option><option>Seller</option><option>Buyer</option>".html_safe, :include_blank => true, :id => "RoleTypeSelect" %>
+	      <label id="SellerApprovalStyleLabel" style="display:none;">Seller Approval Style</label>
+	      <%= select_tag "seller_approval_style", "<option>manual</option><option>auto</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
+	      <label id="SellerApprovedLabel" style="display:none;">Seller Approved</label>
+	      <%= select_tag "seller_approved", "<option>true</option><option>false</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
+	      <p><%= submit_tag("Search", :class => 'btn') %></p>
+	    <% end %>
+	</div>
+	<div class="span6">
 	  <div style="margin-bottom:10px;">
 	    <%= link_to "Add New User", {:controller => "user", :action => "new"}, {:class => 'btn addNewUserButton'} %>
 	  </div>
-    <%= form_tag(user_search_results_management_index_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
-	  <h3>User Search</h3>
-      <label>Search Condition</label>
-      <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
-      <span class="inline-help">Enter a username, first name, or last name</span>
-      <label>Role Type</label>
-      <%= select_tag "role", "<option>Manager</option><option>Seller</option><option>Buyer</option>".html_safe, :include_blank => true, :id => "RoleTypeSelect" %>
-      <label id="SellerApprovalStyleLabel" style="display:none;">Seller Approval Style</label>
-      <%= select_tag "seller_approval_style", "<option>manual</option><option>auto</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
-      <label id="SellerApprovedLabel" style="display:none;">Seller Approved</label>
-      <%= select_tag "seller_approved", "<option>true</option><option>false</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
-      <p><%= submit_tag("Search", :class => 'btn') %></p>
-    <% end %>
-  </div>
+	  <div style="margin-bottom:10px;">
+	    <%= form_tag import_user_index_path, :multipart => true, :class => 'well', :id => 'user_upload_form' do %>
+			<label>Upload Multiple Users</label>
+			<%= file_field_tag "file" %>
+			<div>
+				<%= submit_tag "Upload", :class => 'btn' %>
+			</div>
+		<% end %>
+	  </div>
+	</div>
 </div>
 <div id="ManagerSearchResultsLoading" class="row-fluid" style="display:none; margin-top: 30px;">
   <div class="span3"></div>

@@ -131,6 +131,7 @@ class ManagementControllerTest < ActionController::TestCase
     
     post :update_inventory_item_approval
     assert_redirected_to new_user_session_url
+    
   end
   
 end

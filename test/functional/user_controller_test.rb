@@ -71,6 +71,24 @@ class UserControllerTest < ActionController::TestCase
     
   end
   
+  test "should auto create users from file" do
+    assert_difference 'User.count', 2 do
+      post :import, :file => fixture_file_upload('files/user_upload.csv', 'text/csv')
+    end
+    
+    assert_redirected_to management_index_path
+    assert_equal 'Users successfully uploaded!', flash[:notice]
+  end
+  
+  test "should not auto create users from file if email already exists" do
+    assert_no_difference 'User.count' do
+      post :import, :file => fixture_file_upload('files/user_upload_fail.csv', 'text/csv')
+    end
+    
+    assert_match("email,error\ntest@test.com,Email has already been taken\n", @response.body.to_s)
+    assert_response(:success)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     user = users(:buyer_user)
@@ -88,6 +106,9 @@ class UserControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_url
     
     post :update, :id => user.id, :user => { :seller_approved => true }
+    assert_redirected_to new_user_session_url
+    
+    post :import
     assert_redirected_to new_user_session_url
   end
   
