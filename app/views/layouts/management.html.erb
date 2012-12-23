@@ -45,9 +45,9 @@
   </div>
   <div id="ManagementContent" class="container-fluid">
     <%= content_for?(:MainManagementContent) ? yield(:MainManagementContent) : yield %>
-	<div id="Modal" class="modal hide fade">
-	</div>
   </div>
+<div id="Modal" class="modal hide fade">
+</div>
 </div>
 <script>
   $("#Modal").modal({show:false});

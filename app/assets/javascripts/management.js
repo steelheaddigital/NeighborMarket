@@ -259,7 +259,7 @@ $(document).on("submit", "#ManagementEditInventoryItem", function(){
        },
        error: function(request){
            $("#ManagementLoading").hide();
-           $("#InventoryModal").html(request.responseText).modal('show');
+           $("#Modal").html(request.responseText).modal('show');
        }
     });
     return false;
@@ -269,7 +269,7 @@ $(document).on("click", "#mgmtEditInventoryItemButton", function(event){
     event.preventDefault();
     var url = $(this).attr("href");
 
-    $("#InventoryModal").load(url).modal('show');    
+    $("#Modal").load(url).modal('show');    
     
     return false;
 });
