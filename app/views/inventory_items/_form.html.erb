@@ -17,6 +17,6 @@
 <% if current_user.manager? %>
 	<div>
 	  <%= f.label "Approved" %>
-	  <%= f.check_box :approved %>
+	  <%= f.check_box :approved, {}, "true", "false" %>
 	</div>
 <% end %>
