@@ -14,7 +14,7 @@
         </tr>
       </thead>
         <tbody>
-          <% @inventory_items.sort_by{|item| [item.user.last_name, item.user.first_name]}.each_with_index do |item, index| %>
+          <% @inventory_items.sort_by{|item| [item.user.last_name, item.user.first_name, item.created_at]}.each_with_index do |item, index| %>
           <tr>
             <td><%= item.user.last_name + ", " + item.user.first_name %> </td>
             <td><%= item_name(item) %> </td>

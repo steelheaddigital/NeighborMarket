@@ -10,7 +10,7 @@
   </div>
   <div class="container-fluid" style="margin-top: 15px;">
     <div class="row-fluid">
-      <div id="SellerLoadingImage" style="display:none">
+      <div id="SellerLoadingImage" class="loading">
         <div class="span6"></div>
         <div>
           <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
@@ -24,10 +24,5 @@
     <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
   </div>
   </div>
-<div id="InventoryModal" class="modal hide fade">
-</div>
-<script>
-  $("#InventoryModal").modal({show: false});
-</script>
 <%  end %>
 <%= render :template => 'layouts/application' %>

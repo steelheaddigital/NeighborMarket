@@ -1,5 +1,12 @@
 class ManagementController < ApplicationController
-  load_and_authorize_resource :class => ManagementController
+  load_and_authorize_resource :class => InventoryItem
+  load_and_authorize_resource :class => User
+  load_and_authorize_resource :class => TopLevelCategory
+  load_and_authorize_resource :class => SecondLevelCategory
+  load_and_authorize_resource :class => OrderCycle
+  load_and_authorize_resource :class => Order
+  load_and_authorize_resource :class => CartItem
+  load_and_authorize_resource :class => SiteSetting
   
   def index
     @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
@@ -138,6 +145,26 @@ class ManagementController < ApplicationController
     respond_to do |format|
         format.html { redirect_to inventory_item_approval_management_index_path, notice: 'Inventory Items Successfully Updated!'}
         format.js { render :nothing => true }
+    end
+  end
+  
+  def inventory
+    @inventory_items = InventoryItem.where("quantity_available > 0")
+    
+    respond_to do |format|
+      format.html
+      format.js {render :layout => false}
+    end
+  end
+  
+  def edit_inventory
+    @item = InventoryItem.find(params[:id])
+    @top_level_categories = TopLevelCategory.all
+    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
     end
   end
   

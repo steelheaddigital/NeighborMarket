@@ -1,0 +1,12 @@
+<%= form_for @user, :url => { :action => "create" }, :html => { :id => 'NewUserForm', :class => 'well' } do |f| %>
+	  <div><%= f.error_messages %></div>
+	  <div class="span6">
+	    <div>
+	      <%= f.label "Email" %>
+	      <%= f.text_field :email, :class => "input-large" %>
+	    </div>
+	  </div>
+	<div>
+	  <%= f.submit("Create User", :class => 'btn') %>
+	</div>
+<% end %>

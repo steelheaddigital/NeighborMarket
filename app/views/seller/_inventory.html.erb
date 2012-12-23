@@ -3,9 +3,9 @@
   <table class="table table-bordered table-condensed">
     <thead>
       <tr>
+		  <th>Name</th>
           <th>Top Level Category</th>
           <th>Second Level Category</th>
-          <th>Name</th>
           <th>Price</th>
           <th>Quantity</th>
           <th></th>
@@ -15,9 +15,9 @@
     <tbody>
       <%@current_inventory.each do |item|%>
         <tr>
+		  <td><%= item_name(item)%></td>
           <td><%= item.top_level_category.name%></td>
           <td><%= item.second_level_category.name%></td>
-          <td><%= item_name(item)%></td>
           <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
           <td><%= item.quantity_available%></td>
           <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>

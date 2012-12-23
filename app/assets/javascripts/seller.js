@@ -69,7 +69,6 @@ $(document).on("submit", "#new_inventory_item", function(){
            }
        },
        success: function(data){
-           $("#SellerContent").html(data);
            seller.LoadCurrentInventory('/seller/current_inventory');
            utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully added!");
            $("#SellerLoadingImage").hide();
@@ -89,7 +88,7 @@ $(document).on("submit", "#edit_inventory_item", function(){
     $("#SellerLoadingImage").show();
     $(this).ajaxSubmit({
        dataType: "html",
-       //Remove the file input if it's empty so paperclip doesn't choke'
+       //Remove the file input if it's empty so paperclip doesn't choke
        beforeSerialize: function() {
            if($("#inventory_item_photo").val() === ""){
                $("#inventory_item_photo").remove();

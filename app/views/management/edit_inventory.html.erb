@@ -2,7 +2,7 @@
   <button class="close" data-dismiss="modal" type="button">×</button>
   <h3 id="InventoryHeading">Edit Inventory Item</h3>
 </div>
-<%= form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
+<%= form_for(@item, :html => { :id => 'ManagementEditInventoryItem'}) do |f| %>
 <div class="modal-body">
   <div class="row-fluid">
   <div class="modalErrorMessages"><%= f.error_messages %></div>
@@ -15,13 +15,13 @@
 	      <%= f.label "Second Level Category *" %>
 	      <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]})  %>
 	    </div>
-	    <%= render :partial => 'form', :locals => { :f => f } %>
+	    <%= render :partial => 'inventory_items/form', :locals => { :f => f } %>
 	  </div>
-	  <%= render :partial => 'form_right', :locals => { :f => f } %>
+	  <%= render :partial => 'inventory_items/form_right', :locals => { :f => f } %>
 	</div>
-  </div>
-  <div class="modal-footer">
-	  <a class="btn" data-dismiss="modal" href="#">Close</a>
-	  <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
-  </div>
+</div>
+<div class="modal-footer">
+  <a class="btn" data-dismiss="modal" href="#">Close</a>
+  <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
+</div>
 <% end %>

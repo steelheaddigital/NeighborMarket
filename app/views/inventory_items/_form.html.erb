@@ -14,4 +14,9 @@
   <%= f.label "Quantity Available *" %>
   <%= f.text_field :quantity_available, :class => "input-small" %>
 </div>
-
+<% if current_user.manager? %>
+	<div>
+	  <%= f.label "Approved" %>
+	  <%= f.check_box :approved %>
+	</div>
+<% end %>

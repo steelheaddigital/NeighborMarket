@@ -4,19 +4,21 @@
 </div>
 <%= form_for(@item) do |f| %>
 <div class="modal-body">
-  <%= f.error_messages %>
-  <div class="span6">
-    <div>
-      <%= f.label "Top Level Category *"   %>
-      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name, {:include_blank => true}) %>
-    </div>
-    <div>
-      <%= f.label "Second Level Category *" %>
-      <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true}, {:disabled => "disabled"})  %>
-    </div>
-    <%= render :partial => 'form', :locals => { :f => f } %>
-  </div>
-  <%= render :partial => 'form_right', :locals => { :f => f } %>
+  <div class="modalErrorMessages"><%= f.error_messages %></div>
+  <div class="row-fluid">
+	  <div class="span6">
+	    <div>
+	      <%= f.label "Top Level Category *"   %>
+	      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name, {:include_blank => true}) %>
+	    </div>
+	    <div>
+	      <%= f.label "Second Level Category *" %>
+	      <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {:include_blank => true}, {:disabled => "disabled"})  %>
+	    </div>
+	    <%= render :partial => 'form', :locals => { :f => f } %>
+	  </div>
+	  <%= render :partial => 'form_right', :locals => { :f => f } %>
+	</div>
 </div>
 <div class="modal-footer">
   <a class="btn" data-dismiss="modal" href="#">Close</a>

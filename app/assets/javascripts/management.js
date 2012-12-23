@@ -239,6 +239,61 @@ $(document).on("submit", "#NewUserForm", function(event){
     return false;
 })
 
+$(document).on("submit", "#ManagementEditInventoryItem", function(){
+    var mgmt = new Management();
+    
+    $("#ManagementLoading").show();
+    $(this).ajaxSubmit({
+       dataType: "html",
+       //Remove the file input if it's empty so paperclip doesn't choke
+       beforeSerialize: function() {
+           if($("#inventory_item_photo").val() === ""){
+               $("#inventory_item_photo").remove();
+           }
+       },
+       success: function(data){
+		   mgmt.LoadManagementContent('/management/inventory')
+           utils.ShowAlert($("#ManagementNotice"), "Inventory item successfully updated!");
+           $("#ManagementLoading").hide();
+           $("#InventoryModal").modal('hide');
+       },
+       error: function(request){
+           $("#ManagementLoading").hide();
+           $("#InventoryModal").html(request.responseText).modal('show');
+       }
+    });
+    return false;
+});
+
+$(document).on("click", "#mgmtEditInventoryItemButton", function(event){
+    event.preventDefault();
+    var url = $(this).attr("href");
+
+    $("#InventoryModal").load(url).modal('show');    
+    
+    return false;
+});
+
+$(document).on("submit", ".mgmtDeleteInventoryItemButton", function(event){
+    event.preventDefault();
+    
+    var deleteConfirm = confirm("Are you sure you want to delete this item?");
+    var url = $(this).attr("action");
+    var mgmt = new Management();
+    
+    if(deleteConfirm === true){
+        $("#ManagementLoading").show();
+
+        $.post(url, {_method: 'delete'}, function() {
+               mgmt.LoadManagementContent('/management/inventory');
+			   utils.ShowAlert($("#ManagementNotice"), "Inventory item successfully deleted!");
+               $("#ManagementLoading").hide();
+           }
+        );
+    }
+	
+	return false;
+});
 
 function Management(){
  

@@ -40,6 +40,8 @@ NeighborMarket::Application.routes.draw do
       post 'update_site_setting'
       get 'inventory_item_approval'
       post 'update_inventory_item_approval'
+      get 'inventory'
+      get 'edit_inventory'
     end
   end
   

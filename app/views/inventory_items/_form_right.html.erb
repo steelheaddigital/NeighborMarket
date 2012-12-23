@@ -1,14 +1,15 @@
-<div class="span6">
+<div class="span5" style="margin-left:30px;">
   <div>
     <%= f.label :description %>
     <%= f.text_area :description, :size => "10x10" %>
   </div>
+  <%if @item.photo?%>
+    <%= image_tag @item.photo.url(:thumb) %>
+  <%else%>
+    No Image Available
+  <%end%>
   <div>
     <%= f.label "Add a photo" %>
     <%= f.file_field :photo %>
-  </div>
-  <div>
-    <label>Post to Crowdmap</label>
-    <%=  check_box_tag "crowdmap", 1%>
   </div>
 </div>
