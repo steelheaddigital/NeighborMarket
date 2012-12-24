@@ -1,4 +1,7 @@
 class ManagementController < ApplicationController
+  require 'csv'
+  include ApplicationHelper
+  include ActionView::Helpers::NumberHelper
   load_and_authorize_resource :class => InventoryItem
   load_and_authorize_resource :class => User
   load_and_authorize_resource :class => TopLevelCategory
@@ -168,4 +171,52 @@ class ManagementController < ApplicationController
     end
   end
   
+  def historical_orders
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def historical_orders_report
+    if params[:start_date].values.any?(&:blank?) || params[:end_date].values.any?(&:blank?)
+      @orders = Order.all
+    else
+      begin_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
+      end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
+      @orders = Order.joins(:order_cycle)
+                     .where(:order_cycles => {:end_date => begin_date..end_date})
+    end
+    if params[:commit] == "Export to CSV"
+      report_name = "historical_orders_#{Date.today.strftime('%d%b%y')}.csv" 
+      send_data historical_orders_report_csv(@orders), 
+       :type => 'text/csv; charset=iso-8859-1; header=present', 
+       :disposition => "attachment; filename=#{report_name}"
+    else
+      respond_to do |format|
+        format.html
+        format.js { render :layout => false }
+      end
+    end       
+  end
+
+
+  private
+  
+  def historical_orders_report_csv(orders)
+    CSV.generate do |csv|
+      csv << ["Seller ID", "Buyer ID", "Order ID", "Item Name", "Quantity", "Price", "Delivery Date"]
+      orders.each do |order|
+        buyer_id = order.user.id
+        order_id = order.id
+        delivery_date = order.order_cycle.seller_delivery_date
+        order.cart_items.each do |cart_item|
+          csv << [cart_item.inventory_item.user.id, buyer_id, order_id, cart_item.inventory_item.name, cart_item.quantity, number_to_currency(cart_item.inventory_item.price).to_s + " " + price_unit_label(cart_item.inventory_item), format_short_date(delivery_date)]
+        end
+      end
+    end
+  end 
+  
+
 end

@@ -1,0 +1,32 @@
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+        <th>Seller ID</th>
+        <th>Buyer ID</th>
+        <th>Order ID</th>
+		<th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+		<th>Delivery Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%@orders.each do |order|%>
+	  <% buyer_id = order.user.id %>
+	  <% order_id = order.id %>
+	  <% delivery_date = order.order_cycle.seller_delivery_date%>
+	  <% order.cart_items.each do |cart_item| %>
+	      <tr>
+	        <td><%= cart_item.inventory_item.user.id %></td>
+	        <td><%= buyer_id %></td>
+	        <td><%= order_id %></td>
+			<td><%= cart_item.inventory_item.name %></td>
+			<td><%= cart_item.quantity %></td>
+			<td><%= number_to_currency(cart_item.inventory_item.price).to_s + " " + price_unit_label(cart_item.inventory_item) %></td>
+			<td><%= format_short_date(delivery_date) %></td>
+	      </tr>
+	  <% end %>
+    <% end %>
+  </tbody>
+</table>
+

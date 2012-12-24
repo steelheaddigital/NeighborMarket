@@ -1,0 +1,25 @@
+<div class="row-fluid">
+	<div class = "span12">
+		<h4>Enter a date range or leave blank for all orders in history</h4>
+		<%= form_tag historical_orders_report_management_index_path, :class => "well", :id => "HistoricalOrdersForm" do %> 
+			<div>
+		      <label>Start Date</label>
+		      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'start_date'}, {:class => "input-medium"} %>
+		    </div>
+			<div>
+		      <label>End Date</label>
+		      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'end_date'}, {:class => "input-medium"} %>
+		    </div>
+			<div>
+				<%= submit_tag "Preview", :class => "btn", :id => "PreviewHistoricalOrdersSubmit" %>
+				<%= submit_tag "Export to CSV", :class => "btn" %>
+			</div>
+		<% end %>
+	</div>
+</div>
+<div class="row-fluid">
+	<div "span12">
+		<div id="HistoricalOrdersReportContent">
+		</div>
+	</div>
+</div>

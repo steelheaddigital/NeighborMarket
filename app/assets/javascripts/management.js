@@ -295,9 +295,36 @@ $(document).on("submit", ".mgmtDeleteInventoryItemButton", function(event){
 	return false;
 });
 
+$(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
+    event.preventDefault();
+    
+	var form = $(this).closest("form")
+    var url = form.attr("action");
+    var mgmt = new Management();
+    
+	mgmt.SubmitHistoricalOrdersForm(form)
+	
+	return false;
+});
+
 function Management(){
  
     var self = this;
+
+	this.SubmitHistoricalOrdersForm = function(form){
+		$("#ManagementLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(content){
+			 $("#HistoricalOrdersReportContent").html(content);
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#ManagementLoading").hide();
+			$("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
+           }
+        });
+	}
 
     this.SubmitNewUserForm = function(form){
         $("#ManagementLoading").show();

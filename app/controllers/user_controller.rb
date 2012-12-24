@@ -105,14 +105,14 @@ class UserController < ApplicationController
        end 
      # Export Error file for later upload upon correction 
       if errs.any? 
-         errFile = "errors_#{Date.today.strftime('%d%b%y')}.csv" 
+         err_file = "errors_#{Date.today.strftime('%d%b%y')}.csv" 
          errs.insert(0, ["email", "error"]) 
-         errCSV = CSV.generate do |csv| 
+         err_csv = CSV.generate do |csv| 
            errs.each {|row| csv << row} 
          end 
-         send_data errCSV, 
+         send_data err_csv, 
           :type => 'text/csv; charset=iso-8859-1; header=present', 
-          :disposition => "attachment; filename=#{errFile}"
+          :disposition => "attachment; filename=#{err_file}"
        else 
           redirect_to management_index_path, notice: "Users successfully uploaded!"
        end

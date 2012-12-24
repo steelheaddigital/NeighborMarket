@@ -110,6 +110,33 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:second_level_categories)
   end
   
+  test "should get historical_orders" do
+    get :historical_orders
+    
+    assert_response :success
+  end
+  
+  test "should get historical_orders_report" do
+    post :historical_orders_report, :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+  end
+  
+  test "should get historical_orders_report when values are blank" do
+    post :historical_orders_report, :start_date => {:year => "", :month => "", :day => ""}, :end_date => {:year => "", :month => "", :day => ""}
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+  end
+  
+  test "should export csv if commit equals Export to CSV" do
+    post :historical_orders_report, :commit => "Export to CSV", :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
+    
+    assert_match("Seller ID,Buyer ID,Order ID,Item Name,Quantity,Price,Delivery Date\n", @response.body.to_s)
+    assert_response(:success)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -155,6 +182,11 @@ class ManagementControllerTest < ActionController::TestCase
     post :edit_inventory
     assert_redirected_to new_user_session_url
     
+    get :historical_orders
+    assert_redirected_to new_user_session_url
+    
+    post :historical_orders_report
+    assert_redirected_to new_user_session_url
   end
   
 end

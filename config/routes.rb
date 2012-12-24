@@ -42,6 +42,8 @@ NeighborMarket::Application.routes.draw do
       post 'update_inventory_item_approval'
       get 'inventory'
       get 'edit_inventory'
+      get 'historical_orders'
+      post 'historical_orders_report'
     end
   end
   
