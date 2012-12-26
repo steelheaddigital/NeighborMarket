@@ -1,3 +1,7 @@
+$(document).on("click", "#order_cycle_setting_recurring", function(){
+	$("#OrderCycleEndDateContainer").toggleClass("hidden")
+});
+
 $(document).on("submit", "#TopLevelCategoryForm", function(event){
 
     event.preventDefault();

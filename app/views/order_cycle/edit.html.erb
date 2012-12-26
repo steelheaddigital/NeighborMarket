@@ -7,7 +7,7 @@
         <%= f.label :start_date %>
         <%= f.datetime_select :start_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
       </div>
-      <div>
+      <div id="OrderCycleEndDateContainer">
         <%= f.label :end_date %>
         <%= f.datetime_select :end_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
       </div>
@@ -40,3 +40,8 @@
     <%end%>
   </div>
 </div>
+<script>
+	if($("#order_cycle_setting_recurring").is(":checked")){
+		$("#OrderCycleEndDateContainer").addClass("hidden");
+	}
+</script
