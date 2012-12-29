@@ -19,7 +19,10 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, 'log/schedule.log'
+
+#hit the site every five minutes to keep the passenger process alive
+env = environment ? environment : 'production'
+app_config = YAML::load(File.open("#{env}.yml"))
 every 5.minutes do
-  rake 'site_refresh:refresh'
+  command "curl --silent http://#{app_config['host']}", :output => {:error => 'schedule.log', :standard => nil}
 end

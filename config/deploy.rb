@@ -47,16 +47,8 @@ set :rvm_ruby_string, '1.9.3'
 require "whenever/capistrano"
 set :whenever_command, "bundle exec whenever"
 
-#############################################################
-#    Delayed_Job
-#############################################################
-require "delayed/recipes" 
-set :rails_env, "production"
-
-
 after "deploy", "deploy:migrate"
 after "deploy", "deploy:refresh_site"
-after "deploy:restart", "delayed_job:restart"
 
 namespace :deploy do
   desc "cause Passenger to initiate a restart"

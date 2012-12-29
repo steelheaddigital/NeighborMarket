@@ -1,8 +1,10 @@
 DELAYED_JOB_PID_PATH = "#{Rails.root}/tmp/pids/delayed_job.pid"
 
+start_delayed_job unless daemon_is_running?
+
 def start_delayed_job
   Thread.new do 
-    `ruby script/delayed_job start`
+    'ruby script/delayed_job start'
   end
 end
 
@@ -13,5 +15,3 @@ def daemon_is_running?
 rescue Errno::ENOENT, Errno::ESRCH   # file or process not found
   false
 end
-
-start_delayed_job unless daemon_is_running?
