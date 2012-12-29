@@ -74,7 +74,9 @@ namespace :deploy do
   
   desc "refreshes site so that first load is not slow"
   task :refresh_site do
-    run "cd #{current_path}; bundle exec rake site_refresh:refresh RAILS_ENV=#{rails_env}"
+    env = rails_env ? rails_env : 'production'
+    app_config = YAML::load(File.open("#{env}.yml"))
+    run "curl --silent http://#{app_config['host']}"
   end
 end
 
