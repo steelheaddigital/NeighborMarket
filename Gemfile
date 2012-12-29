@@ -38,6 +38,7 @@ gem 'prawn'
 gem "prawnto_2", :require => "prawnto"
 gem "paperclip", "~> 3.0"
 gem "delayed_job_active_record"
+gem "daemons"
 gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
 gem 'whenever', :require => false

@@ -20,11 +20,6 @@
 # Learn more: http://github.com/javan/whenever
 
 set :output, 'log/schedule.log'
-every 1.minute do
-  rake 'jobs:execute'
-end
-
-set :output, 'log/schedule.log'
 every 5.minutes do
   rake 'site_refresh:refresh'
 end
