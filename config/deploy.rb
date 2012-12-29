@@ -76,7 +76,7 @@ namespace :deploy do
   task :refresh_site do
     env = rails_env ? rails_env : 'production'
     app_config = YAML::load(File.open("#{env}.yml"))
-    run "curl --silent http://#{app_config['host']}"
+    run "curl --silent http://#{app_config['host']}/home/refresh"
   end
 end
 

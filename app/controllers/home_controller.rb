@@ -5,7 +5,10 @@ class HomeController < ApplicationController
     else
       @site_name = "Neighbor Market"
     end
-    
+  end
+  
+  def refresh
+    render :text => "site successfully refreshed \n"
   end
 
 end
