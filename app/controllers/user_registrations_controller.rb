@@ -70,7 +70,6 @@ class UserRegistrationsController < Devise::RegistrationsController
         # customized code end
       end
       sign_in resource_name, resource, :bypass => true
-      resource.set_auto_created_updated_at
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords resource

@@ -141,11 +141,32 @@ class UserTest < ActiveSupport::TestCase
     assert !user.valid?
    end
    
-   test "set_auto_created_updated_at updates auto_create_updated_at" do
+   test "updates auto_create_updated_at on update for valid auto created user" do
     user = users(:confirmed_auto_created_user)
-    user.set_auto_created_updated_at
+    user.update_attributes(:password => "Abc123!", :password_confirmation => "Abc123!")
     
+    assert user.valid?
     assert !user.auto_create_updated_at.nil?
+   end
+   
+   test "does not update auto_create_updated_at on update if user is not valid" do
+    user = users(:confirmed_auto_created_user)
+    user.update_attributes(:password => "Abc123!", :password_confirmation => "")
+    
+    assert !user.valid?
+    assert user.auto_create_updated_at.nil?
+   end
+   
+   test "auto_created_pending_update returns true if user is auto created and not updated" do
+    user = users(:confirmed_auto_created_user)
+    
+    assert user.auto_created_pending_update?
+   end
+   
+   test "pending_reconfirmation? returns true if user is auto created and not updated" do
+    user = users(:confirmed_auto_created_user)
+    
+    assert user.pending_reconfirmation?
    end
    
    test "should not save new user without password and password confirmation" do

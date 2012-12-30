@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   
+  before_update :set_auto_created_updated_at, :if => :auto_created_pending_update?
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -55,10 +57,13 @@ class User < ActiveRecord::Base
                   :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo
   
   def set_auto_created_updated_at
-    if auto_created && auto_create_updated_at.nil? && confirmed?
+    if self.valid?
       self.auto_create_updated_at = Time.current
-      self.save
     end
+  end
+  
+  def auto_created_pending_update?
+    auto_created && auto_create_updated_at.nil?
   end
   
   #override the devise authentication to use either username or email to login
@@ -92,8 +97,22 @@ class User < ActiveRecord::Base
     UserMailer.delay.auto_create_user_mail(self) if auto_created
   end
   
+  def pending_reconfirmation?
+    (self.class.reconfirmable && unconfirmed_email.present?) || auto_created_pending_update?
+  end
+  
+  # Send confirmation instructions by email
+  def send_confirmation_instructions
+    self.confirmation_token = nil if reconfirmation_required?
+    @reconfirmation_required = false
+
+    generate_confirmation_token! if self.confirmation_token.blank?
+    send_devise_notification(:confirmation_instructions) if !auto_created || !auto_create_updated_at.nil?
+    UserMailer.delay.auto_create_user_mail(self) if auto_created_pending_update?
+  end
+  
   def password_required?
-    !auto_create && (!persisted? || !password.nil? || !password_confirmation.nil? || (auto_created && auto_create_updated_at.nil?))
+    !auto_create && (!persisted? || !password.nil? || !password_confirmation.nil? || auto_created_pending_update?)
   end
 
   def email_required?

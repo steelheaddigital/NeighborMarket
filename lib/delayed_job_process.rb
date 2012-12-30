@@ -1,6 +1,5 @@
 module DelayedJobProcess
   DELAYED_JOB_PID_PATH = File.expand_path("../../tmp/pids/delayed_job.pid", __FILE__)
-  Thread.abort_on_exception = true
   def start_delayed_job
     Thread.new do 
       `ruby script/delayed_job start`

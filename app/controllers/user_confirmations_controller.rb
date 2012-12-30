@@ -18,6 +18,9 @@ class UserConfirmationsController < Devise::ConfirmationsController
   end
   
   def auto_create_confirmation
+    if user_signed_in?
+      sign_out(current_user)
+    end
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
     
     if resource.errors.empty?
@@ -27,7 +30,6 @@ class UserConfirmationsController < Devise::ConfirmationsController
     else
       respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
     end
-    
   end
   
 end
