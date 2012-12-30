@@ -29,5 +29,5 @@ end
 
 #check that delayed job is running and restart it if not
 every 1.minute do
-  rake "delayed_job:check"
+  rake "delayed_job:check", :output => {:error => 'schedule.log', :standard => nil}
 end
