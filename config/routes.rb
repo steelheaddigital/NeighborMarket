@@ -76,11 +76,12 @@ NeighborMarket::Application.routes.draw do
   match 'seller/:order_id/update_order' => 'seller#update_order', :via => "PUT", :as => :seller_update_order
   resources :seller, :only => ["index"] do
     collection do
-      get 'current_inventory'
       get 'pick_list'
       get 'packing_list'
       post 'previous_packing_list'
       post 'previous_pick_list'
+      post 'add_past_inventory'
+      post 'previous_index'
     end
   end
   

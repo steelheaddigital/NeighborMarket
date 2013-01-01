@@ -24,10 +24,10 @@
 env = environment ? environment : 'production'
 app_config = YAML::load(File.open("#{env}.yml"))
 every 5.minutes do
-  command "curl --silent http://#{app_config['host']}/home/refresh", :output => {:error => 'schedule.log', :standard => nil}
+  command "curl --silent http://#{app_config['host']}/home/refresh", :output => nil
 end
 
 #check that delayed job is running and restart it if not
 every 1.minute do
-  rake "delayed_job:check", :output => {:error => 'schedule.log', :standard => nil}
+  rake "delayed_job:check", :output => nil
 end

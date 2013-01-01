@@ -3,30 +3,52 @@ class SellerController < ApplicationController
   skip_authorize_resource :only => :contact
   
   def index
-    user_id = current_user.id
-    @current_inventory = InventoryItem.where(:user_id => user_id, :is_deleted => false).order("created_at DESC")
-    
+    last_order_cycle_date = OrderCycle.where(:status => "complete")
+                                      .maximum(:end_date)
+                                      
+    order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
+    order_cycle_id = order_cycle ? order_cycle.id : 0
+    @last_inventory = get_last_inventory(order_cycle_id)
+    @current_inventory = get_current_inventory
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
+    @show_past_inventory_container = ""
     respond_to do |format|
       format.html
       format.js { render :layout => false }
     end
-    
   end
   
-  def current_inventory
-    user_id = current_user.id
-    @current_inventory = InventoryItem.where(:user_id => user_id).order("created_at DESC")
+  def previous_index
+    order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    order_cycle_id = order_cycle ? order_cycle.id : 0
+    @last_inventory = get_last_inventory(order_cycle_id)
+    @current_inventory = get_current_inventory
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
+    @show_past_inventory_container = "in"
     
     respond_to do |format|
-      format.html { render "index" }
+      format.html {render :index }
+      format.js { render :index, :layout => false }
+    end
+  end
+  
+  def add_past_inventory
+    items = params[:item]
+    items.each do |item|
+      inventory_item = InventoryItem.find(item[1])
+      inventory_item.copy_to_new_cycle
+    end
+    respond_to do |format|
+      format.html { redirect_to seller_index_path, notice: 'Items successfully added!' }
       format.js { render :partial => "inventory", :layout => false }
     end
-    
   end
   
   def pick_list
     order_cycle = OrderCycle.latest_cycle
-    order_cycle_id = order_cycle.id ? order_cycle.id : 0
+    order_cycle_id = order_cycle ? order_cycle.id : 0
     @inventory_items = get_pick_list_inventory_items(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
@@ -52,7 +74,7 @@ class SellerController < ApplicationController
   
   def packing_list
     order_cycle = OrderCycle.latest_cycle
-    order_cycle_id = order_cycle.id ? order_cycle.id : 0
+    order_cycle_id = order_cycle ? order_cycle.id : 0
     @seller = current_user
     @orders = get_packing_list_orders(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
@@ -67,7 +89,7 @@ class SellerController < ApplicationController
   
   def previous_packing_list
     order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
-    order_cycle_id = order_cycle.id ? order_cycle.id : 0
+    order_cycle_id = order_cycle ? order_cycle.id : 0
     @seller = current_user
     @orders = get_packing_list_orders(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
@@ -149,6 +171,17 @@ class SellerController < ApplicationController
                   .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', user_id, order_cycle_id)
                   .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
                   .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
+  end
+  
+  def get_last_inventory(order_cycle_id)
+    InventoryItem.joins(:order_cycle)
+                 .where("order_cycles.id = ? AND user_id = ? AND is_deleted = ? AND approved = ?", order_cycle_id, current_user.id, false, true)
+  end
+  
+  def get_current_inventory
+    InventoryItem.joins(:order_cycle)
+                 .where("order_cycles.status IN('current','pending') AND user_id = ? AND is_deleted = ?", current_user.id, false)
+                 .order("created_at DESC")
   end
   
 end

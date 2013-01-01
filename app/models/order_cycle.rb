@@ -2,7 +2,8 @@ require 'order_cycle_end_job'
 require 'order_cycle_start_job'
 
 class OrderCycle < ActiveRecord::Base
-  has_many :orders 
+  has_many :orders
+  has_many :inventory_items
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,

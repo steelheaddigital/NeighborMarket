@@ -4,6 +4,7 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :top_level_category
   belongs_to :second_level_category
   has_many :cart_items
+  belongs_to :order_cycle
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved
@@ -29,7 +30,8 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def self.search(keywords)
-    scope = self.where("quantity_available > 0 AND is_deleted = false AND approved = true")
+    scope = self.joins(:order_cycle)
+                .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
     scope.find_with_index(keywords)
   end
   
@@ -63,6 +65,14 @@ class InventoryItem < ActiveRecord::Base
     end
     
     return success
+  end
+  
+  def copy_to_new_cycle
+    current_order_cycle = OrderCycle.where("status = ? OR status = ?", "current", "pending").last()
+    new_item = self.dup
+    new_item.order_cycle_id = current_order_cycle.id
+    new_item.photo = self.photo
+    new_item.save
   end
   
   private

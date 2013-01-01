@@ -108,7 +108,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse
-    @inventory_items = InventoryItem.where("second_level_category_id = ? AND quantity_available > 0 AND approved = true", params[:second_level_category_id])
+    @inventory_items = InventoryItem.joins(:order_cycle)
+                                    .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
                                     .paginate(:page => params[:page], :per_page => 5)
                                     
@@ -119,7 +120,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse_all
-    @inventory_items = InventoryItem.where("quantity_available > 0 AND approved = true")
+    @inventory_items = InventoryItem.joins(:order_cycle)
+                                    .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
                                     .order("created_at DESC").paginate(:page => params[:page], :per_page => 5)
     
     respond_to do |format|

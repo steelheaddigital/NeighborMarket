@@ -1,2 +1,80 @@
-<%= render :partial => "inventory", :locals => {:current_inventory => @current_inventory} %>
-
+<div id="PastInventoryContainer" class="row-fluid collapse <%= @show_past_inventory_container%>">
+	<div class="container-fluid">
+		<div class="row-fluid" style="padding-top: 10px;">
+			<%= form_tag previous_index_seller_index_path, :class => 'form-inline sellerListDatePicker' do %>
+				<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
+				<%= submit_tag 'Submit', :class => 'btn' %>
+				<span>Choose an order cycle end date to load previous inventory items</span>
+			<% end %>
+		</div>
+		<div class="row-fluid">
+			<%= form_tag add_past_inventory_seller_index_path, :id => 'AddPastInventoryItems' do %>
+			  <div class="row-fluid" style="height:240px; overflow:auto;">
+				  <table class="table table-bordered table-condensed">
+				    <thead>
+				      <tr>
+						  <th></th>
+						  <th>Name</th>
+				          <th>Top Level Category</th>
+				          <th>Second Level Category</th>
+				          <th>Price</th>
+				          <th>Quantity</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <%@last_inventory.each_with_index do |item, index|%>
+				        <tr>
+						  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
+						  <td><%= item_name(item)%></td>
+				          <td><%= item.top_level_category.name%></td>
+				          <td><%= item.second_level_category.name%></td>
+				          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+				          <td><%= item.quantity_available%></td>
+				        </tr>
+				      <%end%>
+				    </tbody>
+				  </table>
+				</div>
+				<div class="row-fluid" style="margin-top: 15px;">
+					<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span5"></div>
+	<div class="span2">
+		<a href="#PastInventoryContainer" data-toggle="collapse" class="btn" style="border-radius: 0 0 4px 4px;">Add Past Inventory Items</a>
+	</div>
+	<div class="span5"></div>	
+</div>
+<div class="row-fluid">
+  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn", :method => "get"} %>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+		  <th>Name</th>
+          <th>Top Level Category</th>
+          <th>Second Level Category</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th></th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%@current_inventory.each do |item|%>
+        <tr>
+		  <td><%= item_name(item)%></td>
+          <td><%= item.top_level_category.name%></td>
+          <td><%= item.second_level_category.name%></td>
+          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+          <td><%= item.quantity_available%></td>
+          <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>
+          <td><%= button_to "Delete", { :action => "destroy", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

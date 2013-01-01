@@ -12,15 +12,24 @@ class SellerControllerTest < ActionController::TestCase
     get :index
     
     assert_response :success
+    assert_not_nil assigns(:last_inventory)
     assert_not_nil assigns(:current_inventory)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_not_nil assigns(:show_past_inventory_container)
     
   end
   
-  test "should get current_inventory" do
-    get :current_inventory
+  test "should get previous_index" do
+    order_cycle = order_cycles(:complete)
+    post :previous_index, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
+    assert_not_nil assigns(:last_inventory)
     assert_not_nil assigns(:current_inventory)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_not_nil assigns(:show_past_inventory_container)
     
   end
   
@@ -103,7 +112,7 @@ class SellerControllerTest < ActionController::TestCase
     get :index
     assert_redirected_to new_user_session_url
     
-    get :current_inventory
+    post :previous_index
     assert_redirected_to new_user_session_url
     
     get :pick_list
