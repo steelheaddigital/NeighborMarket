@@ -8,13 +8,6 @@ $(document).ready(function() {
 	}
 });
 
-$(document).on("click", "#CartButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href");
-    
-    $("#MainContent").load(url);
-});
-
 $(document).on("click", ".secondLevelBrowseMenu", function(event){
    event.preventDefault();
    

@@ -13,7 +13,7 @@ function Order(){
            dataType: "html",
            success: function(content){
              $("#MainContent").html(content);
-             utils.ShowAlert($("#ApplicationNotice"), "Order successfully updated")
+             utils.ShowAlert("Order successfully updated!")
              $("#Loading").hide();
            },
            error: function(request){
