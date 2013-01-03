@@ -11,10 +11,53 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => CartItem
   load_and_authorize_resource :class => SiteSetting
   
-  def index
+  def edit_site_settings
     @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
     
-    render :template => 'site_setting/edit'
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def update_site_settings
+    @site_settings = SiteSetting.new_setting(params[:site_setting])
+    
+    respond_to do |format|
+      if @site_settings.save
+        format.html { redirect_to edit_site_settings_management_index_path, notice: 'Site Settings Successfully Saved!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render :edit }
+        format.js { render :edit, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  def edit_order_cycle_settings
+    @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
+    @order_cycle_settings.padding ||= 0
+    @order_cycle = get_order_cycle
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def update_order_cycle_settings
+    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
+    @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
+      
+    respond_to do |format|
+      if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save_and_set_status : true)
+        format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
+        format.js { render :nothing => true }
+      else
+        format.html { render "order_cycle" }
+        format.js { render :edit, :layout => false, :status => 403 }
+      end
+    end
   end
   
   def approve_sellers
@@ -30,7 +73,7 @@ class ManagementController < ApplicationController
   def user_management
     
     respond_to do |format|
-      format.html {render :index}
+      format.html
       format.js { render :layout => false }
     end
   end
@@ -218,5 +261,17 @@ class ManagementController < ApplicationController
     end
   end 
   
+  def get_order_cycle
+    if OrderCycle.find_by_status("current")
+      order_cycle = OrderCycle.find_by_status("current")
+    elsif 
+      OrderCycle.find_by_status("pending")
+      order_cycle = OrderCycle.find_by_status("pending")
+    else
+      order_cycle = OrderCycle.new
+    end
+
+    return order_cycle
+  end
 
 end

@@ -1,15 +1,3 @@
-$(document).on("click", ".sellerNav", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href")
-    var seller = new Seller();
-
-    utils.SetActiveNavButton($(this));
-    seller.LoadSellerContent(url, true);
-
-    return false;
-});
-
-
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
 
     var url = '/inventory_items/get_second_level_category'
@@ -70,7 +58,7 @@ $(document).on("submit", "#new_inventory_item", function(){
        },
        success: function(data){
            seller.LoadCurrentInventory('/seller/current_inventory');
-           utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully added!");
+           utils.ShowAlert("Inventory item successfully added!");
            $("#SellerLoadingImage").hide();
            seller.CloseInventoryDialog();
        },
@@ -98,7 +86,7 @@ $(document).on("submit", "#edit_inventory_item", function(){
            $('#InventoryNotice').empty();
            seller.LoadCurrentInventory('/seller/current_inventory');
            $("#InventoryDetail").html(data);
-           utils.ShowAlert($("#InventoryNotice"), "Inventory item successfully updated!");
+           utils.ShowAlert("Inventory item successfully updated!");
            $("#SellerLoadingImage").hide();
            seller.CloseInventoryDialog();
        },
@@ -134,7 +122,7 @@ $(document).on("submit", ".deleteInventoryItemButton", function(event){
 
         $.post(url, {_method: 'delete'}, function() {
                seller.LoadCurrentInventory('seller/current_inventory');
-               utils.ShowAlert($("#SellerNotice"), "Inventory item successfully deleted!");
+               utils.ShowAlert("Inventory item successfully deleted!");
                $("#SellerLoadingImage").hide();
            }
         );

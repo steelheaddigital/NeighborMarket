@@ -2,19 +2,19 @@
 <div class="container-fluid">
   <div class="subnav">
     <ul class="nav nav-pills">
-      <li class="active"><%= link_to "Site Settings", edit_site_setting_index_path, {:class => "mgmtNav"} %></li>
-      <li><%= link_to "Order Cycle Settings", edit_order_cycle_index_path, {:class => "mgmtNav"} %></li>
-      <li><%= link_to "Manage Users", user_management_management_index_path, {:class => "mgmtNav"} %></li>
-      <li><%= link_to "Approve Sellers", approve_sellers_management_index_path, {:class => "mgmtNav"} %></li>
-	  <li><%= link_to "Manage Categories", categories_management_index_path, {:class => "mgmtNav"} %></li>
+      <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
+      <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
+      <li class=<%= nav_item_is_active('user_management') %>><%= link_to "Manage Users", user_management_management_index_path %></li>
+      <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
+	  <li class=<%= nav_item_is_active('categories') %>><%= link_to "Manage Categories", categories_management_index_path %></li>
 	  <li class="dropdown" id="ManageInventoryMenu">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
           Manage Inventories
           <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Approve Inventory", inventory_item_approval_management_index_path, {:class => "mgmtNav"} %></li>
-			<li><%= link_to "Edit Inventory", inventory_management_index_path, {:class => "mgmtNav"} %></li>
+            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
+			<li class=<%= nav_item_is_active('inventory_management') %>><%= link_to "Edit Inventory", inventory_management_index_path %></li>
           </ul>
       </li>
       <li class="dropdown" id="MainCategoriesMenu">
@@ -23,10 +23,10 @@
           <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path, {:class => "mgmtNav"} %></li>
-            <li><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path, {:class => "mgmtNav"} %></li>
-            <li><%= link_to "Buyer Invoices", buyer_invoices_management_index_path, {:class => "mgmtNav"} %></li>
-			<li><%= link_to "Order History", historical_orders_management_index_path, {:class => "mgmtNav"} %></li>
+            <li class=<%= nav_item_is_active('inbound_delivery_log') %>><%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path %></li>
+            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
+            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
+			<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
           </ul>
       </li>
       <li></li>
@@ -39,8 +39,6 @@
         <div>
           <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
         </div>
-      </div>
-      <div id="ManagementNotice" class="alert fixed-alert">
       </div>
     </div>
   </div>

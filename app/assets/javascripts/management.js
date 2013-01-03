@@ -114,18 +114,6 @@ $(document).on("submit", "#UserSearchForm", function(event){
     return false;
 });
 
-$(document).on("click", ".mgmtNav", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-    var url = $(this).attr("href")
-	
-	$("#ManagementLoading").show();
-    utils.SetActiveNavButton($(this));
-    mgmt.LoadManagementContent(url, true);
-    
-    return false;
-});
-
 $(document).on("submit", ".editUsersButton", function(event){
     event.preventDefault();
 
@@ -257,7 +245,7 @@ $(document).on("submit", "#ManagementEditInventoryItem", function(){
        },
        success: function(data){
 		   mgmt.LoadManagementContent('/management/inventory')
-           utils.ShowAlert($("#ManagementNotice"), "Inventory item successfully updated!");
+           utils.ShowAlert("Inventory item successfully updated!");
            $("#ManagementLoading").hide();
            $("#InventoryModal").modal('hide');
        },
@@ -290,7 +278,7 @@ $(document).on("submit", ".mgmtDeleteInventoryItemButton", function(event){
 
         $.post(url, {_method: 'delete'}, function() {
                mgmt.LoadManagementContent('/management/inventory');
-			   utils.ShowAlert($("#ManagementNotice"), "Inventory item successfully deleted!");
+			   utils.ShowAlert("Inventory item successfully deleted!");
                $("#ManagementLoading").hide();
            }
         );
@@ -336,7 +324,7 @@ function Management(){
            dataType: "html",
            success: function(){
              self.CloseManagementDialog();
-             utils.ShowAlert($("#ManagementNotice"), "User successfully added!")
+             utils.ShowAlert("User successfully added!")
              $("#ManagementLoading").hide();
            },
            error: function(request){
@@ -373,7 +361,7 @@ function Management(){
            success: function(){
              self.LoadManagementContent('/site_setting/edit');
              self.CloseManagementDialog();
-             utils.ShowAlert($("#ManagementNotice"), "Site settings successfully updated!")
+             utils.ShowAlert("Site settings successfully updated!")
              $("#ManagementLoading").hide();
            },
            error: function(request){
@@ -413,11 +401,11 @@ function Management(){
            dataType: "html",
            success: function(){
              self.LoadManagementContent(reloadUrl);
-             utils.ShowAlert($("#ManagementNotice"), "Delivery log successfully updated!")
+             utils.ShowAlert("Delivery log successfully updated!")
              $("#ManagementLoading").hide();
            },
            error: function(){
-            utils.ShowAlert($("#ManagementNotice"), "Delivery log could not be updated.");
+            utils.ShowAlert("Delivery log could not be updated.");
 			$("#ManagementLoading").hide();
            }
         });
@@ -437,7 +425,7 @@ function Management(){
              $("#ManagementLoading").hide();
            },
            error: function(){
-            utils.ShowAlert($("#ManagementNotice"), "Inventory items could not be updated.");
+            utils.ShowAlert("Inventory items could not be updated.");
            }
         });
     }

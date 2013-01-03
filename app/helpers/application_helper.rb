@@ -95,4 +95,8 @@ module ApplicationHelper
     SiteSetting.first.site_name
   end
   
+  def nav_item_is_active(page_name)
+    "active" if params[:action] == page_name
+  end
+  
 end

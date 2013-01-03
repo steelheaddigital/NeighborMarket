@@ -26,8 +26,12 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  resources :management, :only => ["index"] do
+  resources :management do
     collection do
+      get 'edit_site_settings'
+      post 'update_site_settings'
+      get 'edit_order_cycle_settings'
+      post 'update_order_cycle_settings'
       get 'approve_sellers'
       get 'user_management'
       get 'user_search_results'
@@ -46,21 +50,6 @@ NeighborMarket::Application.routes.draw do
       get 'historical_orders'
       post 'historical_orders_report'
     end
-  end
-  
-  resources :order_cycle, :only => [] do
-    collection do 
-      get 'edit'
-      post 'update'
-    end
-  end
-  
-  resources :site_setting, :only => [] do
-    collection do
-      get 'edit'
-      put 'update'
-    end
-  
   end
   
   resources :inventory_items do

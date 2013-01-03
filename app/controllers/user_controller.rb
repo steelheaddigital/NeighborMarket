@@ -32,7 +32,7 @@ class UserController < ApplicationController
     
     respond_to do |format|
       if @user.auto_create_user
-        format.html { redirect_to management_index_path, notice: 'User successfully created!'}
+        format.html { redirect_to user_management_management_index_path, notice: 'User successfully created!'}
         format.js { render :nothing => true }
       else
         format.html { render "new" }
@@ -64,7 +64,7 @@ class UserController < ApplicationController
           SellerMailer.seller_approved_mail(@user).deliver
         end
         
-        format.html { redirect_to management_index_path, notice: 'User successfully updated!'}
+        format.html { redirect_to user_management_management_index_path, notice: 'User successfully updated!'}
         format.js { render :nothing => true }
       else
         format.html { render "new" }
@@ -114,7 +114,7 @@ class UserController < ApplicationController
           :type => 'text/csv; charset=iso-8859-1; header=present', 
           :disposition => "attachment; filename=#{err_file}"
        else 
-          redirect_to management_index_path, notice: "Users successfully uploaded!"
+          redirect_to user_management_management_index_path, notice: "Users successfully uploaded!"
        end
     end
   end
