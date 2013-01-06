@@ -421,7 +421,7 @@ function Management(){
            dataType: "html",
            success: function(content){
 			 self.LoadManagementContent(reloadUrl);
-             utils.ShowAlert($("#ManagementNotice"), "Inventory items successfully updated!");
+             utils.ShowAlert("Inventory items successfully updated!");
              $("#ManagementLoading").hide();
            },
            error: function(){
@@ -446,7 +446,7 @@ function Management(){
                  self.LoadManagementContent('/management/approve_sellers');
              }
 
-             utils.ShowAlert($("#ManagementNotice"), "User successfully updated!");
+             utils.ShowAlert("User successfully updated!");
              $("#ManagementLoading").hide();
            },
            error: function(){
