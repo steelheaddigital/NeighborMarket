@@ -15,48 +15,6 @@ $(document).on("submit", "#TopLevelCategoryForm", function(event){
     return false;
 });
 
-$(document).on("submit", "#InboundDeliveryLogForm", function(event){
-
-    event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
-    var reloadUrl = '/management/inbound_delivery_log'
-    var mgmt = new Management();
-
-    mgmt.SubmitDeliveryLogForm(url, data, reloadUrl);
-
-    return false;
-});
-
-$(document).on("submit", "#InventoryItemApprovalForm", function(event){
-
-    event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
-	var reloadUrl = '/management/inventory_item_approval'
-    var mgmt = new Management();
-
-    mgmt.SubmitInventoryItemApprovalForm(url, data, reloadUrl);
-
-    return false;
-});
-
-$(document).on("submit", "#OutboundDeliveryLogForm", function(event){
-
-    event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
-    var reloadUrl = '/management/outbound_delivery_log'
-    var mgmt = new Management();
-
-    mgmt.SubmitDeliveryLogForm(url, data, reloadUrl);
-
-    return false;
-});
-
 $(document).on("submit", "#SecondLevelCategoryForm", function(event){
 
     event.preventDefault();
@@ -206,13 +164,6 @@ $(document).on("click", ".cycleSettingsSubmit", function(event){
     return false;
 })
 
-$(document).on("submit", "#SiteSettingsForm", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-    mgmt.SubmitSiteSettingsForm($(this))
-    return false;
-})
-
 $(document).on("click", ".addNewUserButton", function(event){
     event.preventDefault();
 
@@ -266,27 +217,6 @@ $(document).on("click", "#mgmtEditInventoryItemButton", function(event){
     return false;
 });
 
-$(document).on("submit", ".mgmtDeleteInventoryItemButton", function(event){
-    event.preventDefault();
-    
-    var deleteConfirm = confirm("Are you sure you want to delete this item?");
-    var url = $(this).attr("action");
-    var mgmt = new Management();
-    
-    if(deleteConfirm === true){
-        $("#ManagementLoading").show();
-
-        $.post(url, {_method: 'delete'}, function() {
-               mgmt.LoadManagementContent('/management/inventory');
-			   utils.ShowAlert("Inventory item successfully deleted!");
-               $("#ManagementLoading").hide();
-           }
-        );
-    }
-	
-	return false;
-});
-
 $(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
     event.preventDefault();
     
@@ -295,28 +225,14 @@ $(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
     var mgmt = new Management();
     
 	mgmt.SubmitHistoricalOrdersForm(form)
-	
+		
 	return false;
 });
+
 
 function Management(){
  
     var self = this;
-
-	this.SubmitHistoricalOrdersForm = function(form){
-		$("#ManagementLoading").show();
-        form.ajaxSubmit({
-           dataType: "html",
-           success: function(content){
-			 $("#HistoricalOrdersReportContent").html(content);
-             $("#ManagementLoading").hide();
-           },
-           error: function(request){
-            $("#ManagementLoading").hide();
-			$("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
-           }
-        });
-	}
 
     this.SubmitNewUserForm = function(form){
         $("#ManagementLoading").show();
@@ -353,23 +269,6 @@ function Management(){
            }
         });
     }
-    
-    this.SubmitSiteSettingsForm = function(form){
-        $("#ManagementLoading").show();
-        form.ajaxSubmit({
-           dataType: "html",
-           success: function(){
-             self.LoadManagementContent('/site_setting/edit');
-             self.CloseManagementDialog();
-             utils.ShowAlert("Site settings successfully updated!")
-             $("#ManagementLoading").hide();
-           },
-           error: function(request){
-            $("#ManagementLoading").hide();
-            $("#ManagementContent").html(request.responseText);
-           }
-        });
-    }
  
     this.SubmitCategoryForm = function(url, data){
        $.ajax({
@@ -387,45 +286,6 @@ function Management(){
            error: function(request){
             $("#Modal").html(request.responseText).modal('show');
 			$("#ManagementLoading").hide();
-           }
-        });
-    }
-    
-    this.SubmitDeliveryLogForm = function(url, data, reloadUrl){
-        $("#ManagementLoading").show();
-        $.ajax({
-           type: "POST",
-           url: url,
-           data: data,
-           cache: false,
-           dataType: "html",
-           success: function(){
-             self.LoadManagementContent(reloadUrl);
-             utils.ShowAlert("Delivery log successfully updated!")
-             $("#ManagementLoading").hide();
-           },
-           error: function(){
-            utils.ShowAlert("Delivery log could not be updated.");
-			$("#ManagementLoading").hide();
-           }
-        });
-    }
-
-    this.SubmitInventoryItemApprovalForm = function(url, data, reloadUrl){
-        $("#ManagementLoading").show();
-        $.ajax({
-           type: "POST",
-           url: url,
-           data: data,
-           cache: false,
-           dataType: "html",
-           success: function(content){
-			 self.LoadManagementContent(reloadUrl);
-             utils.ShowAlert("Inventory items successfully updated!");
-             $("#ManagementLoading").hide();
-           },
-           error: function(){
-            utils.ShowAlert("Inventory items could not be updated.");
            }
         });
     }

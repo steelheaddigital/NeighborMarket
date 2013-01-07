@@ -20,6 +20,11 @@ class InventoryItem < ActiveRecord::Base
   validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
   
   before_destroy :ensure_not_referenced_by_any_cart_item
+  before_create :add_order_cycle_id
+  
+  def add_order_cycle_id
+    self.order_cycle = OrderCycle.current_cycle if self.order_cycle_id.nil?
+  end
   
   def top_level_category_name
     self.top_level_category.name

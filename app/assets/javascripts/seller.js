@@ -32,8 +32,6 @@ $(document).on("submit", ".sellerListDatePicker", function(event){
     $(this).ajaxSubmit({
        dataType: "html",
        success: function(response){
-		
-		
 		$("#SellerContent").html(response);
         $("#SellerLoadingImage").hide();
        },
@@ -47,7 +45,6 @@ $(document).on("submit", ".sellerListDatePicker", function(event){
 $(document).on("submit", "#new_inventory_item", function(){
     var seller = new Seller();
     
-    $("#SellerLoadingImage").show();
     $(this).ajaxSubmit({
        dataType: "html",
        //Remove the file input if it's empty so paperclip doesn't choke'
@@ -57,13 +54,11 @@ $(document).on("submit", "#new_inventory_item", function(){
            }
        },
        success: function(data){
-           seller.LoadCurrentInventory('/seller/current_inventory');
            utils.ShowAlert("Inventory item successfully added!");
-           $("#SellerLoadingImage").hide();
            seller.CloseInventoryDialog();
+		   $("#SellerContent").html(data);
        },
        error: function(request){
-           $("#SellerLoadingImage").hide();
            $("#InventoryModal").html(request.responseText).modal('show');
        }
     });
@@ -107,28 +102,6 @@ $(document).on("submit", ".editInventoryItemButton", function(event){
     seller.LoadInventoryDialog(url);
     
     return false;
-});
-
-$(document).on("submit", ".deleteInventoryItemButton", function(event){
-    event.preventDefault();
-    
-    var deleteConfirm = confirm("Are you sure you want to delete this item?");
-    var url = $(this).attr("action");
-    var seller = new Seller();
-    
-    if(deleteConfirm === true){
-        $('#InventoryNotice').hide();
-        $("#SellerLoadingImage").show();
-
-        $.post(url, {_method: 'delete'}, function() {
-               seller.LoadCurrentInventory('seller/current_inventory');
-               utils.ShowAlert("Inventory item successfully deleted!");
-               $("#SellerLoadingImage").hide();
-           }
-        );
-    }
-	
-	return false;
 });
 
 $(document).on("click", ".sellerDeleteOrderItem", function(event){
