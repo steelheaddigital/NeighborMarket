@@ -5,7 +5,6 @@ class SellerController < ApplicationController
   def index
     last_order_cycle_date = OrderCycle.where(:status => "complete")
                                       .maximum(:end_date)
-                                      
     order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
     order_cycle_id = order_cycle ? order_cycle.id : 0
     @last_inventory = get_last_inventory(order_cycle_id)
@@ -13,6 +12,7 @@ class SellerController < ApplicationController
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
     @show_past_inventory_container = ""
+    
     respond_to do |format|
       format.html
       format.js { render :layout => false }
@@ -40,6 +40,7 @@ class SellerController < ApplicationController
       inventory_item = InventoryItem.find(item[1])
       inventory_item.copy_to_new_cycle
     end
+    
     respond_to do |format|
       format.html { redirect_to seller_index_path, notice: 'Items successfully added!' }
       format.js { render :partial => "inventory", :layout => false }

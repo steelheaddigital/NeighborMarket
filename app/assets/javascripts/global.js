@@ -11,3 +11,13 @@ $(document).ajaxSend(function(event, request, settings) {
 
 // When I say html I really mean script for rails
 $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
+
+$(document).ready(function() {
+	var length = $.trim($('#FlashMessages').html())
+	if(length){
+		$('#FlashMessages').show();
+	}
+	else{
+		$('#FlashMessages').hide();
+	}
+});

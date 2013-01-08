@@ -33,9 +33,9 @@ class InventoryItemsController < ApplicationController
           CrowdMap.post_item_to_crowdmap(@item)
         end
         format.html { redirect_to seller_index_path, notice: 'Inventory item successfully created!'}
-        format.js { redirect_to seller_index_path, :layout => false }
+        format.js { redirect_to seller_index_path }
       else
-        format.html { render "new" }
+        format.html { render :new }
         format.js { render :new, :layout => false, :status => 403 }
       end
     end
@@ -65,10 +65,10 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])
-        format.html { redirect_to seller_index_path, notice: 'Inventory item successfully updated!'}
-        format.js { render :nothing => true }
+        format.html { redirect_to :back, notice: 'Inventory item successfully updated!'}
+        format.js { redirect_to :back }
       else
-        format.html { render "edit" }
+        format.html { render :edit }
         format.js { render :edit, :layout => false, :status => 403 }
       end
     end
@@ -80,10 +80,10 @@ class InventoryItemsController < ApplicationController
     respond_to do |format|
       if @inventory.paranoid_destroy
         format.html{ redirect_to :back, notice: "Inventory item successfully deleted!" }
-        format.js { render :nothing => true }
+        format.js { redirect_to :back }
       else
         format.html{ redirect_to :back, notice: 'Unable to delete the item' }
-        format.js { render :nothing => true, :status => 403 }
+        format.js { redirect_to :back, :status => 403 }
       end
     end
   end

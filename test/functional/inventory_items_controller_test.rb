@@ -44,8 +44,8 @@ class InventoryItemsControllerTest < ActionController::TestCase
   end
   
   test "should update inventory item" do
-    
     item = inventory_items(:one)
+    request.env["HTTP_REFERER"] = seller_index_path
     
     post :update, :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
     

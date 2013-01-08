@@ -17,9 +17,9 @@ class TopLevelCategoriesController < ApplicationController
     respond_to do |format|
       if @category.save
         format.html { redirect_to categories_management_index_path, notice: 'Category successfully updated!'}
-        format.js { render :nothing => true }
+        format.js { redirect_to categories_management_index_path }
       else
-        format.html { render "new" }
+        format.html { render :new }
         format.js { render :new, :layout => false, :status => 403 }
       end
     end
@@ -41,10 +41,10 @@ class TopLevelCategoriesController < ApplicationController
     respond_to do |format|
       if @category.update_attributes(params[:top_level_category])
         format.html { redirect_to categories_management_index_path, notice: 'Category successfully updated!'}
-        format.js { render :nothing => true }
+        format.js { redirect_to categories_management_index_path }
       else
-        format.html { render "edit" }
-        format.js { render :new, :layout => false, :status => 403 }
+        format.html { render :edit }
+        format.js { render :edit, :layout => false, :status => 403 }
       end
     end
     
@@ -57,10 +57,10 @@ class TopLevelCategoriesController < ApplicationController
     respond_to do |format|
       if @category.destroy
         format.html{ redirect_to categories_management_index_path, notice: 'Category successfully deleted!' }
-        format.js { render :nothing => true }
+        format.js { redirect_to categories_management_index_path }
       else
         format.html{ redirect_to categories_management_index_path, notice: 'Unable to delete the category' }
-        format.js { render :nothing => true, :status => 403 }
+        format.js { redirect_to categories_management_index_path, :status => 403 }
       end
     end
   end

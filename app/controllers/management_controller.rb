@@ -47,6 +47,7 @@ class ManagementController < ApplicationController
   
   def update_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
+    @order_cycle_settings.padding ||= 0
     @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
       
     respond_to do |format|
@@ -54,8 +55,8 @@ class ManagementController < ApplicationController
         format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
         format.js { render :nothing => true }
       else
-        format.html { render "order_cycle" }
-        format.js { render :edit, :layout => false, :status => 403 }
+        format.html { render :edit_order_cycle_settings }
+        format.js { render :edit_order_cycle_settings, :layout => false, :status => 403 }
       end
     end
   end
@@ -63,7 +64,6 @@ class ManagementController < ApplicationController
   def approve_sellers
     @sellers = User.joins(:roles).where("approved_seller = false AND roles.name = 'seller'") 
     
-    #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|
       format.html
       format.js { render :layout => false }

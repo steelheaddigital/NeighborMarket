@@ -127,43 +127,6 @@ $(document).on("submit", ".editSecondLevelCategoryButton", function(event){
     return false;
 });
 
-$(document).on("submit", ".deleteTopLevelCategoryButton", function(event){
-    event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
-
-    mgmt.DeleteCategory(url);
-
-    return false;
-});
-
-$(document).on("submit", ".deleteSecondLevelCategoryButton", function(event){
-    event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
-
-    mgmt.DeleteCategory(url);
-
-    return false;
-});
-
-$(document).on("click", ".cycleSettingsSubmit", function(event){
-    event.preventDefault()
-    var mgmt = new Management();
-    if($(this)[0].value === 'Save and Start New Cycle'){
-        if(confirm("This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?")){
-            mgmt.SubmitOrderCycleSettingsForm($(this));
-        }
-    }
-    else{
-        mgmt.SubmitOrderCycleSettingsForm($(this));
-    }
-
-    return false;
-})
-
 $(document).on("click", ".addNewUserButton", function(event){
     event.preventDefault();
 
@@ -183,28 +146,9 @@ $(document).on("submit", "#NewUserForm", function(event){
 })
 
 $(document).on("submit", "#ManagementEditInventoryItem", function(){
+	event.preventDefault();
     var mgmt = new Management();
-    
-    $("#ManagementLoading").show();
-    $(this).ajaxSubmit({
-       dataType: "html",
-       //Remove the file input if it's empty so paperclip doesn't choke
-       beforeSerialize: function() {
-           if($("#inventory_item_photo").val() === ""){
-               $("#inventory_item_photo").remove();
-           }
-       },
-       success: function(data){
-		   mgmt.LoadManagementContent('/management/inventory')
-           utils.ShowAlert("Inventory item successfully updated!");
-           $("#ManagementLoading").hide();
-           $("#InventoryModal").modal('hide');
-       },
-       error: function(request){
-           $("#ManagementLoading").hide();
-           $("#Modal").html(request.responseText).modal('show');
-       }
-    });
+    mgmt.SubmitEditInventoryItem($(this))
     return false;
 });
 
@@ -235,40 +179,37 @@ function Management(){
     var self = this;
 
     this.SubmitNewUserForm = function(form){
-        $("#ManagementLoading").show();
         form.ajaxSubmit({
            dataType: "html",
            success: function(){
              self.CloseManagementDialog();
              utils.ShowAlert("User successfully added!")
-             $("#ManagementLoading").hide();
            },
            error: function(request){
-            $("#ManagementLoading").hide();
 			$("#Modal").html(request.responseText).modal('show');
            }
         });
     }
 
-    this.SubmitOrderCycleSettingsForm = function(button){
-        $("#ManagementLoading").show();
-        var input = $("<input type='hidden' />").attr("name", button[0].name).attr("value", button[0].value);
-        button.closest('form').append(input);
-        var form = button.closest('form');
-        form.ajaxSubmit({
-           dataType: "html",
-           success: function(){
-             self.LoadManagementContent('/order_cycle/edit');
-             self.CloseManagementDialog();
-             utils.ShowAlert($("#ManagementNotice"), "Order cycle settings successfully updated!")
-             $("#ManagementLoading").hide();
-           },
-           error: function(request){
-            $("#ManagementLoading").hide();
-            $("#ManagementContent").html(request.responseText);
-           }
-        });
-    }
+	this.SubmitEditInventoryItem = function(form){
+		form.ajaxSubmit({
+	       dataType: "html",
+	       //Remove the file input if it's empty so paperclip doesn't choke
+	       beforeSerialize: function() {
+	           if($("#inventory_item_photo").val() === ""){
+	               $("#inventory_item_photo").remove();
+	           }
+	       },
+	       success: function(data){
+			   $("#ManagementContent").html(data);
+			   self.CloseManagementDialog();
+	           utils.ShowAlert("Inventory item successfully updated!");
+	       },
+	       error: function(request){
+	           $("#Modal").html(request.responseText).modal('show');
+	       }
+	    });
+	};
  
     this.SubmitCategoryForm = function(url, data){
        $.ajax({
@@ -277,10 +218,10 @@ function Management(){
            data: data,
            cache: false,
            dataType: "html",
-           success: function(){
-             self.LoadManagementContent('/management/categories');
+           success: function(data){
              self.CloseManagementDialog();
-             utils.ShowAlert($("#ManagementNotice"), "Categories successfully updated!")
+			 $('#ManagementContent').html(data);
+             utils.ShowAlert("Categories successfully updated!")
              $("#ManagementLoading").hide();
            },
            error: function(request){
@@ -291,7 +232,6 @@ function Management(){
     }
     
     this.SubmitEditUsersForm = function(url, data){
-        $("#ManagementLoading").show();
         $.ajax({
            type: "POST",
            url: url,
@@ -300,23 +240,19 @@ function Management(){
            dataType: "html",
            success: function(){
              var approveSellers = $("#ApproveSellers");
-
              //if we are on the Approve Sellers screen, then refresh the Approve Seller table
              if(approveSellers.length > 0){
-                 self.LoadManagementContent('/management/approve_sellers');
+				$('#ManagementContent').load('/management/approve_sellers');
              }
-
              utils.ShowAlert("User successfully updated!");
-             $("#ManagementLoading").hide();
            },
-           error: function(){
-            $("#ManagementLoading").hide();
+           error: function(request){
+			$("#Modal").html(request.responseText).modal('show');
            }
         });
     }
     
     this.LoadManagementDialog = function(url){
-
         $("#Modal").load(url, function() 
             {$("#ManagementNotice").hide();
         }).modal('show');
@@ -324,31 +260,5 @@ function Management(){
 
     this.CloseManagementDialog = function(){
         $("#Modal").modal('hide');
-    }
-
-    this.LoadManagementContent = function(url, reset){
-
-        $('#ManagementContent').load(url, function(){
-            if(reset == true){
-                $("#ManagementNotice").hide();
-            }
-			$("#ManagementLoading").hide();
-        });
-    }
-
-    this.DeleteCategory = function(url){
-
-        var deleteConfirm = confirm("WARNING! This will delete the category and any seller inventory items in the category. Are you sure?");
-
-        if(deleteConfirm == true){
-            $("#ManagementLoading").show();
-            
-            $.post(url, {_method: 'delete'}, function() {
-                   self.LoadManagementContent('/management/categories', false);
-                   $("#ManagementNotice").append("Category successfully deleted!").show();
-                   $("#ManagementLoading").hide();
-               }
-            );
-        }
     }
 }

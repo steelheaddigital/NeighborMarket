@@ -44,52 +44,13 @@ $(document).on("submit", ".sellerListDatePicker", function(event){
 
 $(document).on("submit", "#new_inventory_item", function(){
     var seller = new Seller();
-    
-    $(this).ajaxSubmit({
-       dataType: "html",
-       //Remove the file input if it's empty so paperclip doesn't choke'
-       beforeSerialize: function() {
-           if($("#inventory_item_photo").val() === ""){
-               $("#inventory_item_photo").remove();
-           }
-       },
-       success: function(data){
-           utils.ShowAlert("Inventory item successfully added!");
-           seller.CloseInventoryDialog();
-		   $("#SellerContent").html(data);
-       },
-       error: function(request){
-           $("#InventoryModal").html(request.responseText).modal('show');
-       }
-    });
+    seller.SubmitInventoryItemForm($(this));
     return false;
 });
 
 $(document).on("submit", "#edit_inventory_item", function(){
     var seller = new Seller();
-    
-    $("#SellerLoadingImage").show();
-    $(this).ajaxSubmit({
-       dataType: "html",
-       //Remove the file input if it's empty so paperclip doesn't choke
-       beforeSerialize: function() {
-           if($("#inventory_item_photo").val() === ""){
-               $("#inventory_item_photo").remove();
-           }
-       },
-       success: function(data){
-           $('#InventoryNotice').empty();
-           seller.LoadCurrentInventory('/seller/current_inventory');
-           $("#InventoryDetail").html(data);
-           utils.ShowAlert("Inventory item successfully updated!");
-           $("#SellerLoadingImage").hide();
-           seller.CloseInventoryDialog();
-       },
-       error: function(request){
-           $("#SellerLoadingImage").hide();
-           $("#InventoryModal").html(request.responseText).modal('show');
-       }
-    });
+	seller.SubmitInventoryItemForm($(this));
     return false;
 });
 
@@ -113,9 +74,9 @@ $(document).on("click", ".sellerDeleteOrderItem", function(event){
         $('#InventoryNotice').hide();
         $("#SellerLoadingImage").show();
 		
-        $.post(url, {_method: 'delete'}, function() {
+        $.post(url, {_method: 'delete'}, function(content) {
                $("#SellerContent").load('/seller/packing_list');
-               utils.ShowAlert($("#SellerNotice"), "Item successfully deleted!");
+               utils.ShowAlert("Item successfully deleted!");
                $("#SellerLoadingImage").hide();
            }
         );
@@ -124,43 +85,30 @@ $(document).on("click", ".sellerDeleteOrderItem", function(event){
 	return false;
 });
 
-$(document).on("click", ".sellerUpdateOrderSubmit", function(event){
-    event.preventDefault()
-    var seller = new Seller();
-    if($(this)[0].value === 'Delete All Items'){
-        if(confirm("Are you sure you want to delete all items in this order?")){
-            seller.SubmitEditOrderForm($(this));
-        }
-    }
-    else{
-        seller.SubmitEditOrderForm($(this));
-    }
-
-    return false;
-
-})
-
 function Seller(){
-    
-    this.SubmitEditOrderForm = function(button){
-        $("#SellerLoadingImage").show();
-        var input = $("<input type='hidden' />").attr("name", button[0].name).attr("value", button[0].value);
-        button.closest('form').append(input);
-        var form = button.closest('form');
-        form.ajaxSubmit({
-           dataType: "html",
-           success: function(){
-	         $("#SellerContent").load('/seller/packing_list');
-             utils.ShowAlert($("#SellerNotice"), "Order successfully updated!")
-             $("#SellerLoadingImage").hide();
-           },
-           error: function(request){
-            $("#SellerLoadingImage").hide();
-            $("#SellerContent").html(request.responseText);
-           }
-        });
-    }
 	
+	var self = this;
+	
+    this.SubmitInventoryItemForm = function(form){
+		form.ajaxSubmit({
+	       dataType: "html",
+	       //Remove the file input if it's empty so paperclip doesn't choke
+	       beforeSerialize: function() {
+	           if($("#inventory_item_photo").val() === ""){
+	               $("#inventory_item_photo").remove();
+	           }
+	       },
+	       success: function(data){
+	           utils.ShowAlert("Inventory item successfully updated!");
+	           self.CloseInventoryDialog();
+			   $("#SellerContent").html(data);
+	       },
+	       error: function(request){
+	           $("#InventoryModal").html(request.responseText).modal('show');
+	       }
+	    });
+	}
+
     this.LoadSellerContent = function(url, reset){
         $("#SellerLoadingImage").show();
         
