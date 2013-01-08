@@ -58,8 +58,8 @@ class InventoryItemsControllerTest < ActionController::TestCase
   end
 
   test "should destroy inventory item" do
-    
     item = inventory_items(:not_in_cart)
+    request.env["HTTP_REFERER"] = seller_index_path
     
     assert_difference 'InventoryItem.count', -1 do
       post :destroy, :id => item.id
