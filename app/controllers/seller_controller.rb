@@ -113,7 +113,7 @@ class SellerController < ApplicationController
       if cart_item.destroy
         send_order_modified_emails(@seller, cart_item.order)
         format.html { redirect_to packing_list_seller_index_path, notice: 'Item successfully deleted!'}
-        format.js { render :nothing => true }
+        format.js { redirect_to packing_list_seller_index_path }
       else
         format.html { render :packing_list }
         format.js { render :packing_list, :layout => false, :status => 403 }
@@ -170,7 +170,6 @@ class SellerController < ApplicationController
     user_id = current_user.id
     InventoryItem.joins(:cart_items => :order)
                   .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', user_id, order_cycle_id)
-                  .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
                   .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
   end
   

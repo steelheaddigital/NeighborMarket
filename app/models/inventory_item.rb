@@ -50,6 +50,10 @@ class InventoryItem < ActiveRecord::Base
     self.save
   end
   
+  def cart_item_quantity_sum
+    self.cart_items.map{|h| h[:quantity]}.reduce(:+)
+  end
+  
   def previous_cart_items
     self.cart_items.joins(:order)
                    .where("orders.order_cycle_id != ?", OrderCycle.current_cycle_id)

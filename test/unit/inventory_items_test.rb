@@ -96,4 +96,10 @@ class InventoryItemsTest < ActiveSupport::TestCase
      assert !InventoryItem.exists?(item)
    end
    
+   test "cart_item_quantity_sum sums cart item quantities" do
+      item = inventory_items(:one)
+      sum = item.cart_item_quantity_sum
+      
+      assert_equal 30, sum
+   end
 end

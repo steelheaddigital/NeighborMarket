@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<div class="row-fluid">
-		<%= form_tag previous_packing_list_seller_index_path, :class => 'form-inline sellerListDatePicker' do %>
+		<%= form_tag previous_packing_list_seller_index_path, :class => 'form-inline' do %>
 			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
 			<%= submit_tag 'Submit', :class => 'btn' %>
 			<span>Choose an order cycle end date to load a previous packing list</span>
@@ -39,7 +39,7 @@
 			  </td>
               <td>
 				<% if(@can_edit) %>
-					<%= link_to "Delete Item", seller_remove_item_from_order_path(item.object), :class => 'btn btn-danger sellerDeleteOrderItem'%>
+					<%= link_to "Delete Item", seller_remove_item_from_order_path(item.object), :method => 'delete', :confirm => 'Are you sure you want to delete this item?', :class => 'btn btn-danger'%>
 				<% end %>
 			  </td>
             <% end %>
