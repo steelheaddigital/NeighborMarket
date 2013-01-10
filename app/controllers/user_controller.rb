@@ -22,21 +22,20 @@ class UserController < ApplicationController
     @user = User.new
     
     respond_to do |format|
-      format.html
-      format.js { render :layout => false }
+      format.html {render :partial => "new"}
+      format.js { render :partial => "new", :layout => false }
     end
   end
   
   def create
     @user = User.new(params[:user])
-    
     respond_to do |format|
       if @user.auto_create_user
-        format.html { redirect_to user_management_management_index_path, notice: 'User successfully created!'}
-        format.js { render :nothing => true }
+        format.html { redirect_to add_users_management_index_path, notice: 'User successfully created!'}
+        format.js { redirect_to add_users_management_index_path }
       else
-        format.html { render "new" }
-        format.js { render :new, :layout => false, :status => 403 }
+        format.html { render 'management/add_users', :layout => 'management' }
+        format.js { render 'management/add_users', :layout => false, :status => 403 }
       end
     end
   end
@@ -44,7 +43,6 @@ class UserController < ApplicationController
   def edit
     @user = User.find(params[:id])
     
-    #if the view is being loaded via ajax, don't render the layout
     respond_to do |format|
       format.html
       format.js { render :layout => false }
@@ -64,10 +62,10 @@ class UserController < ApplicationController
           SellerMailer.seller_approved_mail(@user).deliver
         end
         
-        format.html { redirect_to user_management_management_index_path, notice: 'User successfully updated!'}
+        format.html { redirect_to user_search_management_index_path, notice: 'User successfully updated!'}
         format.js { render :nothing => true }
       else
-        format.html { render "new" }
+        format.html { render :edit }
         format.js { render :edit, :layout => false }
       end
     end
@@ -114,7 +112,7 @@ class UserController < ApplicationController
           :type => 'text/csv; charset=iso-8859-1; header=present', 
           :disposition => "attachment; filename=#{err_file}"
        else 
-          redirect_to user_management_management_index_path, notice: "Users successfully uploaded!"
+          redirect_to add_users_management_index_path, notice: "Users successfully uploaded!"
        end
     end
   end

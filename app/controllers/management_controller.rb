@@ -70,10 +70,19 @@ class ManagementController < ApplicationController
     end
   end
   
-  def user_management
+  def user_search
     
     respond_to do |format|
       format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def add_users
+    @user = User.new
+    
+    respond_to do |format|
+      format.html 
       format.js { render :layout => false }
     end
   end

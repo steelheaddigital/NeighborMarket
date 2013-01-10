@@ -56,7 +56,7 @@ class UserControllerTest < ActionController::TestCase
     
     post :update, :id => user.id, :user => { :seller_approved => true }
     
-    assert_redirected_to user_management_management_index_path
+    assert_redirected_to user_search_management_index_path
     assert_equal 'User successfully updated!', flash[:notice]
     assert_not_nil assigns(:user)
   end
@@ -76,7 +76,7 @@ class UserControllerTest < ActionController::TestCase
       post :import, :file => fixture_file_upload('files/user_upload.csv', 'text/csv')
     end
     
-    assert_redirected_to user_management_management_index_path
+    assert_redirected_to add_users_management_index_path
     assert_equal 'Users successfully uploaded!', flash[:notice]
   end
   

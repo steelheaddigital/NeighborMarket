@@ -127,24 +127,6 @@ $(document).on("submit", ".editSecondLevelCategoryButton", function(event){
     return false;
 });
 
-$(document).on("click", ".addNewUserButton", function(event){
-    event.preventDefault();
-
-    var url = $(this).attr("href");
-    var mgmt = new Management();
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", "#NewUserForm", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-    mgmt.SubmitNewUserForm($(this))
-    return false;
-})
-
 $(document).on("submit", "#ManagementEditInventoryItem", function(){
 	event.preventDefault();
     var mgmt = new Management();
@@ -177,19 +159,6 @@ $(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
 function Management(){
  
     var self = this;
-
-    this.SubmitNewUserForm = function(form){
-        form.ajaxSubmit({
-           dataType: "html",
-           success: function(){
-             self.CloseManagementDialog();
-             utils.ShowAlert("User successfully added!")
-           },
-           error: function(request){
-			$("#Modal").html(request.responseText).modal('show');
-           }
-        });
-    }
 
 	this.SubmitEditInventoryItem = function(form){
 		form.ajaxSubmit({

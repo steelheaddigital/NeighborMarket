@@ -4,9 +4,18 @@
     <ul class="nav nav-pills">
       <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
       <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
-      <li class=<%= nav_item_is_active('user_management') %>><%= link_to "Manage Users", user_management_management_index_path %></li>
-      <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
 	  <li class=<%= nav_item_is_active('categories') %>><%= link_to "Manage Categories", categories_management_index_path %></li>
+      <li class="dropdown">
+      	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          Manage Users
+          <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li class=<%= nav_item_is_active('user_search') %>><%= link_to "User Search", user_search_management_index_path %></li>
+            <li class=<%= nav_item_is_active('add_users') %>><%= link_to "Add Users", add_users_management_index_path %></li>
+            <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
+          </ul>
+      </li>
 	  <li class="dropdown" id="ManageInventoryMenu">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
           Manage Inventories

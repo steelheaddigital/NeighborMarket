@@ -33,7 +33,7 @@ NeighborMarket::Application.routes.draw do
       get 'edit_order_cycle_settings'
       post 'update_order_cycle_settings'
       get 'approve_sellers'
-      get 'user_management'
+      get 'user_search'
       get 'user_search_results'
       get 'categories'
       get 'inbound_delivery_log'
@@ -49,6 +49,7 @@ NeighborMarket::Application.routes.draw do
       get 'edit_inventory'
       get 'historical_orders'
       post 'historical_orders_report'
+      get 'add_users'
     end
   end
   

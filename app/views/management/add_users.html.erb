@@ -1,0 +1,17 @@
+<div class="row-fluid">
+	<div class="span6">
+	  <h4>Add User</h4>
+	  <div style="margin-bottom:10px;">
+		<%= render 'user/new', :user => User.new%>
+	  </div>
+	  <div>
+		<h4>Upload Multiple Users</h4>
+	    <%= form_tag import_user_index_path, :multipart => true, :class => 'well', :id => 'user_upload_form' do %>
+			<%= file_field_tag "file" %>
+			<div>
+				<%= submit_tag "Upload Users", :class => 'btn' %>
+			</div>
+		<% end %>
+	  </div>
+	</div>
+</div>
