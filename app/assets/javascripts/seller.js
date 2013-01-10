@@ -85,6 +85,4 @@ function Seller(){
     this.CloseInventoryDialog = function(){
         $("#InventoryModal").modal('hide');
     }
-
-    this.LoadCurrentInventory = function(url){
 }
