@@ -16,7 +16,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -26,10 +25,8 @@ class ManagementController < ApplicationController
     respond_to do |format|
       if @site_settings.save
         format.html { redirect_to edit_site_settings_management_index_path, notice: 'Site Settings Successfully Saved!'}
-        format.js { render :nothing => true }
       else
         format.html { render :edit }
-        format.js { render :edit, :layout => false, :status => 403 }
       end
     end
   end
@@ -41,7 +38,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -53,10 +49,8 @@ class ManagementController < ApplicationController
     respond_to do |format|
       if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save_and_set_status : true)
         format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
-        format.js { render :nothing => true }
       else
         format.html { render :edit_order_cycle_settings }
-        format.js { render :edit_order_cycle_settings, :layout => false, :status => 403 }
       end
     end
   end
@@ -66,7 +60,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -83,7 +76,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html 
-      format.js { render :layout => false }
     end
   end
   
@@ -112,7 +104,6 @@ class ManagementController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
       format.pdf do
         output = InboundDeliveryLog.new.to_pdf(@items)
         send_data output, :filename => "inbound_delivery_log.pdf",
@@ -136,7 +127,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
         format.html { redirect_to inbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
-        format.js { render :nothing => true }
     end
   end
   
@@ -146,7 +136,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
       format.pdf do
         output = OutboundDeliveryLog.new.to_pdf(@orders)
         send_data output, :filename => "outbound_delivery_log.pdf",
@@ -170,7 +159,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
         format.html { redirect_to outbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
-        format.js { render :nothing => true }
     end
   end
   
@@ -180,7 +168,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
       format.pdf do
         output = BuyerInvoices.new.to_pdf(@orders)
         send_data output, :filename => "buyer_invoices.pdf",
@@ -194,7 +181,6 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js {render :layout => false}
     end
   end
   
@@ -211,16 +197,16 @@ class ManagementController < ApplicationController
     
     respond_to do |format|
         format.html { redirect_to inventory_item_approval_management_index_path, notice: 'Inventory Items Successfully Updated!'}
-        format.js { render :nothing => true }
     end
   end
   
   def inventory
-    @inventory_items = InventoryItem.where("quantity_available > 0")
+    @inventory_items = InventoryItem.joins(:order_cycle)
+                                    .where("quantity_available > 0 AND is_deleted = false AND order_cycles.status = 'current'")
     
     respond_to do |format|
       format.html
-      format.js {render :layout => false}
+      format.js { render :layout => false }
     end
   end
   

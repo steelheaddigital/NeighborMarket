@@ -80,20 +80,15 @@ class InventoryItemsController < ApplicationController
     respond_to do |format|
       if @inventory.paranoid_destroy
         format.html{ redirect_to :back, notice: "Inventory item successfully deleted!" }
-        format.js { redirect_to :back }
       else
         format.html{ redirect_to :back, notice: 'Unable to delete the item' }
-        format.js { redirect_to :back, :status => 403 }
       end
     end
   end
   
   def get_second_level_category
-    
     @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(params[:category_id])
-    
     render :json => @second_level_categories
-        
   end
   
   def search
@@ -103,7 +98,6 @@ class InventoryItemsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -115,7 +109,6 @@ class InventoryItemsController < ApplicationController
                                     
     respond_to do |format|
       format.html { render :search }
-      format.js { render :search, :layout => false }
     end
   end
   
@@ -126,7 +119,6 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       format.html { render :search }
-      format.js { render :search, :layout => false }
     end
   end
   

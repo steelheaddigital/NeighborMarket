@@ -5,6 +5,10 @@ class UserController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    
+    respond_to do |format|
+      format.html
+    end
   end
 
   def public_show
@@ -12,9 +16,7 @@ class UserController < ApplicationController
     @message = UserContactMessage.new
     
     respond_to do |format|
-      
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -23,7 +25,6 @@ class UserController < ApplicationController
     
     respond_to do |format|
       format.html {render :partial => "new"}
-      format.js { render :partial => "new", :layout => false }
     end
   end
   
@@ -32,10 +33,8 @@ class UserController < ApplicationController
     respond_to do |format|
       if @user.auto_create_user
         format.html { redirect_to add_users_management_index_path, notice: 'User successfully created!'}
-        format.js { redirect_to add_users_management_index_path }
       else
         format.html { render 'management/add_users', :layout => 'management' }
-        format.js { render 'management/add_users', :layout => false, :status => 403 }
       end
     end
   end

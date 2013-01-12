@@ -30,7 +30,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html {render :index }
-      format.js { render :index, :layout => false }
     end
   end
   
@@ -43,7 +42,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to seller_index_path, notice: 'Items successfully added!' }
-      format.js { render :partial => "inventory", :layout => false }
     end
   end
   
@@ -56,7 +54,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -68,7 +65,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html{render :pick_list}
-      format.js { render :pick_list, :layout => false }
       format.pdf do
         output = PickList.new.to_pdf(@inventory_items)
         send_data output, :filename => "pick_list.pdf",
@@ -88,7 +84,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -103,7 +98,6 @@ class SellerController < ApplicationController
     
     respond_to do |format|
       format.html{ render :packing_list}
-      format.js { render :packing_list, :layout => false }
       format.pdf do
         output = PackingList.new.to_pdf(@orders, @seller)
         send_data output, :filename => "packing_list.pdf",
@@ -121,10 +115,8 @@ class SellerController < ApplicationController
       if cart_item.destroy
         send_order_modified_emails(@seller, cart_item.order)
         format.html { redirect_to packing_list_seller_index_path, notice: 'Item successfully deleted!'}
-        format.js { redirect_to packing_list_seller_index_path }
       else
         format.html { render :packing_list }
-        format.js { render :packing_list, :layout => false, :status => 403 }
       end
     end
   end
@@ -148,10 +140,8 @@ class SellerController < ApplicationController
       if success
         send_order_modified_emails(@seller, order)
         format.html { redirect_to packing_list_seller_index_path, notice: 'Order successfully updated!'}
-        format.js { render :nothing => true }
       else
         format.html { render :packing_list }
-        format.js { render :packing_list, :layout => false, :status => 403 }
       end
     end
   end

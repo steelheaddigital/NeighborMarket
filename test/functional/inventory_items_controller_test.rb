@@ -18,6 +18,17 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
   end
   
+  test "should get new js" do
+    get :new, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_equal response.content_type, Mime::JS
+    
+  end
+  
   test "should create inventory item" do
     top_level_category = top_level_categories(:vegetable)
     second_level_category = second_level_categories(:carrot)
@@ -33,6 +44,20 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
   end
   
+  test "should create inventory item js" do
+    top_level_category = top_level_categories(:vegetable)
+    second_level_category = second_level_categories(:carrot)
+    
+    assert_difference 'InventoryItem.count' do
+      post :create, :format => 'js', :inventory_item => { :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    end
+    
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_redirected_to seller_index_path
+    assert_equal response.content_type, Mime::JS
+  end
+  
   test "should get edit" do
     item = inventory_items(:one)
     get :edit, :id => item.id
@@ -41,6 +66,17 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+  end
+  
+  test "should get edit js" do
+    item = inventory_items(:one)
+    get :edit, :id => item.id, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should update inventory item" do
@@ -54,7 +90,19 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:second_level_categories)
     assert_redirected_to seller_index_path
     assert_equal 'Inventory item successfully updated!', flash[:notice]
+  end
+  
+  test "should update inventory item js" do
+    item = inventory_items(:one)
+    request.env["HTTP_REFERER"] = seller_index_path
     
+    post :update, :format => 'js', :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_redirected_to seller_index_path
+    assert_equal response.content_type, Mime::JS
   end
 
   test "should destroy inventory item" do

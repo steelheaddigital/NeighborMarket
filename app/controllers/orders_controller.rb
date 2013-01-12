@@ -23,7 +23,6 @@ class OrdersController < ApplicationController
       
       respond_to do |format|
         format.html
-        format.js { render :layout => false }
       end
     else
       message = @cart.errors.full_messages.first
@@ -66,7 +65,6 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -79,10 +77,8 @@ class OrdersController < ApplicationController
         send_emails(@order, true)
         
         format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
-        format.js { render :edit, :layout => false }
       else
         format.html { render "edit" }
-        format.js { render :edit, :layout => false, :status => 403 }
       end
     end
   end
@@ -92,7 +88,6 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.js { render :layout => false }
     end
   end
   
@@ -102,10 +97,8 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.destroy
         format.html{ redirect_to root_path, notice: "Order successfully cancelled" }
-        format.js { render :nothing => true }
       else
         format.html{ redirect_to edit_order_path(@order.id), notice: "Order could not be cancelled" }
-        format.js { render :nothing => true, :status => 403  }
       end
     end
   end

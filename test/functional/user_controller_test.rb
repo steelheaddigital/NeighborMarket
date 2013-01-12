@@ -51,6 +51,16 @@ class UserControllerTest < ActionController::TestCase
     assert_not_nil assigns(:user)
   end
   
+  test "edit should get edit js" do
+    user = users(:buyer_user)
+    
+    get :edit, :id => user.id, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns(:user)
+    assert_equal response.content_type, Mime::JS
+  end
+  
   test "update should update user" do
     user = users(:approved_seller_user)
     
@@ -59,6 +69,15 @@ class UserControllerTest < ActionController::TestCase
     assert_redirected_to user_search_management_index_path
     assert_equal 'User successfully updated!', flash[:notice]
     assert_not_nil assigns(:user)
+  end
+  
+  test "update should update user js" do
+    user = users(:approved_seller_user)
+    
+    post :update, :id => user.id, :user => { :seller_approved => true }, :format => 'js'
+    
+    assert_not_nil assigns(:user)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should send contact" do

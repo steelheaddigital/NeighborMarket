@@ -10,11 +10,9 @@ class CartItemsController < ApplicationController
     respond_to do |format|
       if @cart_item.save
         format.html { redirect_to cart_index_path }
-        format.js { render :nothing => true }
       else
         message = @cart_item.errors.full_messages.first
         format.html { redirect_to cart_index_path, notice: message }
-        format.js { render :text => "Item cannot be added to cart, " + message, :status => 403 }
       end
     end
     
@@ -27,14 +25,11 @@ class CartItemsController < ApplicationController
       if @cart_item.destroy
         if @cart_item.order_id
           format.html{ redirect_to edit_order_path(@cart_item.order_id) }
-          format.js { render :nothing => true }
         else
           format.html{ redirect_to cart_index_path }
-          format.js { render :nothing => true }
         end 
       else
         format.html{ redirect_to cart_index_path, notice: "Cart item could not be deleted" }
-        format.js { render :nothing => true, :status => 403  }
       end
     end
   end

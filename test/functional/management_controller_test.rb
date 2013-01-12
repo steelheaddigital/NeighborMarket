@@ -58,6 +58,13 @@ class ManagementControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "should get user_search js" do
+    get :user_search, :format => 'js'
+    
+    assert_response :success
+    assert_equal response.content_type, Mime::JS
+  end
+  
   test "should get user_search_results" do
     get :user_search_results, :keywords => 'manager'
     
@@ -65,11 +72,27 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:users)
   end
   
+  test "should get user_search_results js" do
+    get :user_search_results, :keywords => 'manager', :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns (:users)
+    assert_equal response.content_type, Mime::JS
+  end
+  
   test "should get categories" do
     get :categories
     
     assert_response :success
     assert_not_nil assigns (:categories)
+  end
+  
+  test "should get categories js" do
+    get :categories, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns (:categories)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should get inbound_delivery_log" do
@@ -149,10 +172,18 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get inventory" do
-    get :inventory_item_approval
+    get :inventory
     
     assert_response :success
     assert_not_nil assigns (:inventory_items)
+  end
+  
+  test "should get inventory js" do
+    get :inventory, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns (:inventory_items)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should get edit_inventory" do
@@ -163,6 +194,17 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:item)
     assert_not_nil assigns (:top_level_categories)
     assert_not_nil assigns (:second_level_categories)
+  end
+  
+  test "should get edit_inventory js" do
+    inventory_item = inventory_items(:one)
+    get :edit_inventory, :id => inventory_item.id, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns (:item)
+    assert_not_nil assigns (:top_level_categories)
+    assert_not_nil assigns (:second_level_categories)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should get historical_orders" do
@@ -176,6 +218,14 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns(:orders)
+  end
+  
+  test "should get historical_orders_report js" do
+    post :historical_orders_report, :format => 'js', :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    assert_equal response.content_type, Mime::JS
   end
   
   test "should get historical_orders_report when values are blank" do

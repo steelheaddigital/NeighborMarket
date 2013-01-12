@@ -160,6 +160,21 @@ function Management(){
  
     var self = this;
 
+	this.SubmitHistoricalOrdersForm = function(form){
+		$("#ManagementLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(content){
+			 $("#HistoricalOrdersReportContent").html(content);
+             $("#ManagementLoading").hide();
+           },
+           error: function(request){
+            $("#ManagementLoading").hide();
+			$("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
+           }
+        });
+	}
+
 	this.SubmitEditInventoryItem = function(form){
 		form.ajaxSubmit({
 	       dataType: "html",

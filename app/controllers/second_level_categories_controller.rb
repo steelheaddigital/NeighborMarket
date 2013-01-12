@@ -57,10 +57,8 @@ class SecondLevelCategoriesController < ApplicationController
     respond_to do |format|
       if @category.destroy
         format.html{ redirect_to categories_management_index_path, notice: 'Category successfully deleted!' }
-        format.js { redirect_to categories_management_index_path }
       else
         format.html{ redirect_to categories_management_index_path, notice: 'Unable to delete the category' }
-        format.js { redirect_to categories_management_index_path, :status => 403 }
       end
     end
 
