@@ -5,6 +5,20 @@ $(document).on("change", "#inventory_item_top_level_category_id", function() {
 	seller.GetSecondLevelCategories(data);
 });
 
+$(document).on("click", "#SelectAllInventoryItems", function() {
+	var rows = $(this).parents("table").find("tbody").find("tr");
+	
+	//Toggle the checkbox for each row in the table
+	rows.each(function(){
+		$(this).find("td:first")
+			   .children(":first")
+			   .attr('checked', function(idx, oldAttr) {
+			            return !oldAttr;
+			        })
+	});
+	
+});
+
 $(document).on("submit", "#NewInventoryItemButton", function(event){
     event.preventDefault();
     
