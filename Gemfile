@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.11'
 
 gem 'pg'
 
@@ -29,13 +29,12 @@ group :assets do
   gem 'less-rails-fontawesome'
 end
 
-gem 'devise', "~> 2.1.2"
+gem 'devise', "~> 2.2.0"
 gem 'cancan'
 gem 'carmen'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
-gem "prawnto_2", :require => "prawnto"
 gem "paperclip", "~> 3.0"
 gem "delayed_job_active_record"
 gem "daemons"

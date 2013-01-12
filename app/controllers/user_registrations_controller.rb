@@ -4,7 +4,8 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def new
     resource = build_resource({})
-    add_resource_role(resource)
+    @user_type = params[:user][:user_type]
+    add_resource_role(resource, @user_type)
 
     respond_with resource
     
@@ -14,8 +15,8 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def create
     build_resource
-    
-    add_resource_role(resource)
+    user_type = params[:user][:user_type]
+    add_resource_role(resource, user_type)
     
     valid = resource.valid?
 
@@ -115,11 +116,11 @@ class UserRegistrationsController < Devise::RegistrationsController
       end
   end
   
-  def add_resource_role(resource)
-    if params[:user][:user_type].downcase == "buyer"
+  def add_resource_role(resource, user_type)
+    if user_type == "buyer"
       add_role(resource, "buyer")
     end
-    if params[:user][:user_type].downcase == "seller"
+    if user_type == "seller"
       add_role(resource, "seller")
     end
   end

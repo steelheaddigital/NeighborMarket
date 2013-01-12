@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :orders, :dependent => :destroy
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
-  validates :username, :uniqueness => true
+  validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, 
             :first_name, 
             :last_name, 
@@ -188,6 +188,12 @@ class User < ActiveRecord::Base
     self.auto_create = true
     self.auto_created = true
     return self.save
+  end
+  
+  def add_role(role_type)
+    new_role = Role.new
+    new_role.name = role_type.downcase
+    self.roles.build(new_role.attributes)
   end
   
 end

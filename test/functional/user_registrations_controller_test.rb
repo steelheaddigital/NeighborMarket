@@ -8,13 +8,13 @@ class UserRegistrationsControllerTest < ActionController::TestCase
   end
   
   test "should get new for buyer" do    
-    get :new, :user => {:user_type => "buyer"}
+    get :new, :user => {:user_type => "buyer", :username => "new"}
     
     assert_response :success
   end
   
   test "should get new for seller" do    
-    get :new, :user => {:user_type => "seller"}
+    get :new, :user => {:user_type => "seller", :username => "new"}
     
     assert_response :success
   end

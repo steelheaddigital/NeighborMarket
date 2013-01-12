@@ -79,6 +79,14 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:items)
   end
   
+  test "should get inbound_delivery_log pdf" do
+    get :inbound_delivery_log, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns (:items)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
   test "should update inbound delivery log" do
     cart_item = cart_items(:one)
     post :save_inbound_delivery_log, :cart_items => {"0" => {:id => cart_item.id, :delivered => "true"}}
@@ -94,6 +102,14 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:orders)
   end
   
+  test "should get outbound_delivery_log pdf" do
+    get :outbound_delivery_log, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns (:orders)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
   test "should update outbound delivery log" do
     order = orders(:current)
     post :save_outbound_delivery_log, :orders => {"0" => {:id => order.id, :complete => "true"}}
@@ -107,6 +123,14 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:orders)
+  end
+  
+  test "should get buyer_invoices pdf" do
+    get :buyer_invoices, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns (:orders)
+    assert_equal response.content_type, "application.pdf"
   end
   
   test "should get inventory_item_approval" do

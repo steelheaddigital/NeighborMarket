@@ -51,6 +51,17 @@ class SellerControllerTest < ActionController::TestCase
     assert_not_nil assigns(:selected_previous_order_cycle)
   end
   
+  test "should get previous_pick_list pdf" do
+    order_cycle = order_cycles(:not_current)
+    post :previous_pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
   test "should get packing_list" do
     get :packing_list
     
@@ -72,6 +83,19 @@ class SellerControllerTest < ActionController::TestCase
     assert_not_nil assigns(:previous_order_cycles)
     assert_not_nil assigns(:selected_previous_order_cycle)
     assert_equal(false, assigns(:can_edit))
+  end
+  
+  test "should get previous_packing_list pdf" do
+    order_cycle = order_cycles(:not_current)
+    post :previous_packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    assert_not_nil assigns(:seller)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_equal(false, assigns(:can_edit))
+    assert_equal response.content_type, "application.pdf"
   end
   
   test "should remove items from order" do

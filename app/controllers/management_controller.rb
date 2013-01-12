@@ -113,7 +113,11 @@ class ManagementController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-      format.pdf { render :layout => false }
+      format.pdf do
+        output = InboundDeliveryLog.new.to_pdf(@items)
+        send_data output, :filename => "inbound_delivery_log.pdf",
+                          :type => "application.pdf"
+      end
     end
   end
   
@@ -143,7 +147,11 @@ class ManagementController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-      format.pdf { render :layout => false }
+      format.pdf do
+        output = OutboundDeliveryLog.new.to_pdf(@orders)
+        send_data output, :filename => "outbound_delivery_log.pdf",
+                          :type => "application.pdf"
+      end
     end
   end
   
@@ -173,7 +181,11 @@ class ManagementController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-      format.pdf { render :layout => false }
+      format.pdf do
+        output = BuyerInvoices.new.to_pdf(@orders)
+        send_data output, :filename => "buyer_invoices.pdf",
+                          :type => "application.pdf"
+      end
     end
   end
   

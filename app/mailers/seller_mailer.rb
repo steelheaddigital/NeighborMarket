@@ -18,7 +18,6 @@ class SellerMailer < BaseMailer
   end
   
   def order_cycle_end_mail(seller, order_cycle)
-
     @site_settings = SiteSetting.first
     @seller = seller
     @order_cycle = order_cycle
@@ -31,8 +30,8 @@ class SellerMailer < BaseMailer
                                 .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
                                 .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
                    
-    packing_list = render_to_string('seller/packing_list.pdf', :type => :prawn)
-    pick_list = render_to_string('seller/pick_list.pdf', :type => :prawn)
+    packing_list = PackingList.new.to_pdf(@orders, @seller)
+    pick_list = PickList.new.to_pdf(@inventory_items)
     attachments['packing_list.pdf'] = packing_list
     attachments['pick_list.pdf'] = pick_list
     mail( :to => seller.email, 

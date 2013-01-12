@@ -69,7 +69,11 @@ class SellerController < ApplicationController
     respond_to do |format|
       format.html{render :pick_list}
       format.js { render :pick_list, :layout => false }
-      format.pdf { render :pick_list, :layout => false }
+      format.pdf do
+        output = PickList.new.to_pdf(@inventory_items)
+        send_data output, :filename => "pick_list.pdf",
+                          :type => "application.pdf"
+      end
     end
   end
   
@@ -100,7 +104,11 @@ class SellerController < ApplicationController
     respond_to do |format|
       format.html{ render :packing_list}
       format.js { render :packing_list, :layout => false }
-      format.pdf { render :packing_list, :layout => false }
+      format.pdf do
+        output = PackingList.new.to_pdf(@orders, @seller)
+        send_data output, :filename => "packing_list.pdf",
+                          :type => "application.pdf"
+      end
     end
   end
   
