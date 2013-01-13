@@ -99,4 +99,8 @@ module ApplicationHelper
     "active" if params[:action] == page_name
   end
   
+  def last_search_path
+    session[:last_search_path]
+  end
+  
 end

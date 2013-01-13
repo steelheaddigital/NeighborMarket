@@ -96,6 +96,7 @@ class InventoryItemsController < ApplicationController
                                     .sort!{|a,b| b.created_at <=> a.created_at}
                                     .paginate(:page => params[:page], :per_page => 5)
 
+    session[:last_search_path] = request.fullpath
     respond_to do |format|
       format.html
     end
@@ -106,7 +107,8 @@ class InventoryItemsController < ApplicationController
                                     .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
                                     .paginate(:page => params[:page], :per_page => 5)
-                                    
+                          
+    session[:last_search_path] = request.fullpath          
     respond_to do |format|
       format.html { render :search }
     end
@@ -117,6 +119,7 @@ class InventoryItemsController < ApplicationController
                                     .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
                                     .order("created_at DESC").paginate(:page => params[:page], :per_page => 5)
     
+    session[:last_search_path] = request.fullpath
     respond_to do |format|
       format.html { render :search }
     end

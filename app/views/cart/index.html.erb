@@ -5,8 +5,9 @@
     <%= f.error_messages %>
     <%= render :partial => "form", :locals => {:f => f} %>
     <div class="row-fluid">
-      <div class="span1">
-        <%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %>
+      <div class="span12">
+		<span><%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %></span>
+		<span><%= link_to "Continue Shopping", last_search_path, :class => 'btn' %></span>
       </div>
     </div>
     <% end %>
