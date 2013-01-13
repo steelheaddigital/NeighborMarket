@@ -42,4 +42,6 @@ gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
 gem 'whenever', :require => false
 gem 'acts_as_indexed'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
