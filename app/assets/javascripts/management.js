@@ -161,15 +161,15 @@ function Management(){
     var self = this;
 
 	this.SubmitHistoricalOrdersForm = function(form){
-		$("#ManagementLoading").show();
+		$("#Loading").show();
         form.ajaxSubmit({
            dataType: "html",
            success: function(content){
 			 $("#HistoricalOrdersReportContent").html(content);
-             $("#ManagementLoading").hide();
+             $("#Loading").hide();
            },
            error: function(request){
-            $("#ManagementLoading").hide();
+            $("#Loading").hide();
 			$("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
            }
         });
@@ -206,11 +206,11 @@ function Management(){
              self.CloseManagementDialog();
 			 $('#ManagementContent').html(data);
              utils.ShowAlert("Categories successfully updated!")
-             $("#ManagementLoading").hide();
+             $("#Loading").hide();
            },
            error: function(request){
             $("#Modal").html(request.responseText).modal('show');
-			$("#ManagementLoading").hide();
+			$("#Loading").hide();
            }
         });
     }

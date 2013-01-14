@@ -1,26 +1,16 @@
 <%content_for :MainContent do %>
-<div class ="container-fluid">
-  <div class ="subnav">
-    <ul id="SellerTab" class="nav nav-pills">
+<div class ="row-fluid">
+  <div class ="span3">
+    <ul id="SellerTab" class="nav nav-list bs-docs-sidenav">
       <li class=<%= nav_item_is_active('index') || nav_item_is_active('previous_index') %>><%= link_to "Current Inventory", seller_index_path %></a></li>
       <li class=<%= nav_item_is_active('pick_list') || nav_item_is_active('previous_pick_list')%>><%= link_to "Pick List", pick_list_seller_index_path %></li>
       <li class=<%= nav_item_is_active('packing_list') || nav_item_is_active('previous_packing_list') %>><%= link_to "Packing List", packing_list_seller_index_path %></li>
       <li></li>
     </ul>
   </div>
-  <div class="container-fluid" style="margin-top: 15px;">
-    <div class="row-fluid">
-      <div id="SellerLoadingImage" class="loading">
-        <div class="span6"></div>
-        <div>
-          <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="SellerContent" class="container-fluid">
+  <div id="SellerContent" class="span9">
     <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
   </div>
-  </div>
+</div>
 <%  end %>
 <%= render :template => 'layouts/application' %>

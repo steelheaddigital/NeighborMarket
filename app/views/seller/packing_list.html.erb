@@ -10,7 +10,7 @@
     <%= button_to "Printable Packing List (PDF)", previous_packing_list_seller_index_path(:format => 'pdf', :selected_previous_order_cycle => { :id =>  @selected_previous_order_cycle}), :class => 'btn' %>
   </div>
   <%@orders.each do |order|%>
-  <div class="well row-fluid">
+  <div class="well-fluid row-fluid">
     <%= form_for order, :url => seller_update_order_path(order), :html => { :id => "SellerUpdateOrderForm" } do |f| %>
       <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.first_name + " " + order.user.last_name %></p>
       <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>

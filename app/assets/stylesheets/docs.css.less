@@ -76,14 +76,12 @@ body {
 .subnav {
   width: 100%;
   height: 36px;
-  background-color: #eeeeee; /* Old browsers */
   background-repeat: repeat-x; /* Repeat the gradient */
   background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
   background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
   background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
   background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
   background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
   border: 1px solid #e5e5e5;
   -webkit-border-radius: 4px;
@@ -291,4 +289,158 @@ body {
   .subnav-fixed .nav {
     width: 1168px; /* 2px less to account for left/right borders being removed when in fixed mode */
   }
+}
+
+/* Side Nav */
+.bs-docs-sidenav {
+    background-color: #015b4e;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    width: 228px;
+}
+.bs-docs-sidenav > li > a,
+.bs-docs-sidenav .secondLevelLabel
+ {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color-ltr-source: physical;
+    border-left-color-rtl-source: physical;
+    border-left-color-value: #E5E5E5;
+    border-left-style-ltr-source: physical;
+    border-left-style-rtl-source: physical;
+    border-left-style-value: solid;
+    border-left-width-ltr-source: physical;
+    border-left-width-rtl-source: physical;
+    border-left-width-value: 1px;
+    border-right-color-ltr-source: physical;
+    border-right-color-rtl-source: physical;
+    border-right-color-value: #E5E5E5;
+    border-right-style-ltr-source: physical;
+    border-right-style-rtl-source: physical;
+    border-right-style-value: solid;
+    border-right-width-ltr-source: physical;
+    border-right-width-rtl-source: physical;
+    border-right-width-value: 1px;
+    border-top-color: #015b4e;
+    border-top-style: solid;
+    border-top-width: 1px;
+    display: block;
+    margin-bottom: -1px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 8px;
+	font-size: 1.3em;
+	font-weight: bold;
+}
+.bs-docs-sidenav > li:first-child > a {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.bs-docs-sidenav > li:last-child > a {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.bs-docs-sidenav > .active > a {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-bottom-color: -moz-use-text-color;
+    border-bottom-style: none;
+    border-bottom-width: 0;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color-ltr-source: physical;
+    border-left-color-rtl-source: physical;
+    border-left-color-value: -moz-use-text-color;
+    border-left-style-ltr-source: physical;
+    border-left-style-rtl-source: physical;
+    border-left-style-value: none;
+    border-left-width-ltr-source: physical;
+    border-left-width-rtl-source: physical;
+    border-left-width-value: 0;
+    border-right-color-ltr-source: physical;
+    border-right-color-rtl-source: physical;
+    border-right-color-value: -moz-use-text-color;
+    border-right-style-ltr-source: physical;
+    border-right-style-rtl-source: physical;
+    border-right-style-value: none;
+    border-right-width-ltr-source: physical;
+    border-right-width-rtl-source: physical;
+    border-right-width-value: 0;
+    border-top-color: -moz-use-text-color;
+    border-top-style: none;
+    border-top-width: 0;
+    box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0, 0, 0, 0.1) inset;
+    padding-bottom: 9px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 9px;
+    position: relative;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+.bs-docs-sidenav > li > a:hover {
+    background-color: #F5F5F5;
+}
+
+.bs-docs-sidenav.affix {
+    top: 40px;
+}
+.bs-docs-sidenav.affix-bottom {
+    bottom: 270px;
+    position: absolute;
+    top: auto;
+}
+.bs-docs-container {
+    max-width: 970px;
+}
+.bs-docs-sidenav {
+    width: 100%;
+}
+.bs-docs-sidenav > li > a {
+}
+
+.secondLevelLabel {
+ 	color: #ebd90b;
+	text-decoration: none;
+}
+
+.secondLevel{
+	font-weight: bold;
+	font-size: 1.2em;
+	margin-left: 45px;
+}
+
+.secondLevel > li > a{
+	padding:3px;
 }

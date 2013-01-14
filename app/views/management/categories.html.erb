@@ -1,35 +1,31 @@
-<div class="row-fluid">
-  <div class="span8">
-    <div>
-      <div>
-        <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn", :method => "get"} %>
-      </div>
-        <%@categories.each do |category|%>
-        <div class="accordion-group">
-          <div class="accordion-heading">
-              <span class="category-cell"><%=category.name%></span>
-              <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
-              <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :confirm => "WARNING! This will delete the category and any seller inventory items in the category. Are you sure?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
-              <span class="category-cell"><a href="#" class ="btn" style="padding-right:10px; padding-left:10px;" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></span>
-          </div>
-              <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse in">
-                  <div style="margin-top: 10px;">
-                    <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn", :method => "get"} %>
-                  </div>
-                  <div class="well" style ="padding-bottom: 10px;">
-                    <%category.second_level_categories.each do |second_level_category|%>
-                      <div> 
-                        <span class="category-cell"><%= second_level_category.name%></span>
-                        <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "editSecondLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
-                        <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "deleteSecondLevelCategoryButton"}, :confirm => "WARNING! This will delete the category and any seller inventory items in the category. Are you sure?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
-                      </div>
-                    <%end%>
-                  </div>
-              </div>
-        </div>
-        <%end%>
-    </div>
+<div>
+  <div>
+    <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn", :method => "get"} %>
   </div>
+    <%@categories.each do |category|%>
+    <div class="accordion-group">
+      <div class="accordion-heading">
+          <span class="category-cell"><%=category.name%></span>
+          <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+          <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :confirm => "WARNING! This will delete the category and any seller inventory items in the category. Are you sure?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
+          <span class="category-cell"><a href="#" class ="btn" style="padding-right:10px; padding-left:10px;" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></span>
+      </div>
+          <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse in">
+              <div style="margin-top: 10px;">
+                <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn", :method => "get"} %>
+              </div>
+              <div class="well" style ="padding-bottom: 10px; margin-right: 15px;">
+                <%category.second_level_categories.each do |second_level_category|%>
+                  <div> 
+                    <span class="category-cell"><%= second_level_category.name%></span>
+                    <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "editSecondLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+                    <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "deleteSecondLevelCategoryButton"}, :confirm => "WARNING! This will delete the category and any seller inventory items in the category. Are you sure?", :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
+                  </div>
+                <%end%>
+              </div>
+          </div>
+    </div>
+    <%end%>
 </div>
 <script type="text/javascript">
   $(".collapse").collapse();

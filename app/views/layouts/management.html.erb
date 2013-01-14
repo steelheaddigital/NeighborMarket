@@ -1,59 +1,44 @@
 <%content_for :MainContent do %>
-<div class="container-fluid">
-  <div class="subnav">
-    <ul class="nav nav-pills">
-      <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
-      <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
-	  <li class=<%= nav_item_is_active('categories') %>><%= link_to "Manage Categories", categories_management_index_path %></li>
-      <li class="dropdown">
-      	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Manage Users
-          <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li class=<%= nav_item_is_active('user_search') %>><%= link_to "User Search", user_search_management_index_path %></li>
-            <li class=<%= nav_item_is_active('add_users') %>><%= link_to "Add Users", add_users_management_index_path %></li>
-            <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
-          </ul>
-      </li>
-	  <li class="dropdown" id="ManageInventoryMenu">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Manage Inventories
-          <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
-			<li class=<%= nav_item_is_active('inventory_management') %>><%= link_to "Edit Inventory", inventory_management_index_path %></li>
-          </ul>
-      </li>
-      <li class="dropdown" id="MainCategoriesMenu">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-          Reports
-          <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li class=<%= nav_item_is_active('inbound_delivery_log') %>><%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path %></li>
-            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
-            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
-			<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
-          </ul>
-      </li>
-      <li></li>
-    </ul>
+<div>
+  <div class="row-fluid">
+	<div class="span3">
+	    <ul class="nav nav-list bs-docs-sidenav">
+	      <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
+	      <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
+		  <li class=<%= nav_item_is_active('categories') %>><%= link_to "Manage Categories", categories_management_index_path %></li>
+	      <li>
+	      	  <span class="secondLevelLabel">Manage Users</span>
+	          <ul class="secondLevel">
+	            <li class=<%= nav_item_is_active('user_search') %>><%= link_to "User Search", user_search_management_index_path %></li>
+	            <li class=<%= nav_item_is_active('add_users') %>><%= link_to "Add Users", add_users_management_index_path %></li>
+	            <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
+	          </ul>
+	      </li>
+		  <li id="ManageInventoryMenu">
+	          <span class="secondLevelLabel">Manage Inventories</span>
+	          <ul class="secondLevel">
+	            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
+				<li class=<%= nav_item_is_active('inventory') %>><%= link_to "Edit Inventory", inventory_management_index_path %></li>
+	          </ul>
+	      </li>
+	      <li id="MainCategoriesMenu">
+	          <span class="secondLevelLabel">Reports</span>
+	          <ul class="secondLevel">
+	            <li class=<%= nav_item_is_active('inbound_delivery_log') %>><%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path %></li>
+	            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
+	            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
+				<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
+	          </ul>
+	      </li>
+	      <li></li>
+	    </ul>
+	</div>
+  <div class="span9">
+	<div id="ManagementContent">
+	  <%= content_for?(:MainManagementContent) ? yield(:MainManagementContent) : yield %>
+	</div>
   </div>
-  <div class="container-fluid" style="margin-top: 15px;">
-    <div class="row-fluid">
-      <div id="ManagementLoading" class="loading">
-        <div class="span6"></div>
-        <div>
-          <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="ManagementContent" class="container-fluid">
-    <%= content_for?(:MainManagementContent) ? yield(:MainManagementContent) : yield %>
-  </div>
+</div>
 <div id="Modal" class="modal hide fade">
 </div>
 </div>

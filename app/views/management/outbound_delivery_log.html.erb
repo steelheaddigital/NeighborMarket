@@ -4,7 +4,7 @@
       <%= link_to "Printable Delivery Log (PDF)", outbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
     </div>
     <%@orders.each_with_index do |order, index|%>
-    <div class="well row-fluid">
+    <div class="well-fluid row-fluid">
       <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
       <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.first_name + " " + order.user.last_name %></p>
       <p><p><span style ="font-weight: bold">Order Complete: </span><%= check_box_tag "orders[" + index.to_s + "][complete]", "true", order.complete %></p>
