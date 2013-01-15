@@ -98,15 +98,13 @@
     <div class="alert alert-block orderCycleAlert">
       <%= order_cycle_message %>
     </div>
-  <div id="Loading" class="row-fluid loading">
-    <div class="span6"></div>
-    <div>
-      <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
-    </div>
-  </div>
   <div id="MainContent">
- 	<div style="margin-bottom: 5px;">
-  	</div>
+    <div style="margin-bottom: 5px;">
+		<div id ="FlashMessages" class="alert alert-info">
+			<%= flash[:notice] %>
+	    	<%= flash[:alert] %>
+		</div>
+	</div>
   	<%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
   </div>
   <div id="InventoryModal" class="modal hide fade">

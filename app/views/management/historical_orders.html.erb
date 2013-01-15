@@ -13,5 +13,11 @@
 		<%= submit_tag "Export to CSV", :class => "btn" %>
 	</div>
 <% end %>
+<div id="HistoricalOrdersLoading" style="display:none; margin-top: 30px;">
+  <div class="span6"></div>
+  <div>
+    <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
+  </div>
+</div>
 <div id="HistoricalOrdersReportContent">
 </div>

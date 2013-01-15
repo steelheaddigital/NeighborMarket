@@ -1,5 +1,6 @@
 class ManagementController < ApplicationController
   require 'csv'
+  require 'will_paginate/array'
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
   load_and_authorize_resource :class => InventoryItem
@@ -203,6 +204,7 @@ class ManagementController < ApplicationController
   def inventory
     @inventory_items = InventoryItem.joins(:order_cycle)
                                     .where("quantity_available > 0 AND is_deleted = false AND order_cycles.status = 'current'")
+                                    .paginate(:page => params[:page], :per_page => 15)
     
     respond_to do |format|
       format.html
