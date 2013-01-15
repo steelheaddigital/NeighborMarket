@@ -88,7 +88,7 @@ module ApplicationHelper
   end
   
   def format_short_date(datetime)
-    "#{datetime.strftime("%m/%d/%Y")}"
+    "#{datetime.strftime("%m/%d/%Y")}" if !datetime.nil?
   end
   
   def site_name

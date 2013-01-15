@@ -50,6 +50,7 @@ NeighborMarket::Application.routes.draw do
       get 'historical_orders'
       post 'historical_orders_report'
       get 'add_users'
+      get 'new_users_report'
     end
   end
   

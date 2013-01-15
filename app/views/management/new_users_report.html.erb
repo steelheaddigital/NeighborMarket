@@ -1,0 +1,26 @@
+<h4>New users in the last 30 days</h4>
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+        <th>Name</th>
+        <th>Create Date</th>
+		<th>Roles</th>
+		<th>Confirmed?</th>
+		<th>Confirmation Date</th>
+		<th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= "#{user.last_name}, #{user.first_name}" %></td>
+		<td><%= format_short_date(user.created_at) %></td>
+		<td><%= user.roles.map(&:id).join(",") %>
+		<td><%= user.confirmed? %>
+		<td><%= format_short_date(user.confirmed_at) %>
+        <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "user", :id => user.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+

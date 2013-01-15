@@ -253,6 +253,13 @@ class ManagementController < ApplicationController
     end       
   end
 
+  def new_users_report
+    @users = User.where('created_at >= ?', Time.now.to_date - 30.days)
+    
+    respond_to do |format|
+      format.html
+    end
+  end
 
   private
   
