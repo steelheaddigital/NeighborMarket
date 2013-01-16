@@ -8,7 +8,7 @@ class SellerController < ApplicationController
                                       .maximum(:end_date)
     order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
     order_cycle_id = order_cycle ? order_cycle.id : 0
-    @last_inventory = get_last_inventory(order_cycle_id).paginate(:page => params[:page], :per_page => 10)
+    @last_inventory = get_last_inventory(order_cycle_id)
     @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
@@ -23,7 +23,7 @@ class SellerController < ApplicationController
   def previous_index
     order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
     order_cycle_id = order_cycle ? order_cycle.id : 0
-    @last_inventory = get_last_inventory(order_cycle_id).paginate(:page => params[:page], :per_page => 10)
+    @last_inventory = get_last_inventory(order_cycle_id)
     @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
