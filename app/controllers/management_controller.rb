@@ -260,6 +260,15 @@ class ManagementController < ApplicationController
       format.html
     end
   end
+  
+  def updated_user_profile_report
+    @users = User.where('updated_at >= ?', Time.now.to_date - 30.days)
+                 .order(:updated_at)
+    
+    respond_to do |format|
+      format.html
+    end
+  end
 
   private
   

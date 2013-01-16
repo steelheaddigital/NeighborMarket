@@ -12,13 +12,15 @@
 	            <li class=<%= nav_item_is_active('user_search') %>><%= link_to "User Search", user_search_management_index_path %></li>
 	            <li class=<%= nav_item_is_active('add_users') %>><%= link_to "Add Users", add_users_management_index_path %></li>
 	            <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
+				<li class=<%= nav_item_is_active('new_users_report') %>><%= link_to "Recent New Users", new_users_report_management_index_path %></li>
+				<li class=<%= nav_item_is_active('updated_user_profile_report') %>><%= link_to "Recent User Profile Updates", updated_user_profile_report_management_index_path %></li>
 	          </ul>
 	      </li>
 		  <li id="ManageInventoryMenu">
 	          <span class="secondLevelLabel">Manage Inventories</span>
 	          <ul class="secondLevel">
 	            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
-				<li class=<%= nav_item_is_active('inventory') %>><%= link_to "Edit Inventory", inventory_management_index_path %></li>
+				<li class=<%= nav_item_is_active('inventory') %>><%= link_to "Current Inventory", inventory_management_index_path %></li>
 	          </ul>
 	      </li>
 	      <li id="MainCategoriesMenu">
@@ -28,7 +30,6 @@
 	            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
 	            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
 				<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
-				<li class=<%= nav_item_is_active('new_users_report') %>><%= link_to "New Users", new_users_report_management_index_path %></li>
 	          </ul>
 	      </li>
 	      <li></li>
