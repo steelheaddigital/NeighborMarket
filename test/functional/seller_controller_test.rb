@@ -35,7 +35,7 @@ class SellerControllerTest < ActionController::TestCase
   
   test "should get previous_index" do
     order_cycle = order_cycles(:complete)
-    post :previous_index, :selected_previous_order_cycle => {:id => order_cycle.id}
+    get :index, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
     assert_not_nil assigns(:last_inventory)
@@ -56,7 +56,7 @@ class SellerControllerTest < ActionController::TestCase
   
   test "should get previous_pick_list" do
     order_cycle = order_cycles(:not_current)
-    post :previous_pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}
+    get :pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
     assert_not_nil assigns(:inventory_items)
@@ -66,7 +66,7 @@ class SellerControllerTest < ActionController::TestCase
   
   test "should get previous_pick_list pdf" do
     order_cycle = order_cycles(:not_current)
-    post :previous_pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    get :pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
     
     assert_response :success
     assert_not_nil assigns(:inventory_items)
@@ -88,7 +88,7 @@ class SellerControllerTest < ActionController::TestCase
   
   test "should get previous_packing_list" do
     order_cycle = order_cycles(:not_current)
-    post :previous_packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}
+    get :packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
     assert_not_nil assigns(:orders)
@@ -100,7 +100,7 @@ class SellerControllerTest < ActionController::TestCase
   
   test "should get previous_packing_list pdf" do
     order_cycle = order_cycles(:not_current)
-    post :previous_packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    get :packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
     
     assert_response :success
     assert_not_nil assigns(:orders)
@@ -147,9 +147,6 @@ class SellerControllerTest < ActionController::TestCase
     sign_out @user
     
     get :index
-    assert_redirected_to new_user_session_url
-    
-    post :previous_index
     assert_redirected_to new_user_session_url
     
     get :pick_list

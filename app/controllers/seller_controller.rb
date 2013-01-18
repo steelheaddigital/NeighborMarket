@@ -4,33 +4,25 @@ class SellerController < ApplicationController
   require 'will_paginate/array'
   
   def index
-    last_order_cycle_date = OrderCycle.where(:status => "complete")
-                                      .maximum(:end_date)
-    order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+      @show_past_inventory_container = "in"
+    else
+      last_order_cycle_date = OrderCycle.where(:status => "complete")
+                                        .maximum(:end_date)
+      order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
+      @show_past_inventory_container = ""
+    end
+    
     order_cycle_id = order_cycle ? order_cycle.id : 0
     @last_inventory = get_last_inventory(order_cycle_id)
     @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
-    @show_past_inventory_container = ""
     
     respond_to do |format|
       format.html
       format.js { render :layout => false }
-    end
-  end
-  
-  def previous_index
-    order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
-    order_cycle_id = order_cycle ? order_cycle.id : 0
-    @last_inventory = get_last_inventory(order_cycle_id)
-    @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
-    @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
-    @show_past_inventory_container = "in"
-    
-    respond_to do |format|
-      format.html {render :index }
     end
   end
   
@@ -47,25 +39,18 @@ class SellerController < ApplicationController
   end
   
   def pick_list
-    order_cycle = OrderCycle.latest_cycle
-    order_cycle_id = order_cycle ? order_cycle.id : 0
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle_id = params[:selected_previous_order_cycle][:id]
+    else
+      order_cycle = OrderCycle.latest_cycle
+      order_cycle_id = order_cycle ? order_cycle.id : 0
+    end
     @inventory_items = get_pick_list_inventory_items(order_cycle_id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
     
     respond_to do |format|
       format.html
-    end
-  end
-  
-  def previous_pick_list
-    order_cycle_id = params[:selected_previous_order_cycle][:id]
-    @inventory_items = get_pick_list_inventory_items(order_cycle_id)
-    @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
-    
-    respond_to do |format|
-      format.html{render :pick_list}
       format.pdf do
         output = PickList.new.to_pdf(@inventory_items)
         send_data output, :filename => "pick_list.pdf",
@@ -75,21 +60,11 @@ class SellerController < ApplicationController
   end
   
   def packing_list
-    order_cycle = OrderCycle.latest_cycle
-    order_cycle_id = order_cycle ? order_cycle.id : 0
-    @seller = current_user
-    @orders = get_packing_list_orders(order_cycle_id)
-    @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.last
-    @can_edit = order_cycle.status == "current"
-    
-    respond_to do |format|
-      format.html
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
     end
-  end
-  
-  def previous_packing_list
-    order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
     order_cycle_id = order_cycle ? order_cycle.id : 0
     @seller = current_user
     @orders = get_packing_list_orders(order_cycle_id)
@@ -98,7 +73,7 @@ class SellerController < ApplicationController
     @can_edit = order_cycle.status == "current"
     
     respond_to do |format|
-      format.html{ render :packing_list}
+      format.html
       format.pdf do
         output = PackingList.new.to_pdf(@orders, @seller)
         send_data output, :filename => "packing_list.pdf",

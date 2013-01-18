@@ -70,10 +70,7 @@ NeighborMarket::Application.routes.draw do
     collection do
       get 'pick_list'
       get 'packing_list'
-      post 'previous_packing_list'
-      post 'previous_pick_list'
       post 'add_past_inventory'
-      get 'previous_index'
     end
   end
   
