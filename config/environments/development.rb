@@ -1,7 +1,7 @@
 NeighborMarket::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  app_config = YAML.load_file("#{Rails.root}/development.yml")
+  app_config = YAML.load_file("#{Rails.root}/config/main_conf.yml")
   
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
@@ -18,17 +18,17 @@ NeighborMarket::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { :host => app_config["host"] }
-  ActionMailer::Base.default :from => app_config["default_from"]
+  config.action_mailer.default_url_options = { :host => app_config['development']["host"] }
+  ActionMailer::Base.default :from => app_config['development']["default_from"]
   config.action_mailer.smtp_settings = {
-    :address              => app_config['smtp_settings']['address'],
-    :port                 => app_config['smtp_settings']['port'],
-    :domain               => app_config['smtp_settings']['domain'],
-    :user_name            => app_config['smtp_settings']['user_name'],
-    :password             => app_config['smtp_settings']['password'],
-    :authentication       => app_config['smtp_settings']['authentication'],
-    :enable_starttls_auto => app_config['smtp_settings']['enable_starttls_auto'],
-    :openssl_verify_mode  => app_config['smtp_settings']['openssl_verify_mode']
+    :address              => app_config['development']['smtp_settings']['address'],
+    :port                 => app_config['development']['smtp_settings']['port'],
+    :domain               => app_config['development']['smtp_settings']['domain'],
+    :user_name            => app_config['development']['smtp_settings']['user_name'],
+    :password             => app_config['development']['smtp_settings']['password'],
+    :authentication       => app_config['development']['smtp_settings']['authentication'],
+    :enable_starttls_auto => app_config['development']['smtp_settings']['enable_starttls_auto'],
+    :openssl_verify_mode  => app_config['development']['smtp_settings']['openssl_verify_mode']
   }
   
   # Print deprecation notices to the Rails logger

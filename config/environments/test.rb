@@ -6,7 +6,7 @@ NeighborMarket::Application.configure do
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
   
-  app_config = YAML.load_file("#{Rails.root}/test.yml")
+  app_config = YAML.load_file("#{Rails.root}/config/main_conf.yml")
   
   config.cache_classes = true
 
@@ -31,8 +31,8 @@ NeighborMarket::Application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { :host => app_config["host"] }
-  ActionMailer::Base.default :from => app_config["default_from"]
+  config.action_mailer.default_url_options = { :host => app_config['test']["host"] }
+  ActionMailer::Base.default :from => app_config['test']["default_from"]
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,

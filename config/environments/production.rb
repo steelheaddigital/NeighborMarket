@@ -1,7 +1,7 @@
 NeighborMarket::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  app_config = YAML.load_file("#{Rails.root}/production.yml")
+  app_config = YAML.load_file("#{Rails.root}/config/main_conf.yml")
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -65,17 +65,17 @@ NeighborMarket::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { :host => app_config["host"] }
-  ActionMailer::Base.default :from => app_config["default_from"]
+  config.action_mailer.default_url_options = { :host => app_config['production']["host"] }
+  ActionMailer::Base.default :from => app_config['production']["default_from"]
   config.action_mailer.smtp_settings = {
-    :address              => app_config['smtp_settings']['address'],
-    :port                 => app_config['smtp_settings']['port'],
-    :domain               => app_config['smtp_settings']['domain'],
-    :user_name            => app_config['smtp_settings']['user_name'],
-    :password             => app_config['smtp_settings']['password'],
-    :authentication       => app_config['smtp_settings']['authentication'],
-    :enable_starttls_auto => app_config['smtp_settings']['enable_starttls_auto'],
-    :openssl_verify_mode  => app_config['smtp_settings']['openssl_verify_mode']
+    :address              => app_config['production']['smtp_settings']['address'],
+    :port                 => app_config['production']['smtp_settings']['port'],
+    :domain               => app_config['production']['smtp_settings']['domain'],
+    :user_name            => app_config['production']['smtp_settings']['user_name'],
+    :password             => app_config['production']['smtp_settings']['password'],
+    :authentication       => app_config['production']['smtp_settings']['authentication'],
+    :enable_starttls_auto => app_config['production']['smtp_settings']['enable_starttls_auto'],
+    :openssl_verify_mode  => app_config['production']['smtp_settings']['openssl_verify_mode']
   }
   
   Paperclip.options[:command_path] = "/usr/bin/"
