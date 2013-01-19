@@ -23,8 +23,10 @@
 #hit the site every five minutes to keep the passenger process alive
 env = environment ? environment : 'production'
 app_config = YAML::load(File.open("#{env}.yml"))
+app_config = YAML.load_file("#{Rails.root}/config/main_conf.yml")
+host = app_config["#{env}"]['host']
 every 5.minutes do
-  command "curl --silent http://#{app_config['host']}/home/refresh", :output => nil
+  command "curl --silent http://#{host}/home/refresh", :output => nil
 end
 
 #check that delayed job is running and restart it if not
