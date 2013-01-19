@@ -367,4 +367,40 @@ class UserTest < ActiveSupport::TestCase
     assert user.auto_create_updated_at.nil?
   end
 
+  test "soft_delete deletes appropriate fields" do
+    user = users(:approved_seller_user)
+    
+    user.soft_delete
+    
+    assert_not_nil user.deleted_at
+    assert_equal("", user.email)
+    assert_nil user.password
+    assert_nil user.reset_password_token
+    assert_nil user.reset_password_sent_at
+    assert_nil user.remember_created_at
+    assert_equal(0, user.sign_in_count)
+    assert_nil user.current_sign_in_at
+    assert_nil user.last_sign_in_at
+    assert_nil user.current_sign_in_ip
+    assert_nil user.last_sign_in_ip
+    assert_nil user.created_at
+    assert_nil user.updated_at
+    assert_nil user.first_name
+    assert_nil user.last_name
+    assert_nil user.initial
+    assert_nil user.phone
+    assert_nil user.address
+    assert_nil user.city
+    assert_nil user.state
+    assert_nil user.country
+    assert_nil user.zip
+    assert_nil user.aboutme
+    assert_nil user.delivery_instructions
+    assert_nil user.payment_instructions
+    assert !user.approved_seller
+    assert_equal("", user.listing_approval_style)
+    assert_equal([], user.roles)
+    
+  end
+
 end

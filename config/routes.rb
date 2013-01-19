@@ -52,6 +52,7 @@ NeighborMarket::Application.routes.draw do
       get 'add_users'
       get 'new_users_report'
       get 'updated_user_profile_report'
+      get 'deleted_users_report'
     end
   end
   

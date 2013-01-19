@@ -1,0 +1,18 @@
+<h4>Users deleted in the last 30 days</h4>
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+        <th>Username</th>
+        <th>Delete Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+		<td><%= format_short_date(user.deleted_at) %></td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+

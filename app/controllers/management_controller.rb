@@ -261,6 +261,14 @@ class ManagementController < ApplicationController
     end
   end
   
+  def deleted_users_report
+    @users = User.where('deleted_at >= ?', Time.now.to_date - 30.days)
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def updated_user_profile_report
     @users = User.where('updated_at >= ?', Time.now.to_date - 30.days)
                  .order(:updated_at)

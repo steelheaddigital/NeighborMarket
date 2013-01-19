@@ -256,6 +256,13 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:users)
   end
   
+  test "should get deleted users report" do
+    get :deleted_users_report
+    
+    assert_response :success
+    assert_not_nil assigns(:users)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -320,6 +327,9 @@ class ManagementControllerTest < ActionController::TestCase
      assert_redirected_to new_user_session_url
      
      get :updated_user_profile_report
+     assert_redirected_to new_user_session_url
+     
+     get :deleted_users_report
      assert_redirected_to new_user_session_url
   end
   

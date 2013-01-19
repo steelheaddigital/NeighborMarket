@@ -91,5 +91,15 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "destroy should soft delete user" do
+    user  = users(:buyer_user)
+    sign_in user
+    
+    delete :destroy
+    
+    assert !user.nil?
+    assert_redirected_to root_path
+    assert_equal 'Bye! Your account was successfully cancelled. We hope to see you again soon.', flash[:notice]
+  end
   
 end

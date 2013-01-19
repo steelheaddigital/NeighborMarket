@@ -196,4 +196,38 @@ class User < ActiveRecord::Base
     self.roles.build(new_role.attributes)
   end
   
+  def soft_delete
+    update_column(:deleted_at, Time.now)
+    update_column(:email, "")
+    update_column(:encrypted_password, "")
+    update_column(:reset_password_token, nil)
+    update_column(:reset_password_sent_at, nil)
+    update_column(:remember_created_at, nil)
+    update_column(:sign_in_count, 0)
+    update_column(:current_sign_in_at, nil)
+    update_column(:last_sign_in_at, nil)
+    update_column(:current_sign_in_ip, nil)
+    update_column(:last_sign_in_ip, nil)
+    update_column(:created_at, nil)
+    update_column(:updated_at, nil)
+    update_column(:first_name, nil)
+    update_column(:last_name, nil)
+    update_column(:initial, nil)
+    update_column(:phone, nil)
+    update_column(:address, nil)
+    update_column(:city, nil)
+    update_column(:state, nil)
+    update_column(:country, nil)
+    update_column(:zip, nil)
+    update_column(:aboutme, nil)
+    update_column(:delivery_instructions, nil)
+    update_column(:payment_instructions, nil)
+    update_column(:approved_seller, false)
+    update_column(:listing_approval_style, "")
+    self.photo.clear
+    self.roles.clear
+    
+    self.save
+  end
+  
 end
