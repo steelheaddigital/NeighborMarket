@@ -47,23 +47,13 @@ set :rvm_ruby_string, '1.9.3'
 require "whenever/capistrano"
 set :whenever_command, "bundle exec whenever"
 
-after "deploy", "deploy:migrate"
+after "deploy:update_code", "deploy:migrate"
 after "deploy", "deploy:refresh_site"
 
 namespace :deploy do
   desc "cause Passenger to initiate a restart"
   task :restart do
     run "touch #{current_path}/tmp/restart.txt" 
-  end
-  
-  desc "reload the database with seed data"
-  task :seed do
-    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
-  end
-  
-  desc "reset the database"
-  task :reset do
-    run "cd #{current_path}; bundle exec ps xa | grep postgres: | grep NeighborMarket_production | grep -v grep | awk '{print $1}' | sudo xargs kill | rake db:reset RAILS_ENV=#{rails_env}"
   end
   
   desc "loads sample data"
@@ -78,6 +68,32 @@ namespace :deploy do
     app_config = YAML::load(File.open("config/main_conf.yml"))
     host = app_config["#{env}"]['host']
     run "curl --silent http://#{host}/home/refresh"
+  end
+end
+
+namespace :inital_deploy do
+  deploy
+end
+
+namespace :db do
+  desc "set up the database including creation and seeding"
+  task :setup do
+    run "cd #{current_path}; bundle exec rake db:setup RAILS_ENV=#{rails_env}"
+  end
+  
+  desc "create the database with seed data"
+  task :create do
+    run "cd #{current_path}; bundle exec rake db:create RAILS_ENV=#{rails_env}"
+  end
+  
+  desc "reload the database with seed data"
+  task :seed do
+    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  end
+  
+  desc "reset the database"
+  task :reset do
+    run "cd #{current_path}; bundle exec rake db:reset RAILS_ENV=#{rails_env}"
   end
 end
 
