@@ -74,10 +74,10 @@ namespace :deploy do
   
   desc "refreshes site so that first load is not slow"
   task :refresh_site do
-    env = environment ? environment : 'production'
+    env = rails_env ? rails_env : 'production'
     app_config = YAML::load(File.open("config/main_conf.yml"))
     host = app_config["#{env}"]['host']
-    run "curl --silent http://#{app_config['host']}/home/refresh"
+    run "curl --silent http://#{host}/home/refresh"
   end
 end
 
