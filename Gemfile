@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-gem 'pg'
+gem 'mysql2'
 
 group :development, :test do
   gem 'debugger'

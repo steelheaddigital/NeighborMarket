@@ -17,16 +17,16 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.integer  "cart_id"
     t.integer  "inventory_item_id"
     t.integer  "quantity",          :default => 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "order_id"
     t.boolean  "delivered",         :default => false
   end
 
   create_table "carts", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.string   "price_unit"
     t.integer  "quantity_available"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                                :null => false
+    t.datetime "updated_at",                                                                :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
@@ -76,16 +76,16 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.datetime "seller_delivery_date"
     t.datetime "buyer_pickup_date"
   end
 
   create_table "orders", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.boolean  "complete",       :default => false
     t.integer  "order_cycle_id"
   end
@@ -103,15 +103,15 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.integer  "top_level_category_id"
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
@@ -129,23 +129,23 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
   create_table "top_level_categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",       :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",       :null => false
+    t.string   "email",                  :default => "",       :null => false
+    t.string   "encrypted_password",     :default => "",       :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.string   "username"
     t.string   "first_name"
     t.string   "last_name"
@@ -159,8 +159,8 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.text     "aboutme"
     t.text     "delivery_instructions"
     t.text     "payment_instructions"
-    t.boolean  "approved_seller",                       :default => false,    :null => false
-    t.string   "listing_approval_style",                :default => "manual", :null => false
+    t.boolean  "approved_seller",        :default => false,    :null => false
+    t.string   "listing_approval_style", :default => "manual", :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(:version => 20130118135034) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.boolean  "auto_created",                          :default => false
+    t.boolean  "auto_created",           :default => false
     t.datetime "auto_create_updated_at"
     t.datetime "deleted_at"
   end

@@ -27,6 +27,7 @@ manager_role = Role.new
 manager_role.name = "manager"
 user.roles << manager_role
 
+user.skip_confirmation!
 user.save(:validate => false)
 
 vegetable = TopLevelCategory.new(
@@ -43,7 +44,6 @@ vegetable.second_level_categories.build([
 )
 
 vegetable.save
-
 
 preserves = TopLevelCategory.new(
   :name => 'Preserves',

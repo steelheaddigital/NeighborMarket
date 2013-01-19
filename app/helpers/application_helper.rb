@@ -92,7 +92,7 @@ module ApplicationHelper
   end
   
   def site_name
-    SiteSetting.first.site_name
+    SiteSetting.first.site_name if SiteSetting.count > 0
   end
   
   def nav_item_is_active(page_name)

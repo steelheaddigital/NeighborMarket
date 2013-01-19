@@ -22,6 +22,7 @@ User.transaction do
   seller_role.name = "seller"
   seller.roles << seller_role
 
+  seller.skip_confirmation!
   seller.save(:validate => false)
 
 end
@@ -48,5 +49,6 @@ User.transaction do
   buyer_role.name = "buyer"
   buyer.roles << buyer_role
 
+  buyer.skip_confirmation!
   buyer.save(:validate => false)
 end
