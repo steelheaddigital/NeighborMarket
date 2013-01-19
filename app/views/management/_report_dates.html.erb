@@ -1,0 +1,11 @@
+<div>
+  <label>Start Date</label>
+  <%= select_date @start_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'start_date'}, {:class => "input-medium"} %>
+</div>
+<div>
+  <label>End Date</label>
+  <%= select_date @end_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'end_date'}, {:class => "input-medium"} %>
+</div>
+<div>
+	<%= submit_tag "Submit", :class => "btn" %>
+</div>

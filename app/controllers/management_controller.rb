@@ -238,7 +238,7 @@ class ManagementController < ApplicationController
       begin_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
       @orders = Order.joins(:order_cycle)
-                     .where(:order_cycles => {:end_date => begin_date..end_date})
+                     .where(:order_cycles => {:end_date => begin_date..end_date + 1.day})
     end
     if params[:commit] == "Export to CSV"
       report_name = "historical_orders_#{Date.today.strftime('%d%b%y')}.csv" 
@@ -254,7 +254,15 @@ class ManagementController < ApplicationController
   end
 
   def new_users_report
-    @users = User.where('created_at >= ?', Time.now.to_date - 30.days)
+    if params[:start_date].nil? || params[:end_date].nil?
+      @start_date = Time.now.to_date - 30.days
+      @end_date = Time.now.to_date
+    else
+      @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
+      @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
+    end
+    @users = User.where(:created_at => @start_date..@end_date + 1.day)
+                 .order(:created_at)
     
     respond_to do |format|
       format.html
@@ -262,7 +270,15 @@ class ManagementController < ApplicationController
   end
   
   def deleted_users_report
-    @users = User.where('deleted_at >= ?', Time.now.to_date - 30.days)
+    if params[:start_date].nil? || params[:end_date].nil?
+      @start_date = Time.now.to_date - 30.days
+      @end_date = Time.now.to_date
+    else
+      @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
+      @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
+    end
+    @users = User.where(:deleted_at => @start_date..@end_date + 1.day)
+                 .order(:deleted_at)
     
     respond_to do |format|
       format.html
@@ -270,7 +286,14 @@ class ManagementController < ApplicationController
   end
   
   def updated_user_profile_report
-    @users = User.where('updated_at >= ?', Time.now.to_date - 30.days)
+    if params[:start_date].nil? || params[:end_date].nil?
+      @start_date = Time.now.to_date - 30.days
+      @end_date = Time.now.to_date
+    else
+      @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
+      @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
+    end
+    @users = User.where(:updated_at => @start_date..@end_date + 1.day)
                  .order(:updated_at)
     
     respond_to do |format|

@@ -1,4 +1,7 @@
-<h4>User profiles updated in the last 30 days</h4>
+<%= form_tag updated_user_profile_report_management_index_path, :method => "GET", :class => "well" do %> 
+	<%=render 'report_dates'%>
+<% end %>
+<h4>Showing user profile updates between <%=format_short_date(@start_date)%> and <%=format_short_date(@end_date)%></h4>
 <table class="table table-bordered table-condensed">
   <thead>
     <tr>
