@@ -147,21 +147,21 @@ class SellerControllerTest < ActionController::TestCase
     sign_out @user
     
     get :index
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :pick_list
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :packing_list
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     cart_item = cart_items(:one)
     delete :remove_item_from_order, :cart_item_id => cart_item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     order = orders(:current)
     post :update_order, :order_id => order.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
   end
   

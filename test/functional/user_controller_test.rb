@@ -113,22 +113,22 @@ class UserControllerTest < ActionController::TestCase
     user = users(:buyer_user)
     
     get :show, :id => user.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :edit, :id => user.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :new
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :create, :user => {:email => "test@test.com"}
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :update, :id => user.id, :user => { :seller_approved => true }
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :import
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
   end
   
   test "anonymous user can access public_show" do

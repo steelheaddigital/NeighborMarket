@@ -2,7 +2,6 @@ class InventoryItemsController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource :only => [:search, :browse, :browse_all]
   require 'will_paginate/array'
-  include CrowdMap
   
   def new
     @item = InventoryItem.new
@@ -29,9 +28,6 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.save
-        if params["crowdmap"]
-          CrowdMap.post_item_to_crowdmap(@item)
-        end
         format.html { redirect_to seller_index_path, notice: 'Inventory item successfully created!'}
         format.js { redirect_to seller_index_path }
       else

@@ -45,7 +45,8 @@ class ApplicationController < ActionController::Base
   end
   
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to new_user_session_url
+    logger.error "CanCan Access Denied: #{exception.message}"
+    render file: "#{Rails.root}/public/404", formats: [:html], status: 404, layout: false
   end
   
 end

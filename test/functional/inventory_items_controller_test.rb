@@ -161,13 +161,13 @@ class InventoryItemsControllerTest < ActionController::TestCase
     item = inventory_items(:two)
     
     get :edit, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :update, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :destroy, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
   end
   
   
@@ -176,19 +176,19 @@ class InventoryItemsControllerTest < ActionController::TestCase
     item = inventory_items(:one)
     
     get :new
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :create
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :edit, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :update, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :destroy, :id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
   end
   
   test "anonymous user can access browse" do

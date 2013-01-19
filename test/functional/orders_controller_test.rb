@@ -102,19 +102,19 @@ class OrdersControllerTest < ActionController::TestCase
     order = orders(:current)
         
     post :create
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :edit, :id => order.id 
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :update, :id => order.id 
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :show, :id => order.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :destroy, :id => order.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
   end
 end

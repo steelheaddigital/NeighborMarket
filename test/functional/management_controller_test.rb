@@ -267,70 +267,70 @@ class ManagementControllerTest < ActionController::TestCase
     sign_out @user
     
     get :edit_site_settings
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :update_site_settings
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :approve_sellers
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :user_search
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :user_search_results
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :categories
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :inbound_delivery_log
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :save_inbound_delivery_log
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :outbound_delivery_log
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :save_outbound_delivery_log
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :buyer_invoices
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :inventory_item_approval
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :update_inventory_item_approval
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :inventory
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :edit_inventory
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :historical_orders
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :historical_orders_report
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     get :edit_order_cycle_settings
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :update_order_cycle_settings
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
      get :new_users_report
-     assert_redirected_to new_user_session_url
+     assert_response :not_found
      
      get :updated_user_profile_report
-     assert_redirected_to new_user_session_url
+     assert_response :not_found
      
      get :deleted_users_report
-     assert_redirected_to new_user_session_url
+     assert_response :not_found
   end
   
 end

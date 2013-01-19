@@ -96,22 +96,21 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
     sign_out @user
 
     get :new
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     category = top_level_categories(:preserves)
     get :edit, :id => category.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     category = top_level_categories(:preserves)
     post :update, :id => category.id
-    assert_redirected_to new_user_session_url
-    
+    assert_response :not_found
     
     category = top_level_categories(:preserves)
     post :destroy, :id => category.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :create
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
   end
 end

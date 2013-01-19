@@ -58,7 +58,7 @@ class CartItemsControllerTest < ActionController::TestCase
     
     item = cart_items(:one)
     get :destroy, :cart_item_id => item.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
   end
   

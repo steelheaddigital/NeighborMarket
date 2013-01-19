@@ -111,22 +111,22 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     sign_out @user
     
     get :new
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     category = second_level_categories(:carrot)
     get :edit, :id => category.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     category = second_level_categories(:carrot)
     post :update, :id => category.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     category = second_level_categories(:carrot)
     post :destroy, :id => category.id
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
     
     post :create
-    assert_redirected_to new_user_session_url
+    assert_response :not_found
   end
   
 end
