@@ -71,10 +71,6 @@ namespace :deploy do
   end
 end
 
-namespace :inital_deploy do
-  deploy
-end
-
 namespace :db do
   desc "set up the database including creation and seeding"
   task :setup do
