@@ -1,0 +1,14 @@
+<div class="row-fluid">
+	<div class="well">
+	<p>
+		Errors were encountered with the installation.  They are listed below.  Please correct the errors and try again by pressing the Install button.
+	</p>
+	<ul>
+		<% @errors.each do |error| %>
+			<li><%= error %></li>
+		<% end %>
+	</ul>
+	<div>
+		<%= button_to "Install", { :action => "install" }, {:form => {:id => "InstallButton"}, :class => "btn", :method => "get"} %>
+	</div>
+</div>

@@ -92,7 +92,11 @@ module ApplicationHelper
   end
   
   def site_name
-    SiteSetting.first.site_name if SiteSetting.count > 0
+    if SiteSetting.first
+      SiteSetting.first.site_name
+    else
+      "Neighbor Market"
+    end
   end
   
   def nav_item_is_active(page_name)

@@ -1,14 +1,9 @@
 require 'test_helper'
 
 class SiteSettingTest < ActiveSupport::TestCase
-
-   test "should not validate domain if invalid url" do
-     site_setting = SiteSetting.new(:domain => "http:test.com")
-     assert !site_setting.valid?, site_setting.errors.inspect
-   end
   
-   test "should not validate domain if invalid zip" do
-     site_setting = SiteSetting.new(:zip => 1234)
+   test "should not validate zip if invalid zip" do
+     site_setting = SiteSetting.new(:drop_point_zip => 1234)
      assert !site_setting.valid?, site_setting.errors.inspect
    end
    

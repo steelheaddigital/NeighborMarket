@@ -1,6 +1,7 @@
 production:
     host: 'demo.neighbormarket.org'
     default_from: 'admin@steelheaddigital.com'
+    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
         address: "mail.steelheaddigital.com"
         port: 25
@@ -13,6 +14,7 @@ production:
 development:
     host: 'neighbormarket'
     default_from: 'admin@steelheaddigital.com'
+    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
         address: "mail.steelheaddigital.com"
         port: 25

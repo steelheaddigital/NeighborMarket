@@ -1,0 +1,8 @@
+<div class="row-fluid">
+	<div class="well">
+	<p>Welcome to the Neighbor Market install page.  Before continuing, please ensure that you have updated the configuration files with the correct database and email information for your site.  This installer will create the necessary tables in the database for the site to run as well as create some initial data that it needs.  When you are ready to proceed press the Install button below.
+	</p>
+	<div>
+		<%= button_to "Install", { :action => "install" }, {:form => {:id => "InstallButton"}, :class => "btn"} %>
+	</div>
+</div>

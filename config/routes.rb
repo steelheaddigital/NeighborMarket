@@ -2,6 +2,7 @@ NeighborMarket::Application.routes.draw do
 
   get "home/index"
   get "home/refresh"
+  get "home/install"
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'user_registrations', :sessions => 'sessions', :confirmations => 'user_confirmations' }
   devise_scope :user do 
@@ -12,6 +13,12 @@ NeighborMarket::Application.routes.draw do
     match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup'
     match '/user/inactive_signup' => 'user_registrations#inactive_signup'
     match '/user/auto_create_confirmation' => 'user_confirmations#auto_create_confirmation', :via => "GET"
+  end
+  
+  resources :install, :only => ["index"] do
+    collection do
+      post 'install'
+    end
   end
   
   resources :user do 

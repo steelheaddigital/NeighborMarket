@@ -22,7 +22,7 @@ class UserConfirmationsController < Devise::ConfirmationsController
       sign_out(current_user)
     end
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
-    
+
     if resource.errors.empty?
       set_flash_message(:notice, :auto_create_confirmed) if is_navigational_format?
       sign_in(resource_name, resource)

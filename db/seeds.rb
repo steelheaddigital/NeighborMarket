@@ -6,29 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+env = Rails.env
+app_config = YAML::load(File.open("config/main_conf.yml"))
+manager_email = app_config["#{env}"]['manager_email']
+
 User.delete_all
 user = User.new(
-  :username => "manager",
-  :email => "gmpmanagertest@gmail.com",
-  :password   => 'Abc123!', 
-  :password_confirmation => 'Abc123!', 
-  :first_name => "Test",
-  :last_name => "Manager",
-  :initial => "M",
-  :phone => "503-123-4567",
-  :address => "123 Test St.",
-  :city => "Portland",
-  :state => "Oregon",
-  :country => "United States",
-  :zip => "97218"
+  :email => manager_email
 )
+user.add_role('manager')
+user.auto_create_user
 
-manager_role = Role.new
-manager_role.name = "manager"
-user.roles << manager_role
-
-user.skip_confirmation!
-user.save(:validate => false)
+site_settings = SiteSetting.new(:site_name => 'Neighbor Market')
+site_settings.save
 
 vegetable = TopLevelCategory.new(
   :name => 'Vegetable',

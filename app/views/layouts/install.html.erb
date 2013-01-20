@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Neighbor Market</title>
+  <%= stylesheet_link_tag "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <link href='http://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="#">Neighbor Market Install</a>
+        </div>
+      </div>
+  </div>
+  <div id="InstallContent" class="container-fluid">
+  	<%= content_for?(:InstallContent) ? yield(:InstallContent) : yield %>
+  </div>
+</body>
+</html>

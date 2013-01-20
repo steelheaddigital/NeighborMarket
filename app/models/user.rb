@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   
+  before_save { valid? || true }
+  after_save { errors.clear || true }
   before_update :set_auto_created_updated_at, :if => :auto_created_pending_update?
   
   # Include default devise modules. Others available are:
