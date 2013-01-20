@@ -52,6 +52,14 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:sellers)
   end
   
+  test "should get approve_sellers js" do
+    get :approve_sellers, :format => 'js'
+    
+    assert_response :success
+    assert_not_nil assigns (:sellers)
+    assert_equal response.content_type, Mime::JS
+  end
+  
   test "should get user_search" do
     get :user_search
     
