@@ -6,47 +6,138 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-env = Rails.env
-app_config = YAML::load(File.open("config/main_conf.yml"))
-manager_email = app_config["#{env}"]['manager_email']
-
 User.delete_all
 user = User.new(
-  :email => manager_email
+  :username => "manager",
+  :email => "gmpmanagertest@gmail.com",
+  :password   => 'Abc123!', 
+  :password_confirmation => 'Abc123!', 
+  :first_name => "Test",
+  :last_name => "Manager",
+  :initial => "M",
+  :phone => "503-123-4567",
+  :address => "123 Test St.",
+  :city => "Portland",
+  :state => "Oregon",
+  :country => "United States",
+  :zip => "97218"
 )
 user.add_role('manager')
-user.auto_create_user
 
-site_settings = SiteSetting.new(:site_name => 'Neighbor Market')
+user.skip_confirmation!
+user.save(:validate => false)
+
+site_settings = SiteSetting.new
 site_settings.save
 
-vegetable = TopLevelCategory.new(
-  :name => 'Vegetable',
-  :description => 'Vegetables'
+fresh_produce = TopLevelCategory.new(
+  :name => 'Fresh Produce',
+  :description => 'Fresh Produce'
 )
-
-vegetable.second_level_categories.build([
-    { :name => 'Carrot',
-      :description => 'Carrots'},
-    { :name => 'Cabbage',
-      :description => 'Cabbages'},
+fresh_produce.second_level_categories.build([
+    { :name => 'Roots',
+      :description => 'Roots'},
+    { :name => 'Greens',
+      :description => 'Greens'},
+    { :name => 'Fruits',
+      :description => 'Fruits'},
+    { :name => 'Squash',
+      :description => 'Squash'},
+    { :name => 'Herbs',
+      :description => 'Herbs'},
+    { :name => 'Other Fresh Produce',
+      :description => 'Other Fresh Produce'}
   ]
 )
+fresh_produce.save
 
-vegetable.save
-
-preserves = TopLevelCategory.new(
-  :name => 'Preserves',
-  :description => 'Canned Stuff'
+animal_products = TopLevelCategory.new(
+  :name => 'Animal Products',
+  :description => 'Animal Products'
 )
+animal_products.second_level_categories.build([
+    { :name => 'Meat',
+      :description => 'Meat'},
+    { :name => 'Dairy',
+      :description => 'Dairy'},
+    { :name => 'Eggs',
+      :description => 'Eggs'}
+  ]
+)
+animal_products.save
 
+prepared_food = TopLevelCategory.new(
+  :name => 'Prepared Food',
+  :description => 'Prepared Food'
+)
+prepared_food.second_level_categories.build([
+    { :name => 'Baked Goods',
+      :description => 'Baked Goods'},
+    { :name => 'Soup',
+      :description => 'Soup'},
+    { :name => 'Meals',
+      :description => 'Meals'},
+    { :name => 'Snacks',
+      :description => 'Snacks'},
+    { :name => 'Drinks',
+      :description => 'Drinks'},
+    { :name => 'Other Prepared Food',
+      :description => 'Other Prepared Food'}
+  ]
+)
+prepared_food.save
 
-preserves.second_level_categories.build([
-    { :name => 'Strawberry Jam',
-      :description => 'Good stuff made out of strawberries'},
+preserved_food = TopLevelCategory.new(
+  :name => 'Preserved Food',
+  :description => 'Preserved Food'
+)
+preserved_food.second_level_categories.build([
     { :name => 'Pickles',
-      :description => 'Homemade Pickes'},
+      :description => 'Pickles'},
+    { :name => 'Jams, Jellies, and Fruit Preserves',
+      :description => 'Jams, Jellies, and Preserves'},
+    { :name => 'Canned Fruits and Vegetables',
+      :description => 'Canned Fruits and Vegetables'},
+    { :name => 'Dried Food',
+      :description => 'Dried Food'},
+    { :name => 'Other Preserved Food',
+      :description => 'Other Preserved Food'}
   ]
 )
+preserved_food.save
 
-preserves.save
+household_goods = TopLevelCategory.new(
+  :name => 'Household Goods',
+  :description => 'Household Goods'
+)
+household_goods.second_level_categories.build([
+    { :name => 'Cleaning Supplies',
+      :description => 'Cleaning Supplies'},
+    { :name => 'Personal Care Products',
+      :description => 'Personal Care'},
+    { :name => 'Other Household Goods',
+      :description => 'Other Household Goods'}
+  ]
+)
+household_goods.save
+
+durable_goods = TopLevelCategory.new(
+  :name => 'Durable Crafts',
+  :description => 'Durable Crafts'
+)
+durable_goods.second_level_categories.build([
+    { :name => 'Ceramics',
+      :description => 'Ceramics'},
+    { :name => 'Wood Products',
+      :description => 'Wood Products'},
+    { :name => 'Textiles',
+      :description => 'Textiles'},
+    { :name => 'Metal Products',
+      :description => 'Metal Products'},
+    { :name => 'Fine Art',
+      :description => 'Fine Art'},
+    { :name => 'Other Durable Crafts',
+      :description => 'Other Durable Crafts'}   
+  ]
+)
+durable_goods.save

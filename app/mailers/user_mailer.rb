@@ -15,4 +15,10 @@ class UserMailer < BaseMailer
           :subject => "The manager at #{site_settings.site_name} has created a new account for you")
   end
   
+  def manager_install_mail(user)
+    @user = user
+    mail( :to => user.email, 
+          :subject => "Your Neighbor Market site has been installed. Confirm your Manager account now.")
+  end
+  
 end

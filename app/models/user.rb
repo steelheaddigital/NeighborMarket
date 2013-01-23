@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
-  attr_accessor :login, :become_seller, :become_buyer
+  attr_accessor :login, :become_seller, :become_buyer, :skip_confirmation_email
   attr_writer :auto_create
   
   def auto_create
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email
   
   def set_auto_created_updated_at
     if self.valid?
@@ -95,8 +95,8 @@ class User < ActiveRecord::Base
   
   #Override the devise callback method that sends emails on create to send a different one for auto signups
   def send_on_create_confirmation_instructions
-    send_devise_notification(:confirmation_instructions) if !auto_created
-    UserMailer.delay.auto_create_user_mail(self) if auto_created
+    send_devise_notification(:confirmation_instructions) if !auto_created && !skip_confirmation_email
+    UserMailer.delay.auto_create_user_mail(self) if auto_created && !skip_confirmation_email
   end
   
   def pending_reconfirmation?
