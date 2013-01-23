@@ -65,13 +65,18 @@
             <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <% @TopLevelCategories = get_top_level_categories %>
+              <% @TopLevelCategories = get_categories %>
               <% @TopLevelCategories.each do |category| %>
-                <li class="dropdown offset-right"><a href="#"><%= category.name %></a>
+                <li class="dropdown offset-right">
+				  <a href="#"><%= category[:name] %>
+				  	<span>(<%= category[:count] %>)</span>
+				  </a>
                   <ul class="dropdown-menu">
-                    <% category.second_level_categories.each do |category|%>
+                    <% category[:second_level].each do |second_level_category|%>
                     <li>
-                        <a href="<%= browse_inventory_items_path(:second_level_category_id => category.id) %>" class="secondLevelBrowseMenu"><%= category.name %> </a>
+                        <a href="<%= browse_inventory_items_path(:second_level_category_id => second_level_category[:id]) %>" class="secondLevelBrowseMenu"><%= second_level_category[:name] %> 
+						<span>(<%= second_level_category[:count] %>)</span>
+						</a>
                     </li>
                     <% end %>
                   </ul>
