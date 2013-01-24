@@ -23,7 +23,6 @@
     </div>
     <div class="span6 well">
       <p><h2>Contact</h2></p>
-      <p class="notice"><%= flash[:notice] %></p>
       <%= form_for @message, :url => contact_user_path, :method => "POST" do |f|%>
         <%= f.error_messages %>
         <div>
