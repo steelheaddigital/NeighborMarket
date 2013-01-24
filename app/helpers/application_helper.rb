@@ -27,29 +27,13 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def get_top_level_categories
-    
-    #Get the distinct second level categories
-    ids = SecondLevelCategory.select(:top_level_category_id).group(:id, :top_level_category_id)
-    
-    #Add the top level category id to a new array for each distinct second level category
-    id_array = Array.new
-    ids.each do |category|
-      id_array.push(category.top_level_category_id)
-    end
-    
-    #return only the top level categories that have associated second level categories
-    return TopLevelCategory.find(id_array)
-    
-  end
-  
   def get_categories
     categories = Array.new
     current_cycle = OrderCycle.current_cycle
     TopLevelCategory.find_each do |category|
       if current_cycle
         top_level_item_count = InventoryItem.joins(:order_cycle)
-                                            .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", category.id)
+                                            .where("top_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", category.id)
                                             .count
       else
         top_level_item_count = 0

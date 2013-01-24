@@ -27,4 +27,13 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "each", price_unit_label(item)
   end
   
+  test "get_categories returns correct categories and counts" do
+    categories = get_categories
+    
+    assert_equal "Vegetables", categories[0][:name]
+    assert_equal 2, categories[0][:count]
+    assert_equal 2, categories[0][:second_level][0][:count]
+    assert_equal "Carrots", categories[0][:second_level][0][:name]
+  end
+  
 end
