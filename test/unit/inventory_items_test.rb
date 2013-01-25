@@ -59,7 +59,7 @@ class InventoryItemsTest < ActiveSupport::TestCase
    end
    
    test "should allow destroy if item is not in cart" do
-     item = inventory_items(:two)
+     item = inventory_items(:not_in_cart)
       
      assert item.destroy
    end

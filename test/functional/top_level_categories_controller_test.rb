@@ -82,7 +82,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   end
 
   test "should destroy top level category" do
-    category = top_level_categories(:preserves)
+    category = top_level_categories(:meat)
     assert_difference 'TopLevelCategory.count', -1 do
       post :destroy, :id => category.id
     end
@@ -95,6 +95,30 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   test "anonymous user cannot access protected actions" do
     sign_out @user
 
+    get :new
+    assert_redirected_to new_user_session_path
+    
+    category = top_level_categories(:preserves)
+    get :edit, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    category = top_level_categories(:preserves)
+    post :update, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    category = top_level_categories(:preserves)
+    post :destroy, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    post :create
+    assert_redirected_to new_user_session_path
+  end
+  
+  test "signed in user that is not manager cannot access protected actions" do
+    sign_out @user
+    @user  = users(:approved_seller_user)
+    sign_in @user
+    
     get :new
     assert_response :not_found
     

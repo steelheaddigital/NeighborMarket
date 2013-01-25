@@ -1,4 +1,5 @@
 class SellerController < ApplicationController
+  before_filter :authenticate_user!
   load_and_authorize_resource :class => InventoryItem
   skip_authorize_resource :only => :contact
   require 'will_paginate/array'
@@ -84,6 +85,7 @@ class SellerController < ApplicationController
   
   def remove_item_from_order
     cart_item = CartItem.find(params[:cart_item_id])
+    authorize! :delete, cart_item
     @orders = get_packing_list_orders(cart_item.order.order_cycle.id)
     @seller = current_user
     
@@ -105,10 +107,12 @@ class SellerController < ApplicationController
     
     if params[:commit] == 'Delete All Items'
       order.cart_items.each do |item|
-        item.destroy if item.inventory_item.user == @seller
+        authorize! :delete, item
+        item.destroy
       end
       success = true
     else
+      authorize! :update, order
       success = order.update_attributes(params[:order])
     end
                    

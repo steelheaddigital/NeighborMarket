@@ -96,13 +96,8 @@ class OrdersControllerTest < ActionController::TestCase
     
   end
   
-  test "anonymous user cannot access protected actions" do
-    sign_out @user
-    
-    order = orders(:current)
-        
-    post :create
-    assert_response :not_found
+  test "user cannot access order other than their own" do
+    order = orders(:not_current)
     
     get :edit, :id => order.id 
     assert_response :not_found
@@ -115,6 +110,26 @@ class OrdersControllerTest < ActionController::TestCase
     
     post :destroy, :id => order.id
     assert_response :not_found
+  end
+  
+  test "anonymous user cannot access protected actions" do
+    sign_out @user
     
+    order = orders(:current)
+        
+    post :create
+    assert_redirected_to new_user_session_path
+    
+    get :edit, :id => order.id 
+    assert_redirected_to new_user_session_path
+    
+    post :update, :id => order.id 
+    assert_redirected_to new_user_session_path
+    
+    get :show, :id => order.id
+    assert_redirected_to new_user_session_path
+    
+    post :destroy, :id => order.id
+    assert_redirected_to new_user_session_path
   end
 end

@@ -143,26 +143,32 @@ class SellerControllerTest < ActionController::TestCase
     assert_redirected_to packing_list_seller_index_url
   end
   
+  test "seller cannot delete cart item that is not their inventory item" do
+    cart_item = cart_items(:three)
+    delete :remove_item_from_order, :cart_item_id => cart_item.id
+    
+    assert_response :not_found
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
     get :index
-    assert_response :not_found
+    assert_redirected_to new_user_session_path
     
     get :pick_list
-    assert_response :not_found
+    assert_redirected_to new_user_session_path
     
     get :packing_list
-    assert_response :not_found
+    assert_redirected_to new_user_session_path
     
     cart_item = cart_items(:one)
     delete :remove_item_from_order, :cart_item_id => cart_item.id
-    assert_response :not_found
+    assert_redirected_to new_user_session_path
     
     order = orders(:current)
     post :update_order, :order_id => order.id
-    assert_response :not_found
-    
+    assert_redirected_to new_user_session_path
   end
   
 end

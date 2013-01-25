@@ -3,7 +3,11 @@
 current:
   user: buyer_user
   order_cycle: current
-  
+
+current_two:
+  user: buyer_user_not_current
+  order_cycle: current
+
 not_current:
   user: buyer_user_not_current
   order_cycle: not_current

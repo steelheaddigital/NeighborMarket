@@ -9,3 +9,8 @@ jam:
   name: Jam
   top_level_category: preserves
   description: MyText
+
+sausage:
+  name: sausage
+  top_level_category: meat
+  description: MyText

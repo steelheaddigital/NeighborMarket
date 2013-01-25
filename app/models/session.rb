@@ -4,7 +4,7 @@ class Session < ActiveRecord::Base
   def marshal(data)   Base64.encode64(Marshal.dump(data)) if data end
   def unmarshal(data) Marshal.load(Base64.decode64(data)) if data end
   
-  attr_accessible :data, :session_id
+  attr_accessible :data
   
   def clean_carts
     data = self.unmarshal(self.data)

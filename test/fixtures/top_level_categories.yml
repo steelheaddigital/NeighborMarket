@@ -7,3 +7,7 @@ vegetable:
 preserves:
   name: Preserves
   description: MyText
+ 
+meat:
+  name: Meat
+  description: MyText

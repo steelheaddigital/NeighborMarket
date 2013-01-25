@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   require 'csv'
+  before_filter :authenticate_user!, :except => [:public_show, :contact]
   load_and_authorize_resource
   skip_authorize_resource :only => [:public_show, :contact]
   

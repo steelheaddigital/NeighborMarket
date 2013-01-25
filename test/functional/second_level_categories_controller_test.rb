@@ -95,7 +95,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
 
   test "should destroy second level category" do
     
-    category = second_level_categories(:jam)
+    category = second_level_categories(:sausage)
     
     assert_difference 'SecondLevelCategory.count', -1 do
       post :destroy, :id => category.id
@@ -109,6 +109,30 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
   
   test "anonymous user cannot access protected actions" do
     sign_out @user
+    
+    get :new
+    assert_redirected_to new_user_session_path
+    
+    category = second_level_categories(:carrot)
+    get :edit, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    category = second_level_categories(:carrot)
+    post :update, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    category = second_level_categories(:carrot)
+    post :destroy, :id => category.id
+    assert_redirected_to new_user_session_path
+    
+    post :create
+    assert_redirected_to new_user_session_path
+  end
+  
+  test "signed in user that is not manager cannot access protected actions" do
+    sign_out @user
+    @user  = users(:approved_seller_user)
+    sign_in @user
     
     get :new
     assert_response :not_found

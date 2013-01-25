@@ -3,6 +3,7 @@ class ManagementController < ApplicationController
   require 'will_paginate/array'
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
+  before_filter :authenticate_user!
   load_and_authorize_resource :class => InventoryItem
   load_and_authorize_resource :class => User
   load_and_authorize_resource :class => TopLevelCategory
