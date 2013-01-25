@@ -59,7 +59,7 @@ function Seller(){
 	
 	this.GetSecondLevelCategories = function(data){
 		var url = '/inventory_items/get_second_level_category'
-		
+		$("#inventory_item_second_level_category_id").attr("disabled", "disabled")
 		$.get(url ,data, function(data){
 	      $("#inventory_item_second_level_category_id").empty();
 	      $("#inventory_item_second_level_category_id").append("<option value=\"\" selected=\"selected\"></option>");
