@@ -2,6 +2,7 @@ class SellerController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource :class => InventoryItem
   skip_authorize_resource :only => :contact
+  cache_sweeper :inventory_item_sweeper, :only => [:add_past_inventory]
   require 'will_paginate/array'
   
   def index
