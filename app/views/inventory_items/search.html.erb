@@ -4,7 +4,6 @@
       <div id="AddToCartNotice" class="alert fixed-alert">
       </div>
       <%@inventory_items.each do |item|%>
-      <% seller_name = item.user.first_name + " " + item.user.last_name %>
         <div class="well-fluid row-fluid">
           <div class="span2">
             <%if item.photo?%>
@@ -20,7 +19,7 @@
             <p><%= item.description %></p>
             <p>Quantity Available:  <%= item.quantity_available %></p>
             <p>Price:  <%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></p>
-            <p>Sold By:  <%= link_to(seller_name, public_show_user_path(item.user.id)) %></p>
+            <p>Sold By:  <%= link_to(item.user.username, public_show_user_path(item.user.id)) %></p>
             <%= form_tag(cart_items_path(:inventory_item_id => item.id), :class => "addToCartButton") do %>
             <p>Quantity: <input id="quantity" name="quantity" class="input-small" value="1"></input><span> <%= item_quantity_label(item, 2) %></span></p>
               <p><%= submit_tag("Add To Cart", :class => "btn btn-primary") %></p>

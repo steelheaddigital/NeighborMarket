@@ -12,7 +12,7 @@
   <%@orders.each do |order|%>
   <div class="well-fluid row-fluid">
     <%= form_for order, :url => seller_update_order_path(order), :html => { :id => "SellerUpdateOrderForm" } do |f| %>
-      <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.first_name + " " + order.user.last_name %></p>
+      <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.username %></p>
       <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
       <table class="table" >
         <thead>  

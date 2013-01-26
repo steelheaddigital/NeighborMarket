@@ -22,7 +22,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("Carrot", sent.body.to_s)
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
-    assert_match("Approved Seller", sent.body.to_s) 
+    assert_match("approvedseller", sent.body.to_s) 
     assert_match("Test payment instructions", sent.body.to_s) 
   end
   
@@ -39,7 +39,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("Carrot", sent.body.to_s)
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
-    assert_match("Approved Seller", sent.body.to_s) 
+    assert_match("approvedseller", sent.body.to_s) 
     assert_match("Test payment instructions", sent.body.to_s) 
   end
   

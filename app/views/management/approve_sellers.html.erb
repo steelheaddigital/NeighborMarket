@@ -5,6 +5,7 @@
     <table class="table table-bordered table-condensed">
       <thead>
         <tr>
+			<th>Username</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Address</th>
@@ -14,6 +15,7 @@
       <tbody>
         <%@sellers.each do |seller|%>
           <tr>
+			<td><%=seller.username%></td>
             <td><%=seller.first_name%></td>
             <td><%=seller.last_name%></td>
             <td><%=seller.address%></td>

@@ -12,7 +12,7 @@ class PackingList < Prawn::Document
                 :styles => [:bold]
             },
             {
-                :text => order.user.first_name + " " + order.user.last_name
+                :text => order.user.username
             }
         ])
 

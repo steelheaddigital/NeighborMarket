@@ -14,7 +14,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= "#{user.last_name}, #{user.first_name}" %></td>
+        <td><%= "#{user.username}" %></td>
 		<td><%= format_short_date(user.updated_at) %></td>
 		<td><%= user.roles.map(&:name).join(",") %>
         <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "user", :id => user.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>

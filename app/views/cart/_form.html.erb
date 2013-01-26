@@ -25,7 +25,7 @@
           <td><%= item_name(item.object.inventory_item) %> </td>
           <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
           <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
-          <td><%= item.object.inventory_item.user.first_name + " " + item.object.inventory_item.user.last_name %>
+          <td><%= item.object.inventory_item.user.username %>
           <td><%= item.object.inventory_item.user.payment_instructions %>
         </tr>
       </tbody>

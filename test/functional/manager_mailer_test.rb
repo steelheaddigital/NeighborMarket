@@ -16,7 +16,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [manager.email], sent.to
     assert_equal "New seller has signed up at Test Neighbor Market - Pending Verification", sent.subject
-    assert_match("A new seller, Unapproved Seller,  has signed up at Test Neighbor Market", sent.body.to_s)
+    assert_match("A new seller, unapprovedseller,  has signed up at Test Neighbor Market", sent.body.to_s)
     assert_match("<a href=\"http://test.neighbormarket.org/users/sign_in\">log in</a>", sent.body.to_s) 
   end
   
@@ -31,11 +31,11 @@ class ManagerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [manager.email], sent.to
     assert_equal "An order at Test Neighbor Market has been modified by a seller", sent.subject
-    assert_match("One or more items in the below order for buyer Buyer Test was modified or removed by the seller Approved Seller.", sent.body.to_s)
+    assert_match("One or more items in the below order for buyer buyer was modified or removed by the seller approvedseller.", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
-    assert_match("Approved Seller", sent.body.to_s) 
+    assert_match("approvedseller", sent.body.to_s) 
     assert_match("Test payment instructions", sent.body.to_s)
   end
   

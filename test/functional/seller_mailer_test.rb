@@ -16,7 +16,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [seller.email], sent.to
     assert_equal "A purchase of your product has been made at Test Neighbor Market", sent.subject
-    assert_match("Buyer Test", sent.body.to_s) 
+    assert_match("buyer", sent.body.to_s) 
     assert_match("12345 Test St.", sent.body.to_s)
     assert_match("buyer@test.com", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)
@@ -35,7 +35,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [seller.email], sent.to
     assert_equal "An order containing your product has been updated at Test Neighbor Market", sent.subject
-    assert_match("Buyer Test", sent.body.to_s) 
+    assert_match("buyer", sent.body.to_s) 
     assert_match("12345 Test St.", sent.body.to_s)
     assert_match("buyer@test.com", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)

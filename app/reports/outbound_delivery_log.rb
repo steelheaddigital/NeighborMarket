@@ -23,7 +23,7 @@ class OutboundDeliveryLog < Prawn::Document
                 :styles => [:bold]
             },
             {
-                :text => order.user.first_name + " " + order.user.last_name
+                :text => order.user.username
             }
         ])
 
@@ -40,9 +40,9 @@ class OutboundDeliveryLog < Prawn::Document
         move_down(10)
 
         items = [["Seller Name", "Item ID", "Item Name", "Quantity"]]
-        order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.last_name, cart_item.inventory_item.user.first_name]}.map do |item|
+        order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.map do |item|
             items +=  [[
-                item.inventory_item.user.last_name + " " + item.inventory_item.user.first_name,
+                item.inventory_item.user.username,
                 item.inventory_item.id,
                 item_name(item.inventory_item),
                 "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"
