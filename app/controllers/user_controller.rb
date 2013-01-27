@@ -1,18 +1,10 @@
 class UserController < ApplicationController
   require 'csv'
-  before_filter :authenticate_user!, :except => [:public_show, :contact]
+  before_filter :authenticate_user!, :except => [:show, :contact]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:public_show, :contact]
-  
-  def show
-    @user = User.find(params[:id])
-    
-    respond_to do |format|
-      format.html
-    end
-  end
+  skip_authorize_resource :only => [:show, :contact]
 
-  def public_show
+  def show
     @user = User.find(params[:id])
     @message = UserContactMessage.new
     
@@ -50,6 +42,12 @@ class UserController < ApplicationController
   end
   
   def update
+    # required for settings form to submit when password is left blank
+    if params[:user][:password].blank?
+      params[:user].delete("password")
+      params[:user].delete("password_confirmation")
+    end
+    
     @user = User.find(params[:id])
     previous_seller_approved = @user.approved_seller?
     
@@ -66,7 +64,7 @@ class UserController < ApplicationController
         format.js { render :nothing => true }
       else
         format.html { render :edit }
-        format.js { render :edit, :layout => false }
+        format.js { render :edit, :layout => false, :status => 403 }
       end
     end
   
@@ -78,10 +76,10 @@ class UserController < ApplicationController
     
     if @message.valid?
       UserMailer.user_contact_mail(user, @message).deliver
-      redirect_to(public_show_user_path(user), :notice => "Your message was successfully sent.")
+      redirect_to(user_path(user), :notice => "Your message was successfully sent.")
     else
       flash.now.alert = "Please fill all fields."
-      render :public_show
+      render :show
     end
     
   end

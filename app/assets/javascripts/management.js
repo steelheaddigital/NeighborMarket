@@ -35,7 +35,6 @@ $(document).on("submit", "#EditUserForm", function(event){
     var url = $(this).attr("action");
     var mgmt = new Management();
 
-    mgmt.CloseManagementDialog();
     mgmt.SubmitEditUsersForm(url, data)
 
     return false;
@@ -226,6 +225,7 @@ function Management(){
              if(approveSellers.length > 0){
 				$('#ManagementContent').load('/management/approve_sellers');
              }
+			 self.CloseManagementDialog();
              utils.ShowAlert("User successfully updated!");
            },
            error: function(request){

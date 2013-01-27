@@ -4,68 +4,63 @@
 </div>
 <%= form_for(@user, :url => user_path, :html => { :id => 'EditUserForm' }) do |f| %>
 <div class="modal-body">
-    <p>
-      <b>User Name:</b>
-      <%= @user.username %>
-    </p>
+	<div class="modalErrorMessages"><%= f.error_messages %></div>
+    <div><%= f.label "User Name*" %>
+    <%= f.text_field :username %></div>
 
-    <p>
-      <b>Email: </b>
-      <%= @user.email %>
-    </p>
+    <div><%= f.label "Email*" %>
+    <%= f.email_field :email %></div>
+	   
+    <div>
+	      <%if @user.auto_created && @user.auto_create_updated_at.nil?%>
+	        <%= f.label "Password*" %>
+	      <% else %>
+	        <%= f.label "Password (leave blank if you don't want to change it)" %>
+	      <% end %>
+    	  <%= f.password_field :password %>
+	  </div>
 
-    <p>
-      <b>First Name:</b>
-      <%= @user.first_name %>
-    </p>
+    <div><%= f.label "Password Confirmation*" %>
+    <%= f.password_field :password_confirmation %></div>
 
-    <p>
-      <b>Last Name:</b>
-      <%= @user.last_name %>
-    </p>
+    <div><%= f.label "First name*" %>
+    <%= f.text_field :first_name %></div>
 
-    <p>
-      <b>Initial:</b>
-      <%= @user.initial %>
-    </p>
+    <div><%= f.label "Last name*" %>
+    <%= f.text_field :last_name %></div>
 
-    <p>
-      <b>Phone:</b>
-      <%= @user.phone %>
-    </p>
+    <div><%= f.label "Initial*" %>
+    <%= f.text_field :initial %></div>
 
-    <p>
-      <b>Address:</b>
-      <%= @user.address %>
-    </p>
+    <div>
+      <%if @user.seller?%>
+        <%= f.label "Phone*" %>
+      <% else %>
+        <%= f.label "Phone" %>
+      <% end %>
+      <%= f.telephone_field :phone %>
+    </div>
 
-    <p>
-      <b>City:</b>
-      <%= @user.city %>
-    </p>
+     <div><%= f.label "Address*" %>
+     <%= f.text_field :address %></div>
 
-    <p>
-      <b>State:</b>
-      <%= @user.state %>
-    </p>
+     <div><%= f.label "City*" %>
+     <%= f.text_field :city %></div>
 
-    <p>
-      <b>Country:</b>
-      <%= @user.country %>
-    </p>
+     <div><%= f.label "State*" %>
+     <%= f.state_select :state %></div>
 
-    <p>
-      <b>Zip:</b>
-      <%= @user.zip %>
-    </p>
+     <div><%= f.label "Country*" %>
+     <%= f.country_select(:country, "US") %></div>
 
-    <p>
-      <b>About Me:</b>
-      <%= @user.aboutme %>
-    </p>
+     <div><%= f.label "Zip*" %>
+     <%= f.text_field :zip %></div>
+
+     <div><%= f.label "About Me" %>
+     <%= f.text_area :aboutme, :rows => 5  %></div>
 
     <% @user.roles.each do |role| %>
-      <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :user => @user } %>
+      <%= render :partial => "user_registrations/#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
     <% end %>
       
     <% if @user.seller? %>

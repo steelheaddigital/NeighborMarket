@@ -1,68 +1,44 @@
 <div class="container-fluid">
   <div class="row-fluid">
-    <p>
-      <b>User Name:</b>
-      <%= @user.username %>
-    </p>
+    <div class="span6 well">
+      <%if @user.photo?%>
+        <p>
+          <%= image_tag @user.photo.url(:medium) %>
+        </p>
+      <%end%>
+      <p>
+        <b>Name:</b>
+        <%= @user.username %>
+      </p>
+      <p>
+        <b>About Me:</b>
+        <%= @user.aboutme %>
+      </p>
+    </div>
+    <div class="span6 well">
+      <p><h2>Contact</h2></p>
+      <%= form_for @message, :url => contact_user_path, :method => "POST" do |f|%>
+        <%= f.error_messages %>
+        <div>
+          <%= f.label "Your Email" %>
+          <%= f.text_field :email, {:class => 'input-xlarge'} %>
+        </div>
 
-    <p>
-      <b>Email: </b>
-      <%= @user.email %>
-    </p>
+        <div>
+          <%= f.label "Subject" %>
+          <%= f.text_field :subject, {:class => 'input-xlarge'} %>
+        </div>
 
-    <p>
-      <b>First Name:</b>
-      <%= @user.first_name %>
-    </p>
+        <div>
+          <%= f.label "Message" %>
+          <%= f.text_area :body, {:class => 'input-xlarge', :rows => 10 }%>
+        </div>
 
-    <p>
-      <b>Last Name:</b>
-      <%= @user.last_name %>
-    </p>
-
-    <p>
-      <b>Initial:</b>
-      <%= @user.initial %>
-    </p>
-
-    <p>
-      <b>Phone:</b>
-      <%= @user.phone %>
-    </p>
-
-    <p>
-      <b>Address:</b>
-      <%= @user.address %>
-    </p>
-
-    <p>
-      <b>City:</b>
-      <%= @user.city %>
-    </p>
-
-    <p>
-      <b>State:</b>
-      <%= @user.state %>
-    </p>
-
-    <p>
-      <b>Country:</b>
-      <%= @user.country %>
-    </p>
-
-    <p>
-      <b>Zip:</b>
-      <%= @user.zip %>
-    </p>
-
-    <p>
-      <b>About Me:</b>
-      <%= @user.aboutme %>
-    </p>
-
-    <% @user.roles.each do |role| %>
-      <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :user => @user } %>
-    <% end %>
+        <div>
+          <%= f.submit "Send", {:class => 'btn'} %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
 

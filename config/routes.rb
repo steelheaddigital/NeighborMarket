@@ -25,7 +25,6 @@ NeighborMarket::Application.routes.draw do
     member do
       post "approve_seller"
       post "contact"
-      get "public_show"
     end
     collection do
       post "import"

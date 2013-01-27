@@ -32,15 +32,6 @@ class UserControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:user)
   end
-  
-  test "should get public_show" do
-    user = users(:buyer_user)
-    
-    get :public_show, :id => user.id
-    
-    assert_response :success
-    assert_not_nil assigns(:user)
-  end
 
   test "edit should get edit" do
     user = users(:buyer_user)
@@ -85,7 +76,7 @@ class UserControllerTest < ActionController::TestCase
     
     post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
     
-    assert_redirected_to public_show_user_url(user)
+    assert_redirected_to user_url(user)
     assert_not_nil assigns(:message)
     
   end
@@ -112,9 +103,6 @@ class UserControllerTest < ActionController::TestCase
     sign_out @user
     user = users(:buyer_user)
     
-    get :show, :id => user.id
-    assert_redirected_to new_user_session_path
-    
     get :edit, :id => user.id
     assert_redirected_to new_user_session_path
     
@@ -137,9 +125,6 @@ class UserControllerTest < ActionController::TestCase
     sign_in @user
     user = users(:buyer_user)
     
-    get :show, :id => user.id
-    assert_response :not_found
-    
     get :edit, :id => user.id
     assert_response :not_found
     
@@ -156,11 +141,11 @@ class UserControllerTest < ActionController::TestCase
     assert_response :not_found
   end
   
-  test "anonymous user can access public_show" do
+  test "anonymous user can access show" do
     sign_out @user
     user = users(:buyer_user)
     
-    get :public_show, :id => user.id
+    get :show, :id => user.id
 
     assert_response :success
     assert_not_nil assigns(:user)
@@ -172,7 +157,7 @@ class UserControllerTest < ActionController::TestCase
     
     post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
     
-    assert_redirected_to public_show_user_url(user)
+    assert_redirected_to user_url(user)
     assert_not_nil assigns(:message)
   end
   

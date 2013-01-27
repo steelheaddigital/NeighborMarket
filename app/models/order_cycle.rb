@@ -15,8 +15,7 @@ class OrderCycle < ActiveRecord::Base
   
   before_validation :get_current_cycle_settings
   before_save :set_current_order_cycle_to_complete
-  after_create :expire_cache
-  after_update :expire_cache
+  after_save :expire_cache
   
   def get_current_cycle_settings
     @current_cycle_settings = OrderCycleSetting.first
