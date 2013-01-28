@@ -15,7 +15,6 @@ class OrderCycle < ActiveRecord::Base
   
   before_validation :get_current_cycle_settings
   before_save :set_current_order_cycle_to_complete
-  after_save :expire_cache
   
   def get_current_cycle_settings
     @current_cycle_settings = OrderCycleSetting.first
@@ -26,10 +25,6 @@ class OrderCycle < ActiveRecord::Base
     if current_order_cycle
       current_order_cycle.update_column(:status, "complete")
     end
-  end
-  
-  def expire_cache
-    ActionController::Base.new.expire_fragment('order_cycle_message')
   end
   
   def self.build_initial_cycle(order_cycle_params, order_cycle_settings)

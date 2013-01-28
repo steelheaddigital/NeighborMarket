@@ -59,33 +59,31 @@
     <div class="subhead">
       <div class="subnav subnav-fixed" style="min-width:620px;">
         <ul class ="nav nav-pills">
-		  <% cache('browse_categories_dropdown') do %>
-	          <li class="dropdown" id="MainCategoriesMenu">
-	            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	            Browse Categories
-	            <b class="caret"></b>
-	            </a>
-	            <ul class="dropdown-menu">
-	              <% @TopLevelCategories = get_categories %>
-	              <% @TopLevelCategories.each do |category| %>
-	                <li class="dropdown offset-right">
-					  <a href="#"><%= category[:name] %>
-					  	<span>(<%= category[:count] %>)</span>
-					  </a>
-	                  <ul class="dropdown-menu">
-	                    <% category[:second_level].each do |second_level_category|%>
-	                    <li>
-	                        <a href="<%= browse_inventory_items_path(:second_level_category_id => second_level_category[:id]) %>" class="secondLevelBrowseMenu"><%= second_level_category[:name] %> 
-							<span>(<%= second_level_category[:count] %>)</span>
-							</a>
-	                    </li>
-	                    <% end %>
-	                  </ul>
-	                </li>
-	              <%  end %>
-	            </ul>
-	          </li>
-		  <%end%>
+          <li class="dropdown" id="MainCategoriesMenu">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Browse Categories
+            <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <% @TopLevelCategories = get_categories %>
+              <% @TopLevelCategories.each do |category| %>
+                <li class="dropdown offset-right">
+				  <a href="#"><%= category[:name] %>
+				  	<span>(<%= category[:count] %>)</span>
+				  </a>
+                  <ul class="dropdown-menu">
+                    <% category[:second_level].each do |second_level_category|%>
+                    <li>
+                        <a href="<%= browse_inventory_items_path(:second_level_category_id => second_level_category[:id]) %>" class="secondLevelBrowseMenu"><%= second_level_category[:name] %> 
+						<span>(<%= second_level_category[:count] %>)</span>
+						</a>
+                    </li>
+                    <% end %>
+                  </ul>
+                </li>
+              <%  end %>
+            </ul>
+          </li>
           <li>
             <form id="MainSearchForm" class="form-inline" action="<%= search_inventory_items_url %>">
               <input name="keywords" type="text"></input>
@@ -103,9 +101,7 @@
       </div>
     </div>
     <div class="alert alert-block orderCycleAlert">
-		<% cache('order_cycle_message') do %>
-      		<%= order_cycle_message %>
-		<%end%>
+     	<%= order_cycle_message %>
     </div>
   <div id="MainContent">
     <div style="margin-bottom: 5px;">

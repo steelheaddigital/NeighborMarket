@@ -2,7 +2,6 @@ class InventoryItemsController < ApplicationController
   before_filter :authenticate_user!, :except => [:search, :browse, :browse_all]
   load_and_authorize_resource
   skip_authorize_resource :only => [:search, :browse, :browse_all]
-  cache_sweeper :inventory_item_sweeper, :only => [:create, :destroy]
   require 'will_paginate/array'
   
   def new
