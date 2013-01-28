@@ -1,31 +1,42 @@
-<div class ="row-fluid" style="margin-bottom: 15px;">
-  <%= link_to "Printable Invoices (PDF)", buyer_invoices_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
+<div class="container-flud">
+	<div class="row-fluid">
+		<%= form_tag buyer_invoices_management_index_path, :method => 'GET', :class => 'form-inline' do %>
+			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
+			<%= submit_tag 'Submit', :class => 'btn' %>
+			<span>Choose an order cycle end date to load a previous buyer invoices</span>
+		<% end %>
+	</div>
+	<div class ="row-fluid" style="margin-bottom: 15px;">
+	  <%= link_to "Printable Invoices (PDF)", buyer_invoices_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
+	</div>
+	<div class="row-fluid">
+		<%@orders.each_with_index do |order, index|%>
+		  <div class="well row-fluid">
+		    <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
+		    <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
+		    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
+		    <p><span style ="font-weight: bold">Delivery Instructions: </span> <%= order.user.delivery_instructions %></p>
+		      <table class="table" >
+		      <thead>  
+		        <tr>
+		          <th>Seller Name</th>
+		          <th>Item ID</th>
+		          <th>Item Name</th>
+		          <th>Quantity</th>
+		        </tr>
+		      </thead>
+		        <tbody>
+		          <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
+		          <tr>    
+		              <td><%= item.inventory_item.user.username %>
+		              <td><%= item.inventory_item.id %></td>
+		              <td><%= item_name(item.inventory_item) %></td>
+		              <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+		          </tr>
+		          <%end%>
+		        </tbody>
+		      </table>
+		  </div>
+		<%end%>
+	</div>
 </div>
-<%@orders.each_with_index do |order, index|%>
-  <div class="well row-fluid">
-    <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
-    <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
-    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
-    <p><span style ="font-weight: bold">Delivery Instructions: </span> <%= order.user.delivery_instructions %></p>
-      <table class="table" >
-      <thead>  
-        <tr>
-          <th>Seller Name</th>
-          <th>Item ID</th>
-          <th>Item Name</th>
-          <th>Quantity</th>
-        </tr>
-      </thead>
-        <tbody>
-          <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
-          <tr>    
-              <td><%= item.inventory_item.user.username %>
-              <td><%= item.inventory_item.id %></td>
-              <td><%= item_name(item.inventory_item) %></td>
-              <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
-          </tr>
-          <%end%>
-        </tbody>
-      </table>
-  </div>
-<%end%>

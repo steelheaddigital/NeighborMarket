@@ -1,37 +1,48 @@
-<%= form_tag save_outbound_delivery_log_management_index_path, :method => "POST", :id => 'OutboundDeliveryLogForm' do |f| %>
-    <div class ="row-fluid" style="margin-bottom: 15px;">
-      <%= submit_tag "Save", :class => 'btn btn-primary' %>
-      <%= link_to "Printable Delivery Log (PDF)", outbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
-    </div>
-    <%@orders.each_with_index do |order, index|%>
-    <div class="well-fluid row-fluid">
-      <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
-      <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
-      <p><p><span style ="font-weight: bold">Order Complete: </span><%= check_box_tag "orders[" + index.to_s + "][complete]", "true", order.complete %></p>
-      <%= hidden_field_tag "orders[" + index.to_s + "][id]", order.id %>
-        <table class="table" >
-        <thead>  
-          <tr>
-            <th>Seller Name</th>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-          <tbody>
-            <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
-            <tr>    
-                <td><%= item.inventory_item.user.username %>
-                <td><%= item.inventory_item.id %></td>
-                <td><%= item_name(item.inventory_item) %></td>
-                <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
-            </tr>
-            <%end%>
-          </tbody>
-        </table>
-    </div>
-    <%end%>
-    <div class="row-fluid">
-      <%= submit_tag "Save", :class => 'btn btn-primary' %>
-    </div>
-<%end%>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<%= form_tag outbound_delivery_log_management_index_path, :method => 'GET', :class => 'form-inline' do %>
+			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
+			<%= submit_tag 'Submit', :class => 'btn' %>
+			<span>Choose an order cycle end date to load a previous outbound delivery log</span>
+		<% end %>
+	</div>
+	<div class="row-flud">
+		<%= form_tag save_outbound_delivery_log_management_index_path, :method => "POST", :id => 'OutboundDeliveryLogForm' do |f| %>
+		    <div class ="row-fluid" style="margin-bottom: 15px;">
+		      <%= submit_tag "Save", :class => 'btn btn-primary' %>
+		      <%= link_to "Printable Delivery Log (PDF)", outbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
+		    </div>
+		    <%@orders.each_with_index do |order, index|%>
+		    <div class="well-fluid row-fluid">
+		      <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
+		      <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
+		      <p><p><span style ="font-weight: bold">Order Complete: </span><%= check_box_tag "orders[" + index.to_s + "][complete]", "true", order.complete %></p>
+		      <%= hidden_field_tag "orders[" + index.to_s + "][id]", order.id %>
+		        <table class="table" >
+		        <thead>  
+		          <tr>
+		            <th>Seller Name</th>
+		            <th>Item ID</th>
+		            <th>Item Name</th>
+		            <th>Quantity</th>
+		          </tr>
+		        </thead>
+		          <tbody>
+		            <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
+		            <tr>    
+		                <td><%= item.inventory_item.user.username %>
+		                <td><%= item.inventory_item.id %></td>
+		                <td><%= item_name(item.inventory_item) %></td>
+		                <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+		            </tr>
+		            <%end%>
+		          </tbody>
+		        </table>
+		    </div>
+		    <%end%>
+		    <div class="row-fluid">
+		      <%= submit_tag "Save", :class => 'btn btn-primary' %>
+		    </div>
+		<%end%>
+	</div>
+</div>

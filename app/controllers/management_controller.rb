@@ -102,9 +102,15 @@ class ManagementController < ApplicationController
   end
   
   def inbound_delivery_log
-    current_cycle_id = OrderCycle.current_cycle_id
-    @items = CartItem.joins(:order).where(:orders => {:order_cycle_id => current_cycle_id})
-
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
+    end
+    @items = CartItem.joins(:order).where(:orders => {:order_cycle_id => order_cycle.id})
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    
     respond_to do |format|
       format.html
       format.pdf do
@@ -116,10 +122,17 @@ class ManagementController < ApplicationController
   end
   
   def save_inbound_delivery_log
-    cart_items = params[:cart_items]
+    items = params[:cart_items]
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
+    end
+    previous_order_cycles = OrderCycle.last_ten_cycles
+    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id = order_cycle.id}
     
     #Loop through the cart_items array passed in and update the delivered attribute for each
-    cart_items.each do |item|
+    items.each do |item|
       cart_item = CartItem.find(item[1][:id])
       if(item[1][:delivered])
         cart_item.update_attribute(:delivered, true)
@@ -129,13 +142,19 @@ class ManagementController < ApplicationController
     end
     
     respond_to do |format|
-        format.html { redirect_to inbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
+        format.html { redirect_to inbound_delivery_log_management_index_path, :selected_previous_order_cycle => selected_previous_order_cycle, notice: 'Delivery Log Successfully Saved!'}
     end
   end
   
   def outbound_delivery_log
-    current_cycle_id = OrderCycle.current_cycle_id
-    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => current_cycle_id})
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
+    end
+    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -149,6 +168,13 @@ class ManagementController < ApplicationController
   
   def save_outbound_delivery_log
     orders = params[:orders]
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
+    end
+    previous_order_cycles = OrderCycle.last_ten_cycles
+    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id = order_cycle.id}
     
     #Loop through the orders array passed in and update the delivered attribute for each
     orders.each do |order|
@@ -161,13 +187,19 @@ class ManagementController < ApplicationController
     end
     
     respond_to do |format|
-        format.html { redirect_to outbound_delivery_log_management_index_path, notice: 'Delivery Log Successfully Saved!'}
+        format.html { redirect_to outbound_delivery_log_management_index_path, :selected_previous_order_cycle => selected_previous_order_cycle, notice: 'Delivery Log Successfully Saved!'}
     end
   end
   
   def buyer_invoices
-    current_cycle_id = OrderCycle.current_cycle_id
-    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => current_cycle_id})
+    if !params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    else
+      order_cycle = OrderCycle.latest_cycle
+    end
+    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
     
     respond_to do |format|
       format.html

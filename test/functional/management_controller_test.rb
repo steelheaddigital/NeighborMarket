@@ -107,7 +107,19 @@ class ManagementControllerTest < ActionController::TestCase
     get :inbound_delivery_log
     
     assert_response :success
-    assert_not_nil assigns (:items)
+    assert_not_nil assigns(:items)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+  end
+  
+  test "should get previous inbound_delivery_log" do
+    order_cycle = order_cycles(:complete)
+    get :inbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}
+    
+    assert_response :success
+    assert_not_nil assigns(:items)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
   end
   
   test "should get inbound_delivery_log pdf" do
@@ -115,6 +127,17 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:items)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
+  test "should get previous inbound_delivery_log pdf" do
+    order_cycle = order_cycles(:complete)
+    get :inbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns(:items)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
     assert_equal response.content_type, "application.pdf"
   end
   
@@ -130,7 +153,19 @@ class ManagementControllerTest < ActionController::TestCase
     get :outbound_delivery_log
     
     assert_response :success
-    assert_not_nil assigns (:orders)
+    assert_not_nil assigns(:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+  end
+  
+  test "should get previous outbound_delivery_log" do
+    order_cycle = order_cycles(:complete)
+    get :outbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
   end
   
   test "should get outbound_delivery_log pdf" do
@@ -138,6 +173,19 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
+  test "should get previous outbound_delivery_log pdf" do
+    order_cycle = order_cycles(:complete)
+    get :outbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns (:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
     assert_equal response.content_type, "application.pdf"
   end
   
@@ -154,6 +202,18 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
+  end
+  
+  test "should get previous buyer_invoices" do
+    order_cycle = order_cycles(:complete)
+    get :buyer_invoices, :selected_previous_order_cycle => {:id => order_cycle.id}
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
   end
   
   test "should get buyer_invoices pdf" do
@@ -161,6 +221,17 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:orders)
+    assert_equal response.content_type, "application.pdf"
+  end
+  
+  test "should get previous buyer_invoices pdf" do
+    order_cycle = order_cycles(:complete)
+    get :buyer_invoices, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    
+    assert_response :success
+    assert_not_nil assigns(:orders)
+    assert_not_nil assigns(:previous_order_cycles)
+    assert_not_nil assigns(:selected_previous_order_cycle)
     assert_equal response.content_type, "application.pdf"
   end
   
