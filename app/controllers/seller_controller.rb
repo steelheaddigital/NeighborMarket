@@ -147,7 +147,7 @@ class SellerController < ApplicationController
   def get_pick_list_inventory_items(order_cycle_id)
     user_id = current_user.id
     InventoryItem.joins(:cart_items => :order)
-                  .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', user_id, order_cycle_id)
+                  .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL', user_id, order_cycle_id)
                   .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
   end
   

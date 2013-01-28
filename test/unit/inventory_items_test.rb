@@ -100,6 +100,6 @@ class InventoryItemsTest < ActiveSupport::TestCase
       item = inventory_items(:one)
       sum = item.cart_item_quantity_sum
       
-      assert_equal 30, sum
+      assert_equal 20, sum
    end
 end
