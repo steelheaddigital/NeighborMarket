@@ -9,17 +9,14 @@ class SellerController < ApplicationController
       order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
       @show_past_inventory_container = "in"
     else
-      last_order_cycle_date = OrderCycle.where(:status => "complete")
-                                        .maximum(:end_date)
-      order_cycle = OrderCycle.where(:end_date => last_order_cycle_date).last()
+      order_cycle = OrderCycle.last_completed
       @show_past_inventory_container = ""
     end
     
-    order_cycle_id = order_cycle ? order_cycle.id : 0
-    @last_inventory = get_last_inventory(order_cycle_id)
+    @last_inventory = get_last_inventory(order_cycle.id)
     @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -41,14 +38,13 @@ class SellerController < ApplicationController
   
   def pick_list
     if !params[:selected_previous_order_cycle].nil?
-      order_cycle_id = params[:selected_previous_order_cycle][:id]
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
     else
       order_cycle = OrderCycle.latest_cycle
-      order_cycle_id = order_cycle ? order_cycle.id : 0
     end
-    @inventory_items = get_pick_list_inventory_items(order_cycle_id)
+    @inventory_items = get_pick_list_inventory_items(order_cycle.id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -66,11 +62,10 @@ class SellerController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    order_cycle_id = order_cycle ? order_cycle.id : 0
     @seller = current_user
-    @orders = get_packing_list_orders(order_cycle_id)
+    @orders = get_packing_list_orders(order_cycle.id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle_id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     @can_edit = order_cycle.status == "current"
     
     respond_to do |format|

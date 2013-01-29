@@ -55,7 +55,7 @@ class SellerControllerTest < ActionController::TestCase
   end
   
   test "should get previous_pick_list" do
-    order_cycle = order_cycles(:not_current)
+    order_cycle = order_cycles(:complete)
     get :pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
@@ -65,7 +65,7 @@ class SellerControllerTest < ActionController::TestCase
   end
   
   test "should get previous_pick_list pdf" do
-    order_cycle = order_cycles(:not_current)
+    order_cycle = order_cycles(:complete)
     get :pick_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
     
     assert_response :success
@@ -87,7 +87,7 @@ class SellerControllerTest < ActionController::TestCase
   end
   
   test "should get previous_packing_list" do
-    order_cycle = order_cycles(:not_current)
+    order_cycle = order_cycles(:complete)
     get :packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}
     
     assert_response :success
@@ -99,7 +99,7 @@ class SellerControllerTest < ActionController::TestCase
   end
   
   test "should get previous_packing_list pdf" do
-    order_cycle = order_cycles(:not_current)
+    order_cycle = order_cycles(:complete)
     get :packing_list, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
     
     assert_response :success

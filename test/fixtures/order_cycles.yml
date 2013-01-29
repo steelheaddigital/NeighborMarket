@@ -9,14 +9,14 @@ not_current:
 
 current:
   start_date: 2012-08-17 18:03:25
-  end_date: 2012-08-17 18:03:25
+  end_date: 2012-08-17 18:03:26
   status: current
   buyer_pickup_date: 2012-08-17 18:03:25
   seller_delivery_date: 2012-08-17 18:03:25
 
 complete:
  start_date: 2012-08-17 18:03:25
- end_date: 2012-08-17 18:03:25
+ end_date: 2012-08-17 18:03:27
  status: complete
  buyer_pickup_date: 2012-08-17 18:03:25
  seller_delivery_date: 2012-08-17 18:03:25

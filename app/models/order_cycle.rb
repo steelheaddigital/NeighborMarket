@@ -124,6 +124,17 @@ class OrderCycle < ActiveRecord::Base
     self.where("status != ?", "pending").last(10)
   end
   
+  def self.last_completed
+    last_order_cycle_date = self.where(:status => "complete")
+                                      .maximum(:end_date)
+    last_completed = self.where(:end_date => last_order_cycle_date).last()
+    if last_completed
+      last_completed
+    else
+      self.latest_cycle
+    end
+  end
+  
   def complete_pending_cycles
     pending_cycles = OrderCycle.where("status = ?", "pending")
     pending_cycles.each do |cycle|

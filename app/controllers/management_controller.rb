@@ -109,7 +109,7 @@ class ManagementController < ApplicationController
     end
     @items = CartItem.joins(:order).where(:orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -129,7 +129,7 @@ class ManagementController < ApplicationController
       order_cycle = OrderCycle.latest_cycle
     end
     previous_order_cycles = OrderCycle.last_ten_cycles
-    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id = order_cycle.id}
+    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     #Loop through the cart_items array passed in and update the delivered attribute for each
     items.each do |item|
@@ -154,7 +154,7 @@ class ManagementController < ApplicationController
     end
     @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -174,7 +174,7 @@ class ManagementController < ApplicationController
       order_cycle = OrderCycle.latest_cycle
     end
     previous_order_cycles = OrderCycle.last_ten_cycles
-    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id = order_cycle.id}
+    selected_previous_order_cycle = previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     #Loop through the orders array passed in and update the delivered attribute for each
     orders.each do |order|
@@ -199,7 +199,7 @@ class ManagementController < ApplicationController
     end
     @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id = order_cycle.id}
+    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
