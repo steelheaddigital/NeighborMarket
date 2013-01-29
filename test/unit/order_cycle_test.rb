@@ -69,4 +69,12 @@ class OrderCycleTest < ActiveSupport::TestCase
     assert_equal("current", order_cycle.status)
   end
   
+  test "last_completed returns last completed order cycle" do
+    order_cycle = order_cycles(:complete)
+    result = OrderCycle.last_completed
+    
+    assert_not_nil result
+    assert_equal(order_cycle, result)
+  end
+  
 end
