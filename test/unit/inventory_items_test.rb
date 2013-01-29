@@ -102,4 +102,31 @@ class InventoryItemsTest < ActiveSupport::TestCase
       
       assert_equal 20, sum
    end
+   
+   test "should add order_cycle_id when there is only a pending cycle" do
+     current_cycle = order_cycles(:current)
+     pending_cycle = order_cycles(:not_current)
+     top_level_category = top_level_categories(:vegetable)
+     second_level_category = second_level_categories(:carrot)
+     current_cycle.destroy
+     
+     inventory_item = InventoryItem.new(:top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test")
+     inventory_item.save
+     
+     assert_equal(pending_cycle.id, inventory_item.order_cycle_id)
+   end
+   
+   test "should add order_cycle_id when there is a current cycle" do
+     current_cycle = order_cycles(:current)
+     pending_cycle = order_cycles(:not_current)
+     top_level_category = top_level_categories(:vegetable)
+     second_level_category = second_level_categories(:carrot)
+     pending_cycle.destroy
+     
+     inventory_item = InventoryItem.new(:top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test")
+     inventory_item.save
+     
+     assert_equal(current_cycle.id, inventory_item.order_cycle_id)
+   end
+   
 end

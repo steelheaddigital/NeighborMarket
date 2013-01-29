@@ -23,7 +23,8 @@ class InventoryItem < ActiveRecord::Base
   before_create :add_order_cycle_id
   
   def add_order_cycle_id
-    self.order_cycle = OrderCycle.current_cycle if self.order_cycle_id.nil?
+    order_cycle = OrderCycle.where("status IN('current', 'pending')").last
+    self.order_cycle = order_cycle if self.order_cycle_id.nil?
   end
   
   def top_level_category_name
