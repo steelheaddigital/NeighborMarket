@@ -168,6 +168,26 @@ unconfirmed_seller_user:
  roles: seller_role
  confirmation_token: 1
  
+unconfirmed_approved_seller_user:
+ email: unconfirmed_approved_seller@test.com
+ username: unconfirmedapprovedseller
+ first_name: Seller
+ last_name: Test
+ initial: T
+ phone: 503-123-4567
+ address: 12345 Test St.
+ city: Portland
+ country: United States
+ state: Oregon
+ zip: 97218
+ aboutme: Test
+ delivery_instructions: 
+ payment_instructions: 
+ approved_seller: true                   
+ listing_approval_style: manual
+ roles: seller_role
+ confirmation_token: 2
+ 
 unconfirmed_buyer_user:
  email: unconfirmed_buyer@test.com
  username: unconfirmedbuyer
@@ -186,7 +206,7 @@ unconfirmed_buyer_user:
  approved_seller: false                   
  listing_approval_style: manual
  roles: buyer_role
- confirmation_token: 2
+ confirmation_token: 3
 
 auto_created_user:
  email: autocreateduser@test.com

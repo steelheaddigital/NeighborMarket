@@ -3,9 +3,9 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
    
    def setup
-     @user = User.new(:email => "test@example.com",
-                      :password => "Abc123!",
-                      :password_confirmation => "Abc123!",
+     @seller = User.new(:email => "test@example.com",
+                       :password => "Abc123!",
+                       :password_confirmation => "Abc123!",
                        :username => "Test",
                        :first_name => "Test",
                        :last_name => "Test",
@@ -21,116 +21,120 @@ class UserTest < ActiveSupport::TestCase
                        :payment_instructions => "Test",
                        :approved_seller => false,                   
                        :listing_approval_style => "manual")
+  
+     seller_role = Role.new
+     seller_role.name = "seller"
+     @seller.roles.build(seller_role.attributes)
+     @seller.payment_instructions = "Pay Me"
      
+     @buyer = User.new(:email => "buyer@example.com",
+                       :password => "Abc123!",
+                       :password_confirmation => "Abc123!",
+                       :username => "TestBuyer")
+  
+     buyer_role = Role.new
+     buyer_role.name = "buyer"
+     @buyer.roles.build(buyer_role.attributes)
+     @buyer.delivery_instructions = "Bring Me The Stuff"
    end
    
-   test "should validate valid user" do
-     assert @user.valid?
+   test "should validate valid seller" do
+     assert @seller.valid?
    end
    
-   test "should not save user without user name" do
-     @user.username = nil
+   test "should validate valid buyer" do
+     assert @buyer.valid?
+   end
+   
+   test "should not validate if password confirmation does not equal password" do
+     @seller.password_confirmation = 'blah'
     
-     assert !@user.valid?
+     assert !@seller.valid?
+     assert_equal("Password does not match confirmation", @seller.errors.full_messages.first)
    end
    
-   test "should not save user without first name" do
-     @user.first_name = nil
+   test "should not save seller without user name" do
+     @seller.username = nil
+    
+     assert !@seller.valid?
+   end
+   
+   test "should not save seller without first name" do
+     @seller.first_name = nil
 
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
-   test "should not save user without last name" do
-     @user.last_name = nil
+   test "should not save seller without last name" do
+     @seller.last_name = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
-   test "should not save user without Initial" do
-     @user.initial = nil
+   test "should save seller without Initial" do
+     @seller.initial = nil
      
-     assert !@user.valid?
+     assert @seller.valid?
    end
 
-   test "should not save user without Address" do
-     @user.address = nil
+   test "should not save seller without Address" do
+     @seller.address = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
 
-   test "should not save user without City" do
-     @user.city = nil
+   test "should not save seller without City" do
+     @seller.city = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
-   test "should not save user without Zip" do
-     @user.zip = nil
+   test "should not save seller without Zip" do
+     @seller.zip = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
   
-   test "should not save user without State" do
-     @user.state = nil
+   test "should not save seller without State" do
+     @seller.state = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
-   test "should not save user without Country" do
-     @user.country = nil
+   test "should not save seller without Country" do
+     @seller.country = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
   
-   test "should not save user with invalid zip" do
-     @user.zip = "Foo"
+   test "should not save seller with invalid zip" do
+     @seller.zip = "Foo"
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end  
-  
-   test "should not save Buyer without delivery instructions" do
-     new_role = Role.new
-     new_role.name = "buyer"
-     @user.roles.build(new_role.attributes)
-     @user.delivery_instructions = nil
-     
-     assert !@user.valid?
-   end
 
    test "should not save seller without payment instructions" do     
-     new_role = Role.new
-     new_role.name = "seller"
-     @user.roles.build(new_role.attributes)
-     @user.payment_instructions = nil
+     @seller.payment_instructions = nil
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end 
 
    test "should not save seller without phone number" do
-     @user.phone = nil
-     new_role = Role.new
-     new_role.name = "seller"
-     @user.roles.build(new_role.attributes)
+     @seller.phone = nil
 
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
    test "should not save seller with invalid phone number" do
-     @user.phone = "Foo"
-     new_role = Role.new
-     new_role.name = "seller"
-     @user.roles.build(new_role.attributes)
+     @seller.phone = "Foo"
      
-     assert !@user.valid?
+     assert !@seller.valid?
    end
    
    test "should save user other than seller without phone" do
-     @user.phone = nil
-     new_role = Role.new
-     new_role.name = "buyer"
-     @user.roles.build(new_role.attributes)
+     @buyer.phone = nil
      
-     assert @user.valid?
+     assert @buyer.valid?
    end
    
    test "should not save existing user without password and password confirmation if auto_created and not yet updated" do
@@ -170,42 +174,42 @@ class UserTest < ActiveSupport::TestCase
    end
    
    test "should not save new user without password and password confirmation" do
-    @user.password = nil
-    @user.password_confirmation = nil
+    @seller.password = nil
+    @seller.password_confirmation = nil
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should not save new user with password of invalid length" do
-    @user.password = '12345'
-    @user.password_confirmation = '12345'
+    @seller.password = '12345'
+    @seller.password_confirmation = '12345'
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should not save new user without password confirmation" do
-    @user.password = '123456'
-    @user.password_confirmation = ''
+    @seller.password = '123456'
+    @seller.password_confirmation = ''
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should not save new user without email" do
-    @user.email = ''
+    @seller.email = ''
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should not save new user without unique email" do
-    @user.email = "test@test.com"
+    @seller.email = "test@test.com"
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should not save new user with invalid email format" do
-    @user.email = "test.test.com"
+    @seller.email = "test.test.com"
    
-    assert !@user.valid?
+    assert !@seller.valid?
    end
    
    test "should save user without password and password confirmation if not a new user and not auto_created pending update" do
@@ -225,12 +229,9 @@ class UserTest < ActiveSupport::TestCase
    end
    
    test "should not save user other than seller with invalid phone" do
-     @user.phone = "Foo"
-     new_role = Role.new
-     new_role.name = "buyer"
-     @user.roles.build(new_role.attributes)
+     @buyer.phone = "Foo"
      
-     assert !@user.valid?
+     assert !@buyer.valid?
    end
    
   test "active_for_authentication? returns true if seller is approved" do

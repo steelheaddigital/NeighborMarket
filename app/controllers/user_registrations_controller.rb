@@ -3,24 +3,21 @@ class UserRegistrationsController < Devise::RegistrationsController
   prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update, :destroy]
   
   def new
+    authorize! :manage, :manager if params[:user][:user_type] == "manager"
     resource = build_resource({})
-    @user_type = params[:user][:user_type]
-    add_resource_role(resource, @user_type)
+    user_type = params[:user][:user_type]
+    add_resource_role(resource, user_type)
 
     respond_with resource
-    
-    authorize! :manage, :manager if params[:user][:user_type] == "manager"
-    
   end
   
   def create
+    authorize! :manage, :manager if params[:user][:user_type] == "manager"
     build_resource
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
     
-    valid = resource.valid?
-
-    if valid && resource.save    # customized code
+    if resource.save    # customized code
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_navigational_format?
         sign_in(resource_name, resource)

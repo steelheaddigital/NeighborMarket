@@ -2,11 +2,14 @@ class UserConfirmationsController < Devise::ConfirmationsController
   
   def show
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
-
     if resource.errors.empty?
       if resource.seller? && !resource.approved_seller?
         set_flash_message(:notice, :confirmed_but_not_approved)
         respond_with_navigational(resource){ redirect_to root_path }
+      elsif resource.buyer?
+        set_flash_message(:notice, :buyer_confirmed) if is_navigational_format?
+        sign_in(resource_name, resource)
+        respond_with_navigational(resource){ redirect_to edit_user_registration_path }
       else
         set_flash_message(:notice, :confirmed) if is_navigational_format?
         sign_in(resource_name, resource)

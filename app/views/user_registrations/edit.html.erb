@@ -1,15 +1,11 @@
 <div class="container">
   <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "well" }) do |f| %>
-  <h2>Edit Registration</h2>
-  <div class="row-fluid">
-    <div class="span12">
-      <%= devise_error_messages! %>
-    </div>
-  </div>
+  <h2>Edit Profile</h2>
+  <%= devise_error_messages! %>
   <div class="row-fluid">
     <div class="span3">
 	
-      <div><%= f.label "User Name*" %>
+      <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
       <%= f.text_field :username %></div>
 
       <div><%= f.label "Email*" %>
@@ -27,39 +23,33 @@
       <div><%= f.label "Password Confirmation*" %>
       <%= f.password_field :password_confirmation %></div>
 
-      <div><%= f.label "First name*" %>
+      <div><%= if resource.seller? then f.label "First name*" else f.label "First name" end %>
       <%= f.text_field :first_name %></div>
 
-      <div><%= f.label "Last name*" %>
+      <div><%= if resource.seller? then f.label "Last name*" else f.label "Last name" end %>
       <%= f.text_field :last_name %></div>
 
-      <div><%= f.label "Initial*" %>
+      <div><%= f.label "Initial" %>
       <%= f.text_field :initial %></div>
     </div>
     <div class="span1"></div>
     <div class="span3">
-	    <div>
-	      <%if resource.seller?%>
-	        <%= f.label "Phone*" %>
-	      <% else %>
-	        <%= f.label "Phone" %>
-	      <% end %>
-	      <%= f.telephone_field :phone %>
-	    </div>
+	  <div><%=if resource.seller? then f.label "Phone*" else f.label "Phone" end%>
+	  <%= f.telephone_field :phone %></div>
 
-      <div><%= f.label "Address*" %>
+      <div><%=if resource.seller? then f.label "Address*" else f.label "Address" end%>
       <%= f.text_field :address %></div>
 
-      <div><%= f.label "City*" %>
+      <div><%=if resource.seller? then f.label "City*" else f.label "City" end%>
       <%= f.text_field :city %></div>
 
-      <div><%= f.label "State*" %>
+      <div><%=if resource.seller? then f.label "State*" else f.label "State" end%>
       <%= f.state_select :state %></div>
 
-      <div><%= f.label "Country*" %>
+      <div><%=if resource.seller? then f.label "Country*" else f.label "Country" end%>
       <%= f.country_select(:country, "US") %></div>
 
-      <div><%= f.label "Zip*" %>
+      <div><%=if resource.seller? then f.label "Zip*" else f.label "Zip" end %>
       <%= f.text_field :zip %></div>
     </div>
     <div class="span1"></div>

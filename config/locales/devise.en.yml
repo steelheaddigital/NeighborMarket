@@ -58,6 +58,7 @@ en:
     user_confirmations:
       user:
         confirmed_but_not_approved: 'Your seller account has been confirmed but is awaiting approval from the site manager. You will receive an email when it is approved and you can sign in.'
+        buyer_confirmed: 'Your account was successfully confirmed and you are now signed in. You may add informaton to your profile now, or just begin shopping.'
         confirmed: 'Your account was successfully confirmed. You are now signed in.'
         signed_up_but_unconfirmed: 'A message with a confirmation link has been sent to your email address. Please open the link to activate your account.'
         auto_create_confirmed: 'Your account has been confirmed. Please complete your registration with the form below.'

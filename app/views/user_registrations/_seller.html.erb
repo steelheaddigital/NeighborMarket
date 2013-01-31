@@ -1,0 +1,64 @@
+<div class="span12 well">
+	<h2>Sign Up</h2>
+	<%= devise_error_messages! %>
+	<div class="row-fluid">
+	  <div class="span3">
+	    <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
+	    <%= f.text_field :username %></div>
+
+	    <div><%= f.label "Email*" %>
+	    <%= f.email_field :email %></div>
+
+	    <div><%= f.label "Password*" %>
+	    <%= f.password_field :password %></div>
+
+	    <div><%= f.label "Password Confirmation*" %>
+	    <%= f.password_field :password_confirmation %></div>
+    
+	    <div><%= f.label "First name*" %>
+	    <%= f.text_field :first_name %></div>
+
+	    <div><%= f.label "Last name*" %>
+	    <%= f.text_field :last_name %></div>
+
+	    <div><%= f.label "Initial" %>
+	    <%= f.text_field :initial %></div>
+	  </div>
+	  <div class="span1"></div>
+	  <div class="span3">
+	    <div><%= f.label "Phone*" %>
+	    <%= f.telephone_field :phone %></div>  
+
+	    <div><%= f.label "Address*" %>
+	    <%= f.text_field :address %></div>
+
+	    <div><%= f.label "City*" %>
+	    <%= f.text_field :city %></div>
+
+	    <div><%= f.label "Country*" %>
+	    <%= f.country_select(:country, "US") %></div>
+
+	    <div><%= f.label "State*" %>
+	    <%= f.state_select :state %></div>
+
+	    <div><%= f.label "Zip*" %>
+	    <%= f.text_field :zip %></div>
+	  </div>
+	  <div class="span1"></div>
+	    <div class="span3">
+	      <div><%= f.label "About Me" %>
+	      <%= f.text_area :aboutme, :rows => 10 %></div>
+
+	      <% resource.roles.each do |role| %>
+	        <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
+	      <% end %>
+	    </div>
+	  </div>
+	<%= f.hidden_field :user_type, :value => "seller" %>
+	<div class="row-fluid" style="margin-top: 19px;">
+	  <div class="span9"></div>
+	  <div class="span2">
+	    <%= f.submit "Sign up", {:class => "btn btn-primary", :style => "width: 100%; height: 35px;"}%>
+	  </div>
+	</div>
+</div>

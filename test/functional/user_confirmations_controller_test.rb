@@ -17,8 +17,18 @@ class UserConfirmationsControllerTest < ActionController::TestCase
     assert_equal 'Your seller account has been confirmed but is awaiting approval from the site manager. You will receive an email when it is approved and you can sign in.', flash[:notice]
   end
   
-  test "responds with confirmed if user is not unapproved seller" do
+  test "responds with buyer_confirmed if user is buyer" do
     user = users(:unconfirmed_buyer_user)
+    token = user.confirmation_token
+    
+    get :show, :confirmation_token => token
+    
+    assert_redirected_to edit_user_registration_path
+    assert_equal 'Your account was successfully confirmed and you are now signed in. You may add informaton to your profile now, or just begin shopping.', flash[:notice]
+  end
+  
+  test "responds with confirmed if user is not unapproved seller" do
+    user = users(:unconfirmed_approved_seller_user)
     token = user.confirmation_token
     
     get :show, :confirmation_token => token

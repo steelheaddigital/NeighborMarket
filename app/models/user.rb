@@ -7,18 +7,16 @@ class User < ActiveRecord::Base
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   validates :username, :uniqueness => true, :unless => :auto_create
-  validates :username, 
-            :first_name, 
+  validates :username, :presence => true, :unless => :auto_create
+  validates :first_name, 
             :last_name, 
-            :initial, 
             :address, 
             :city, 
             :state, 
             :country, 
-            :zip, :presence => true, :unless => :auto_create
+            :zip, :presence => true, :if => :additional_fields_required?
   validates :phone, :presence => true, :if => :seller?
   validates :payment_instructions, :presence => true, :if => :seller?
-  validates :delivery_instructions, :presence => true, :if => :buyer?
   validates_format_of :phone,
                       :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
                       :message => "must be valid phone number",
@@ -26,14 +24,14 @@ class User < ActiveRecord::Base
   validates_format_of :zip,
                       :with => %r{\d{5}(-\d{4})?},
                       :message => "should be like 12345 or 12345-1234",
-                      :unless => :auto_create
+                      :if => :zip?
   
   validates_presence_of :email, :if => :email_required?
   validates_uniqueness_of :email, :allow_blank => true, :if => :email_changed?
   validates_format_of :email, :with => /\A[^@]+@[^@]+\z/, :allow_blank => true, :if => :email_changed?
 
   validates_presence_of :password, :if => :password_required?
-  validates_confirmation_of :password, :if => :password_required?
+  validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   
   before_save { valid? || true }
@@ -119,6 +117,10 @@ class User < ActiveRecord::Base
 
   def email_required?
     true
+  end
+  
+  def additional_fields_required?
+    !auto_create && (!buyer? || seller?)
   end
   
   def role?(role)
