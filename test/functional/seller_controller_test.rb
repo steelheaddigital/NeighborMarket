@@ -134,9 +134,8 @@ class SellerControllerTest < ActionController::TestCase
     
   test "should delete cart items when commit param is delete all items" do
     order = orders(:current)
-    cart_item = cart_items(:one)
 
-    assert_difference 'CartItem.count', -order.cart_items.count do
+    assert_difference 'CartItem.count', -2 do
       post :update_order, :order_id => order.id, :commit => "Delete All Items"
     end
 

@@ -8,9 +8,16 @@ class CartItem < ActiveRecord::Base
            :ensure_current_order_cycle
   
   before_destroy :update_inventory_item_quantities
+  after_destroy :check_order
    
   def update_inventory_item_quantities
     self.inventory_item.increment_quantity_available(self.quantity) if self.order
+  end
+  
+  def check_order
+    if self.order
+      self.order.destroy if self.order.cart_items.count == 0
+    end
   end
   
   def validate_quantity

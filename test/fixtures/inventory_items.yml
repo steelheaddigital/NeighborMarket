@@ -20,6 +20,16 @@ two:
   price_unit: each
   quantity_available: 10
   description: MyText
+  
+three:
+  top_level_category: preserves
+  second_level_category: jam
+  user: approved_seller_user
+  name: Jam
+  price: 10.00
+  price_unit: each
+  quantity_available: 10
+  description: MyText
 
 not_in_cart:
   top_level_category: vegetable

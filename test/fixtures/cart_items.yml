@@ -21,6 +21,12 @@ three:
   inventory_item: two
   quantity: 10
   order: current_two
+  
+four:
+  cart: full
+  inventory_item: three
+  quantity: 10
+  order: current
 
 no_order:
   cart: no_order

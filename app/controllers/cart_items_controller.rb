@@ -24,7 +24,11 @@ class CartItemsController < ApplicationController
     respond_to do |format|
       if @cart_item.destroy
         if @cart_item.order_id
-          format.html{ redirect_to edit_order_path(@cart_item.order_id) }
+          if Order.exists?(@cart_item.order_id)
+            format.html{ redirect_to edit_order_path(@cart_item.order_id) }
+          else
+            format.html{ redirect_to root_path, notice: "You have deleted all items in your order. Your order has been cancelled."}
+          end
         else
           format.html{ redirect_to cart_index_path }
         end 

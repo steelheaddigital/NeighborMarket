@@ -17,7 +17,12 @@ class Order < ActiveRecord::Base
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|
       item.cart_id = nil
-      cart_items << item
+      existing_item = cart_items.find{|x| x.inventory_item_id == item.inventory_item_id}
+      if !existing_item.nil?
+        existing_item.quantity += item.quantity
+      else
+        cart_items << item
+      end
     end
   end
   

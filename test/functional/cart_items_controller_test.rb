@@ -28,6 +28,21 @@ class CartItemsControllerTest < ActionController::TestCase
     assert_redirected_to edit_order_path(cart_item.order_id)
   end
   
+  test "logged in buyer can destroy cart item that is in order and is redirected to root path if deleting last item" do
+    cart_item = cart_items(:one)
+    cart_item_four = cart_items(:four)
+    cart_item_four.destroy
+    @user = users(:buyer_user)
+    sign_in @user
+    
+    assert_difference 'CartItem.count', -1 do
+      get :destroy, :cart_item_id => cart_item.id 
+    end
+    
+    assert_not_nil assigns(:cart_item)
+    assert_redirected_to root_path
+  end
+  
   test "logged in buyer can destroy cart item that is in cart" do
     cart = carts(:no_order)
     cart_item = cart_items(:no_order)

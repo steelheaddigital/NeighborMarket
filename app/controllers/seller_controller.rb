@@ -96,18 +96,20 @@ class SellerController < ApplicationController
   
   def update_order
     order = Order.find(params[:order_id])
+    authorize! :update, order
     success = false
     @orders = get_packing_list_orders(order.order_cycle.id)
     @seller = current_user
     
     if params[:commit] == 'Delete All Items'
       order.cart_items.each do |item|
-        authorize! :delete, item
-        item.destroy
+        if item.inventory_item.user == @seller
+          authorize! :delete, item
+          item.destroy
+        end
       end
       success = true
     else
-      authorize! :update, order
       success = order.update_attributes(params[:order])
     end
                    
