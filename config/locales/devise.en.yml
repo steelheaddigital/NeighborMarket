@@ -13,7 +13,7 @@ en:
 
   devise:
     failure:
-      already_authenticated: 'You are already signed in.'
+      already_authenticated: 'You are already signed in. If you want to add buyer or seller priviledges to your account, please use the links in the upper right area of the screen.'
       unauthenticated: 'You need to sign in or sign up before continuing.'
       unconfirmed: 'You have to confirm your account before continuing.'
       locked: 'Your account is locked.'
