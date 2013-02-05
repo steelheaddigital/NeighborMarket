@@ -1,6 +1,6 @@
 $(document).on("change", "#inventory_item_top_level_category_id", function() {
-    var data = {category_id:$(this).val()};
-	var seller = new Seller();
+    var data = {category_id:$(this).val()},
+	 	seller = new Seller()
 	
 	seller.GetSecondLevelCategories(data);
 });
@@ -21,9 +21,8 @@ $(document).on("click", "#SelectAllInventoryItems", function() {
 
 $(document).on("submit", "#NewInventoryItemButton", function(event){
     event.preventDefault();
-    
-    var url = $(this).attr("action");
-    var seller = new Seller();
+    var url = $(this).attr("action"),
+     	seller = new Seller()
     
     seller.LoadInventoryDialog(url);
     
@@ -44,9 +43,8 @@ $(document).on("submit", "#edit_inventory_item", function(){
 
 $(document).on("submit", ".editInventoryItemButton", function(event){
     event.preventDefault();
-    
-    var url = $(this).attr("action");
-    var seller = new Seller();
+    var url = $(this).attr("action"),
+     	seller = new Seller()
     
     seller.LoadInventoryDialog(url);
     
@@ -71,6 +69,9 @@ function Seller(){
 	}
 	
     this.SubmitInventoryItemForm = function(form){
+		submitButton = form.find(':submit');
+		submitButton.attr('disabled', 'disabled')
+		submitButton.attr('value', "Saving...") ;
 		form.ajaxSubmit({
 	       dataType: "html",
 	       //Remove the file input if it's empty so paperclip doesn't choke

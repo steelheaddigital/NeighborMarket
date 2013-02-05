@@ -3,39 +3,28 @@ $(document).on("click", "#order_cycle_setting_recurring", function(){
 });
 
 $(document).on("submit", "#TopLevelCategoryForm", function(event){
-
     event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
     var mgmt = new Management();
 
-    mgmt.SubmitCategoryForm(url, data);
+    mgmt.SubmitCategoryForm($(this));
 
     return false;
 });
 
 $(document).on("submit", "#SecondLevelCategoryForm", function(event){
-
     event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
     var mgmt = new Management();
 
-    mgmt.SubmitCategoryForm(url, data);
+    mgmt.SubmitCategoryForm($(this));
 
     return false;
 });
 
 $(document).on("submit", "#EditUserForm", function(event){
     event.preventDefault();
-
-    var data = $(this).serialize();
-    var url = $(this).attr("action");
     var mgmt = new Management();
 
-    mgmt.SubmitEditUsersForm(url, data)
+    mgmt.SubmitEditUsersForm($(this))
 
     return false;
 });
@@ -57,9 +46,8 @@ $(document).on("change", "#RoleTypeSelect", function(){
 
 $(document).on("submit", "#UserSearchForm", function(event){
     event.preventDefault();
-
-    var queryString = $(this).serialize();
-    var url = $(this).attr("action");
+    var queryString = $(this).serialize(),
+    	url = $(this).attr("action")
 
     $("#ManagerSearchResults").empty();
     $("#ManagerSearchResultsLoading").show();
@@ -73,9 +61,8 @@ $(document).on("submit", "#UserSearchForm", function(event){
 
 $(document).on("submit", ".editUsersButton", function(event){
     event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
+    var url = $(this).attr("action"),
+     	mgmt = new Management()
 
     mgmt.LoadManagementDialog(url);
 
@@ -84,9 +71,8 @@ $(document).on("submit", ".editUsersButton", function(event){
 
 $(document).on("submit", "#NewTopLevelCategoryButton", function(event){
     event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
+    var url = $(this).attr("action"),
+    	mgmt = new Management()
 
     mgmt.LoadManagementDialog(url);
 
@@ -95,9 +81,8 @@ $(document).on("submit", "#NewTopLevelCategoryButton", function(event){
 
 $(document).on("submit", ".newSecondLevelCategoryButton", function(event){
     event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
+    var url = $(this).attr("action"),
+     	mgmt = new Management()
 
     mgmt.LoadManagementDialog(url);
 
@@ -106,9 +91,8 @@ $(document).on("submit", ".newSecondLevelCategoryButton", function(event){
 
 $(document).on("submit", ".editTopLevelCategoryButton", function(event){
     event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
+    var url = $(this).attr("action"),
+     	mgmt = new Management()
 
     mgmt.LoadManagementDialog(url);
 
@@ -117,9 +101,8 @@ $(document).on("submit", ".editTopLevelCategoryButton", function(event){
 
 $(document).on("submit", ".editSecondLevelCategoryButton", function(event){
     event.preventDefault();
-
-    var url = $(this).attr("action");
-    var mgmt = new Management();
+    var url = $(this).attr("action"),
+     	mgmt = new Management()
 
     mgmt.LoadManagementDialog(url);
 
@@ -144,10 +127,9 @@ $(document).on("click", "#mgmtEditInventoryItemButton", function(event){
 
 $(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
     event.preventDefault();
-    
-	var form = $(this).closest("form")
-    var url = form.attr("action");
-    var mgmt = new Management();
+	var form = $(this).closest("form"),
+     	url = form.attr("action"),
+    	mgmt = new Management()
     
 	mgmt.SubmitHistoricalOrdersForm(form)
 		
@@ -175,6 +157,9 @@ function Management(){
 	}
 
 	this.SubmitEditInventoryItem = function(form){
+		submitButton = form.find(':submit');
+		submitButton.attr('disabled', 'disabled')
+		submitButton.attr('value', "Saving...") ;
 		form.ajaxSubmit({
 	       dataType: "html",
 	       //Remove the file input if it's empty so paperclip doesn't choke
@@ -194,11 +179,11 @@ function Management(){
 	    });
 	};
  
-    this.SubmitCategoryForm = function(url, data){
-       $.ajax({
-           type: "POST",
-           url: url,
-           data: data,
+    this.SubmitCategoryForm = function(form){
+	   submitButton = form.find(':submit');
+	   submitButton.attr('disabled', 'disabled')
+	   submitButton.attr('value', "Saving...") ;
+       form.ajaxSubmit({
            cache: false,
            dataType: "html",
            success: function(data){
@@ -212,13 +197,19 @@ function Management(){
         });
     }
     
-    this.SubmitEditUsersForm = function(url, data){
-        $.ajax({
-           type: "POST",
-           url: url,
-           data: data,
+    this.SubmitEditUsersForm = function(form){
+		submitButton = form.find(':submit');
+		submitButton.attr('disabled', 'disabled')
+		submitButton.attr('value', "Saving...") ;
+        form.ajaxSubmit({
            cache: false,
            dataType: "html",
+	       //Remove the file input if it's empty so paperclip doesn't choke
+	       beforeSerialize: function() {
+	           if($("#user_photo").val() === ""){
+	               $("#user_photo").remove();
+	           }
+	       },
            success: function(){
              var approveSellers = $("#ApproveSellers");
              //if we are on the Approve Sellers screen, then refresh the Approve Seller table
