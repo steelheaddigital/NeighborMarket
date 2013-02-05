@@ -35,5 +35,5 @@ production:
   database: NeighborMarket_production
   pool: 5
   username: root
-  password: Gr33nB3ans
+  password: 4mqJ9TPbPN3R9k7
   socket: /var/run/mysqld/mysqld.sock
