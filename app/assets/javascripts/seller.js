@@ -70,8 +70,8 @@ function Seller(){
 	
     this.SubmitInventoryItemForm = function(form){
 		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled')
-		submitButton.attr('value', "Saving...") ;
+		submitButton.attr('disabled', 'disabled');
+		submitButton.attr('value', "Saving...");
 		form.ajaxSubmit({
 	       dataType: "html",
 	       //Remove the file input if it's empty so paperclip doesn't choke

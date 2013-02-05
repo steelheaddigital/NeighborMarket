@@ -158,8 +158,8 @@ function Management(){
 
 	this.SubmitEditInventoryItem = function(form){
 		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled')
-		submitButton.attr('value', "Saving...") ;
+		submitButton.attr('disabled', 'disabled');
+		submitButton.attr('value', "Saving...");
 		form.ajaxSubmit({
 	       dataType: "html",
 	       //Remove the file input if it's empty so paperclip doesn't choke
@@ -181,8 +181,8 @@ function Management(){
  
     this.SubmitCategoryForm = function(form){
 	   submitButton = form.find(':submit');
-	   submitButton.attr('disabled', 'disabled')
-	   submitButton.attr('value', "Saving...") ;
+	   submitButton.attr('disabled', 'disabled');
+	   submitButton.attr('value', "Saving...");
        form.ajaxSubmit({
            cache: false,
            dataType: "html",
@@ -199,8 +199,8 @@ function Management(){
     
     this.SubmitEditUsersForm = function(form){
 		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled')
-		submitButton.attr('value', "Saving...") ;
+		submitButton.attr('disabled', 'disabled');
+		submitButton.attr('value', "Saving...");
         form.ajaxSubmit({
            cache: false,
            dataType: "html",
