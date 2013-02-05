@@ -5,22 +5,22 @@ production:
     smtp_settings:
         address: "mail.steelheaddigital.com"
         port: 25
-        domain: ''
-        user_name: ''
-        password: ''
+        domain: 'steelheaddigital.com'
+        user_name: 'admin@steelheaddigital.com'
+        password: 'Portlandrock!'
         authentication: 'plain'
         enable_starttls_auto: true
         openssl_verify_mode: 'none' 
 development:
     host: 'neighbormarket'
-    default_from: ''
-    manager_email: ''
+    default_from: 'admin@steelheaddigital.com'
+    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
-        address: ""
+        address: "mail.steelheaddigital.com"
         port: 25
-        domain: ''
-        user_name: ''
-        password: ''
+        domain: 'steelheaddigital.com'
+        user_name: 'admin@steelheaddigital.com'
+        password: 'SUF9NuTLJ5Chxp6'
         authentication: 'plain'
         enable_starttls_auto: true
         openssl_verify_mode: 'none'

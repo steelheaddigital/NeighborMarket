@@ -34,6 +34,6 @@ production:
   encoding: utf8
   database: NeighborMarket_production
   pool: 5
-  username: 
-  password: 
+  username: root
+  password: Gr33nB3ans
   socket: /var/run/mysqld/mysqld.sock
