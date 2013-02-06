@@ -94,7 +94,8 @@ function Seller(){
     this.LoadInventoryDialog = function(url){
         $("#InventoryModal").load(url, function() 
             {$("#SellerNotice").hide();
-        }).modal('show');
+			$(this).modal('show');
+        });
     }
 
     this.CloseInventoryDialog = function(){

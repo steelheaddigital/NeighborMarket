@@ -228,7 +228,8 @@ function Management(){
     this.LoadManagementDialog = function(url){
         $("#Modal").load(url, function() 
             {$("#ManagementNotice").hide();
-        }).modal('show');
+			$(this).modal('show');
+        });
     }
 
     this.CloseManagementDialog = function(){

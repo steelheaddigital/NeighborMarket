@@ -112,7 +112,7 @@
 	</div>
   	<%= content_for?(:MainContent) ? yield(:MainContent) : yield %>
   </div>
-  <div id="InventoryModal" class="modal hide fade">
+  <div id="InventoryModal" class="modal hide fade" tabindex="-1" data-width="760">
   </div>
   <script>
   	$('.dropdown-toggle').dropdown();
