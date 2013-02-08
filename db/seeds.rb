@@ -82,7 +82,9 @@ prepared_food.second_level_categories.build([
     { :name => 'Drinks',
       :description => 'Drinks'},
     { :name => 'Other Prepared Food',
-      :description => 'Other Prepared Food'}
+      :description => 'Other Prepared Food'},
+    { :name => 'Condiments',
+      :description => 'Condiments'}
   ]
 )
 prepared_food.save
@@ -141,3 +143,10 @@ durable_goods.second_level_categories.build([
   ]
 )
 durable_goods.save
+
+PriceUnit.create(:name => "each")
+PriceUnit.create(:name => "ounce")
+PriceUnit.create(:name => "pound")
+PriceUnit.create(:name => "quart")
+PriceUnit.create(:name => "gallon")
+PriceUnit.create(:name => "jar")

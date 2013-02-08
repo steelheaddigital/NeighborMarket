@@ -127,7 +127,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns(:second_level_categories)
-    
+    assert_equal response.content_type, Mime::JSON
   end
   
   test "search returns inventory items"do    
@@ -155,6 +155,13 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:inventory_items)
     
+  end
+  
+  test "units returns units"do
+    get :units
+    
+    assert_response :success
+    assert_equal response.content_type, Mime::JSON
   end
   
   test "seller cannot access items other than their own" do

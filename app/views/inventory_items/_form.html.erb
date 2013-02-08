@@ -8,7 +8,7 @@
 </div>
 <div>
   <%= f.label "Units *" %>
-  <%= f.text_field :price_unit, :class => "input-small" %>
+  <%= f.text_field :price_unit, :class => "input-medium", :placeholder => "choose or enter a value", :id => "PriceUnitSelect", "data-url" => units_inventory_items_path %>
 </div>
 <div>
   <%= f.label "Quantity Available *" %>
@@ -20,3 +20,16 @@
 	  <%= f.check_box :approved, {}, "true", "false" %>
 	</div>
 <% end %>
+<script type="text/javascript">
+	$("#PriceUnitSelect").typeahead({
+		minLength:0,
+		items:9999,
+		showAll: true,
+		source: function(query, process) {
+			var url = $("#PriceUnitSelect").attr('data-url');
+			return $.get(url, {query: query}, function(data) {
+				return process(data);
+			});
+		}
+	});
+</script>

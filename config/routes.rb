@@ -68,6 +68,7 @@ NeighborMarket::Application.routes.draw do
       get 'search'
       get 'browse'
       get 'browse_all'
+      get 'units'
     end
   end
   

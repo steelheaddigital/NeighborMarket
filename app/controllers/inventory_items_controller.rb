@@ -122,4 +122,10 @@ class InventoryItemsController < ApplicationController
     end
   end
   
+  def units
+    units = PriceUnit.select(:name).order(:name).map(&:name)
+    
+    render :json => units
+  end
+  
 end
