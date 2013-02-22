@@ -59,6 +59,9 @@ NeighborMarket::Application.routes.draw do
       get 'new_users_report'
       get 'updated_user_profile_report'
       get 'deleted_users_report'
+      get 'manage_units'
+      post 'create_price_unit'
+      delete 'destroy_price_unit'
     end
   end
   
@@ -98,6 +101,8 @@ NeighborMarket::Application.routes.draw do
   
   match 'orders/new' => 'orders#new', :via => "POST"
   resources :orders, :only => ["create", "edit", "update", "show", "destroy"]
+  
+  resources :price_units
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

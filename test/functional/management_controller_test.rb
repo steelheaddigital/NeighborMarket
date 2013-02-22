@@ -342,6 +342,40 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:users)
   end
   
+  test "should get manage_units" do
+    get :manage_units
+    
+    assert_response :success
+    assert_not_nil assigns(:price_units)
+    assert_not_nil assigns(:new_unit)
+    assert_not_nil assigns(:added_units)
+  end
+  
+  test "should create unit" do    
+    assert_difference 'PriceUnit.count' do
+      post :create_price_unit, :price_unit => { :name => "TestThree" }
+    end
+    
+    assert_not_nil assigns(:price_units)
+    assert_not_nil assigns(:new_unit)
+    assert_not_nil assigns(:added_units)
+    assert_redirected_to manage_units_management_index_path
+    assert_equal 'Unit successfully saved!', flash[:notice]
+  end
+  
+  test "should destroy unit" do
+    unit = price_units(:one)
+    
+    assert_difference 'PriceUnit.count', -1 do
+      post :destroy_price_unit, :id => unit.id
+    end
+    
+    assert_redirected_to manage_units_management_index_path
+    assert_equal 'Unit successfully deleted!', flash[:notice]
+    
+  end
+  
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -409,6 +443,15 @@ class ManagementControllerTest < ActionController::TestCase
      assert_redirected_to new_user_session_path
    
      get :deleted_users_report
+     assert_redirected_to new_user_session_path
+     
+     get :manage_units
+     assert_redirected_to new_user_session_path
+     
+     post :create_price_unit
+     assert_redirected_to new_user_session_path
+     
+     post :destroy_price_unit
      assert_redirected_to new_user_session_path
   end
   
@@ -481,6 +524,15 @@ class ManagementControllerTest < ActionController::TestCase
     assert_response :not_found
    
     get :deleted_users_report
+    assert_response :not_found
+    
+    get :manage_units
+    assert_response :not_found
+    
+    post :create_price_unit
+    assert_response :not_found
+    
+    post :destroy_price_unit
     assert_response :not_found
   end
   

@@ -8,5 +8,5 @@ class ActiveSupport::TestCase
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
-  fixtures :cart_items, :carts, :inventory_items, :order_cycle_settings, :order_cycles, :orders, :roles, :second_level_categories, :site_settings, :top_level_categories, :users
+  fixtures :cart_items, :carts, :inventory_items, :order_cycle_settings, :order_cycles, :orders, :roles, :second_level_categories, :site_settings, :top_level_categories, :users, :price_units
 end

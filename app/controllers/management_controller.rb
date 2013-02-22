@@ -12,6 +12,7 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => Order
   load_and_authorize_resource :class => CartItem
   load_and_authorize_resource :class => SiteSetting
+  load_and_authorize_resource :class => PriceUnit
   
   def edit_site_settings
     @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
@@ -335,6 +336,42 @@ class ManagementController < ApplicationController
     end
   end
 
+  def manage_units
+    @price_units = PriceUnit.all
+    @new_unit = PriceUnit.new
+    @added_units = get_added_units
+  
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def create_price_unit
+    @price_units = PriceUnit.all
+    @new_unit = PriceUnit.new(params[:price_unit])
+    @added_units = get_added_units
+  
+    respond_to do |format|
+      if @new_unit.save
+        format.html { redirect_to manage_units_management_index_path, notice: 'Unit successfully saved!'}
+      else
+        format.html { render :manage_units }
+      end
+    end
+  end
+  
+  def destroy_price_unit
+    price_unit = PriceUnit.find(params[:id])
+    
+    respond_to do |format|
+      if price_unit.destroy
+        format.html{ redirect_to manage_units_management_index_path, notice: "Unit successfully deleted!" }
+      else
+        format.html{ redirect_to manage_units_management_index_path, notice: 'Unable to delete the unit' }
+      end
+    end
+  end
+
   private
   
   def historical_orders_report_csv(orders)
@@ -362,6 +399,12 @@ class ManagementController < ApplicationController
     end
 
     return order_cycle
+  end
+  
+  def get_added_units
+    InventoryItem.joins("LEFT OUTER JOIN price_units ON price_units.name = inventory_items.price_unit")
+                 .where("price_units.name IS NULL")
+                 .select("inventory_items.price_unit")
   end
 
 end
