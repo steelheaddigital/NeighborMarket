@@ -404,7 +404,7 @@ class ManagementController < ApplicationController
   def get_added_units
     InventoryItem.joins("LEFT OUTER JOIN price_units ON price_units.name = inventory_items.price_unit")
                  .where("price_units.name IS NULL")
-                 .select("inventory_items.price_unit")
+                 .select("DISTINCT inventory_items.price_unit")
   end
 
 end
