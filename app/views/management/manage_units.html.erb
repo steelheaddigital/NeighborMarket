@@ -37,12 +37,14 @@
 		 <thead>
 		   <tr>
 			<th>Unit Name</th>
+			<th></th>
 		   </tr>
 		 </thead>
 		 <tbody>
 		   <%@added_units.each do |unit|%>
 		     <tr>
 				<td><%= unit.price_unit%></td>
+				<td><%= button_to "Add", { :action => "create_price_unit", :controller => "management", :price_unit => {:name => unit.price_unit} }, {:class => "btn btn-primary", :style => "width:95%;"} %></td>
 		     </tr>
 		   <%end%>
 		 </tbody>
