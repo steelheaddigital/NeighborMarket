@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <P><%= @seller.username %> has added a new inventory item named <%= @inventory_item.name%>. This item is is awaiting approval before it becomes publicly visible and available for purchase. 
+      Please <a href="<%= new_user_session_url %>">log in</a> to approve this item.</p>
+  </body>
+</html>

@@ -16,4 +16,14 @@ class ManagerMailer < BaseMailer
           :subject => "An order at #{@site_settings.site_name} has been modified by a seller")
   end
   
+  def inventory_approval_required(seller, manager, inventory_item)
+    @seller = seller
+    @inventory_item = inventory_item
+    @site_settings = SiteSetting.first
+    
+    mail( :to => manager.email,
+          :subject => "#{seller.username} at #{@site_settings.site_name} has posted an inventory item that needs approval")
+    
+  end
+  
 end
