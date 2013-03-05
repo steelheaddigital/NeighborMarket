@@ -6,14 +6,28 @@ $(document).ajaxSend(function(event, request, settings) {
         request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
-	$("#FlashMessages").empty().hide();
+	$("#FlashMessages").hide();
+	$("#FlashNotice").empty();
+	$("#FlashAlert").empty();
+});
+
+$(document).ajaxSuccess(function(event, request, settings) {
+   	var notice = request.getResponseHeader("X-Notice")
+	if(notice){
+		utils.ShowNotice(notice);
+	} 
+	
+   	var alert = $.cookie('alert');
+	if(alert){
+		utils.ShowAlert(alert);
+	} 
 });
 
 // When I say html I really mean script for rails
 $.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
 
 $(document).ready(function() {
-	var length = $.trim($('#FlashMessages').html())
+	var length = $.trim($('#FlashNotice').html()) + $.trim($('#FlashAlert').html())
 	if(length){
 		$('#FlashMessages').show();
 	}

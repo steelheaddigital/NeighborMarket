@@ -171,7 +171,6 @@ function Management(){
 	       success: function(data){
 			   $("#ManagementContent").html(data);
 			   self.CloseManagementDialog();
-	           utils.ShowAlert("Inventory item successfully updated!");
 	       },
 	       error: function(request){
 	           $("#Modal").html(request.responseText).modal('show');
@@ -189,7 +188,6 @@ function Management(){
            success: function(data){
              self.CloseManagementDialog();
 			 $('#ManagementContent').html(data);
-             utils.ShowAlert("Categories successfully updated!")
            },
            error: function(request){
             $("#Modal").html(request.responseText).modal('show');

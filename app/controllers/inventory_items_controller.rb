@@ -29,7 +29,11 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.save
-        format.html { redirect_to seller_index_path, notice: 'Inventory item successfully created!'}
+        flash[:notice] = if user.listing_approval_style == "auto" 
+                           then "Inventory item successfully created!"
+                           else "Inventory item successfully created. However, the item must be approved by the site manager before it will be visible to buyers."
+                         end
+        format.html { redirect_to seller_index_path }
         format.js { redirect_to seller_index_path }
       else
         format.html { render :new }
@@ -62,7 +66,8 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])
-        format.html { redirect_to :back, notice: 'Inventory item successfully updated!'}
+        flash[:notice] = 'Inventory item successfully updated!'
+        format.html { redirect_to :back }
         format.js { redirect_to :back }
       else
         format.html { render :edit }

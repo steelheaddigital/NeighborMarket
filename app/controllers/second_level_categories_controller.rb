@@ -19,7 +19,8 @@ class SecondLevelCategoriesController < ApplicationController
     
     respond_to do |format|
       if @top_level_category.save
-        format.html { redirect_to categories_management_index_path, notice: 'Category successfully updated!'}
+        flash[:notice] = 'Category successfully updated!'
+        format.html { redirect_to categories_management_index_path }
         format.js { redirect_to categories_management_index_path }
       else
         format.html { render :new }
@@ -43,8 +44,9 @@ class SecondLevelCategoriesController < ApplicationController
   
     respond_to do |format|
       if @category.update_attributes(params[:second_level_category])
-        format.html { redirect_to categories_management_index_path, notice: 'Category successfully updated!'}
-        format.js { redirect_to categories_management_index_path}
+        flash[:notice] = 'Category successfully updated!'
+        format.html { redirect_to categories_management_index_path }
+        format.js { redirect_to categories_management_index_path }
       else
         format.html { render :edit }
         format.js { render :edit, :layout => false, :status => 403 }

@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_time_zone
   before_filter :current_order_id
   before_filter :completed_order_id
+  after_filter :flash_to_headers
   
   def set_time_zone
     Time.zone = SiteSetting.first.time_zone if SiteSetting.first
@@ -23,6 +24,13 @@ class ApplicationController < ActionController::Base
       completed_order = current_user.orders.joins(:order_cycle).where("order_cycles.buyer_pickup_date >= ? AND order_cycles.status = ?", DateTime.now.utc, "complete").last
       @completed_order_id = completed_order.id if completed_order
     end
+  end
+
+  def flash_to_headers
+    #For AJAX Requests, add the flash message to custom headers so they can be displayed via JS
+    return unless request.xhr?
+    response.headers['X-Notice'] = flash[:notice]  unless flash[:notice].blank?
+    response.headers['X-Alert'] = flash[:alert]  unless flash[:alert].blank?
   end
   
   def current_ability

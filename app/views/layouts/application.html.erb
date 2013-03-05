@@ -106,8 +106,12 @@
   <div id="MainContent">
     <div style="margin-bottom: 5px;">
 		<div id ="FlashMessages" class="alert alert-info">
-			<%= flash[:notice] %>
-	    	<%= flash[:alert] %>
+			<div id="FlashNotice">
+				<%= flash[:notice] %>
+			</div>
+			<div id="FlashAlert">
+				<%= flash[:alert] %>
+			</div>
 		</div>
 	</div>
   	<%= content_for?(:MainContent) ? yield(:MainContent) : yield %>

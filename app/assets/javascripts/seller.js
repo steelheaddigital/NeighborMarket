@@ -80,8 +80,7 @@ function Seller(){
 	               $("#inventory_item_photo").remove();
 	           }
 	       },
-	       success: function(data){
-	           utils.ShowAlert("Inventory item successfully updated!");
+	       success: function(data, textStatus, request){
 	           self.CloseInventoryDialog();
 			   $("#SellerContent").html(data);
 	       },
