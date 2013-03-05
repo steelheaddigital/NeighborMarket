@@ -45,7 +45,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:category)
     assert_not_nil assigns(:top_level_category)
     assert_redirected_to categories_management_index_path
-    assert_equal 'Category successfully updated!', flash[:notice]
+    assert_equal 'Category successfully created!', flash[:notice]
   end
   
   test "should create top level category js" do
