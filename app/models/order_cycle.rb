@@ -3,7 +3,7 @@ require 'order_cycle_start_job'
 
 class OrderCycle < ActiveRecord::Base
   has_many :orders
-  has_many :inventory_items
+  has_and_belongs_to_many :inventory_items, :uniq => true
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,
@@ -104,6 +104,13 @@ class OrderCycle < ActiveRecord::Base
     OrderCycle.find_by_status("current")
   end
 
+  def complete_pending_cycles
+    pending_cycles = OrderCycle.where("status = ?", "pending")
+    pending_cycles.each do |cycle|
+      cycle.update_column(:status, "complete")
+    end
+  end
+  
   def self.current_cycle
     self.find_by_status("current")
   end
@@ -134,14 +141,7 @@ class OrderCycle < ActiveRecord::Base
       self.latest_cycle
     end
   end
-  
-  def complete_pending_cycles
-    pending_cycles = OrderCycle.where("status = ?", "pending")
-    pending_cycles.each do |cycle|
-      cycle.update_column(:status, "complete")
-    end
-  end
-  
+    
   def self.queue_order_cycle_start_job(start_date)
     job = OrderCycleStartJob.new
     Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|

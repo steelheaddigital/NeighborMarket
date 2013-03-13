@@ -32,7 +32,7 @@ module ApplicationHelper
     current_cycle = OrderCycle.current_cycle
     TopLevelCategory.find_each do |category|
       if current_cycle
-        top_level_item_count = InventoryItem.joins(:order_cycle)
+        top_level_item_count = InventoryItem.joins(:order_cycles)
                                             .where("top_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", category.id)
                                             .count
       else
@@ -41,7 +41,7 @@ module ApplicationHelper
       second_level_categories = Array.new
       SecondLevelCategory.where(:top_level_category_id => category.id).find_each do |second_level_category|
         if current_cycle
-          second_level_count = InventoryItem.joins(:order_cycle)
+          second_level_count = InventoryItem.joins(:order_cycles)
                                             .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", second_level_category.id)
                                             .count
         else

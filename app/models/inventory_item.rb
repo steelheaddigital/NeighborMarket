@@ -4,7 +4,7 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :top_level_category
   belongs_to :second_level_category
   has_many :cart_items
-  belongs_to :order_cycle
+  has_and_belongs_to_many :order_cycles, :uniq => true
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved
@@ -18,14 +18,10 @@ class InventoryItem < ActiveRecord::Base
   
   validates :price, :numericality => {:greater_than_or_equal_to => 0.01}
   validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
+  validate :ensure_current_order_cycle
   
   before_destroy :ensure_not_referenced_by_any_cart_item
-  before_create :add_order_cycle_id
-  
-  def add_order_cycle_id
-    order_cycle = OrderCycle.where("status IN('current', 'pending')").last
-    self.order_cycle = order_cycle if self.order_cycle_id.nil?
-  end
+  before_create :add_to_order_cycle
   
   def top_level_category_name
     self.top_level_category.name
@@ -36,7 +32,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def self.search(keywords)
-    scope = self.joins(:order_cycle)
+    scope = self.joins(:order_cycles)
                 .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
     scope.find_with_index(keywords)
   end
@@ -84,8 +80,23 @@ class InventoryItem < ActiveRecord::Base
     new_item.photo = self.photo
     new_item.save
   end
-  
+    
   private
+  
+  def add_to_order_cycle
+    order_cycle = OrderCycle.where('status IN("pending", "current")').last
+    self.order_cycles << order_cycle
+  end
+  
+  def ensure_current_order_cycle
+    order_cycle = OrderCycle.where('status IN("pending", "current")').last
+    if order_cycle.nil?
+      errors.add(:base, "Item could not be added. No available order cycle.")
+      return false
+    else
+      return true
+    end
+  end
   
   def ensure_not_referenced_by_any_cart_item
     if cart_items.empty?

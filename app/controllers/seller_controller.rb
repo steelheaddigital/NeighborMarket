@@ -149,12 +149,12 @@ class SellerController < ApplicationController
   end
   
   def get_last_inventory(order_cycle_id)
-    InventoryItem.joins(:order_cycle)
+    InventoryItem.joins(:order_cycles)
                  .where("order_cycles.id = ? AND user_id = ? AND is_deleted = ? AND approved = ?", order_cycle_id, current_user.id, false, true)
   end
   
   def get_current_inventory
-    InventoryItem.joins(:order_cycle)
+    InventoryItem.joins(:order_cycles)
                  .where("order_cycles.status IN('current','pending') AND user_id = ? AND is_deleted = ?", current_user.id, false)
                  .order("created_at DESC")
   end

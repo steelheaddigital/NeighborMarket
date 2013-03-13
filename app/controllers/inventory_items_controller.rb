@@ -38,7 +38,6 @@ class InventoryItemsController < ApplicationController
              ManagerMailer.delay.inventory_approval_required(user, manager, @item)
            end
         end
-
         format.html { redirect_to seller_index_path }
         format.js { redirect_to seller_index_path }
       else
@@ -111,7 +110,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse
-    @inventory_items = InventoryItem.joins(:order_cycle)
+    @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
                                     .paginate(:page => params[:page], :per_page => 5)
@@ -123,7 +122,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def browse_all
-    @inventory_items = InventoryItem.joins(:order_cycle)
+    @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
                                     .order("created_at DESC").paginate(:page => params[:page], :per_page => 5)
     

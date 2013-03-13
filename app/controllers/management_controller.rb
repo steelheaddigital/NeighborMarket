@@ -237,7 +237,7 @@ class ManagementController < ApplicationController
   end
   
   def inventory
-    @inventory_items = InventoryItem.joins(:order_cycle)
+    @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("quantity_available > 0 AND is_deleted = false AND order_cycles.status = 'current'")
                                     .paginate(:page => params[:page], :per_page => 15)
     

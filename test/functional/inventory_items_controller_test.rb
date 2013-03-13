@@ -32,6 +32,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
   test "should create inventory item" do
     top_level_category = top_level_categories(:vegetable)
     second_level_category = second_level_categories(:carrot)
+    order_cycle = order_cycles(:current)
     
     assert_difference 'InventoryItem.count' do
       post :create, :inventory_item => { :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
