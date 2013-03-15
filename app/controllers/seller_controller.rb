@@ -4,19 +4,9 @@ class SellerController < ApplicationController
   skip_authorize_resource :only => :contact
   require 'will_paginate/array'
   
-  def index
-    if !params[:selected_previous_order_cycle].nil?
-      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
-      @show_past_inventory_container = "in"
-    else
-      order_cycle = OrderCycle.last_completed
-      @show_past_inventory_container = ""
-    end
-    
-    @last_inventory = get_last_inventory(order_cycle.id)
+  def index    
+    @all_inventory = get_past_inventory_items
     @current_inventory = get_current_inventory.paginate(:page => params[:page], :per_page => 10)
-    @previous_order_cycles = OrderCycle.last_ten_cycles
-    @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     respond_to do |format|
       format.html
@@ -26,13 +16,23 @@ class SellerController < ApplicationController
   
   def add_past_inventory
     items = params[:item]
-    items.each do |item|
-      inventory_item = InventoryItem.find(item[1])
-      inventory_item.copy_to_new_cycle
+    if items.nil?
+      redirect_to seller_index_path, notice: 'Unable to add items, no items selected.'
+      return
     end
     
+    if OrderCycle.active_cycle.nil? 
+      redirect_to seller_index_path, notice: 'Unable to add items, no available order cycle.'
+      return
+    else  
+      items.each do |item|
+        inventory_item = InventoryItem.find(item[1])
+        inventory_item.add_to_order_cycle
+        inventory_item.save
+      end
+    end
     respond_to do |format|
-      format.html { redirect_to seller_index_path, notice: 'Items successfully added!' }
+      format.html { redirect_to seller_index_path, notice: 'Items successfully added to your current inventory!' }
     end
   end
   
@@ -156,6 +156,12 @@ class SellerController < ApplicationController
   def get_current_inventory
     InventoryItem.joins(:order_cycles)
                  .where("order_cycles.status IN('current','pending') AND user_id = ? AND is_deleted = ?", current_user.id, false)
+                 .order("created_at DESC")
+  end
+  
+  def get_past_inventory_items
+    InventoryItem.joins("LEFT JOIN inventory_items_order_cycles ON inventory_items.id = inventory_items_order_cycles.inventory_item_id")
+                 .where("inventory_items_order_cycles.inventory_item_id IS NULL AND user_id = ? AND is_deleted = ?", current_user.id, false)
                  .order("created_at DESC")
   end
   

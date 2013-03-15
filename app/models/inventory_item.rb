@@ -73,23 +73,15 @@ class InventoryItem < ActiveRecord::Base
     return success
   end
   
-  def copy_to_new_cycle
-    current_order_cycle = OrderCycle.where("status = ? OR status = ?", "current", "pending").last()
-    new_item = self.dup
-    new_item.order_cycle_id = current_order_cycle.id
-    new_item.photo = self.photo
-    new_item.save
+  def add_to_order_cycle
+    order_cycle = OrderCycle.active_cycle
+    self.order_cycles << order_cycle if !order_cycle.nil?
   end
-    
+  
   private
   
-  def add_to_order_cycle
-    order_cycle = OrderCycle.where('status IN("pending", "current")').last
-    self.order_cycles << order_cycle
-  end
-  
   def ensure_current_order_cycle
-    order_cycle = OrderCycle.where('status IN("pending", "current")').last
+    order_cycle = OrderCycle.active_cycle
     if order_cycle.nil?
       errors.add(:base, "Item could not be added. No available order cycle.")
       return false

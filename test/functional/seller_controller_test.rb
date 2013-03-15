@@ -12,38 +12,16 @@ class SellerControllerTest < ActionController::TestCase
     get :index
     
     assert_response :success
-    assert_not_nil assigns(:last_inventory)
     assert_not_nil assigns(:current_inventory)
-    assert_not_nil assigns(:previous_order_cycles)
-    assert_not_nil assigns(:selected_previous_order_cycle)
-    assert_not_nil assigns(:show_past_inventory_container)
-    
+    assert_not_nil assigns(:all_inventory)    
   end
   
   test "should get index js" do
     get :index, :format => 'js'
     
-    assert_response :success
-    assert_not_nil assigns(:last_inventory)
     assert_not_nil assigns(:current_inventory)
-    assert_not_nil assigns(:previous_order_cycles)
-    assert_not_nil assigns(:selected_previous_order_cycle)
-    assert_not_nil assigns(:show_past_inventory_container)
+    assert_not_nil assigns(:all_inventory)   
     assert_equal response.content_type, Mime::JS
-    
-  end
-  
-  test "should get previous_index" do
-    order_cycle = order_cycles(:complete)
-    get :index, :selected_previous_order_cycle => {:id => order_cycle.id}
-    
-    assert_response :success
-    assert_not_nil assigns(:last_inventory)
-    assert_not_nil assigns(:current_inventory)
-    assert_not_nil assigns(:previous_order_cycles)
-    assert_not_nil assigns(:selected_previous_order_cycle)
-    assert_not_nil assigns(:show_past_inventory_container)
-    
   end
   
   test "should get pick_list" do

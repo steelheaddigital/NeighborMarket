@@ -93,6 +93,19 @@ class InventoryItemsController < ApplicationController
     end
   end
   
+  def delete_from_current_inventory
+    inventory_item = InventoryItem.find(params[:id])
+    order_cycle = OrderCycle.active_cycle
+    
+    respond_to do |format|
+      if order_cycle.inventory_items.delete(inventory_item)
+        format.html{ redirect_to :back, notice: "Inventory item successfully deleted from the current order cycle!" }
+      else
+        format.html{ redirect_to :back, notice: 'Unable to delete the item from the current order cycle' }
+      end
+    end
+  end
+  
   def get_second_level_category
     @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(params[:category_id])
     render :json => @second_level_categories

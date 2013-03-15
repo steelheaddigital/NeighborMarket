@@ -66,6 +66,9 @@ NeighborMarket::Application.routes.draw do
   end
   
   resources :inventory_items do
+    member do
+      post 'delete_from_current_inventory'
+    end
     collection do
       get 'get_second_level_category'
       get 'search'
