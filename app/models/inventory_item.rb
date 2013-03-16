@@ -25,7 +25,8 @@ class InventoryItem < ActiveRecord::Base
   
   before_destroy :ensure_not_referenced_by_any_cart_item
   before_destroy :validate_can_edit
-  before_create :add_to_order_cycle 
+  before_create :add_to_order_cycle
+  after_update :notify_buyers
   
   def top_level_category_name
     self.top_level_category.name
@@ -66,7 +67,7 @@ class InventoryItem < ActiveRecord::Base
   
      #if the inventory item isn't associated with any previous orders then go ahead and destroy it,
      #otherwise, set it's is_deleted property to true to maintain order history
-    send_order_modified_emails(self.user, current_cart_items)
+    send_order_modified_emails
     current_cart_items.destroy_all
     if self.previous_cart_items.empty?
       success = self.destroy
@@ -107,13 +108,10 @@ class InventoryItem < ActiveRecord::Base
   
   def validate_can_edit
     if !can_edit?
-      changed = self.changed
-      if(!(changed.length == 1 && changed[0] == "quantity_available"))
-        changed.each do |value|
-          if(value != "quantity_available")
-            field = value.to_sym
-            errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please contact the site manager.")
-          end
+      self.changed.each do |value|
+        if(value != "quantity_available")
+          field = value.to_sym
+          errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please contact the site manager.")
         end
       end
     end
@@ -138,13 +136,19 @@ class InventoryItem < ActiveRecord::Base
     end
   end
   
-  def send_order_modified_emails(seller, cart_items)
-    cart_items.each do |item|
-      BuyerMailer.delay.order_modified_mail(seller, item.order)
-      managers = Role.find_by_name("manager").users 
-       managers.each do |manager|
-         ManagerMailer.delay.seller_modified_order_mail(seller, manager, item.order)
-       end
+  def notify_buyers
+    changed = self.changed
+    
+    #ignore these fields when deciding whether to send emails
+    a = changed.select { |n| n == "quantity_available" || n == "approved" || n == "updated_at" }
+    
+    #send modified emails if non-ignored fields were changed
+    send_order_modified_emails if changed.length > a.length
+  end
+  
+  def send_order_modified_emails
+    self.current_cart_items.each do |item|
+      BuyerMailer.delay.order_modified_mail(self.user, item.order)
     end
   end
   

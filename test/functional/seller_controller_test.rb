@@ -98,10 +98,6 @@ class SellerControllerTest < ActionController::TestCase
     get :packing_list
     assert_redirected_to new_user_session_path
     
-    cart_item = cart_items(:one)
-    delete :remove_item_from_order, :cart_item_id => cart_item.id
-    assert_redirected_to new_user_session_path
-    
   end
   
 end

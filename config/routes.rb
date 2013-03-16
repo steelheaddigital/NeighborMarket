@@ -78,7 +78,6 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  match 'seller/:cart_item_id/remove_item_from_order' => 'seller#remove_item_from_order', :via => "DELETE", :as => :seller_remove_item_from_order
   match 'seller/:order_id/update_order' => 'seller#update_order', :via => "PUT", :as => :seller_update_order
   resources :seller, :only => ["index"] do
     collection do

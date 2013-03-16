@@ -10,7 +10,6 @@ class BuyerMailer < BaseMailer
   
   def order_modified_mail(seller, order)
     @order = order
-    @seller = seller
     @site_settings = SiteSetting.first
     
     mail( :to => @order.user.email,

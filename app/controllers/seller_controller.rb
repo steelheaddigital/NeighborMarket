@@ -77,31 +77,11 @@ class SellerController < ApplicationController
     end
   end
   
-  def remove_item_from_order
-    cart_item = CartItem.find(params[:cart_item_id])
-    authorize! :delete, cart_item
-    @orders = get_packing_list_orders(cart_item.order.order_cycle.id)
-    @seller = current_user
+  def method_name
     
-    respond_to do |format|
-      if cart_item.destroy
-        send_order_modified_emails(@seller, cart_item.order)
-        format.html { redirect_to packing_list_seller_index_path, notice: 'Item successfully deleted!'}
-      else
-        format.html { render :packing_list }
-      end
-    end
   end
   
   private
-  
-  def send_order_modified_emails(seller, order)
-    BuyerMailer.delay.order_modified_mail(seller, order)
-    managers = Role.find_by_name("manager").users 
-     managers.each do |manager|
-       ManagerMailer.delay.seller_modified_order_mail(seller, manager, order)
-     end
-  end
   
   def get_packing_list_orders(order_cycle_id)
     seller = current_user

@@ -35,7 +35,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [order.user.email], sent.to
-    assert_match("One or more items in your order was modified or removed by the seller Approved Seller. Your updated order is below.", sent.body.to_s)
+    assert_match("One or more items in your order was modified or removed. Your updated order is below.", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
