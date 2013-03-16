@@ -58,6 +58,25 @@ class InventoryItemsTest < ActiveSupport::TestCase
       assert !@item.destroy
    end
    
+   test "should not allow update if price is changed and item is in current cycle and user is not manager" do
+     @item.update_attributes("price" => 50)
+     
+     assert !@item.valid?
+   end
+   
+   test "should allow update if quantity_available is changed" do
+     @item.update_attributes("quantity_available" => 50)
+     
+     assert @item.valid?
+   end
+   
+   test "should allow update if price is changed and item is in current cycle and user is not manager" do
+     @item.update_attributes("price" => 50)
+     @item.current_user = users(:manager_user)
+     
+     assert @item.valid?
+   end
+   
    test "should allow destroy if item is not in cart" do
      item = inventory_items(:not_in_cart)
       
