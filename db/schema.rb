@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130313035504) do
+ActiveRecord::Schema.define(:version => 20130316144131) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(:version => 20130313035504) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "inventory_item_order_cycles", :force => true do |t|
+    t.integer "inventory_item_id", :null => false
+    t.integer "order_cycle_id",    :null => false
+  end
+
+  add_index "inventory_item_order_cycles", ["inventory_item_id", "order_cycle_id"], :name => "inventory_items_order_cycles_index", :unique => true
+
   create_table "inventory_items", :force => true do |t|
     t.integer  "top_level_category_id"
     t.integer  "second_level_category_id"
@@ -63,13 +70,6 @@ ActiveRecord::Schema.define(:version => 20130313035504) do
     t.boolean  "is_deleted",                                             :default => false
     t.boolean  "approved",                                               :default => true
   end
-
-  create_table "inventory_items_order_cycles", :id => false, :force => true do |t|
-    t.integer "inventory_item_id", :null => false
-    t.integer "order_cycle_id",    :null => false
-  end
-
-  add_index "inventory_items_order_cycles", ["inventory_item_id", "order_cycle_id"], :name => "inventory_items_order_cycles_index", :unique => true
 
   create_table "order_cycle_settings", :force => true do |t|
     t.boolean "recurring",        :default => false

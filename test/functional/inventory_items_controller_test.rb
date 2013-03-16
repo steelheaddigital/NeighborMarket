@@ -80,7 +80,10 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JS
   end
   
-  test "should update inventory item" do
+  test "should update inventory item if user is manager and inventory item is in current cycle" do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
     item = inventory_items(:one)
     request.env["HTTP_REFERER"] = seller_index_path
     
@@ -93,7 +96,36 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_equal 'Inventory item successfully updated!', flash[:notice]
   end
   
-  test "should update inventory item js" do
+  test "should update inventory item if user is not manager and inventory item is in pending cycle" do
+    item = inventory_items(:three)
+    request.env["HTTP_REFERER"] = seller_index_path
+    
+    post :update, :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_redirected_to seller_index_path
+    assert_equal 'Inventory item successfully updated!', flash[:notice]
+  end
+  
+  test "should not update inventory item if user is not manager and inventory item is in current cycle" do
+    item = inventory_items(:one)
+    request.env["HTTP_REFERER"] = seller_index_path
+    
+    post :update, :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    
+    assert_not_nil assigns(:item)
+    assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:second_level_categories)
+    assert_response :success
+    assert !assigns(:item).errors.empty?
+  end
+  
+  test "should update inventory item js if user is manager and inventory item is in current cycle" do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
     item = inventory_items(:one)
     request.env["HTTP_REFERER"] = seller_index_path
     
@@ -117,7 +149,32 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:inventory)
     assert_redirected_to seller_index_path
     assert_equal 'Inventory item successfully deleted!', flash[:notice]
+  end
+  
+  test "should delete from current inventory if item is not in an order" do
+    item = inventory_items(:not_in_cart)
+    request.env["HTTP_REFERER"] = seller_index_path
+    order_cycles(:not_current).destroy
     
+    assert_difference 'InventoryItemOrderCycle.count', -1 do
+      post :delete_from_current_inventory, :id => item.id
+    end
+    
+    assert_redirected_to seller_index_path
+    assert_equal 'Inventory item successfully deleted from the current order cycle!', flash[:notice]
+  end
+  
+  test "should not delete from current inventory if item is in an order" do
+    item = inventory_items(:one)
+    request.env["HTTP_REFERER"] = seller_index_path
+    order_cycles(:not_current).destroy
+    
+    assert_no_difference 'InventoryItemOrderCycle.count' do
+      post :delete_from_current_inventory, :id => item.id
+    end
+    
+    assert_redirected_to seller_index_path
+    assert_equal 'Item cannot be removed from the current order cycle since it is contained in one or more orders. If you need to change this item, please contact the site manager.', flash[:notice]
   end
   
   test "get_second_level_category returns second level category"do

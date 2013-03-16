@@ -4,10 +4,12 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :top_level_category
   belongs_to :second_level_category
   has_many :cart_items
-  has_and_belongs_to_many :order_cycles, :uniq => true
+  has_many :inventory_item_order_cycles
+  has_many :order_cycles, :through => :inventory_item_order_cycles, :uniq => true
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved
+  attr_accessor :current_user
   
   validates :top_level_category_id, 
     :second_level_category_id,
@@ -19,9 +21,11 @@ class InventoryItem < ActiveRecord::Base
   validates :price, :numericality => {:greater_than_or_equal_to => 0.01}
   validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
   validate :ensure_current_order_cycle
+  validate :validate_can_edit, :on => :update
   
   before_destroy :ensure_not_referenced_by_any_cart_item
-  before_create :add_to_order_cycle
+  before_destroy :validate_can_edit
+  before_create :add_to_order_cycle 
   
   def top_level_category_name
     self.top_level_category.name
@@ -39,11 +43,13 @@ class InventoryItem < ActiveRecord::Base
   
   def decrement_quantity_available(quantity)
     self.quantity_available -= quantity
+    @user_editable = true
     self.save
   end
   
   def increment_quantity_available(quantity)
     self.quantity_available += quantity
+    @user_editable = true
     self.save
   end
   
@@ -57,8 +63,6 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def paranoid_destroy
-    current_cart_items = self.cart_items.joins(:order)
-                   .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
   
      #if the inventory item isn't associated with any previous orders then go ahead and destroy it,
      #otherwise, set it's is_deleted property to true to maintain order history
@@ -78,7 +82,34 @@ class InventoryItem < ActiveRecord::Base
     self.order_cycles << order_cycle if !order_cycle.nil?
   end
   
+  def in_current_order_cycle?
+    order_cycle = order_cycles.find_by_status("current")
+    return !order_cycle.nil?
+  end
+  
+  def current_cart_items
+    self.cart_items.joins(:order)
+                   .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
+  end
+  
+  def can_edit?
+    user_editable || (!in_current_order_cycle? || current_cart_items.empty?)
+  end
+  
   private
+  
+  def user_editable
+    if current_user
+      @user_editable = current_user.manager?
+    end
+    @user_editable || false
+  end
+  
+  def validate_can_edit
+    if !can_edit?
+      errors.add(:base, "Item cannot be updated during the current order cycle since it is contained in one or more orders. If you need to change this item, please contact the site manager.")
+    end
+  end
   
   def ensure_current_order_cycle
     order_cycle = OrderCycle.active_cycle

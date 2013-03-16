@@ -1,0 +1,11 @@
+one:
+  order_cycle: current
+  inventory_item: one
+
+two:
+  order_cycle: not_current
+  inventory_item: three
+
+three:
+  order_cycle: current
+  inventory_item: not_in_cart

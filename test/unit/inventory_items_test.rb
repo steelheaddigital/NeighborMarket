@@ -63,7 +63,7 @@ class InventoryItemsTest < ActiveSupport::TestCase
       
      assert item.destroy
    end
-   
+      
    test "decrement_quantity_available decrements quantity available" do
       item = inventory_items(:one)
      
@@ -76,7 +76,6 @@ class InventoryItemsTest < ActiveSupport::TestCase
      item = InventoryItem.search("zero")
      
      assert_equal 0, item.length
-     
    end
    
    test "paranoid destroy sets is_deleted attribute to true and deletes current cart_items when item has cart_items not in current order cycle" do     
@@ -127,7 +126,41 @@ class InventoryItemsTest < ActiveSupport::TestCase
      assert_no_difference "InventoryItem.count" do
        inventory_item.save
      end
+   end
+   
+   test "in_current_order_cycle returns true if item is in current order cycle" do
+     item = inventory_items(:one)
+     result = item.in_current_order_cycle?
      
+     assert result
+   end
+   
+   test "can_edit? returns true if user is manager" do
+     item = inventory_items(:one)
+     item.current_user = users(:manager_user)
+     
+     assert item.can_edit?
+   end
+   
+   test "can_edit? returns true if user is not manager and inventory_item is in pending order cycle" do
+     item = inventory_items(:three)
+     item.current_user = users(:approved_seller_user)
+     
+     assert item.can_edit?
+   end
+   
+   test "can_edit? returns true if user is not manager and inventory_item is not in any orders" do
+     item = inventory_items(:not_in_cart)
+     item.current_user = users(:approved_seller_user)
+     
+     assert item.can_edit?
+   end
+   
+   test "can_edit? returns false if user is not manager and item is in order" do
+     item = inventory_items(:one)
+     item.current_user = users(:approved_seller_user)
+     
+     assert !item.can_edit?
    end
    
 end

@@ -9,7 +9,6 @@ one:
   price_unit: each
   quantity_available: 10
   description: MyText
-  order_cycles: current
 
 two:
   top_level_category: preserves
@@ -19,7 +18,6 @@ two:
   price: 10.00
   price_unit: each
   quantity_available: 10
-  description: MyText
   
 three:
   top_level_category: preserves
@@ -40,7 +38,6 @@ not_in_cart:
   price_unit: each
   quantity_available: 10
   description: MyText
-  order_cycles: current
   
 zero_quantity:
   top_level_category: vegetable

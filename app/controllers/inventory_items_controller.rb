@@ -61,6 +61,7 @@ class InventoryItemsController < ApplicationController
   
   def update
     @item = InventoryItem.find(params[:id])
+    @item.current_user = current_user
     @top_level_categories = TopLevelCategory.all
     
     if(@item.top_level_category)
@@ -83,6 +84,7 @@ class InventoryItemsController < ApplicationController
   
   def destroy
     @inventory = InventoryItem.find(params[:id])
+    @inventory.current_user = current_user
     
     respond_to do |format|
       if @inventory.paranoid_destroy
@@ -95,13 +97,15 @@ class InventoryItemsController < ApplicationController
   
   def delete_from_current_inventory
     inventory_item = InventoryItem.find(params[:id])
+    inventory_item.current_user = current_user
     order_cycle = OrderCycle.active_cycle
+    relation = order_cycle.inventory_item_order_cycles.where(inventory_item_id: params[:id]).first
     
     respond_to do |format|
-      if order_cycle.inventory_items.delete(inventory_item)
+      if relation.destroy
         format.html{ redirect_to :back, notice: "Inventory item successfully deleted from the current order cycle!" }
       else
-        format.html{ redirect_to :back, notice: 'Unable to delete the item from the current order cycle' }
+        format.html{ redirect_to :back, notice: relation.errors.full_messages.first }
       end
     end
   end

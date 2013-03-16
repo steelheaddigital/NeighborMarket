@@ -3,7 +3,8 @@ require 'order_cycle_start_job'
 
 class OrderCycle < ActiveRecord::Base
   has_many :orders
-  has_and_belongs_to_many :inventory_items, :uniq => true
+  has_many :inventory_item_order_cycles
+  has_many :inventory_items, :through => :inventory_item_order_cycles, :uniq => true
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,
