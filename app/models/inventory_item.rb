@@ -107,7 +107,15 @@ class InventoryItem < ActiveRecord::Base
   
   def validate_can_edit
     if !can_edit?
-      errors.add(:base, "Item cannot be updated during the current order cycle since it is contained in one or more orders. If you need to change this item, please contact the site manager.")
+      changed = self.changed
+      if(!(changed.length == 1 && changed[0] == "quantity_available"))
+        changed.each do |value|
+          if(value != "quantity_available")
+            field = value.to_sym
+            errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please contact the site manager.")
+          end
+        end
+      end
     end
   end
   
