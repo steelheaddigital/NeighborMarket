@@ -66,7 +66,6 @@ class SellerController < ApplicationController
     @orders = get_packing_list_orders(order_cycle.id)
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
-    @can_edit = order_cycle.status == "current"
     
     respond_to do |format|
       format.html
@@ -88,35 +87,6 @@ class SellerController < ApplicationController
       if cart_item.destroy
         send_order_modified_emails(@seller, cart_item.order)
         format.html { redirect_to packing_list_seller_index_path, notice: 'Item successfully deleted!'}
-      else
-        format.html { render :packing_list }
-      end
-    end
-  end
-  
-  def update_order
-    order = Order.find(params[:order_id])
-    authorize! :update, order
-    success = false
-    @orders = get_packing_list_orders(order.order_cycle.id)
-    @seller = current_user
-    
-    if params[:commit] == 'Delete All Items'
-      order.cart_items.each do |item|
-        if item.inventory_item.user == @seller
-          authorize! :delete, item
-          item.destroy
-        end
-      end
-      success = true
-    else
-      success = order.update_attributes(params[:order])
-    end
-                   
-    respond_to do |format|
-      if success
-        send_order_modified_emails(@seller, order)
-        format.html { redirect_to packing_list_seller_index_path, notice: 'Order successfully updated!'}
       else
         format.html { render :packing_list }
       end
