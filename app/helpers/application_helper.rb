@@ -1,5 +1,4 @@
 module ApplicationHelper
-  ActionView::Base.default_form_builder = StandardFormBuilder
   
   def my_devise_error_messages!
     return "" if resource.errors.empty? && resource.rolable.errors.empty?

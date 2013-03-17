@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/tmooney3979/dynamic_form
+  revision: 5775314bba4108d489a13657b8d594bf6db7d9b2
+  specs:
+    dynamic_form (1.1.3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -75,7 +81,6 @@ GEM
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
-    dynamic_form (1.1.4)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -203,7 +208,7 @@ DEPENDENCIES
   debugger
   delayed_job_active_record
   devise (~> 2.2.0)
-  dynamic_form
+  dynamic_form!
   jquery-rails (= 2.1.4)
   less-rails
   less-rails-bootstrap

@@ -29,10 +29,12 @@ group :assets do
   gem 'less-rails-fontawesome'
 end
 
+#using this fork so that error messages with html will display properly
+gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'
+
 gem 'devise', "~> 2.2.0"
 gem 'cancan'
 gem 'carmen'
-gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "paperclip", "~> 3.0"
