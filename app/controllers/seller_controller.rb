@@ -106,8 +106,10 @@ class SellerController < ApplicationController
   end
   
   def get_past_inventory_items
-    InventoryItem.joins("LEFT JOIN inventory_item_order_cycles ON inventory_items.id = inventory_item_order_cycles.inventory_item_id")
-                 .where("inventory_item_order_cycles.inventory_item_id IS NULL AND user_id = ? AND is_deleted = ?", current_user.id, false)
+    InventoryItem.joins("LEFT JOIN (SELECT inventory_item_id FROM inventory_item_order_cycles 
+                        INNER JOIN order_cycles ON order_cycles.id = inventory_item_order_cycles.order_cycle_id 
+                        AND order_cycles.status IN('current','pending')) AS j ON j.inventory_item_id = inventory_items.id")
+                 .where("j.inventory_item_id IS NULL AND user_id = ? AND is_deleted = ?", current_user.id, false)
                  .order("created_at DESC")
   end
   
