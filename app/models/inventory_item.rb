@@ -111,7 +111,7 @@ class InventoryItem < ActiveRecord::Base
       self.changed.each do |value|
         if(value != "quantity_available")
           field = value.to_sym
-          errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please contact the site manager.")
+          errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please <a href=\"#{Rails.application.routes.url_helpers.change_request_inventory_item_path(:id => self.id)}\">send a request</a> to the site manager.".html_safe)
         end
       end
     end

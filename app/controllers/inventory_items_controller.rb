@@ -155,4 +155,26 @@ class InventoryItemsController < ApplicationController
     render :json => units
   end
   
+  def change_request
+    @item = InventoryItem.find(params[:id])
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def send_change_request
+    item = InventoryItem.find(params[:id])
+    description = params[:description]
+    managers = User.joins(:roles).where('roles.name = ?', "manager")
+    
+    managers.each do |manager|
+      ManagerMailer.delay.inventory_item_change_request(manager, description, item)
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to seller_index_path, notice: "Change request successfully sent."}
+    end
+  end
+  
 end

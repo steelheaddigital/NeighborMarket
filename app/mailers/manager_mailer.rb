@@ -17,4 +17,13 @@ class ManagerMailer < BaseMailer
     
   end
   
+  def inventory_item_change_request(manager, description, inventory_item)
+    @inventory_item = inventory_item
+    @description = description
+    site_settings = SiteSetting.first
+    
+    mail( :to => manager.email,
+          :subject => "#{@inventory_item.user.username} at #{site_settings.site_name} has requested a change to an inventory item")
+  end
+  
 end

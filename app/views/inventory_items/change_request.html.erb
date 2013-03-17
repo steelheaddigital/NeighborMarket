@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span6 ">
+      <p><h3>Send Inventory Item Change Reqest</h3></p>
+	  <label>Iventory item</label>
+      <%= form_for @item, :url => send_change_request_inventory_item_path, :method => "POST" do |f|%>
+        <%= f.error_messages %>
+	    <table class="table table-bordered table-condensed">
+	      <thead>
+	        <tr>
+	  		  <th>Name</th>
+	            <th>Top Level Category</th>
+	            <th>Second Level Category</th>
+	            <th>Price</th>
+	            <th>Quantity</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	          <tr>
+	  		  	<td><%= item_name(@item)%></td>
+	            <td><%= @item.top_level_category.name%></td>
+	            <td><%= @item.second_level_category.name%></td>
+	            <td><%= number_to_currency(@item.price).to_s + " " + price_unit_label(@item) %></td>
+	            <td><%= @item.quantity_available%></td>
+	          </tr>
+	      </tbody>
+	    </table>
+        <div>
+          <%= f.label "Change Description" %>
+          <%= text_area_tag 'description', nil, {:class => 'input-xlarge', :rows => 10 }%>
+        </div>
+        <div>
+          <%= f.submit "Send", {:class => 'btn'} %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

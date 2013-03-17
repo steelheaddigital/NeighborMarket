@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   
   def completed_order_id
     if user_signed_in? && current_user.buyer? && OrderCycle.pending_delivery && !OrderCycle.current_cycle
-      completed_order = current_user.orders.joins(:order_cycles).where("order_cycles.buyer_pickup_date >= ? AND order_cycles.status = ?", DateTime.now.utc, "complete").last
+      completed_order = current_user.orders.joins(:order_cycle).where("order_cycles.buyer_pickup_date >= ? AND order_cycles.status = ?", DateTime.now.utc, "complete").last
       @completed_order_id = completed_order.id if completed_order
     end
   end

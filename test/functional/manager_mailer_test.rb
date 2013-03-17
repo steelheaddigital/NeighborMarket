@@ -34,4 +34,19 @@ class ManagerMailerTest < ActionMailer::TestCase
     assert_match("approvedseller has added a new inventory item named Carrot.", sent.body.to_s)
   end
   
+  test "inventory_item_change_request" do
+    manager = users(:manager_user)
+    description = "test description"
+    inventory_item = inventory_items(:one)
+    
+    ManagerMailer.inventory_item_change_request(manager, description, inventory_item).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [manager.email], sent.to
+    assert_equal "approvedseller at Test Neighbor Market has requested a change to an inventory item", sent.subject
+    assert_match("Seller, approvedseller, has requested a change to the following inventory item.", sent.body.to_s)
+    assert_match("test description", sent.body.to_s)
+  end
+  
 end

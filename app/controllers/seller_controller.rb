@@ -77,10 +77,6 @@ class SellerController < ApplicationController
     end
   end
   
-  def method_name
-    
-  end
-  
   private
   
   def get_packing_list_orders(order_cycle_id)

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Seller, <%= @inventory_item.user.username  %>, has requested a change to the following inventory item.
+      Please <a href="<%= new_user_session_url %>">log in</a> to make these changes. </p>
+	<p>
+	    <table border=1 style="border-collapse: collapse;">
+	      <thead>
+	        <tr>
+				<th>Item Id</th>
+	  		  	<th>Name</th>
+	            <th>Top Level Category</th>
+	            <th>Second Level Category</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	          <tr>
+				<td><%= @inventory_item.id%></td>
+	  		  	<td><%= item_name(@inventory_item)%></td>
+	            <td><%= @inventory_item.top_level_category.name%></td>
+	            <td><%= @inventory_item.second_level_category.name%></td>
+	          </tr>
+	      </tbody>
+	    </table>
+	</p>
+	<h2>Change Description</h2>
+	<p><%= @description %>
+  </body>
+</html>

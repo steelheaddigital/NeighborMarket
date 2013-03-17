@@ -174,7 +174,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     end
     
     assert_redirected_to seller_index_path
-    assert_equal 'Item cannot be removed from the current order cycle since it is contained in one or more orders. If you need to change this item, please contact the site manager.', flash[:notice]
+    assert_equal "Item cannot be removed from the current order cycle since it is contained in one or more orders. If you need to change this item, please <a href=\"/inventory_items/980190962/change_request\">send a request</a> to the site manager.", flash[:notice]
   end
   
   test "get_second_level_category returns second level category"do
@@ -222,6 +222,21 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JSON
   end
   
+  test "should get change_request" do
+    item = inventory_items(:one)
+    get :change_request, :id => item.id
+    
+    assert_response :success
+    assert_not_nil assigns(:item)
+  end
+  
+  test "should send_change_request" do
+    item = inventory_items(:one)
+    post :send_change_request, :id => item.id
+    
+    assert_redirected_to seller_index_path
+  end
+  
   test "seller cannot access items other than their own" do
     item = inventory_items(:two)
     
@@ -234,7 +249,6 @@ class InventoryItemsControllerTest < ActionController::TestCase
     get :destroy, :id => item.id
     assert_response :not_found
   end
-  
   
   test "anonymous user cannot access protected actions" do
     sign_out @user
@@ -253,6 +267,12 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
     
     get :destroy, :id => item.id
+    assert_redirected_to new_user_session_path
+    
+    get :change_request, :id => item.id
+    assert_redirected_to new_user_session_path
+    
+    post :send_change_request, :id => item.id
     assert_redirected_to new_user_session_path
   end
   
