@@ -33,8 +33,7 @@ class Ability
     
     if user.approved_seller?
       can :manage, InventoryItem, :user_id => user.id
-      can :delete, CartItem, :inventory_item => {:user_id => user.id}
-      can :update, Order
+      can :create, InventoryItemChangeRequest
     end
     
     if user.buyer?
