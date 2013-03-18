@@ -108,6 +108,9 @@ NeighborMarket::Application.routes.draw do
   
   resources :price_units
   
+  match 'inventory_item_change_request/:inventory_item_id/new' => 'inventory_item_change_request#new', :via => "GET", :as => :new_inventory_item_change_request
+  match 'inventory_item_change_request/:inventory_item_id/create' => 'inventory_item_change_request#create', :via => "POST", :as => :create_inventory_item_change_request
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
