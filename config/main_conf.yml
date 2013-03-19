@@ -12,7 +12,7 @@ production:
         enable_starttls_auto: true
         openssl_verify_mode: 'none' 
 development:
-    host: 'neighbormarket'
+    host: 'neighbormarket.local'
     default_from: 'admin@steelheaddigital.com'
     manager_email: 'tmooney3979@gmail.com'
     smtp_settings:

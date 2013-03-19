@@ -202,7 +202,7 @@ class User < ActiveRecord::Base
   
   def soft_delete
     update_column(:deleted_at, Time.now)
-    update_column(:email, "")
+    update_column(:email, nil)
     update_column(:encrypted_password, "")
     update_column(:reset_password_token, nil)
     update_column(:reset_password_sent_at, nil)
