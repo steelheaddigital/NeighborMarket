@@ -374,7 +374,7 @@ class UserTest < ActiveSupport::TestCase
     user.soft_delete
     
     assert_not_nil user.deleted_at
-    assert_equal("", user.email)
+    assert_nil user.email
     assert_nil user.password
     assert_nil user.reset_password_token
     assert_nil user.reset_password_sent_at
