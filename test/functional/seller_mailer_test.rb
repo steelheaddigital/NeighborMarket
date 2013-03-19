@@ -78,4 +78,15 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("Portland, OR 97218", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
   end
   
+  test "change_request_complete_mail" do
+    request = inventory_item_change_requests(:one)
+    SellerMailer.change_request_complete_mail(request).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [request.inventory_item.user.email], sent.to
+    assert_equal "Your inventory item change request has been completed", sent.subject
+    assert_match("TestDescription", sent.body.to_s)
+  end
+  
 end

@@ -62,6 +62,7 @@ NeighborMarket::Application.routes.draw do
       get 'manage_units'
       post 'create_price_unit'
       delete 'destroy_price_unit'
+      get 'inventory_item_change_requests'
     end
   end
   
@@ -110,6 +111,11 @@ NeighborMarket::Application.routes.draw do
   
   match 'inventory_item_change_request/:inventory_item_id/new' => 'inventory_item_change_request#new', :via => "GET", :as => :new_inventory_item_change_request
   match 'inventory_item_change_request/:inventory_item_id/create' => 'inventory_item_change_request#create', :via => "POST", :as => :create_inventory_item_change_request
+  resources :inventory_item_change_request do
+    member do
+      post 'complete'
+    end
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

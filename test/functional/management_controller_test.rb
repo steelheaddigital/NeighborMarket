@@ -375,6 +375,13 @@ class ManagementControllerTest < ActionController::TestCase
     
   end
   
+  test "should get inventory_item_change_requests" do
+    get :inventory_item_change_requests
+    
+    assert_response :success
+    assert_not_nil assigns(:requests)
+  end
+  
   
   test "anonymous user cannot access protected actions" do
     sign_out @user
@@ -452,6 +459,9 @@ class ManagementControllerTest < ActionController::TestCase
      assert_redirected_to new_user_session_path
      
      post :destroy_price_unit
+     assert_redirected_to new_user_session_path
+     
+     get :inventory_item_change_requests
      assert_redirected_to new_user_session_path
   end
   
@@ -533,6 +543,9 @@ class ManagementControllerTest < ActionController::TestCase
     assert_response :not_found
     
     post :destroy_price_unit
+    assert_response :not_found
+    
+    get :inventory_item_change_requests
     assert_response :not_found
   end
   

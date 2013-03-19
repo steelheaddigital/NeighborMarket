@@ -38,6 +38,13 @@ class SellerMailer < BaseMailer
           :subject => "The current order cycle has ended at #{@site_settings.site_name}")
   end
   
+  def change_request_complete_mail(change_request)
+    @request = change_request
+    
+    mail( :to => change_request.inventory_item.user.email,
+          :subject => "Your inventory item change request has been completed")
+  end
+  
   private
   
   def purchase_mail(seller, order, subject)

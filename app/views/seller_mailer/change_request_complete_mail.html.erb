@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <strong>The below inventory item change request has been completed</strong>
+    <table border=1 style="border-collapse: collapse;">
+    <thead>  
+      <tr>
+        <th>Inventory Item Name</th>
+        <th>Request Description</th>
+      </tr>
+    </thead>
+      <tbody>
+		<tr>
+          <td><%= item_name(@request.inventory_item) %></td>
+          <td><%= @request.description %></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

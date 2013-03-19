@@ -29,4 +29,18 @@ class InventoryItemChangeRequestController < ApplicationController
     end    
   end
   
+  def complete
+    request = InventoryItemChangeRequest.find(params[:id])
+    request.complete = true
+    
+    respond_to do |format|
+      if request.save
+        SellerMailer.delay.change_request_complete_mail(request)
+        format.html { redirect_to inventory_item_change_requests_management_index_path, notice: "Request successfully completed."}
+      else
+        format.html { redirect_to inventory_item_change_requests_management_index_path, notice: "Request could not be completed."}
+      end
+    end
+  end
+  
 end

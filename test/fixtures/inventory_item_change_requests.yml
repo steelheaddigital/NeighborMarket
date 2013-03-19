@@ -2,7 +2,7 @@
 
 one:
   inventory_item_id: 1
-  description: MyText
+  description: TestDescription
   complete: false
   inventory_item: one
 
@@ -10,3 +10,4 @@ two:
   inventory_item_id: 1
   description: MyText
   complete: false
+  inventory_item: two
