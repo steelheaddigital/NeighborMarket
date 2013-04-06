@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span6 ">
-      <p><h3>Send Inventory Item Change Reqest</h3></p>
-	  <label>Iventory item</label>
+      <p><h3>Send Inventory Item Change Request</h3></p>
+	  <label>Inventory item</label>
       <%= form_for @request, :url => create_inventory_item_change_request_path(:inventory_item_id => @item.id), :method => "POST" do |f|%>
         <%= f.error_messages %>
 	    <table class="table table-bordered table-condensed">

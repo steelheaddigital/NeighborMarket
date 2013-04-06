@@ -31,12 +31,60 @@ class CartItemTest < ActiveSupport::TestCase
     end
   end
   
-  test "doesn not update inventory_item quantity availabe on destroy if item does not have order" do
+  test "does not update inventory_item quantity availabe on destroy if item does not have order" do
     item = cart_items(:no_order)
     
     assert_no_difference "item.inventory_item.quantity_available" do
       item.destroy
     end
+  end
+  
+  test "does not update quantity if user is buyer and item has order and quantity is decreased" do
+    item = cart_items(:one)
+    item.current_user = users(:buyer_user)
+    
+    item.update_attributes(:quantity => 9)
+    
+    assert !item.valid?
+  end
+  
+  test "updates quantity if user is buyer and item has order and quantity is increased" do
+    item = cart_items(:one)
+    item.current_user = users(:buyer_user)
+    
+    item.update_attributes(:quantity => 11)
+    
+    assert item.valid?
+  end
+  
+  test "updates quantity if user is manager and item has order and quantity is decreased" do
+    item = cart_items(:one)
+    item.current_user = users(:manager_user)
+    
+    item.update_attributes(:quantity => 9)
+    
+    assert item.valid?
+  end
+  
+  test "can_edit? returns true if user is manager" do
+    item = cart_items(:one)
+    item.current_user = users(:manager_user)
+    
+    assert item.can_edit?
+  end
+  
+  test "can_edit? returns true if user is not manager and cart_item is not in an order" do
+    item = cart_items(:no_order)
+    item.current_user = users(:buyer_user)
+    
+    assert item.can_edit?
+  end
+  
+  test "can_edit? returns false if user is not manager and item is in order" do
+    item = cart_items(:one)
+    item.current_user = users(:buyer_user)
+    
+    assert !item.can_edit?
   end
   
 end

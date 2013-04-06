@@ -44,6 +44,7 @@ class OrderTest < ActiveSupport::TestCase
   test "seller inventory changed by difference in quantity when associated cart item changed" do
     
     order = orders(:current)
+    order.current_user = users(:manager_user)
     cart_item_id = order.cart_items.first.id
     order.attributes = {:cart_items_attributes => [:id => cart_item_id, :quantity => 9]}
     

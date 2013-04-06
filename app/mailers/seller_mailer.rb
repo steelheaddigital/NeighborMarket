@@ -41,7 +41,7 @@ class SellerMailer < BaseMailer
   def change_request_complete_mail(change_request)
     @request = change_request
     
-    mail( :to => change_request.inventory_item.user.email,
+    mail( :to => change_request.user.email,
           :subject => "Your inventory item change request has been completed")
   end
   

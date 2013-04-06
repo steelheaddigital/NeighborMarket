@@ -4,7 +4,7 @@ class InventoryItemChangeRequestController < ApplicationController
   
   def new
     @item = InventoryItem.find(params[:inventory_item_id])
-    @request = InventoryItemChangeRequest.new
+    @request = current_user.inventory_item_change_requests.build
     
     respond_to do |format|
       format.html
@@ -13,7 +13,7 @@ class InventoryItemChangeRequestController < ApplicationController
   
   def create
     @item = InventoryItem.find(params[:inventory_item_id])
-    @request = InventoryItemChangeRequest.new(params[:inventory_item_change_request])
+    @request = current_user.inventory_item_change_requests.build(params[:inventory_item_change_request])
     @request.inventory_item = @item
     
     respond_to do |format|

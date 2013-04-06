@@ -5,9 +5,11 @@ one:
   description: TestDescription
   complete: false
   inventory_item: one
+  user: approved_seller_user
 
 two:
   inventory_item_id: 1
   description: MyText
   complete: false
   inventory_item: two
+  user: unapproved_seller_user

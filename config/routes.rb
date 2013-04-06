@@ -63,6 +63,7 @@ NeighborMarket::Application.routes.draw do
       post 'create_price_unit'
       delete 'destroy_price_unit'
       get 'inventory_item_change_requests'
+      get 'order_change_requests'
     end
   end
   
@@ -112,6 +113,14 @@ NeighborMarket::Application.routes.draw do
   match 'inventory_item_change_request/:inventory_item_id/new' => 'inventory_item_change_request#new', :via => "GET", :as => :new_inventory_item_change_request
   match 'inventory_item_change_request/:inventory_item_id/create' => 'inventory_item_change_request#create', :via => "POST", :as => :create_inventory_item_change_request
   resources :inventory_item_change_request do
+    member do
+      post 'complete'
+    end
+  end
+  
+  match 'order_change_request/:order_id/new' => 'order_change_request#new', :via => "GET", :as => :new_order_change_request
+  match 'order_change_request/:order_id/create' => 'order_change_request#create', :via => "POST", :as => :create_order_change_request
+  resources :order_change_request do
     member do
       post 'complete'
     end

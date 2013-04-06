@@ -61,7 +61,6 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   test "should update order" do
-    
     order = orders(:current)
     
     post :update, :id => order.id
@@ -69,20 +68,42 @@ class OrdersControllerTest < ActionController::TestCase
     assert_not_nil :order
     assert_redirected_to edit_order_path
     assert_equal 'Order successfully updated!', flash[:notice]
+  end
+  
+  test "should update cart_items in order if user is buyer and quantity is increased" do
+    order = orders(:current)
+    cart_item = cart_items(:one)
     
+    post :update, :id => order.id, :order => { :cart_items_attributes => { 0 => { :quantity => 11, :id => cart_item.id } } }
+    
+    assert_not_nil :order
+    assert_redirected_to edit_order_path
+    assert_equal 'Order successfully updated!', flash[:notice]
+  end
+  
+  test "should not update cart_items in order if user is buyer and quantity is decreased" do
+    order = orders(:current)
+    cart_item = cart_items(:one)
+    
+    post :update, :id => order.id, :order => { :cart_items_attributes => { 0 => { :quantity => 9, :id => cart_item.id } } }
+    
+    assert_not_nil :order
+    assert !assigns(:order).valid?
+    assert_equal "Cart items quantity cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"/order_change_request/485700622/new\">send a request</a> to the site manager.", assigns(:order).errors.full_messages.first
   end
   
   test "should show order" do
-    
     order = orders(:current)
     
     get :show, :id => order.id
     
     assert_not_nil :order
-    
   end
   
   test "should destroy order" do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
     
     order = orders(:current)
     

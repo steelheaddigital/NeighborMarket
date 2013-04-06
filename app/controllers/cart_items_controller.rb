@@ -20,6 +20,7 @@ class CartItemsController < ApplicationController
   
   def destroy
     @cart_item = CartItem.find(params[:cart_item_id])
+    @cart_item.current_user = current_user
       
     respond_to do |format|
       if @cart_item.destroy
@@ -27,7 +28,7 @@ class CartItemsController < ApplicationController
           if Order.exists?(@cart_item.order_id)
             format.html{ redirect_to edit_order_path(@cart_item.order_id) }
           else
-            format.html{ redirect_to root_path, notice: "You have deleted all items in your order. Your order has been cancelled."}
+            format.html{redirect_to order_change_requests_management_index_path, notice: "All Items in the order have been deleted. The order has been cancelled."}
           end
         else
           format.html{ redirect_to cart_index_path }

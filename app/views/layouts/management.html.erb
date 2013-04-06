@@ -23,7 +23,6 @@
 	          <ul class="secondLevel">
 	            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
 				<li class=<%= nav_item_is_active('inventory') %>><%= link_to "Current Inventory", inventory_management_index_path %></li>
-				<li class=<%= nav_item_is_active('inventory_item_change_requests') %>><%= link_to "Inventory Item Change Requests", inventory_item_change_requests_management_index_path %></li>
 	          </ul>
 	      </li>
 	      <li id="MainCategoriesMenu">
@@ -33,6 +32,13 @@
 	            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
 	            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
 				<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
+	          </ul>
+	      </li>
+		  <li id="ChangeRequestsMenu">
+	          <span class="secondLevelLabel">Change Requests</span>
+	          <ul class="secondLevel">
+				<li class=<%= nav_item_is_active('inventory_item_change_requests') %>><%= link_to "Inventory Item Change Requests", inventory_item_change_requests_management_index_path %></li>
+				<li class=<%= nav_item_is_active('order_change_requests') %>><%= link_to "Order Change Requests", order_change_requests_management_index_path %></li>
 	          </ul>
 	      </li>
 	      <li></li>

@@ -4,14 +4,43 @@ class CartItem < ActiveRecord::Base
   belongs_to :order
   
   attr_accessible :inventory_item_id, :quantity
+  attr_accessor :current_user
+  
   validate :validate_quantity,
            :ensure_current_order_cycle
+           
+  validate :validate_can_edit, :on => :update
   
   before_destroy :update_inventory_item_quantities
   after_destroy :check_order
-   
+  
+  def can_edit?
+    user_editable || self.order.nil?
+  end
+  
   def update_inventory_item_quantities
     self.inventory_item.increment_quantity_available(self.quantity) if self.order
+  end
+  
+  def total_price
+    inventory_item.price * quantity
+  end
+  
+  private
+  
+  def validate_can_edit
+    if !can_edit?
+      if self.quantity_was > self.quantity
+        errors.add(:quantity, "cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"#{Rails.application.routes.url_helpers.new_order_change_request_path(:order_id => self.order.id)}\">send a request</a> to the site manager.".html_safe)
+      end
+    end
+  end
+  
+  def user_editable
+    if current_user
+      @user_editable = current_user.manager?
+    end
+    @user_editable || false
   end
   
   def check_order
@@ -31,12 +60,6 @@ class CartItem < ActiveRecord::Base
       end
     end
   end
-  
-  def total_price
-    inventory_item.price * quantity
-  end
-  
-  private
   
   def ensure_current_order_cycle
     if !OrderCycle.current_cycle

@@ -16,7 +16,7 @@
   	  	<td><%= item_name(request.inventory_item)%></td>
         <td><%= request.description%></td>
         <td><%= link_to "Edit Item", {:controller => "management", :action => "edit_inventory", :id => request.inventory_item.id}, :id => "mgmtEditInventoryItemButton", :class => "btn", :style => "width:60%;" %></td>
-        <td><%= button_to "Complete", complete_inventory_item_change_request_path(request), {:form => {:class => "mgmtDeleteInventoryItemButton"}, :confirm => "Are you sure you want to complete this request?", :class => "btn btn-primary", :style => "width:95%;"} %></td>
+        <td><%= button_to "Complete", complete_inventory_item_change_request_path(request), { :confirm => "Are you sure you want to complete this request?", :class => "btn btn-primary", :style => "width:95%;"} %></td>
       </tr>
     <%end%>
   </tbody>

@@ -43,4 +43,15 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("Test payment instructions", sent.body.to_s) 
   end
   
+  test "change_request_complete_mail" do
+    request = order_change_requests(:one)
+    BuyerMailer.change_request_complete_mail(request).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [request.order.user.email], sent.to
+    assert_equal "Your order change request has been completed", sent.subject
+    assert_match("TestDescription", sent.body.to_s)
+  end
+  
 end

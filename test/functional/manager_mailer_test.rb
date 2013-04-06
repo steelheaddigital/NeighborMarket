@@ -49,4 +49,19 @@ class ManagerMailerTest < ActionMailer::TestCase
     assert_match("test description", sent.body.to_s)
   end
   
+  test "order_change_request" do
+    manager = users(:manager_user)
+    description = "test description"
+    order = orders(:current)
+    
+    ManagerMailer.order_change_request(manager, description, order).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [manager.email], sent.to
+    assert_equal "buyer at Test Neighbor Market has requested a change to an order", sent.subject
+    assert_match("Buyer, buyer, has requested a change to the following order.", sent.body.to_s)
+    assert_match("test description", sent.body.to_s)
+  end
+  
 end

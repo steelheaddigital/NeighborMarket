@@ -14,25 +14,24 @@ class CartItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:cart_item)
     assert_redirected_to cart_index_path
   end
-  
-  test "logged in buyer can destroy cart item that is in order" do
+    
+  test "logged in buyer cannot destroy cart item that is in order" do
     cart_item = cart_items(:one)
     @user = users(:buyer_user)
     sign_in @user
     
-    assert_difference 'CartItem.count', -1 do
+    assert_no_difference 'CartItem.count' do
       get :destroy, :cart_item_id => cart_item.id 
     end
     
-    assert_not_nil assigns(:cart_item)
-    assert_redirected_to edit_order_path(cart_item.order_id)
+    assert_response :not_found
   end
   
-  test "logged in buyer can destroy cart item that is in order and is redirected to root path if deleting last item" do
+  test "logged in manager can destroy cart item that is in order" do
     cart_item = cart_items(:one)
     cart_item_four = cart_items(:four)
     cart_item_four.destroy
-    @user = users(:buyer_user)
+    @user = users(:manager_user)
     sign_in @user
     
     assert_difference 'CartItem.count', -1 do
@@ -40,10 +39,10 @@ class CartItemsControllerTest < ActionController::TestCase
     end
     
     assert_not_nil assigns(:cart_item)
-    assert_redirected_to root_path
+    assert_redirected_to order_change_requests_management_index_path
   end
   
-  test "logged in buyer can destroy cart item that is in cart" do
+  test "logged in buyer can destroy cart item that is in their session but has no order" do
     cart = carts(:no_order)
     cart_item = cart_items(:no_order)
     @user = users(:buyer_user)
@@ -55,6 +54,19 @@ class CartItemsControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:cart_item)
     assert_redirected_to cart_index_path
+  end
+  
+  test "logged in buyer cannot destroy cart item that is in session but has an order" do
+    cart = carts(:full)
+    cart_item = cart_items(:one)
+    @user = users(:buyer_user)
+    sign_in @user
+    
+    assert_no_difference 'CartItem.count' do
+      get(:destroy, { 'cart_item_id' => cart_item.id }, {'cart_id' => cart.id})
+    end
+
+    assert_response :not_found
   end
   
   test "anonymous user can destroy cart item if in their session" do

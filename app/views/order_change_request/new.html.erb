@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span6 ">
+      <p><h3>Send Order Change Request</h3></p>
+	  <label>Order</label>
+      <%= form_for @request, :url => create_order_change_request_path(:order_id => @order.id), :method => "POST" do |f|%>
+        <%= f.error_messages %>
+	    <table class="table table-bordered table-condensed">
+		    <thead>  
+		      <tr>
+		        <th>Name</th>
+		        <th>Price</th>
+		        <th>Quantity</th>
+		        <th>Seller</th>
+		        <th>Payment Instructions</th>
+		      </tr>
+		    </thead>
+	      <tbody>
+			<%@order.sub_totals.each do |key, value|%>
+				<%seller_name = ""%>
+				<%@order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item| %>
+					<%seller_name = item.inventory_item.user.username%>
+					<tr>
+			          <td><%= item_name(item.inventory_item) %></td>
+			          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
+			          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+			          <td><%= seller_name %>
+			          <td><%= item.inventory_item.user.payment_instructions %>
+			        </tr>
+				<%end%>
+				<tr>
+					<td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
+					<td><%= number_to_currency(value)%>
+					<td></td>
+			        <td></td>
+			        <td></td>
+				</tr>
+			<%end%>
+	        <tr>
+	          <td style="font-weight:bold;">Total:</td>
+	          <td><%= number_to_currency @order.total_price %></td>
+	          <td></td>
+	          <td></td>
+	          <td></td>
+	        </tr>
+	      </tbody>
+	    </table>
+        <div>
+          <%= f.label "Change Description" %>
+          <%= f.text_area :description, {:class => 'input-xlarge', :rows => 10 }%>
+        </div>
+        <div>
+          <%= f.submit "Send", {:class => 'btn'} %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

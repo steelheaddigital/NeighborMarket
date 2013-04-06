@@ -37,18 +37,16 @@ class Ability
     end
     
     if user.buyer?
-      can :manage, Order, :user_id => user.id
+      can :update, Order, :user_id => user.id
       can :create, Order
-      
-      #can only destroy cart items in their own order
-      can :destroy, CartItem, :order => {:user => {:id => user.id}}
+      can :create, OrderChangeRequest
     end
     
     if user
       #Anyone can delete a cart_item that is in their session
       if session[:cart_id]
         cart = Cart.find(session[:cart_id])
-        can :destroy, CartItem if cart.cart_items.where("cart_id = ?", cart.id)
+        can :destroy, CartItem if cart.cart_items.where("cart_id = ? AND order_id IS NULL", cart.id).count > 0
         can :manage, Cart if cart
       end
     end

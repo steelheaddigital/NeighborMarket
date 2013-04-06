@@ -380,6 +380,14 @@ class ManagementController < ApplicationController
       format.html
     end
   end
+  
+  def order_change_requests
+    @requests = OrderChangeRequest.where(:complete => false)
+    
+    respond_to do |format|
+      format.html
+    end
+  end
 
   private
   

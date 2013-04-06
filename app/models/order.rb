@@ -5,15 +5,17 @@ class Order < ActiveRecord::Base
   
   accepts_nested_attributes_for :cart_items
   attr_accessible :cart_items_attributes
+  attr_accessor :current_user
   
   validate :ensure_current_order_cycle
+  before_validation :set_cart_items_user
   
   before_save do |order|
     order_cycle_id = OrderCycle.current_cycle_id
     order.order_cycle_id = order_cycle_id
     update_seller_inventory(order)
   end
-  
+    
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|
       item.cart_id = nil
@@ -39,7 +41,13 @@ class Order < ActiveRecord::Base
     return sub_total
   end
   
-  private 
+  private
+  
+  def set_cart_items_user
+    self.cart_items.each do |item|
+      item.current_user = self.current_user
+    end
+  end
   
   def ensure_current_order_cycle
     current_order_cycle_id = OrderCycle.current_cycle_id

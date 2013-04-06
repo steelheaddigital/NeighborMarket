@@ -12,7 +12,7 @@ production:
         enable_starttls_auto: true
 development:
     host: 'neighbormarket.local'
-    default_from: 'admin@steelheaddigital.com'
+    default_from: 'gmpmanagertest@gmail.com'
     manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
         address: "smtp.gmail.com"

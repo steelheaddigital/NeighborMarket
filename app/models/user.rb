@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
   has_many :orders, :dependent => :destroy
+  has_many :order_change_requests
+  has_many :inventory_item_change_requests
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   validates :username, :uniqueness => true, :unless => :auto_create

@@ -68,12 +68,12 @@ class OrdersController < ApplicationController
   
   def update
     @order = Order.find(params[:id])
+    @order.current_user = current_user
     @total_price = @order.total_price
     
     respond_to do |format|
       if @order.update_attributes(params[:order])
         send_emails(@order, true)
-        
         format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
       else
         format.html { render "edit" }
