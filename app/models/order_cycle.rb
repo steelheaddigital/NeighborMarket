@@ -144,7 +144,7 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def self.active_cycle
-    self.where('status IN("pending", "current")').last
+    self.where("status IN('pending', 'current')").last
   end
     
   def self.queue_order_cycle_start_job(start_date)

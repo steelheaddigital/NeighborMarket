@@ -384,8 +384,6 @@ class UserTest < ActiveSupport::TestCase
     assert_nil user.last_sign_in_at
     assert_nil user.current_sign_in_ip
     assert_nil user.last_sign_in_ip
-    assert_nil user.created_at
-    assert_nil user.updated_at
     assert_nil user.first_name
     assert_nil user.last_name
     assert_nil user.initial

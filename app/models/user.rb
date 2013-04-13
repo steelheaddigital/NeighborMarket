@@ -214,8 +214,6 @@ class User < ActiveRecord::Base
     update_column(:last_sign_in_at, nil)
     update_column(:current_sign_in_ip, nil)
     update_column(:last_sign_in_ip, nil)
-    update_column(:created_at, nil)
-    update_column(:updated_at, nil)
     update_column(:first_name, nil)
     update_column(:last_name, nil)
     update_column(:initial, nil)

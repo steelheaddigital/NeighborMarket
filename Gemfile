@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
-
-gem 'mysql2'
+#gem 'mysql2'
+gem 'pg'
+gem 'unicorn'
 
 group :development, :test do
   gem 'debugger'
-  gem 'ruby-debug-passenger'
 end
 
 group :test do
@@ -44,4 +44,5 @@ gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
 gem 'whenever', :require => false
 gem 'acts_as_indexed'
+gem 'foreman'
 
