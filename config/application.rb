@@ -45,5 +45,8 @@ module NeighborMarket
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/javascripts/lib"
+    
+    #Needed to prevent app from connecting to database when compiling assets, causes errors on heroku deploy
+    config.assets.initialize_on_precompile = false
   end
 end
