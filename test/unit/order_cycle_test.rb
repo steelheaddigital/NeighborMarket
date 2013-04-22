@@ -54,7 +54,7 @@ class OrderCycleTest < ActiveSupport::TestCase
   test "save_and_set_status queues new job and sets status to pending if start_date is after now" do
     order_cycle = OrderCycle.new(:start_date => Date.current + 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
     
-    assert_difference "Delayed::Job.count" do
+    assert_difference "OrderCycleStartJob.jobs.size" do
       order_cycle.save_and_set_status
     end
     assert_equal("pending", order_cycle.status)
@@ -63,7 +63,7 @@ class OrderCycleTest < ActiveSupport::TestCase
   test "save_and_set_status queues new job and sets status to current if start_date is before now" do
     order_cycle = OrderCycle.new(:start_date => DateTime.current - 1.day, :end_date => DateTime.current + 1.day, :seller_delivery_date => DateTime.current + 1.day, :buyer_pickup_date => DateTime.current + 1.day)
     
-    assert_difference "Delayed::Job.count" do
+    assert_difference "OrderCycleEndJob.jobs.size" do
       order_cycle.save_and_set_status
     end
     assert_equal("current", order_cycle.status)

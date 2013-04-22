@@ -1,3 +1,0 @@
-include DelayedJobProcess
-
-start_delayed_job unless daemon_is_running?

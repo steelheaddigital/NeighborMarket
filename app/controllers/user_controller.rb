@@ -57,7 +57,7 @@ class UserController < ApplicationController
         new_seller_approved = @user.approved_seller?
         
         if(previous_seller_approved == false && new_seller_approved == true)
-          SellerMailer.seller_approved_mail(@user).deliver
+          SellerMailer.delay.seller_approved_mail(@user)
         end
         
         format.html { redirect_to user_search_management_index_path, notice: 'User successfully updated!'}
@@ -75,7 +75,7 @@ class UserController < ApplicationController
     user = User.find(params[:id])
     
     if @message.valid?
-      UserMailer.user_contact_mail(user, @message).deliver
+      UserMailer.delay.user_contact_mail(user, @message)
       redirect_to(user_path(user), :notice => "Your message was successfully sent.")
     else
       flash.now.alert = "Please fill all fields."

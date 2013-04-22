@@ -48,7 +48,7 @@ class OrderCycle < ActiveRecord::Base
     
     success = self.save
     if success
-      complete_pending_cycles
+      #complete_pending_cycles
       if self.start_date > Time.current
         OrderCycle.queue_order_cycle_start_job(self.start_date)
       else
@@ -148,18 +148,27 @@ class OrderCycle < ActiveRecord::Base
   end
     
   def self.queue_order_cycle_start_job(start_date)
-    job = OrderCycleStartJob.new
-    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
-      job.destroy
-    end
-    Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
+    self.delete_jobs
+    OrderCycleStartJob.perform_at(start_date)
   end
   
   def self.queue_order_cycle_end_job(end_date)
-    job = OrderCycleEndJob.new
-    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
-      job.destroy
-    end
-    Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
+    self.delete_jobs
+    OrderCycleEndJob.perform_at(end_date)
   end
+  
+  private
+  
+  def self.delete_jobs
+    start_queue = Sidekiq::Queue.new("order_cycle_start")
+    start_queue.each do |job|
+      job.delete
+    end
+    
+    end_queue = Sidekiq::Queue.new("order_cycle_end")
+    end_queue.each do |job|
+      job.delete
+    end
+  end
+  
 end

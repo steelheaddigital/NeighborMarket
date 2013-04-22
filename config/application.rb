@@ -48,5 +48,7 @@ module NeighborMarket
     
     #Needed to prevent app from connecting to database when compiling assets, causes errors on heroku deploy
     config.assets.initialize_on_precompile = false
+    
+    config.eager_load_paths << File.join(Rails.root, "lib")
   end
 end

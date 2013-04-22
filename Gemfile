@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
-#gem 'mysql2'
 gem 'pg'
 gem 'unicorn'
 
@@ -38,11 +37,9 @@ gem 'carmen'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "paperclip", "~> 3.0"
-gem "delayed_job_active_record"
-gem "daemons"
 gem "capistrano"
 gem 'rvm-capistrano', '>= 1.1.0'
-gem 'whenever', :require => false
 gem 'acts_as_indexed'
 gem 'foreman'
+gem 'sidekiq'
 
