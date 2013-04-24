@@ -42,4 +42,5 @@ gem 'rvm-capistrano', '>= 1.1.0'
 gem 'acts_as_indexed'
 gem 'foreman'
 gem 'sidekiq'
+gem 'aws-sdk'
 
