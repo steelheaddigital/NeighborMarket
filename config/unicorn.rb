@@ -5,9 +5,9 @@ preload_app true
 
 before_fork do |server, worker|
   
-  #Start the Sidekiq worker inside of a Unicorn process
-  @sidekiq_pid ||= spawn("bundle exec sidekiq -c 2 -q order_cycle_start -q order_cycle_end -q default")
-
+  #Start the Delayed Job worker inside of a Unicorn process
+  @delayed_job_celluloid_pid ||= spawn("bundle exec script/delayed_job_celluloid -n 2")
+  
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
     Process.kill 'QUIT', Process.pid
@@ -18,20 +18,6 @@ before_fork do |server, worker|
 end 
 
 after_fork do |server, worker|
-  
-  Sidekiq.configure_client do |config|
-    config.redis = { :size => 1 }
-  end
-  
-  Sidekiq.configure_server do |config|
-    config.redis = { :size => 5 }
-      
-    database_url = ENV['DATABASE_URL']
-    if(database_url)
-      ENV['DATABASE_URL'] = "#{database_url}?pool=2"
-      ActiveRecord::Base.establish_connection
-    end
-  end
   
   Signal.trap 'TERM' do
     puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'

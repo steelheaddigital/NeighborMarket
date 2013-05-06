@@ -1,5 +1,5 @@
-require 'order_cycle_end_job'
-require 'order_cycle_start_job'
+require_relative '../../lib/order_cycle_end_job'
+require_relative '../../lib/order_cycle_start_job'
 
 class OrderCycle < ActiveRecord::Base
   has_many :orders
@@ -148,27 +148,19 @@ class OrderCycle < ActiveRecord::Base
   end
     
   def self.queue_order_cycle_start_job(start_date)
-    self.delete_jobs
-    OrderCycleStartJob.perform_at(start_date)
+    job = OrderCycleStartJob.new
+    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
+	    job.destroy
+    end
+    Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
   end
-  
+	  
   def self.queue_order_cycle_end_job(end_date)
-    self.delete_jobs
-    OrderCycleEndJob.perform_at(end_date)
-  end
-  
-  private
-  
-  def self.delete_jobs
-    start_queue = Sidekiq::Queue.new("order_cycle_start")
-    start_queue.each do |job|
-      job.delete
+    job = OrderCycleEndJob.new
+    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
+      job.destroy
     end
-    
-    end_queue = Sidekiq::Queue.new("order_cycle_end")
-    end_queue.each do |job|
-      job.delete
-    end
+	  Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
   end
   
 end

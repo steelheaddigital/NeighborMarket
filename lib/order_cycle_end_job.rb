@@ -1,6 +1,4 @@
 class OrderCycleEndJob
-  include Sidekiq::Worker
-  sidekiq_options :queue => :order_cycle_end
   
   def perform
     current_cycle = OrderCycle.find_by_status("current")

@@ -1,7 +1,5 @@
 class OrderCycleStartJob
-  include Sidekiq::Worker
-  sidekiq_options :queue => :order_cycle_start
-  
+
   def perform
     pending_cycle = OrderCycle.find_by_status("pending")
     pending_cycle.status = "current"
