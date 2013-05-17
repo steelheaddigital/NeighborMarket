@@ -11,7 +11,7 @@ production:
         authentication: 'plain'
         enable_starttls_auto: true
 development:
-    host: 'neighbormarket.local'
+    host: 'localhost:5000'
     default_from: 'gmpmanagertest@gmail.com'
     manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
