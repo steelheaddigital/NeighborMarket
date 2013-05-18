@@ -30,7 +30,13 @@ class UserTest < ActiveSupport::TestCase
      @buyer = User.new(:email => "buyer@example.com",
                        :password => "Abc123!",
                        :password_confirmation => "Abc123!",
-                       :username => "TestBuyer")
+                       :username => "TestBuyer",
+                       :address => "12345 Test St.",
+                       :city => "Portland",
+                       :country => "United States",
+                       :state => "Oregon",
+                       :zip => "97218",
+                       :delivery_instructions => "Test")
   
      buyer_role = Role.new
      buyer_role.name = "buyer"
@@ -136,6 +142,49 @@ class UserTest < ActiveSupport::TestCase
      
      assert @buyer.valid?
    end
+   
+   
+   test "should not save buyer without Address" do
+     @buyer.address = nil
+     
+     assert !@buyer.valid?
+   end
+
+   test "should not save buyer without City" do
+     @buyer.city = nil
+     
+     assert !@buyer.valid?
+   end
+   
+   test "should not save buyer without Zip" do
+     @buyer.zip = nil
+     
+     assert !@buyer.valid?
+   end
+  
+   test "should not save buyer without State" do
+     @buyer.state = nil
+     
+     assert !@buyer.valid?
+   end
+   
+   test "should not save buyer without Country" do
+     @buyer.country = nil
+     
+     assert !@buyer.valid?
+   end
+  
+   test "should not save buyer with invalid zip" do
+     @buyer.zip = "Foo"
+     
+     assert !@buyer.valid?
+   end  
+   
+   test "should not save buyer with delivery instructions" do
+     @buyer.delivery_instructions = nil
+     
+     assert !@buyer.valid?
+   end  
    
    test "should not save existing user without password and password confirmation if auto_created and not yet updated" do
     user = users(:auto_created_user)

@@ -11,14 +11,15 @@ class User < ActiveRecord::Base
   validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, :presence => true, :unless => :auto_create
   validates :first_name, 
-            :last_name, 
-            :address, 
+            :last_name, :presence => true, :if => :additional_fields_required?
+  validates :address, 
             :city, 
             :state, 
             :country, 
-            :zip, :presence => true, :if => :additional_fields_required?
+            :zip, :presence => true, :unless => :auto_create
   validates :phone, :presence => true, :if => :seller?
   validates :payment_instructions, :presence => true, :if => :seller?
+  validates :delivery_instructions, :presence => true, :if => :buyer?
   validates_format_of :phone,
                       :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
                       :message => "must be valid phone number",

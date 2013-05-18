@@ -37,19 +37,19 @@
 	  <div><%=if resource.seller? then f.label "Phone*" else f.label "Phone" end%>
 	  <%= f.telephone_field :phone %></div>
 
-      <div><%=if resource.seller? then f.label "Address*" else f.label "Address" end%>
+      <div><%= f.label "Address*"%>
       <%= f.text_field :address %></div>
 
-      <div><%=if resource.seller? then f.label "City*" else f.label "City" end%>
+      <div><%=f.label "City*" %>
       <%= f.text_field :city %></div>
 
-      <div><%=if resource.seller? then f.label "State*" else f.label "State" end%>
+      <div><%=f.label "State*"%>
       <%= f.state_select :state %></div>
 
-      <div><%=if resource.seller? then f.label "Country*" else f.label "Country" end%>
+      <div><%=f.label "Country*"%>
       <%= f.country_select(:country, "US") %></div>
 
-      <div><%=if resource.seller? then f.label "Zip*" else f.label "Zip" end %>
+      <div><%=f.label "Zip*"%>
       <%= f.text_field :zip %></div>
     </div>
     <div class="span1"></div>
