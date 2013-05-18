@@ -5,7 +5,7 @@ class PickList < Prawn::Document
     text "Pick List", :size => 30, :style => :bold
     move_down(30)
 
-    items = [["ID", "Name", "Quantity"]]
+    items = [["<b>ID</b>", "<b>Name</b>", "<b>Quantity</b>"]]
     inventory_items.map do |item|
     items +=  [[
         item.id,
@@ -16,7 +16,9 @@ class PickList < Prawn::Document
 
     table items,
       :header => true,
-      :column_widths => [100,250,100]
+      :column_widths => [100,250,100],
+      :cell_style => { :inline_format => true }
+      
     move_down(10)
 
     render

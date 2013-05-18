@@ -5,45 +5,6 @@
   </head>
   <body>
     <strong>One or more items in your order was modified or removed. Your updated order is below.</strong>
-    <table border=1 style="border-collapse: collapse;">
-    <thead>  
-      <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Seller</th>
-        <th>Payment Instructions</th>
-      </tr>
-    </thead>
-      <tbody>
-		<%@order.sub_totals.each do |key, value|%>
-			<%seller_name = ""%>
-			<%@order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item| %>
-				<%seller_name = item.inventory_item.user.username%>
-				<tr>
-		          <td><%= item_name(item.inventory_item) %></td>
-		          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
-		          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-		          <td><%= seller_name %>
-		          <td><%= item.inventory_item.user.payment_instructions %>
-		        </tr>
-			<%end%>
-			<tr>
-				<td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
-				<td><%= number_to_currency(value)%>
-				<td></td>
-		        <td></td>
-		        <td></td>
-			</tr>
-		<%end%>
-        <tr>
-          <td style="font-weight:bold;">Total:</td>
-          <td><%= number_to_currency @order.total_price %></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+	<%= render :partial => "order_table", :locals => {:order => @order} %>
   </body>
 </html>

@@ -1,13 +1,14 @@
-<div class="well row-fluid" style="padding-right:0; padding-left: 0">
+<div class="well-fluid row-fluid" style="padding-right:0; padding-left: 0">
   <div class="span12 tableContainer">
     <table class="table" >
     <thead>  
       <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
+        <th>Item Name</th>
         <th>Seller</th>
         <th>Payment Instructions</th>
+        <th>Quantity</th>
+		<th>Price</th>
+		<th>Total Price</th>
       </tr>
     </thead>
       <tbody>
@@ -17,26 +18,29 @@
 				<%seller_name = item.inventory_item.user.username%>
 				<tr>
 		          <td><%= item_name(item.inventory_item) %></td>
+				  <td><%= seller_name %>
+				  <td><%= item.inventory_item.user.payment_instructions %>
+				  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
 		          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
-		          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-		          <td><%= seller_name %>
-		          <td><%= item.inventory_item.user.payment_instructions %>
+		          <td><%= number_to_currency(item.total_price).to_s%></td>
 		        </tr>
 			<%end%>
 			<tr>
-				<td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
-				<td><%= number_to_currency(value)%>
+				<td></td>
+				<td></td>
 				<td></td>
 		        <td></td>
-		        <td></td>
+		        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
+				<td><%= number_to_currency(value)%></td>
 			</tr>
 		<%end%>
         <tr>
-          <td style="font-weight:bold;">Grand Total:</td>
-          <td><%= number_to_currency @order.total_price %></td>
-          <td></td>
-          <td></td>
-          <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+			<td></td>
+            <td style="font-weight:bold;">Grand Total:</td>
+            <td><%= number_to_currency @order.total_price %></td>
         </tr>
       </tbody>
     </table>

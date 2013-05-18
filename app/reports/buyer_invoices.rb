@@ -1,5 +1,6 @@
 class BuyerInvoices < Prawn::Document
   include ApplicationHelper
+  include ActionView::Helpers::NumberHelper
   
   def to_pdf(orders)
     text "Buyer Invoices", :size => 30, :style => :bold
@@ -49,19 +50,42 @@ class BuyerInvoices < Prawn::Document
 
         move_down(10)
 
-        items = [["Seller Name", "Item ID", "Item Name", "Quantity"]]
-        order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.map do |item|
-            items +=  [[
-                item.inventory_item.user.username,
-                item.inventory_item.id,
-                item_name(item.inventory_item),
-                "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"
+        items = [["<b>Seller Name</b>", "<b>Item ID</b>", "<b>Item Name</b>", "<b>Quantity</b>", "<b>Price</b>", "<b>Total Price</b>"]]
+        order.sub_totals.each do |key, value|
+          seller_name = ""
+          order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item|
+            seller_name = item.inventory_item.user.username
+              items +=  [[
+                  item.inventory_item.user.username,
+                  item.inventory_item.id,
+                  item_name(item.inventory_item),
+                  item.quantity.to_s + " " + item_quantity_label(item.inventory_item, item.quantity).to_s,
+                  number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item),
+                  number_to_currency(item.total_price).to_s
+                ]]
+              end
+              items += [[
+                "",
+                "",
+                "",
+                "",
+                "<b>Subtotal for " + seller_name + "</b>",
+                number_to_currency(value)
               ]]
         end
+        items += [[
+          "",
+          "",
+          "",
+          "",
+          "<b>Grand total:</b>",
+          number_to_currency(order.total_price)
+        ]]
 
         table items,
           :header => true,
-          :column_widths => [200,50,200,60]
+          :column_widths => [100,50,110,85,125,60],
+          :cell_style => { :inline_format => true }
 
         start_new_page
     end

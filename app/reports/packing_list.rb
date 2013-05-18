@@ -28,7 +28,7 @@ class PackingList < Prawn::Document
 
         move_down(10)
 
-        items = [["ID", "Name", "Quantity"]]
+        items = [["<b>ID</b>", "<b>Name</b>", "<b>Quantity</b>"]]
         order.cart_items.map do |item|
             if item.inventory_item.user_id == seller.id
                 items +=  [[
@@ -41,7 +41,8 @@ class PackingList < Prawn::Document
 
         table items,
           :header => true,
-          :column_widths => [100,250,100]
+          :column_widths => [100,250,100],
+          :cell_style => { :inline_format => true }
 
         start_new_page
     end

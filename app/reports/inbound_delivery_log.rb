@@ -6,7 +6,7 @@ class InboundDeliveryLog < Prawn::Document
 
     move_down(30)
 
-    items = [["Seller Name", "Buyer Name", "Item Name", "Quantity", "Delivered"]]
+    items = [["<b>Seller Name</b>", "<b>Buyer Name</b>", "<b>Item Name</b>", "<b>Quantity</b>", "<b>Delivered</b>"]]
     inventory_items.sort_by{|item| [item.inventory_item.user.username, item.order.user.username]}.map do |item|
     items +=  [[
         item.inventory_item.user.username,
@@ -19,7 +19,9 @@ class InboundDeliveryLog < Prawn::Document
 
     table items,
       :header => true,
-      :column_widths => [125,125,125,75,75]
+      :column_widths => [125,125,125,75,75],
+      :cell_style => { :inline_format => true }
+      
     move_down(10)
 
     render

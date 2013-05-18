@@ -3,15 +3,16 @@
 		<%= form_tag buyer_invoices_management_index_path, :method => 'GET', :class => 'form-inline' do %>
 			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
 			<%= submit_tag 'Submit', :class => 'btn' %>
-			<span>Choose an order cycle end date to load a previous buyer invoices</span>
+			<span>Choose an order cycle end date to load previous buyer invoices</span>
 		<% end %>
 	</div>
 	<div class ="row-fluid" style="margin-bottom: 15px;">
 	  <%= link_to "Printable Invoices (PDF)", buyer_invoices_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
 	</div>
 	<div class="row-fluid">
+		<div class="span12">
 		<%@orders.each_with_index do |order, index|%>
-		  <div class="well row-fluid">
+		  <div class="well-fluid row-fluid">
 		    <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
 		    <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
 		    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
@@ -23,20 +24,45 @@
 		          <th>Item ID</th>
 		          <th>Item Name</th>
 		          <th>Quantity</th>
+				  <th>Price</th>
+				  <th>Total Price</th>
 		        </tr>
 		      </thead>
 		        <tbody>
-		          <% order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
-		          <tr>    
-		              <td><%= item.inventory_item.user.username %>
-		              <td><%= item.inventory_item.id %></td>
-		              <td><%= item_name(item.inventory_item) %></td>
-		              <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+				  <%order.sub_totals.each do |key, value|%>
+				     <%seller_name = ""%>
+			  	  	 <%order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item| %>
+			  	  	 	<%seller_name = item.inventory_item.user.username%>
+			            <tr>    
+			              <td><%= seller_name %>
+			              <td><%= item.inventory_item.id %></td>
+			              <td><%= item_name(item.inventory_item) %></td>
+				          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+						  <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
+						  <td><%= number_to_currency(item.total_price).to_s%></td>
+			            </tr>
+		            <%end%>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+				        <td></td>
+				        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
+						<td><%= number_to_currency(value)%></td>
+					</tr>
+				  <%end%>
+		          <tr>
+		            <td></td>
+		            <td></td>
+		            <td></td>
+					<td></td>
+		            <td style="font-weight:bold;">Grand Total:</td>
+		            <td><%= number_to_currency order.total_price %></td>
 		          </tr>
-		          <%end%>
 		        </tbody>
 		      </table>
 		  </div>
 		<%end%>
+	  </div>
 	</div>
 </div>
