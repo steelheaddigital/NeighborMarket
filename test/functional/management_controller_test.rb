@@ -367,7 +367,7 @@ class ManagementControllerTest < ActionController::TestCase
     unit = price_units(:one)
     
     assert_difference 'PriceUnit.count', -1 do
-      post :destroy_price_unit, :id => unit.id
+      post :destroy_price_unit, :price_unit => unit
     end
     
     assert_redirected_to manage_units_management_index_path

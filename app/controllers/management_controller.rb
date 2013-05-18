@@ -24,6 +24,7 @@ class ManagementController < ApplicationController
   end
   
   def update_site_settings
+    
     @site_settings = SiteSetting.new_setting(params[:site_setting])
     
     respond_to do |format|
@@ -362,7 +363,7 @@ class ManagementController < ApplicationController
   end
   
   def destroy_price_unit
-    price_unit = PriceUnit.find(params[:id])
+    price_unit = PriceUnit.find(params[:price_unit])
     
     respond_to do |format|
       if price_unit.destroy
