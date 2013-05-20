@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
   
   def self.search(keywords, role, seller_approved, seller_approval_style)
     
-    scope = self
+    scope = self.where('deleted_at IS NULL')
     
     if(role.present?)
       scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}")
