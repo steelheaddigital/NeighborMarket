@@ -29,11 +29,13 @@ class SellerMailer < BaseMailer
                                 .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', seller.id, order_cycle.id)
                                 .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
                                 .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
-                   
-    packing_list = PackingList.new.to_pdf(@orders, @seller)
-    pick_list = PickList.new.to_pdf(@inventory_items)
-    attachments['packing_list.pdf'] = packing_list
-    attachments['pick_list.pdf'] = pick_list
+    
+    unless @orders.empty?
+      packing_list = PackingList.new.to_pdf(@orders, @seller)
+      pick_list = PickList.new.to_pdf(@inventory_items)
+      attachments['packing_list.pdf'] = packing_list
+      attachments['pick_list.pdf'] = pick_list
+    end
     mail( :to => seller.email, 
           :subject => "The current order cycle has ended at #{@site_settings.site_name}")
   end

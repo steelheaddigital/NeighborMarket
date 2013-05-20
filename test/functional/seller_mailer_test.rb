@@ -55,7 +55,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("<a href=\"http://test.neighbormarket.org/users/sign_in\">Log in</a>", sent.body.to_s)
   end
   
-  test "order cycle end mail" do
+  test "order cycle end mail when orders are not empty" do
     seller = users(:approved_seller_user)
     order_cycle = order_cycles(:current)
     SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
@@ -74,6 +74,23 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08/17/2012 at 06:03 PM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("12345 Test Way", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("Portland, OR 97218", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
+  end
+  
+  test "order cycle end mail when orders are empty" do
+    seller = users(:no_orders_seller_user)
+    order_cycle = order_cycles(:current)
+    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [seller.email], sent.to
+    assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
+    assert !sent.has_attachments?
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 06:03 PM.", sent.body.to_s)
+    assert_match(">Please <a href=\"http://test.neighbormarket.org/users/sign_in\">log in</a> to update your inventory for the next order cycle.", sent.body.to_s)
+    assert_no_match(/You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08\/17\/2012 at 06:03 PM./, sent.body.to_s)
+    assert_no_match(/12345 Test Way/, sent.body.to_s)
+    assert_no_match(/Portland, OR 97218/, sent.body.to_s)
   end
   
   test "change_request_complete_mail" do
