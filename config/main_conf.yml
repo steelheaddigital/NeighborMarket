@@ -1,27 +1,27 @@
 production:
-    host: ''
-    default_from: ''
-    manager_email: ''
+    host: 'demo.neighbormarket.org'
+    default_from: 'gmpmanagertest@gmail.com'
+    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
-        address: ""
+        address: "smtp.gmail.com"
         port: 587
-        domain: ''
-        user_name: ''
-        password: ''
+        domain: 'gmail.com'
+        user_name: 'gmpmanagertest@gmail.com'
+        password: 'GmpPdx123'
         authentication: 'plain'
         enable_starttls_auto: true
 development:
-    host: ''
-    default_from: ''
-    manager_email: ''
+    host: 'localhost:5000'
+    default_from: 'gmpmanagertest@gmail.com'
+    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
-        address: ""
+        address: "smtp.gmail.com"
         port: 587
-        domain: ''
-        user_name: ''
-        password: ''
+        domain: 'gmail.com'
+        user_name: 'gmpmanagertest@gmail.com'
+        password: 'GmpPdx123'
         authentication: 'plain'
         enable_starttls_auto: true
 test:
-    host: ''
-    default_from: ''
+    host: 'test.neighbormarket.org'
+    default_from: 'admin@steelheaddigital.com'
