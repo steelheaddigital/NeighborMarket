@@ -22,7 +22,7 @@
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "well" }) do |f| %>
   <%= devise_error_messages! %>
   <h2>Become a Buyer</h2>
-  <h3>You may add delivery instructions to your profile, but it is not required.</h3>
+  <h3>Please add delivery instructions to your profile.</h3>
   
   <%= render :partial => "buyer_fields", :locals => { :f => f } %>
 

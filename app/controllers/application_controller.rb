@@ -28,15 +28,15 @@ class ApplicationController < ActionController::Base
   after_filter :flash_to_headers
   
   def after_sign_in_path_for(resource)
-    if resource.manager? && resource.roles.count == 1
+    if resource.manager? && current_order_id.nil? && completed_order_id.nil?
       return edit_site_settings_management_index_path
     end
     
-    if resource.approved_seller? && resource.roles.count == 1
+    if resource.approved_seller? && current_order_id.nil? && completed_order_id.nil?
       return seller_index_path
     end
     
-    if resource.buyer? && resource.roles.count == 1
+    if resource.buyer? && current_order_id.nil? && completed_order_id.nil?
       if current_order_id
         return edit_order_path(current_order_id)
       elsif completed_order_id
