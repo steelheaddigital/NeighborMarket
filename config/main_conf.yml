@@ -1,7 +1,6 @@
 production:
     host: 'demo.neighbormarket.org'
     default_from: 'gmpmanagertest@gmail.com'
-    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
         address: "smtp.gmail.com"
         port: 587
@@ -13,7 +12,6 @@ production:
 development:
     host: 'localhost:5000'
     default_from: 'gmpmanagertest@gmail.com'
-    manager_email: 'tmooney3979@gmail.com'
     smtp_settings:
         address: "smtp.gmail.com"
         port: 587

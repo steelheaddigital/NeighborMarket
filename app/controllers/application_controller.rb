@@ -27,6 +27,27 @@ class ApplicationController < ActionController::Base
   before_filter :completed_order_id
   after_filter :flash_to_headers
   
+  def after_sign_in_path_for(resource)
+    if resource.manager? && resource.roles.count == 1
+      return edit_site_settings_management_index_path
+    end
+    
+    if resource.approved_seller? && resource.roles.count == 1
+      return seller_index_path
+    end
+    
+    if resource.buyer? && resource.roles.count == 1
+      if current_order_id
+        return edit_order_path(current_order_id)
+      elsif completed_order_id
+        return edit_order_path(completed_order_id)
+      end
+    end
+    
+    home_user_home_path(:current_order_id => current_order_id, :completed_order_id => completed_order_id)
+    
+  end
+  
   def set_time_zone
     Time.zone = SiteSetting.first.time_zone if SiteSetting.first
   end

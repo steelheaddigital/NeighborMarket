@@ -33,7 +33,7 @@ class UserConfirmationsControllerTest < ActionController::TestCase
     
     get :show, :confirmation_token => token
     
-    assert_redirected_to root_path
+    assert_redirected_to seller_index_path
     assert_equal 'Your account was successfully confirmed. You are now signed in.', flash[:notice]
   end
   

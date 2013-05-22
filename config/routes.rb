@@ -2,7 +2,8 @@ NeighborMarket::Application.routes.draw do
 
   get "home/index"
   get "home/refresh"
-  get "home/install"
+  get "home/user_home"
+  
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'user_registrations', :sessions => 'sessions', :confirmations => 'user_confirmations' }
   devise_scope :user do 

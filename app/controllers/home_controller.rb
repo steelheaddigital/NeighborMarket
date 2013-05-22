@@ -26,6 +26,13 @@ class HomeController < ApplicationController
     end
   end
   
+  def user_home
+    @seller = current_user.approved_seller?
+    @current_order_id = params[:current_order_id]
+    @completed_order_id = params[:completed_order_id]
+    @manager = current_user.manager?
+  end
+  
   def refresh
     render :text => "site successfully refreshed \n"
   end
