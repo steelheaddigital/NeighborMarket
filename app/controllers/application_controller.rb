@@ -41,6 +41,8 @@ class ApplicationController < ActionController::Base
         return edit_order_path(current_order_id)
       elsif completed_order_id
         return edit_order_path(completed_order_id)
+      else
+        return root_path
       end
     end
     
