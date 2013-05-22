@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
       return seller_index_path
     end
     
-    if resource.buyer? && current_order_id.nil? && completed_order_id.nil?
+    if resource.buyer? && resource.roles.count == 1
       if current_order_id
         return edit_order_path(current_order_id)
       elsif completed_order_id
