@@ -99,6 +99,16 @@ class UserControllerTest < ActionController::TestCase
     assert_response(:success)
   end
   
+  test "destroy should soft delete user" do
+    user  = users(:buyer_user)
+    
+    delete :destroy, :id => user.id
+    
+    assert !user.nil?
+    assert_redirected_to user_search_management_index_path
+    assert_equal 'User successfully deleted!', flash[:notice]
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     user = users(:buyer_user)
@@ -110,6 +120,9 @@ class UserControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
     
     post :create, :user => {:email => "test@test.com"}
+    assert_redirected_to new_user_session_path
+    
+    post :destroy, :id => user.id
     assert_redirected_to new_user_session_path
     
     post :update, :id => user.id, :user => { :seller_approved => true }
@@ -132,6 +145,9 @@ class UserControllerTest < ActionController::TestCase
     assert_response :not_found
     
     post :create, :user => {:email => "test@test.com"}
+    assert_response :not_found
+    
+    post :destroy, :id => user.id
     assert_response :not_found
     
     post :update, :id => user.id, :user => { :seller_approved => true }

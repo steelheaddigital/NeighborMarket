@@ -60,6 +60,12 @@ class UserController < ApplicationController
     end
   end
   
+  def destroy
+    @user = User.find(params[:id])
+    @user.soft_delete
+    redirect_to user_search_management_index_path, notice: 'User successfully deleted!'
+  end
+  
   def update
     # required for settings form to submit when password is left blank
     if params[:user][:password].blank?

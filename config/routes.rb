@@ -16,12 +16,6 @@ NeighborMarket::Application.routes.draw do
     match '/user/auto_create_confirmation' => 'user_confirmations#auto_create_confirmation', :via => "GET"
   end
   
-  resources :install, :only => ["index"] do
-    collection do
-      post 'install'
-    end
-  end
-  
   resources :user do 
     member do
       post "approve_seller"
