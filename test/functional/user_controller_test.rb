@@ -101,7 +101,7 @@ class UserControllerTest < ActionController::TestCase
   
   test "destroy should soft delete user" do
     user  = users(:buyer_user)
-    
+    request.env["HTTP_REFERER"] = user_search_management_index_path
     delete :destroy, :id => user.id
     
     assert !user.nil?

@@ -31,6 +31,7 @@
             <th>Last Name</th>
             <th>Address</th>
             <th>Details and Approval</th>
+			<th></th>
         </tr>
       </thead>
       <tbody>
@@ -41,6 +42,7 @@
             <td><%=seller.last_name%></td>
             <td><%=seller.address%></td>
             <td><%= button_to "Show Details and Edit", { :action => "edit", :controller => "user", :id => seller.id}, {:form => {:class => "editUsersButton"}, :method => "get", :class => "btn", :style => "width: 100%;"} %></td>
+			<td><%= button_to "Delete User", { :action => "destroy", :controller => "user", :id => seller.id}, {:confirm => 'Are you sure you want to delete this user?', :method => :delete, :class => "btn btn-danger", :style => "width: 100%;"} %></td>
           </tr>
         <%end%>
       </tbody>

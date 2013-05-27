@@ -63,7 +63,7 @@ class UserController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.soft_delete
-    redirect_to user_search_management_index_path, notice: 'User successfully deleted!'
+    redirect_to :back, notice: 'User successfully deleted!'
   end
   
   def update

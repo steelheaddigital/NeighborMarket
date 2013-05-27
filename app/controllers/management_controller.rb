@@ -349,7 +349,7 @@ class ManagementController < ApplicationController
       @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
     end
-    @users = User.where(:updated_at => @start_date..@end_date + 1.day)
+    @users = User.where(:updated_at => @start_date..@end_date + 1.day, :deleted_at => nil)
                  .order(:updated_at)
     
     respond_to do |format|
