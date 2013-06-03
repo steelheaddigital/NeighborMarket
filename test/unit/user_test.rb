@@ -417,6 +417,20 @@ class UserTest < ActiveSupport::TestCase
     assert user.auto_create_updated_at.nil?
   end
 
+  test "add_role adds specified role to user" do
+    user = User.new(:email => "someuser@test.com")
+    user.add_role('manager')
+    
+    assert user.manager?
+  end
+
+  test "remove_role removes specified role from user" do
+    user = users(:unapproved_seller_buyer_user)
+    user.remove_role('seller')
+    
+    assert !user.seller?
+  end
+
   test "soft_delete deletes appropriate fields" do
     user = users(:approved_seller_user)
     

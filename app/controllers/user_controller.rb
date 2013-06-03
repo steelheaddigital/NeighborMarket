@@ -42,6 +42,10 @@ class UserController < ApplicationController
   
   def create
     @user = User.new(params[:user])
+    if params[:manager]
+      debugger
+      @user.add_role('manager')
+    end
     respond_to do |format|
       if @user.auto_create_user
         format.html { redirect_to add_users_management_index_path, notice: 'User successfully created!'}
@@ -75,6 +79,12 @@ class UserController < ApplicationController
     
     @user = User.find(params[:id])
     previous_seller_approved = @user.approved_seller?
+    
+    if(params[:manager])
+      @user.add_role('manager')
+    else
+      @user.remove_role('manager')
+    end
     
     respond_to do |format|
       if @user.update_attributes(params[:user])

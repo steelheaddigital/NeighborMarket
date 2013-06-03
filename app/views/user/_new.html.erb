@@ -28,8 +28,10 @@
     <div>
       <%= f.label "Email" %>
       <%= f.text_field :email, :class => "input-large" %>
+	  <%= f.label "Manager?"%>
+	  <input type="checkbox" name="manager">
     </div>
-	<div>
+	<div style="margin-top: 10px;">
 	  <%= f.submit("Create User", :class => 'btn') %>
 	</div>
 <% end %>

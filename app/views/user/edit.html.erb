@@ -94,6 +94,10 @@
 		      <div><b><%= f.label "Listing Approval Style" %></b>
 		      <%= f.select(:listing_approval_style, [['manual', 'manual'],['auto','auto']]) %></div>
 		    <%end%>
+        	<div>
+				<b><%= f.label "Manager?" %></b>
+      			<%= check_box_tag 'manager', 'true', @user.manager? %>
+			</div>
 		</div>
    </div>
 </div>

@@ -217,9 +217,18 @@ class User < ActiveRecord::Base
   end
   
   def add_role(role_type)
-    new_role = Role.new
-    new_role.name = role_type.downcase
-    self.roles.build(new_role.attributes)
+    if !self.role?(role_type)
+      new_role = Role.new
+      new_role.name = role_type.downcase
+      self.roles.build(new_role.attributes)
+    end
+  end
+  
+  def remove_role(role_type)
+    if self.role?(role_type)
+      role = self.roles.find_by_name(role_type)
+      role.destroy
+    end
   end
   
   def soft_delete
