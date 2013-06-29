@@ -6,6 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+site_settings = SiteSetting.new
+site_settings.save(:validate => false)
+
 User.delete_all
 user = User.new(
   :username => "manager",
@@ -26,9 +29,6 @@ user.add_role('manager')
 
 user.skip_confirmation!
 user.save(:validate => false)
-
-site_settings = SiteSetting.new
-site_settings.save
 
 fresh_produce = TopLevelCategory.new(
   :name => 'Fresh Produce',
