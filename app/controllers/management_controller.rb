@@ -50,7 +50,7 @@ class ManagementController < ApplicationController
       if @site_settings.save
         format.html { redirect_to edit_site_settings_management_index_path, notice: 'Site Settings Successfully Saved!'}
       else
-        format.html { render :edit }
+        format.html { render :edit_site_settings }
       end
     end
   end

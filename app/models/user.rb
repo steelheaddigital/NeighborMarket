@@ -35,10 +35,10 @@ class User < ActiveRecord::Base
             :city, 
             :state, 
             :country, 
-            :zip, :presence => true, :unless => :auto_create
+            :zip, :presence => true, :if => :address_required?
   validates :phone, :presence => true, :if => :seller?
   validates :payment_instructions, :presence => true, :if => :seller?
-  validates :delivery_instructions, :presence => true, :if => :buyer?
+  validates :delivery_instructions, :presence => true, :if => :delivery_instructions_required?
   validates_format_of :phone,
                       :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
                       :message => "must be valid phone number",
@@ -143,6 +143,20 @@ class User < ActiveRecord::Base
   
   def additional_fields_required?
     !auto_create && (!buyer? || seller?)
+  end
+  
+  def address_required?
+    site_settings = SiteSetting.first
+    if site_settings.delivery_only?
+      !auto_create
+    else
+      additional_fields_required?
+    end
+  end
+  
+  def delivery_instructions_required?
+    site_settings = SiteSetting.first
+    buyer? && site_settings.delivery_only?
   end
   
   def role?(role)

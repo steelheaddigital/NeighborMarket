@@ -23,7 +23,7 @@ class Order < ActiveRecord::Base
   belongs_to :order_cycle
   
   accepts_nested_attributes_for :cart_items
-  attr_accessible :cart_items_attributes
+  attr_accessible :cart_items_attributes, :deliver
   attr_accessor :current_user
   
   validate :ensure_current_order_cycle
@@ -58,6 +58,10 @@ class Order < ActiveRecord::Base
       sub_total[key] = total 
     end
     return sub_total
+  end
+  
+  def eligible_for_delivery?
+    !self.user.address.blank? && !self.user.city.blank? && !self.user.state.blank? && !self.user.country.blank? && !self.user.zip.blank? && !self.user.delivery_instructions.blank?
   end
   
   private

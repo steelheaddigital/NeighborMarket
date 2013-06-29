@@ -18,6 +18,7 @@
 #
 
 class BuyerMailer < BaseMailer
+  helper :buyer_mailer
   
   def order_mail(buyer, order)
     @order = order

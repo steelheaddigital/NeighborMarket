@@ -28,7 +28,7 @@ class OrdersControllerTest < ActionController::TestCase
   
   test "create should update current order when buyer has an open order" do 
     assert_no_difference 'Order.count' do
-      post :create
+      post :create, :order => { :deliver => false }
     end
     
     assert_not_nil assigns(:order)
@@ -43,7 +43,7 @@ class OrdersControllerTest < ActionController::TestCase
     sign_in @user
     
     assert_difference 'Order.count' do
-      post :create
+      post :create, :order => { :deliver => false }
     end
     
     assert_not_nil assigns(:order)

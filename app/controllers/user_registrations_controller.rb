@@ -24,6 +24,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   def new
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     resource = build_resource({})
+    @site_settings = SiteSetting.first
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
 
@@ -33,6 +34,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   def create
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     build_resource
+    @site_settings = SiteSetting.first
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
     
@@ -55,6 +57,11 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
   end
   
+  def edit
+    @site_settings = SiteSetting.first
+    super
+  end
+  
   def update
     # required for settings form to submit when password is left blank
     if params[:user][:password].blank?
@@ -63,6 +70,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
     
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    @site_settings = SiteSetting.first
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     
     if params[:user][:become_seller] == "true"
@@ -114,6 +122,15 @@ class UserRegistrationsController < Devise::RegistrationsController
   def inactive_signup
   end
   
+  def become_seller
+    add_role(resource, "seller")
+  end
+  
+  def become_buyer
+    @site_settings = SiteSetting.first
+    add_role(resource, "buyer")
+  end
+  
   private
   
   #Override the devise method to send new sellers to a custom page
@@ -124,15 +141,6 @@ class UserRegistrationsController < Devise::RegistrationsController
       user_inactive_signup_path
     end
   end
-  
-  def become_seller
-    add_role(resource, "seller")
-  end
-  
-  def become_buyer
-    add_role(resource, "buyer")
-  end
-  
   
   private
   

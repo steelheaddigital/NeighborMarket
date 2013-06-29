@@ -20,8 +20,8 @@
 class BaseMailer < ActionMailer::Base
   helper :application
   
-  def initialize *args
-    super(*args)
+  def initialize(method_name=nil, *args)
     Time.zone = SiteSetting.first.time_zone if SiteSetting.first
+    super(method_name, *args)
   end
 end

@@ -22,6 +22,9 @@
 <div class="span12 well">
 	<h2>Sign Up</h2>
 	<%= devise_error_messages! %>
+	<% if @site_settings.all_modes? %>
+		<h5>Delivery Address and Instructions are optional.  However, if you would like the possibility of having your goods delivered when placing an order then this information must be provided. You can always update this information later if you are unsure now.</h5>
+	<% end %>
 	<div class="row-fluid">
 	  <div class="span3">
 	    <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
@@ -38,32 +41,36 @@
 	
 		<%= f.hidden_field :user_type, :value => "buyer" %>
 	  </div>
-	  <div class="span1"></div>
-	  <div class="span3">
-	    <div><%= f.label "Delivery Address*" %>
-	    <%= f.text_field :address %></div>
+	  <% if !@site_settings.drop_point_only? %>
+		  <div class="span1"></div>
+		  <div class="span3">
+		    <div><%= f.label field_label(:address, @site_settings) %>
+		    <%= f.text_field :address %></div>
 
-	    <div><%= f.label "Delivery City*" %>
-	    <%= f.text_field :city %></div>
+		    <div><%= f.label field_label(:city, @site_settings) %>
+		    <%= f.text_field :city %></div>
 
-	    <div><%= f.label "Delivery Country*" %>
-	    <%= f.country_select(:country, "US") %></div>
+		    <div><%= f.label field_label(:country, @site_settings) %>
+		    <%= f.country_select(:country, "US") %></div>
 
-	    <div><%= f.label "Delivery State*" %>
-	    <%= f.state_select :state %></div>
+		    <div><%= f.label field_label(:state, @site_settings) %>
+		    <%= f.state_select :state %></div>
 
-	    <div><%= f.label "Delivery Zip*" %>
-	    <%= f.text_field :zip %></div>
-	  </div>
-   	  <div class="span1"></div>
-      <div class="span3">
-        <% resource.roles.each do |role| %>
-          <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
-        <% end %>
-      </div>
+		    <div><%= f.label field_label(:zip, @site_settings) %>
+		    <%= f.text_field :zip %></div>
+		  </div>
+	   	  <div class="span1"></div>
+	      <div class="span3">
+	        <% resource.roles.each do |role| %>
+	          <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
+	        <% end %>
+	      </div>
+	  <% end %>
 	</div>
 	<div class="row-fluid" style="margin-top: 19px;">
-	  <div class="span9"></div>
+	  <% if !@site_settings.drop_point_only? %>
+	  	<div class="span9"></div>
+	  <% end %>
 	  <div class="span2">
 	    <%= f.submit "Sign up", {:class => "btn btn-primary", :style => "width: 150px; height: 35px;"}%>
 	  </div>

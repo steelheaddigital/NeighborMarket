@@ -22,10 +22,12 @@
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "well" }) do |f| %>
   <%= devise_error_messages! %>
   <h2>Become a Buyer</h2>
-  <h3>Please add delivery instructions to your profile.</h3>
+  <%= delivery_instructions_message(@site_settings) %>
   
-  <%= render :partial => "buyer_fields", :locals => { :f => f } %>
-
+  <% if @site_settings.delivery_only? || @site_settings.all_modes? %>
+  	<%= render :partial => "buyer_fields", :locals => { :f => f } %>
+  <% end %>
+  
   <%= f.hidden_field :become_buyer, :value => true %>
 
   <div><%= f.submit "Update", :class => 'btn btn-primary'%></div>

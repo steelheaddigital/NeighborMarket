@@ -45,6 +45,12 @@
     <%= f.label :drop_point_zip %>
     <%= f.text_field :drop_point_zip, :class => "input-medium" %>
   </div>
+  <fieldset>
+	  <legend>Site Modes</legend>
+	  Drop Point: <%= f.check_box(:drop_point, {:style => "margin: 0;"}, "true", "false")%> </br>
+	  Delivery: <%= f.check_box(:delivery, {:style => "margin: 0;"}, "true", "false")%> </br>
+  </fieldset>
+  
   <div class="row-fluid">
     <%= submit_tag "Save Settings", :class => 'btn btn-primary' %>
   </div>

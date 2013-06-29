@@ -24,6 +24,7 @@ class OrdersController < ApplicationController
   
   def new
     @cart = current_cart
+    @site_settings = SiteSetting.first
     #update the cart in case the user changed any quantitities
     if @cart.update_attributes(params[:cart])
       
@@ -58,6 +59,7 @@ class OrdersController < ApplicationController
       @order = current_user.orders.build
     end
     @order.add_inventory_items_from_cart(current_cart)
+    @order.update_attribute(:deliver, params[:order][:deliver])
     
     respond_to do |format|
         if @order.save

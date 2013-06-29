@@ -25,10 +25,25 @@
     <h4>*Includes items previously added to your order for this cycle</h4>
   <%end%>
     <p class="notice"><%= flash[:notice] %></p>
-    <%= render "order" %>
-    <div class="row-fluid">
-      <div class="span1">
-        <%= button_to "Purchase", orders_path, method: :post, :class => "btn btn-primary" %>
-      </div>
-    </div>
+    <%= form_for @order do |f|%>
+      <%= f.error_messages %>
+	  <% if @site_settings.delivery %>
+			  	<div class="row-fluid" style="margin-bottom: 15px;">
+					<div class="span12">
+						<% if @order.eligible_for_delivery? %>
+							<h5>Your order is eligible for delivery. Check the box below if you would like your order delivered according to your instructions. Otherwise, you will need to pick up your order at the drop point.</h5>
+				  			Deliver: <%= f.check_box(:deliver, {:style => "margin: 0;"}, "true", "false")%>
+						<% else %>
+							<h5>Your order could be delivered. To enable this option, <%= link_to "update your profile", edit_user_registration_url %> to provide a delivery address and instructions. </h5>
+						<% end %>
+					</div>
+				</div>
+		<% end %>
+	    <%= render "order" %>
+	    <div class="row-fluid">
+	      <div class="span1">
+	        <%= f.submit "Purchase", { :class => "btn btn-primary" } %>
+	      </div>
+	    </div>
+	<% end %>
 </div>

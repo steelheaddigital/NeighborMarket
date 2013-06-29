@@ -43,7 +43,6 @@ class UserController < ApplicationController
   def create
     @user = User.new(params[:user])
     if params[:manager]
-      debugger
       @user.add_role('manager')
     end
     respond_to do |format|
@@ -57,6 +56,7 @@ class UserController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
+    @site_settings = SiteSetting.first
     
     respond_to do |format|
       format.html

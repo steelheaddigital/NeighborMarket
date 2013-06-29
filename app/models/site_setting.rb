@@ -22,8 +22,10 @@ class SiteSetting < ActiveRecord::Base
                       :with => %r{\d{5}(-\d{4})?},
                       :message => "should be like 12345 or 12345-1234",
                       :allow_blank => true
+                      
+  validate :must_have_at_least_one_mode
   
-  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone
+  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery
   
   def self.new_setting(settings)
     current_site_settings = self.first
@@ -35,5 +37,33 @@ class SiteSetting < ActiveRecord::Base
       return new_settings
     end
   end
+  
+  def delivery_only?
+    delivery == true && drop_point == false
+  end
+  
+  def drop_point_only? 
+    drop_point == true && delivery == false
+  end
+  
+  def all_modes?
+    drop_point == true && delivery == true
+  end
+  
+  def site_mode
+    if delivery_only?
+      "delivery"
+    elsif drop_point_only?
+      "drop_point"
+    elsif all_modes?
+      "all"
+    end
+  end
+  
+  def must_have_at_least_one_mode
+    if !drop_point and !delivery
+      errors.add(:base, "At least one site mode must be enabled")
+    end
+  end  
   
 end
