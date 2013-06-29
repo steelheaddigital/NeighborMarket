@@ -1,5 +1,5 @@
 production:
-    host: 'demo.neighbormarket.org'
+    host: 'madison.neighbormarket.org'
     default_from: 'madsionnmp@gmail.com'
     smtp_settings:
         address: "smtp.gmail.com"
