@@ -1,11 +1,11 @@
 production:
     host: 'madison.neighbormarket.org'
-    default_from: 'madsionnmp@gmail.com'
+    default_from: 'madisonnmp@gmail.com'
     smtp_settings:
         address: "smtp.gmail.com"
         port: 587
         domain: 'gmail.com'
-        user_name: 'madsionnmp@gmail.com'
+        user_name: 'madisonnmp@gmail.com'
         password: '+-n6VZfHf_'
         authentication: 'plain'
         enable_starttls_auto: true
