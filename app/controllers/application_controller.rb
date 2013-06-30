@@ -17,6 +17,8 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+#Test Comment
+
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_cart
