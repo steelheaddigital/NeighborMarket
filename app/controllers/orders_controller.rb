@@ -59,7 +59,9 @@ class OrdersController < ApplicationController
       @order = current_user.orders.build
     end
     @order.add_inventory_items_from_cart(current_cart)
-    @order.update_attribute(:deliver, params[:order][:deliver])
+    if !params[:order].nil?
+      @order.update_attribute(:deliver, params[:order][:deliver])
+    end
     
     respond_to do |format|
         if @order.save
