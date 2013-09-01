@@ -32,6 +32,8 @@ end
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'
 
+gem 'delayed_job_celluloid'
+
 gem 'devise', "~> 2.2.0"
 gem 'cancan'
 gem 'carmen'
@@ -44,5 +46,4 @@ gem 'acts_as_indexed'
 gem 'foreman'
 gem 'aws-sdk'
 gem 'delayed_job_active_record'
-gem 'celluloid'
 

@@ -22,4 +22,4 @@ development:
         enable_starttls_auto: true
 test:
     host: 'test.neighbormarket.org'
-    default_from: ''
+    default_from: 'test@test.com'
