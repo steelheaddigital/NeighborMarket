@@ -33,13 +33,15 @@
   <%@orders.each do |order|%>
   <div class="well-fluid row-fluid">
       <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.username %></p>
-      <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
+      <p><span style ="font-weight: bold">Buyer Address: </span> <%= buyer_address(order.user)%></p>
       <table class="table" >
         <thead>  
           <tr>
             <th>Item ID</th>
             <th>Item Name</th>
             <th>Quantity</th>
+		  	<th>Price</th>
+		  	<th>Total Price</th>
           </tr>
         </thead>
         <tbody>
@@ -52,9 +54,18 @@
 				<%= item.quantity %>
 				<span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span>
 			  </td>
+			  <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
+			  <td><%= number_to_currency(item.total_price).to_s%></td>
             <% end %>
           </tr>
           <%end%>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight:bold;">Total:</td>
+            <td><%= number_to_currency order.total_price %></td>
+          </tr>
         </tbody>
       </table>
   </div>

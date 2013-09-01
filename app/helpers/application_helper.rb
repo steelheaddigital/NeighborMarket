@@ -138,4 +138,20 @@ module ApplicationHelper
     session[:last_search_path]
   end
   
+  def buyer_address(buyer)
+    address = ""
+    if !buyer.address.nil?
+      address = address + buyer.address + ", "
+    end
+    if !buyer.city.nil?
+      address = address + buyer.city + ", "
+    end
+    if !buyer.state.nil?
+      address = address + buyer.state + " "
+    end
+    if !buyer.zip.nil?
+      address = address + buyer.zip
+    end
+  end
+  
 end
