@@ -59,6 +59,7 @@ module BuyerMailerHelper
         '<div style="padding-left: 30px;">' +
           '<strong>' + site_settings.drop_point_address + '</strong><br>' +
           '<strong>' + site_settings.drop_point_city + ", " + site_settings.drop_point_state + " " + site_settings.drop_point_zip.to_s + '</strong><br>' +
+          '<p>' + "#{site_settings.directions if !site_settings.directions.nil?}" + '</p>' +
         '</div>' +
       '</div>' +
     '</div>'
