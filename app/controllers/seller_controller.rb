@@ -68,7 +68,7 @@ class SellerController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        output = PickList.new.to_pdf(@inventory_items)
+        output = PickList.new.to_pdf(@inventory_items, @selected_previous_order_cycle)
         send_data output, :filename => "pick_list.pdf",
                           :type => "application.pdf"
       end

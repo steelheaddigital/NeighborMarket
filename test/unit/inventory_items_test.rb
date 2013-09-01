@@ -114,11 +114,12 @@ class InventoryItemsTest < ActiveSupport::TestCase
      assert !InventoryItem.exists?(item)
    end
    
-   test "cart_item_quantity_sum sums cart item quantities" do
+   test "cart_item_quantity_sum sums cart item quantities for selected order_cycle" do
+      order_cycle = order_cycles(:current)
       item = inventory_items(:one)
-      sum = item.cart_item_quantity_sum
+      sum = item.cart_item_quantity_sum(order_cycle.id)
       
-      assert_equal 20, sum
+      assert_equal 10, sum
    end
    
    test "add_to_order_cycle adds inventory item if order_cycle is not nil" do

@@ -44,7 +44,7 @@
           <tr>
             <td><%= item.id %></td>
             <td><%= item_name(item) %></td>
-            <td><%= "#{item.cart_item_quantity_sum}#{" "}#{item_quantity_label(item, item.cart_item_quantity_sum)}" %></td>
+            <td><%= "#{item.cart_item_quantity_sum(@selected_previous_order_cycle.id)}#{" "}#{item_quantity_label(item, item.cart_item_quantity_sum(@selected_previous_order_cycle.id))}" %></td>
           </tr>
           <%end%>
         </tbody>

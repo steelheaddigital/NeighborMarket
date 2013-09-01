@@ -51,7 +51,7 @@ class SellerMailer < BaseMailer
     
     unless @orders.empty?
       packing_list = PackingList.new.to_pdf(@orders, @seller)
-      pick_list = PickList.new.to_pdf(@inventory_items)
+      pick_list = PickList.new.to_pdf(@inventory_items, @order_cycle)
       attachments['packing_list.pdf'] = packing_list
       attachments['pick_list.pdf'] = pick_list
     end

@@ -2,6 +2,10 @@ one:
   order_cycle: current
   inventory_item: one
 
+dup:
+  order_cycle: not_current
+  inventory_item: one
+
 two:
   order_cycle: not_current
   inventory_item: three
@@ -9,3 +13,4 @@ two:
 three:
   order_cycle: current
   inventory_item: not_in_cart
+  

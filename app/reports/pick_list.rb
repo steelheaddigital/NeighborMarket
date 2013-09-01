@@ -20,7 +20,7 @@
 class PickList < Prawn::Document
   include ApplicationHelper
   
-  def to_pdf(inventory_items)
+  def to_pdf(inventory_items, selected_previous_order_cycle)
     text "Pick List", :size => 30, :style => :bold
     move_down(30)
 
@@ -29,7 +29,7 @@ class PickList < Prawn::Document
     items +=  [[
         item.id,
         item_name(item),
-        "#{item.cart_item_quantity_sum}#{" "}#{item_quantity_label(item, item.cart_item_quantity_sum)}"
+        "#{item.cart_item_quantity_sum(selected_previous_order_cycle.id)}#{" "}#{item_quantity_label(item, item.cart_item_quantity_sum(selected_previous_order_cycle.id))}"
       ]]
     end
 
