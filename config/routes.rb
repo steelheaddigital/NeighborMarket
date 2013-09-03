@@ -102,7 +102,7 @@ NeighborMarket::Application.routes.draw do
   
   match 'orders/new' => 'orders#new', :via => "POST"
   resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
-    collection do
+    member do
       get 'finish'
     end
   end
