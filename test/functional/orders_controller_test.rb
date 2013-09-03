@@ -34,7 +34,7 @@ class OrdersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:order)
     assert_not_nil assigns(:order_pickup_date)
     assert_not_nil assigns(:site_settings)
-    assert :success
+    assert_redirected_to finish_orders_path
   end
   
   test "create should create new order when buyer has no open order" do 
@@ -49,7 +49,17 @@ class OrdersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:order)
     assert_not_nil assigns(:order_pickup_date)
     assert_not_nil assigns(:site_settings)
-    assert :success
+    assert_redirected_to finish_orders_path
+  end
+  
+  test "finish should get finish" do
+    order = orders(:current)
+    get(:finish, nil, nil, {:order => order})
+    
+    assert_response :success
+    assert_not_nil assigns(:order)
+    assert_not_nil assigns(:order_pickup_date)
+    assert_not_nil assigns(:site_settings)
   end
   
   test "should get edit" do

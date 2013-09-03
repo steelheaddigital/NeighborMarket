@@ -72,11 +72,21 @@ class OrdersController < ApplicationController
           
           @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
           @site_settings = SiteSetting.first
-          format.html {render :finish}
+          format.html {redirect_to finish_orders_url, :flash => {:order => @order}}
         else
           @cart = current_cart
           format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
         end
+    end
+  end
+  
+  def finish
+    @order = flash[:order]
+    @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
+    @site_settings = SiteSetting.first
+    
+    respond_to do |format|
+      format.html
     end
   end
   

@@ -58,6 +58,7 @@ class Ability
     if user.buyer?
       can :update, Order, :user_id => user.id
       can :create, Order
+      can :finish, Order
       can :create, OrderChangeRequest
     end
     

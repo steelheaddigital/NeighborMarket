@@ -101,7 +101,11 @@ NeighborMarket::Application.routes.draw do
   end
   
   match 'orders/new' => 'orders#new', :via => "POST"
-  resources :orders, :only => ["create", "edit", "update", "show", "destroy"]
+  resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
+    collection do
+      get 'finish'
+    end
+  end
   
   resources :price_units
   
