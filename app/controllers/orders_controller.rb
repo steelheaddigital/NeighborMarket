@@ -72,7 +72,7 @@ class OrdersController < ApplicationController
           
           @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
           @site_settings = SiteSetting.first
-          format.html {redirect_to finish_orders_url, :flash => {:order => @order}}
+          format.html {redirect_to finish_orders_url(:order_id => @order.id)}
         else
           @cart = current_cart
           format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
@@ -81,7 +81,7 @@ class OrdersController < ApplicationController
   end
   
   def finish
-    @order = flash[:order]
+    @order = Order.find(params[:order_id])
     @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
     @site_settings = SiteSetting.first
     
