@@ -11,13 +11,13 @@ production:
         enable_starttls_auto: true
 development:
     host: 'localhost:5000'
-    default_from: 'gmpmanagertest@gmail.com'
+    default_from: ''
     smtp_settings:
         address: "smtp.gmail.com"
         port: 587
         domain: 'gmail.com'
-        user_name: 'gmpmanagertest@gmail.com'
-        password: 'GmpPdx123'
+        user_name: ''
+        password: ''
         authentication: 'plain'
         enable_starttls_auto: true
 test:
