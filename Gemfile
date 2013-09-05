@@ -22,6 +22,7 @@ group :assets do
   gem 'jquery-rails', '2.1.4'
   gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
+  gem 'font-awesome-rails'
 end
 
 #using this fork so that error messages with html will display properly
