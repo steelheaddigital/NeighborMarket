@@ -22,11 +22,7 @@ group :assets do
   gem 'jquery-rails', '2.1.4'
   gem 'therubyracer'
   gem 'less-rails'
-  gem 'less-rails-bootstrap'
-  gem 'less-rails-bootswatch'
-  gem 'coffee-rails', '>= 3.1.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'less-rails-fontawesome'
 end
 
 #using this fork so that error messages with html will display properly

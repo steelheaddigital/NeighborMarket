@@ -6,9 +6,10 @@
  *= require imports
  *= require bootstrap_multi_level_dropdown
  *= require docs
+ *= require font-awesome/css/font-awesome.css
+ *= require bootstrap-modal
  *= require neighbor_market
  *= require management
  *= require carts
- *= require bootstrap-modal
 */
 
