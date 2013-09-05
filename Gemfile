@@ -21,7 +21,6 @@ end
 group :assets do
   gem 'jquery-rails', '2.1.4'
   gem 'therubyracer'
-  gem 'less-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -41,4 +40,5 @@ gem 'foreman'
 gem 'aws-sdk'
 gem 'delayed_job_active_record'
 gem 'delayed_job_celluloid'
+gem 'less-rails'
 
