@@ -137,7 +137,6 @@ class InventoryItemsController < ApplicationController
   def search
     @inventory_items = InventoryItem.search(params[:keywords])
                                     .sort!{|a,b| b.created_at <=> a.created_at}
-                                    .paginate(:page => params[:page], :per_page => 5)
 
     session[:last_search_path] = request.fullpath
     respond_to do |format|
@@ -149,7 +148,6 @@ class InventoryItemsController < ApplicationController
     @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
-                                    .paginate(:page => params[:page], :per_page => 5)
                           
     session[:last_search_path] = request.fullpath          
     respond_to do |format|
@@ -160,7 +158,7 @@ class InventoryItemsController < ApplicationController
   def browse_all
     @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
-                                    .order("created_at DESC").paginate(:page => params[:page], :per_page => 5)
+                                    .order("created_at DESC")
     
     session[:last_search_path] = request.fullpath
     respond_to do |format|
