@@ -1,9 +1,12 @@
 @media (max-width: 767px) {
+	.dropdown-submenu {
+	  position: static;
+	}
+	
 	.dropdown-submenu > .dropdown-menu {
-		position: static;
-	  	margin-left: 5px;
-		margin-top: 2px;
-	  	.border-radius(0 6px 6px 6px);
+	  position: static;
+	  margin-top: 1px;
+	  margin-left: 0;
 	}
 }
 
