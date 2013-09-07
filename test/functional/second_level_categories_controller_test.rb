@@ -97,10 +97,9 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     
     category = second_level_categories(:sausage)
     
-    assert_difference 'SecondLevelCategory.count', -1 do
-      post :destroy, :id => category.id
-    end
+    post :destroy, :id => category.id
     
+    assert !SecondLevelCategory.find(category.id).active?, "Category was not set to inactive"
     assert_not_nil :category
     assert_redirected_to categories_management_index_path
     assert_equal 'Category successfully deleted!', flash[:notice]

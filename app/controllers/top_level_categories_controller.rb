@@ -74,10 +74,9 @@ class TopLevelCategoriesController < ApplicationController
   
   def destroy
     @category = TopLevelCategory.find(params[:id])
-    @category.destroy
 
     respond_to do |format|
-      if @category.destroy
+      if @category.deactivate
         format.html{ redirect_to categories_management_index_path, notice: 'Category successfully deleted!' }
       else
         format.html{ redirect_to categories_management_index_path, notice: 'Unable to delete the category' }

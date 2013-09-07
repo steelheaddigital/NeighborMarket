@@ -67,9 +67,13 @@ module ApplicationHelper
         else
           second_level_count = 0
         end
-        second_level_categories.push({:id => second_level_category.id, :name => second_level_category.name, :count => second_level_count})
+        if second_level_count > 0 || second_level_category.active?
+          second_level_categories.push({:id => second_level_category.id, :name => second_level_category.name, :count => second_level_count})
+        end
       end
-      categories.push({:name => category.name, :count => top_level_item_count, :second_level => second_level_categories})
+      if top_level_item_count > 0 || category.active?
+        categories.push({:name => category.name, :count => top_level_item_count, :second_level => second_level_categories})
+      end
     end
     return categories
   end

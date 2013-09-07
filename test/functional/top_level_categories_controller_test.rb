@@ -83,10 +83,10 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
 
   test "should destroy top level category" do
     category = top_level_categories(:meat)
-    assert_difference 'TopLevelCategory.count', -1 do
-      post :destroy, :id => category.id
-    end
-    
+
+    post :destroy, :id => category.id
+
+    assert !TopLevelCategory.find(category.id).active?, "Category was not set to inactive"
     assert_not_nil :category
     assert_redirected_to categories_management_index_path
     assert_equal 'Category successfully deleted!', flash[:notice]

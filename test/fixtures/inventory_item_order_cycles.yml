@@ -13,4 +13,15 @@ two:
 three:
   order_cycle: current
   inventory_item: not_in_cart
-  
+
+four:
+  order_cycle: current
+  inventory_item: inactive_category
+
+five:
+  order_cycle: complete
+  inventory_item: inactive_category2
+
+six:
+  order_cycle: current
+  inventory_item: zero_quantity

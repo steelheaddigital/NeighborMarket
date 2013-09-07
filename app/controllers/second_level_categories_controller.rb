@@ -77,7 +77,7 @@ class SecondLevelCategoriesController < ApplicationController
     @category = SecondLevelCategory.find(params[:id])
     
     respond_to do |format|
-      if @category.destroy
+      if @category.deactivate
         format.html{ redirect_to categories_management_index_path, notice: 'Category successfully deleted!' }
       else
         format.html{ redirect_to categories_management_index_path, notice: 'Unable to delete the category' }

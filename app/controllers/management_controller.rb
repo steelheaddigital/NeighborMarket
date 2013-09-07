@@ -114,7 +114,7 @@ class ManagementController < ApplicationController
   end
   
   def categories
-    @categories = TopLevelCategory.all
+    @categories = TopLevelCategory.where(:active => true)
     
     respond_to do |format|
       format.html

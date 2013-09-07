@@ -92,7 +92,8 @@ class ManagementControllerTest < ActionController::TestCase
     get :categories
     
     assert_response :success
-    assert_not_nil assigns (:categories)
+    assert_not_nil assigns(:categories)
+    assert_equal 3, assigns(:categories).count
   end
   
   test "should get categories js" do

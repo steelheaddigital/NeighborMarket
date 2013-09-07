@@ -13,7 +13,9 @@ class SellerControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns(:current_inventory)
-    assert_not_nil assigns(:all_inventory)    
+    assert_equal 6, assigns(:current_inventory).count
+    assert_not_nil assigns(:all_inventory)
+    assert_equal 0, assigns(:all_inventory).count       
   end
   
   test "should get index js" do

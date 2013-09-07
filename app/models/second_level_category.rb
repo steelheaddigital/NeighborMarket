@@ -19,9 +19,13 @@
 
 class SecondLevelCategory < ActiveRecord::Base
   belongs_to :top_level_category
-  has_one :inventory_item, :dependent => :destroy
+  has_one :inventory_item
   
-  attr_accessible :name, :description, :top_level_category_id
+  attr_accessible :name, :description, :top_level_category_id, :active
   
   validates :name, :presence => true
+  
+  def deactivate
+    update_column(:active, false)
+  end
 end

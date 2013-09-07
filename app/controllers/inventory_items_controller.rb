@@ -25,7 +25,7 @@ class InventoryItemsController < ApplicationController
   
   def new
     @item = InventoryItem.new
-    @top_level_categories = TopLevelCategory.all
+    @top_level_categories = TopLevelCategory.where(:active => true)
     @second_level_categories = {}
     
     respond_to do |format|
@@ -41,7 +41,7 @@ class InventoryItemsController < ApplicationController
     @top_level_categories = TopLevelCategory.all
     
     if(@item.top_level_category)
-      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
+      @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)
     else
       @second_level_categories = {}
     end
@@ -70,7 +70,7 @@ class InventoryItemsController < ApplicationController
   def edit
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
-    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
+    @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)
     
     respond_to do |format|
       format.html
@@ -84,7 +84,7 @@ class InventoryItemsController < ApplicationController
     @top_level_categories = TopLevelCategory.all
     
     if(@item.top_level_category)
-      @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
+      @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)
     else
       @second_level_categories = {}
     end
@@ -130,7 +130,8 @@ class InventoryItemsController < ApplicationController
   end
   
   def get_second_level_category
-    @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(params[:category_id])
+    @second_level_categories = SecondLevelCategory.where(:top_level_category_id => params[:category_id], :active => true)
+    
     render :json => @second_level_categories
   end
   

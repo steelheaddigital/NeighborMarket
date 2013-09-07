@@ -11,3 +11,13 @@ preserves:
 meat:
   name: Meat
   description: MyText
+
+inactive:
+  name: inactive
+  description: MyText
+  active: false
+
+inactive_has_inventory:
+  name: inactive_has_inventory
+  description: MyText
+  active: false

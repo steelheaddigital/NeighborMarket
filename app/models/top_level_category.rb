@@ -18,11 +18,18 @@
 #
 
 class TopLevelCategory < ActiveRecord::Base
-  has_many :second_level_categories, :dependent => :destroy 
-  has_one :inventory_item, :dependent => :destroy
+  has_many :second_level_categories
+  has_one :inventory_item
   
-  attr_accessible :name, :description
+  attr_accessible :name, :description, :active
   
   validates :name, :presence => true
+  
+  def deactivate
+    update_column(:active, false)
+    self.second_level_categories.each do |category|
+      category.deactivate
+    end
+  end
   
 end

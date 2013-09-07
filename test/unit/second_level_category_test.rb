@@ -6,4 +6,13 @@ class SecondLevelCategoryTest < ActiveSupport::TestCase
     
     assert !category.valid?
   end
+  
+  test "deactivate sets active column to false" do
+     category = second_level_categories(:carrot)
+    
+     category.deactivate
+    
+     assert !category.active?
+   end
+   
 end
