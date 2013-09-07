@@ -53,4 +53,8 @@ $(document).ready(function() {
 	else{
 		$('#FlashMessages').hide();
 	}
+	
+	$('.dropdown-submenu').click(function(event){
+	     event.stopPropagation();
+	 });
 });
