@@ -24,10 +24,8 @@
   <h2>Become a Buyer</h2>
   <%= delivery_instructions_message(@site_settings) %>
   
-  <% if @site_settings.delivery_only? || @site_settings.all_modes? %>
-  	<%= render :partial => "buyer_fields", :locals => { :f => f } %>
-  <% end %>
-  
+  <%= render :partial => "buyer_fields", :locals => { :f => f } %>
+
   <%= f.hidden_field :become_buyer, :value => true %>
 
   <div><%= f.submit "Update", :class => 'btn btn-primary'%></div>

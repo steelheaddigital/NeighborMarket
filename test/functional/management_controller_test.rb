@@ -205,6 +205,7 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns (:orders)
     assert_not_nil assigns(:previous_order_cycles)
     assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_not_nil assigns(:site_settings)
   end
   
   test "should get previous buyer_invoices" do
@@ -215,6 +216,7 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:orders)
     assert_not_nil assigns(:previous_order_cycles)
     assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_not_nil assigns(:site_settings)
   end
   
   test "should get buyer_invoices pdf" do
@@ -222,6 +224,7 @@ class ManagementControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns (:orders)
+    assert_not_nil assigns(:site_settings)
     assert_equal response.content_type, "application.pdf"
   end
   
@@ -233,6 +236,7 @@ class ManagementControllerTest < ActionController::TestCase
     assert_not_nil assigns(:orders)
     assert_not_nil assigns(:previous_order_cycles)
     assert_not_nil assigns(:selected_previous_order_cycle)
+    assert_not_nil assigns(:site_settings)
     assert_equal response.content_type, "application.pdf"
   end
   

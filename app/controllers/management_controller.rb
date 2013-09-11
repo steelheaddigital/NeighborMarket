@@ -222,11 +222,12 @@ class ManagementController < ApplicationController
     @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
+    @site_settings = SiteSetting.first
     
     respond_to do |format|
       format.html
       format.pdf do
-        output = BuyerInvoices.new.to_pdf(@orders)
+        output = BuyerInvoices.new.to_pdf(@orders, @site_settings)
         send_data output, :filename => "buyer_invoices.pdf",
                           :type => "application.pdf"
       end

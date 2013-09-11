@@ -36,8 +36,10 @@
 		  <div class="well-fluid row-fluid">
 		    <p><span style ="font-weight: bold">Order ID: </span><%= order.id %></p>
 		    <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
-		    <p><span style ="font-weight: bold">Buyer Address: </span> <%= order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip %></p>
-		    <p><span style ="font-weight: bold">Delivery Instructions: </span> <%= order.user.delivery_instructions %></p>
+		    <p><span style ="font-weight: bold">Buyer Address: </span> <%= buyer_address(order.user) %></p>
+			<% if !@site_settings.drop_point_only? %>
+		    	<p><span style ="font-weight: bold">Delivery Instructions: </span> <%= order.user.delivery_instructions.to_s %></p>
+			<% end %>
 		      <table class="table" >
 		      <thead>  
 		        <tr>

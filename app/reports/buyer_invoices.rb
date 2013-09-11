@@ -21,7 +21,7 @@ class BuyerInvoices < Prawn::Document
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
   
-  def to_pdf(orders)
+  def to_pdf(orders, site_settings)
     text "Buyer Invoices", :size => 30, :style => :bold
 
     move_down(30)
@@ -53,19 +53,21 @@ class BuyerInvoices < Prawn::Document
                 :styles => [:bold]
             },
             {
-                :text => order.user.address + ", " + order.user.city + ", " + order.user.state + " " + order.user.zip
+                :text => "#{buyer_address(order.user)}"
             }
         ])
-
-        formatted_text([
-            {
-                :text => "Delivery Instructions: ",
-                :styles => [:bold]
-            },
-            {
-                :text => order.user.delivery_instructions
-            }
-        ])
+        
+        if(!site_settings.drop_point_only?)
+          formatted_text([
+              {
+                  :text => "Delivery Instructions: ",
+                  :styles => [:bold]
+              },
+              {
+                  :text => order.user.delivery_instructions.to_s
+              }
+          ])
+        end
 
         move_down(10)
 

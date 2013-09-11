@@ -19,5 +19,7 @@
 #
 %>
 
-<div><%= f.label delivery_instructions_label(@site_settings) %>
-<%= f.text_area :delivery_instructions, :rows => 10 %></div>
+<% if !@site_settings.drop_point_only? %>
+	<div><%= f.label delivery_instructions_label(@site_settings) %>
+	<%= f.text_area :delivery_instructions, :rows => 10 %></div>
+<% end %>
