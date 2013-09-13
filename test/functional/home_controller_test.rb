@@ -5,7 +5,10 @@ class HomeControllerTest < ActionController::TestCase
   
   test "should get index" do
     get :index
+    
     assert_response :success
+    assert_not_nil assigns(:site_name)
+    assert_not_nil assigns(:site_description)
   end
 
   test "should get user_home for manager" do
@@ -14,7 +17,6 @@ class HomeControllerTest < ActionController::TestCase
     
     get :user_home
     assert_response :success
-    assert_not_nil assigns(:manager)
   end
   
   test "should get user_home for seller" do

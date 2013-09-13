@@ -27,6 +27,7 @@ class InventoryItemsController < ApplicationController
     @item = InventoryItem.new
     @top_level_categories = TopLevelCategory.where(:active => true)
     @second_level_categories = {}
+    @inventory_guidelines = SiteSetting.first.inventory_guidelines
     
     respond_to do |format|
       format.html
@@ -39,6 +40,7 @@ class InventoryItemsController < ApplicationController
     @item = user.inventory_items.new(params[:inventory_item])
     @item.approved = false if user.listing_approval_style == 'manual'
     @top_level_categories = TopLevelCategory.all
+    @inventory_guidelines = SiteSetting.first.inventory_guidelines
     
     if(@item.top_level_category)
       @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)
@@ -71,6 +73,7 @@ class InventoryItemsController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)
+    @inventory_guidelines = SiteSetting.first.inventory_guidelines
     
     respond_to do |format|
       format.html
@@ -82,6 +85,7 @@ class InventoryItemsController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @item.current_user = current_user
     @top_level_categories = TopLevelCategory.all
+    @inventory_guidelines = SiteSetting.first.inventory_guidelines
     
     if(@item.top_level_category)
       @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id, :active => true)

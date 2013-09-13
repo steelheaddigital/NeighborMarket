@@ -37,4 +37,10 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "Carrots", categories[1][:second_level][0][:name]
   end
   
+  test "site_name returns correct site name" do
+    name = site_name
+    
+    assert_equal "Test Neighbor Market", name
+  end
+  
 end

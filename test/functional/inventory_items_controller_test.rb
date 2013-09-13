@@ -25,6 +25,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_equal response.content_type, Mime::JS
     
   end
@@ -40,6 +41,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_redirected_to seller_index_path
     assert_equal 'Inventory item successfully created!', flash[:notice]
     
@@ -55,6 +57,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_redirected_to seller_index_path
     assert_equal response.content_type, Mime::JS
   end
@@ -67,6 +70,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
   end
   
   test "should get edit js" do
@@ -77,6 +81,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_equal response.content_type, Mime::JS
   end
   
@@ -92,6 +97,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_redirected_to seller_index_path
     assert_equal 'Inventory item successfully updated!', flash[:notice]
   end
@@ -105,6 +111,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_redirected_to seller_index_path
     assert_equal 'Inventory item successfully updated!', flash[:notice]
   end
@@ -118,6 +125,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_response :success
     assert !assigns(:item).errors.empty?
   end
@@ -134,6 +142,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)
     assert_not_nil assigns(:second_level_categories)
+    assert_not_nil assigns(:inventory_guidelines)
     assert_redirected_to seller_index_path
     assert_equal response.content_type, Mime::JS
   end

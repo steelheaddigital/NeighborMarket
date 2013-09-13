@@ -19,10 +19,13 @@
 
 class HomeController < ApplicationController
   def index
-    if SiteSetting.first
-      @site_name = SiteSetting.first.site_name
+    site_settings = SiteSetting.first
+    if site_settings
+      @site_name = site_settings.site_name
+      @site_description = if site_settings.site_description.blank? then "Welcome to the " + @site_name else site_settings.site_description end
     else
       @site_name = "Neighbor Market"
+      @site_description = "Welcome to the Neighbor Market"
     end
   end
   

@@ -26,7 +26,8 @@
 <%= form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
 <div class="modal-body">
   <div class="row-fluid">
-  <div class="modalErrorMessages"><%= f.error_messages %></div>
+	  <div class="alert"><%= @inventory_guidelines %></div>
+	  <div class="modalErrorMessages"><%= f.error_messages %></div>
 	  <div class="span5">
 	    <div>
 	      <%= f.label "Top Level Category *"   %>

@@ -94,6 +94,11 @@ class ApplicationController < ActionController::Base
     @cart
   end
   
+  def site_name
+    SiteSetting.first.site_name
+  end
+    
+  
   rescue_from CanCan::AccessDenied do |exception|
     logger.error "CanCan Access Denied: #{exception.message}"
     render file: "#{Rails.root}/public/404", formats: [:html], status: 404, layout: false

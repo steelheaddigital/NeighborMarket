@@ -21,39 +21,53 @@
 
 <%= form_for @site_settings, :url => update_site_settings_management_index_path, :method => :post, :html => { :id => "SiteSettingsForm", :class=>"well" } do |f| %>
   <%= f.error_messages %>
-  <div>
-    <%= f.label :site_name %>
-    <%= f.text_field :site_name, :class => "input-xlarge" %>
+  <div class="row-fluid">
+	  <div class="span6">
+		  <div>
+		    <%= f.label :time_zone %>
+		    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => "Pacific Time (US & Canada)" }, { :class => "input-xlarge" } %>
+		  </div>
+		  <div>
+		    <%= f.label "Site name (will be displayed on front page and in emails)" %>
+		    <%= f.text_field :site_name, :class => "input-xlarge" %>
+		  </div>
+		  <div>
+		    <%= f.label "Site description (will be displayed under Site name on front page)" %>
+		    <%= f.text_area :site_description, :rows => 5, :class => "input-xlarge"%>
+		  </div>
+		  <div>
+		    <%= f.label :inventory_guidelines %>
+		    <%= f.text_area :inventory_guidelines, :rows => 5, :class => "input-xlarge"%>
+		  </div>
+	  </div>
+	  <div class="span6">
+		  <div>
+		    <%= f.label :drop_point_address %>
+		    <%= f.text_field :drop_point_address, :class => "input-xlarge" %>
+		  </div>
+		  <div>
+		    <%= f.label :drop_point_city %>
+		    <%= f.text_field :drop_point_city, :class => "input-xlarge" %>
+		  </div>
+		  <div>
+		    <%= f.label :drop_point_state %>
+		    <%= f.state_select :drop_point_state, country = "US", {}, {:class => "input-medium"} %>
+		  </div>
+		  <div>
+		    <%= f.label :drop_point_zip %>
+		    <%= f.text_field :drop_point_zip, :class => "input-medium" %>
+		  </div>
+		  <div>
+		    <%= f.label "Drop point directions" %>
+		    <%= f.text_area :directions, :rows => 5, :class => "input-xlarge"%>
+		  </div>
+		  <fieldset>
+			  <legend>Site Modes</legend>
+			  Drop Point: <%= f.check_box(:drop_point, {:style => "margin: 0;"}, true, "false")%> </br>
+			  Delivery: <%= f.check_box(:delivery, {:style => "margin: 0;"}, true, "false")%> </br>
+		  </fieldset>
+	  </div>
   </div>
-  <div>
-    <%= f.label :time_zone %>
-    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => "Pacific Time (US & Canada)" }, { :class => "input-xlarge" } %>
-  </div>
-  <div>
-    <%= f.label :drop_point_address %>
-    <%= f.text_field :drop_point_address, :class => "input-xlarge" %>
-  </div>
-  <div>
-    <%= f.label :drop_point_city %>
-    <%= f.text_field :drop_point_city, :class => "input-xlarge" %>
-  </div>
-  <div>
-    <%= f.label :drop_point_state %>
-    <%= f.state_select :drop_point_state, country = "US", {}, {:class => "input-medium"} %>
-  </div>
-  <div>
-    <%= f.label :drop_point_zip %>
-    <%= f.text_field :drop_point_zip, :class => "input-medium" %>
-  </div>
-  <div>
-    <%= f.label :directions %>
-    <%= f.text_area :directions, :rows => 5, :class => "input-xlarge"%>
-  </div>
-  <fieldset>
-	  <legend>Site Modes</legend>
-	  Drop Point: <%= f.check_box(:drop_point, {:style => "margin: 0;"}, true, "false")%> </br>
-	  Delivery: <%= f.check_box(:delivery, {:style => "margin: 0;"}, true, "false")%> </br>
-  </fieldset>
   
   <div class="row-fluid">
     <%= submit_tag "Save Settings", :class => 'btn btn-primary' %>
