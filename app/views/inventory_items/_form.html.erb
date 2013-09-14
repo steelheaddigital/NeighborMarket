@@ -19,28 +19,65 @@
 #
 %>
 
-<div>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-</div>
-<div>
-  <%= f.label "Price *" %>
-  <%= f.text_field :price, :class => "input-small" %>
-</div>
-<div>
-  <%= f.label "Units *" %>
-  <%= f.text_field :price_unit, :class => "input-medium", :placeholder => "choose or enter a value", :id => "PriceUnitSelect", "data-url" => units_inventory_items_path %>
-</div>
-<div>
-  <%= f.label "Quantity Available *" %>
-  <%= f.text_field :quantity_available, :class => "input-small" %>
-</div>
-<% if current_user.manager? %>
-	<div>
-	  <%= f.label "Approved" %>
-	  <%= f.check_box :approved, {}, "true", "false" %>
+<div class="modal-body">
+  <div class="row-fluid">
+	  <% if !@inventory_guidelines.blank? %>
+	  	<div class="alert">Inventory Guidelines: <%= @inventory_guidelines %></div>
+	  <% end %>
+	  <div class="modalErrorMessages"><%= f.error_messages %></div>
+	  <div class="span5">
+	    <div>
+	      <%= f.label "Top Level Category *"   %>
+	      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name) %>
+	    </div>
+	    <div>
+	      <%= f.label "Second Level Category *" %>
+	      <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]})  %>
+	    </div>
+		<div>
+		  <%= f.label :name %>
+		  <%= f.text_field :name %>
+		</div>
+		<div>
+		  <%= f.label "Price *" %>
+		  <%= f.text_field :price, :class => "input-small" %>
+		</div>
+		<div>
+		  <%= f.label "Units *" %>
+		  <%= f.text_field :price_unit, :class => "input-medium", :placeholder => "choose or enter a value", :id => "PriceUnitSelect", "data-url" => units_inventory_items_path %>
+		</div>
+		<div>
+		  <%= f.label "Quantity Available *" %>
+		  <%= f.text_field :quantity_available, :class => "input-small" %>
+		</div>
+		<% if current_user.manager? %>
+			<div>
+			  <%= f.label "Approved" %>
+			  <%= f.check_box :approved, {}, "true", "false" %>
+			</div>
+		<% end %>
 	</div>
-<% end %>
+	<div class="span5" style="margin-left:30px;">
+	  <div>
+	    <%= f.label :description %>
+	    <%= f.text_area :description, :size => "10x10" %>
+	  </div>
+	  <%if @item.photo?%>
+	    <%= image_tag @item.photo.url(:thumb) %>
+	  <%else%>
+	    No Image Available
+	  <%end%>
+	  <div>
+	    <%= f.label "Add a photo" %>
+	    <%= f.file_field :photo %>
+	  </div>
+	</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a class="btn" data-dismiss="modal" href="#">Close</a>
+  <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
+</div>
 <script type="text/javascript">
 	$("#PriceUnitSelect").typeahead({
 		minLength:0,
