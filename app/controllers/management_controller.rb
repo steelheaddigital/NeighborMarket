@@ -273,6 +273,7 @@ class ManagementController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = SecondLevelCategory.find_all_by_top_level_category_id(@item.top_level_category.id)
+    @inventory_guidelines = SiteSetting.first.inventory_guidelines
     
     respond_to do |format|
       format.html
