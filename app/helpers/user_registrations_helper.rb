@@ -52,6 +52,13 @@ module UserRegistrationsHelper
         :state => "Delivery State*",
         :zip => "Delivery Zip*"
       }
+    elsif site_settings.drop_point_only?
+    	{ :address => "Address",
+        :city => "City",
+        :country => "Country",
+        :state => "State",
+        :zip => "Zip"
+      }
     else
     	{ :address => "Delivery Address",
         :city => "Delivery City",
