@@ -123,4 +123,46 @@ class UserRegistrationsHelperTest < ActionView::TestCase
     assert_equal("Delivery Zip", result)
   end
   
+  
+  
+  test "address field label returns correct label when site is set to drop point only" do
+    site_settings = SiteSetting.new(:delivery => false, :drop_point => true)
+    
+    result = field_label(:address, site_settings)
+    
+    assert_equal("Address", result)
+  end
+  
+  test "city field label returns correct label when site is not set to drop point only" do
+    site_settings = SiteSetting.new(:delivery => false, :drop_point => true)
+    
+    result = field_label(:city, site_settings)
+    
+    assert_equal("City", result)
+  end
+  
+  test "state field label returns correct label when site is not set to drop point only" do
+    site_settings = SiteSetting.new(:delivery => false, :drop_point => true)
+    
+    result = field_label(:state, site_settings)
+    
+    assert_equal("State", result)
+  end
+  
+  test "country field label returns correct label when site is not set to drop point only" do
+    site_settings = SiteSetting.new(:delivery => false, :drop_point => true)
+    
+    result = field_label(:country, site_settings)
+    
+    assert_equal("Country", result)
+  end
+  
+  test "zip field label returns correct label when site is not set to drop point only" do
+    site_settings = SiteSetting.new(:delivery => false, :drop_point => true)
+    
+    result = field_label(:zip, site_settings)
+    
+    assert_equal("Zip", result)
+  end
+  
 end
