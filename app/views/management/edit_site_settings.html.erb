@@ -28,15 +28,15 @@
 		    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => "Pacific Time (US & Canada)" }, { :class => "input-xlarge" } %>
 		  </div>
 		  <div>
-		    <%= f.label "Site name (will be displayed on front page and in emails)" %>
+		    <label>Site name (Displayed on front page and in emails.)</label>
 		    <%= f.text_field :site_name, :class => "input-xlarge" %>
 		  </div>
 		  <div>
-		    <%= f.label "Site description (will be displayed under Site name on front page. HTML is allowed.)" %>
+		    <label>Site description (Displayed on front page. HTML is allowed.)</label>
 		    <%= f.text_area :site_description, :rows => 5, :class => "input-xlarge"%>
 		  </div>
 		  <div>
-		    <%= f.label "Inventory guidelines (will be displayed on seller inventory form)" %>
+		    <label>Inventory guidelines (Displayed on seller inventory form.)</label>
 		    <%= f.text_area :inventory_guidelines, :rows => 5, :class => "input-xlarge"%>
 		  </div>
 	  </div>
