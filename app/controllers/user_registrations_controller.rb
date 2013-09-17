@@ -145,10 +145,10 @@ class UserRegistrationsController < Devise::RegistrationsController
   private
   
   def send_new_seller_email(user)
-     managers = Role.find_by_name("manager").users 
-      managers.each do |manager|
-        ManagerMailer.delay.new_seller_mail(user, manager)
-      end
+    managers = User.joins(:roles).where(:roles => {:name => "manager"})
+    managers.each do |manager|
+      ManagerMailer.delay.new_seller_mail(user, manager)
+    end
   end
   
   def add_resource_role(resource, user_type)
