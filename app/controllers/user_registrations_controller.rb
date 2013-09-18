@@ -131,6 +131,15 @@ class UserRegistrationsController < Devise::RegistrationsController
     add_role(resource, "buyer")
   end
   
+  def terms_of_service
+    @terms_of_service = SiteSetting.first.terms_of_service
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
   private
   
   #Override the devise method to send new sellers to a custom page

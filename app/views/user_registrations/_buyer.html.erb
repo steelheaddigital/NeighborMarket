@@ -71,7 +71,11 @@
 	  <% if !@site_settings.drop_point_only? %>
 	  	<div class="span9"></div>
 	  <% end %>
-	  <div class="span2">
+	  <div class="span4">
+		<div style="margin-bottom: 5px;">
+			<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%> 
+			<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
+		</div>
 	    <%= f.submit "Sign up", {:class => "btn btn-primary", :style => "width: 150px; height: 35px;"}%>
 	  </div>
 	</div>

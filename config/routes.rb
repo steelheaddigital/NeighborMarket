@@ -14,6 +14,7 @@ NeighborMarket::Application.routes.draw do
     match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup'
     match '/user/inactive_signup' => 'user_registrations#inactive_signup'
     match '/user/auto_create_confirmation' => 'user_confirmations#auto_create_confirmation', :via => "GET"
+    match '/user_registrations/terms_of_service'
   end
   
   resources :user do 

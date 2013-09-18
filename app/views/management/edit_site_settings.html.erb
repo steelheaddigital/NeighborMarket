@@ -39,6 +39,10 @@
 		    <label>Inventory guidelines (Displayed on seller inventory form.)</label>
 		    <%= f.text_area :inventory_guidelines, :rows => 5, :class => "input-xlarge"%>
 		  </div>
+		  <div>
+			<%= f.label :terms_of_service %>
+		  	<%= f.text_area :terms_of_service, :rows => 10, :class => "input-xlarge"%>
+		  </div>
 	  </div>
 	  <div class="span6">
 		  <div>
@@ -68,7 +72,6 @@
 		  </fieldset>
 	  </div>
   </div>
-  
   <div class="row-fluid">
     <%= submit_tag "Save Settings", :class => 'btn btn-primary' %>
   </div>

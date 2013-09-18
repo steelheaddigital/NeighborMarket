@@ -25,7 +25,7 @@ class SiteSetting < ActiveRecord::Base
                       
   validate :must_have_at_least_one_mode
   
-  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :site_description, :inventory_guidelines
+  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :site_description, :inventory_guidelines, :terms_of_service
   
   def self.new_setting(settings)
     current_site_settings = self.first

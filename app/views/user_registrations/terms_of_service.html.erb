@@ -18,21 +18,13 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 %>
-
-<div class="container">
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <div class="row-fluid">
-  <% resource.roles.each do |role| %>
-    <%= render :partial => "#{role.name.downcase.camelize.underscore}", :locals => { :f => f } %>
-  <% end %>
-  </div>
-<% end %>
+<div class="modal-header">
+  <button class="close" data-dismiss="modal" type="button">×</button>
+  <h3>Terms of Service</h3>
 </div>
-<div id="Modal" class="modal hide fade" tabindex="-1" data-width="760">
+<div class="modal-body">
+	<%= @terms_of_service.html_safe%>
 </div>
-<script>
-  $("#Modal").modal({show:false});
-</script>
-
-
- 
+<div class="modal-footer">
+  <a class="btn" data-dismiss="modal" href="#">Close</a>
+</div>

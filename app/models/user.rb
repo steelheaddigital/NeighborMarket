@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :if => :password_required?
   validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
+  validates :terms_of_service, acceptance: { accept: true}
   
   before_save { valid? || true }
   after_save { errors.clear || true }
@@ -76,7 +77,7 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
   
   def set_auto_created_updated_at
     if self.valid?
