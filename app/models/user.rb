@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :if => :password_required?
   validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
-  validates :terms_of_service, acceptance: { accept: true}
+  validates :terms_of_service, acceptance: { accept: true }, :unless => :auto_create
   
   before_save { valid? || true }
   after_save { errors.clear || true }

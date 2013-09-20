@@ -20,7 +20,8 @@ class UserTest < ActiveSupport::TestCase
                        :delivery_instructions => "Test",
                        :payment_instructions => "Test",
                        :approved_seller => false,                   
-                       :listing_approval_style => "manual")
+                       :listing_approval_style => "manual",
+                       :terms_of_service => true)
   
      seller_role = Role.new
      seller_role.name = "seller"
@@ -36,7 +37,8 @@ class UserTest < ActiveSupport::TestCase
                        :country => "United States",
                        :state => "Oregon",
                        :zip => "97218",
-                       :delivery_instructions => "Test")
+                       :delivery_instructions => "Test",
+                       :terms_of_service => true)
   
      buyer_role = Role.new
      buyer_role.name = "buyer"
@@ -133,6 +135,12 @@ class UserTest < ActiveSupport::TestCase
    
    test "should not save seller with invalid phone number" do
      @seller.phone = "Foo"
+     
+     assert !@seller.valid?
+   end
+   
+   test "should not save seller without terms of service agreement" do
+     @seller.terms_of_service = false
      
      assert !@seller.valid?
    end
@@ -256,7 +264,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "updates auto_create_updated_at on update for valid auto created user" do
     user = users(:confirmed_auto_created_user)
-    user.update_attributes(:password => "Abc123!", :password_confirmation => "Abc123!")
+    user.update_attributes(:password => "Abc123!", :password_confirmation => "Abc123!", :terms_of_service => true)
     
     assert user.valid?
     assert !user.auto_create_updated_at.nil?

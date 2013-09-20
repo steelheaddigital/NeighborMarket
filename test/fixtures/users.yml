@@ -44,6 +44,7 @@ approved_seller_user:
  listing_approval_style: auto
  roles: seller_role
  confirmed_at: 2012-12-13 03:39:08.461402
+ terms_of_service: true
  
 unapproved_seller_user:
  email: unapprovedseller@test.com
@@ -105,6 +106,7 @@ buyer_user:
  listing_approval_style: manual
  roles: buyer_role
  confirmed_at: 2012-12-13 03:39:08.461402
+ terms_of_service: true
  
 buyer_user_not_current:
  email: buyer2@test.com
@@ -261,3 +263,4 @@ updated_auto_created_user:
  zip: 97218
  auto_created: true
  auto_create_updated_at: 2012-12-13 03:39:08.461402
+ terms_of_service: true
