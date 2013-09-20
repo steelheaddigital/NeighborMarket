@@ -123,6 +123,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def become_seller
+    @site_settings = SiteSetting.first
     add_role(resource, "seller")
   end
   

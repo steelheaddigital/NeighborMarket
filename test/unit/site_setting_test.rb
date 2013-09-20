@@ -12,6 +12,11 @@ class SiteSettingTest < ActiveSupport::TestCase
      assert !site_setting.valid?, site_setting.errors.inspect
    end
    
+   test "should not validate if require_terms_of_service is true and terms_of_service is blank" do
+     site_setting = SiteSetting.new(:delivery => false, :drop_point => true, :terms_of_service => "", :require_terms_of_service => true)
+     assert !site_setting.valid?, site_setting.errors.inspect
+   end
+   
    test "new_setting returns new site_settings" do
      settings = { "site_name" => "Test", "drop_point_address" => "123 Test St.", "drop_point_city" => "Portland", "drop_point_state" => "Oregon", "drop_point_zip" => "97218"}
      result = SiteSetting.new_setting(settings)

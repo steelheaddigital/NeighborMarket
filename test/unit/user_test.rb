@@ -154,7 +154,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should not save buyer without Address if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false })
      @buyer.address = nil
      
      assert !@buyer.valid?
@@ -162,7 +162,7 @@ class UserTest < ActiveSupport::TestCase
 
    test "should not save buyer without City if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
      @buyer.city = nil
      
      assert !@buyer.valid?
@@ -170,7 +170,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should not save buyer without Zip if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
      @buyer.zip = nil
      
      assert !@buyer.valid?
@@ -178,7 +178,7 @@ class UserTest < ActiveSupport::TestCase
   
    test "should not save buyer without State if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
      @buyer.state = nil
      
      assert !@buyer.valid?
@@ -186,7 +186,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should not save buyer without Country if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
      @buyer.country = nil
      
      assert !@buyer.valid?
@@ -194,7 +194,7 @@ class UserTest < ActiveSupport::TestCase
   
    test "should save buyer without Address if not delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.address = nil
      
      assert @buyer.valid?
@@ -202,7 +202,7 @@ class UserTest < ActiveSupport::TestCase
 
    test "should save buyer without City if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.city = nil
      
      assert @buyer.valid?
@@ -210,7 +210,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should save buyer without Zip if not delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.zip = nil
      
      assert @buyer.valid?
@@ -218,7 +218,7 @@ class UserTest < ActiveSupport::TestCase
   
    test "should save buyer without State if not delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.state = nil
      
      assert @buyer.valid?
@@ -226,7 +226,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should save buyer without Country if not delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.country = nil
      
      assert @buyer.valid?
@@ -240,7 +240,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should not save buyer without delivery instructions if delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => true, :drop_point => false})
+     site_setting.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
      @buyer.delivery_instructions = nil
      
      assert !@buyer.valid?
@@ -248,7 +248,7 @@ class UserTest < ActiveSupport::TestCase
    
    test "should save buyer without delivery instructions if not delivery only" do
      site_setting = SiteSetting.first;
-     site_setting.update_attributes({:delivery => false, :drop_point => true})
+     site_setting.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
      @buyer.delivery_instructions = nil
      
      assert @buyer.valid?

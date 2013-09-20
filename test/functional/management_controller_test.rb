@@ -16,7 +16,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should update site_settings" do
-    post :update_site_settings, :site_setting => { :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218"}
+    post :update_site_settings, :site_setting => { :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218", :terms_of_service => "test"}
     
     assert_redirected_to edit_site_settings_management_index_path
     assert_not_nil assigns (:site_settings)

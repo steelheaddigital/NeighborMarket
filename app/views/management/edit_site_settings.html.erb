@@ -40,6 +40,10 @@
 		    <%= f.text_area :inventory_guidelines, :rows => 5, :class => "input-xlarge"%>
 		  </div>
 		  <div>
+			  <%= f.check_box(:require_terms_of_service, {:style => "margin: 0;"}, true, "false")%>
+			  <span>Require terms of service agreement at user sign-up</span>
+		  </div>
+		  <div>
 			<%= f.label :terms_of_service %>
 		  	<%= f.text_area :terms_of_service, :rows => 10, :class => "input-xlarge"%>
 		  </div>

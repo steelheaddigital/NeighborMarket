@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130918114316) do
+ActiveRecord::Schema.define(:version => 20130920121139) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -156,12 +156,13 @@ ActiveRecord::Schema.define(:version => 20130918114316) do
     t.string  "drop_point_state"
     t.integer "drop_point_zip"
     t.string  "time_zone"
-    t.boolean "drop_point",           :default => true
-    t.boolean "delivery",             :default => false
+    t.boolean "drop_point",               :default => true
+    t.boolean "delivery",                 :default => false
     t.text    "directions"
     t.text    "site_description"
     t.text    "inventory_guidelines"
     t.text    "terms_of_service"
+    t.boolean "require_terms_of_service", :default => true
   end
 
   create_table "top_level_categories", :force => true do |t|

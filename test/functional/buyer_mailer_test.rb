@@ -10,7 +10,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     buyer = users(:buyer_user)
     order = orders(:current)
     settings = site_settings(:one)
-    settings.update_attributes({:delivery => false, :drop_point => true})
+    settings.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
     
     BuyerMailer.order_mail(buyer, order).deliver
     sent = ActionMailer::Base.deliveries.first
@@ -33,7 +33,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     buyer = users(:buyer_user)
     order = orders(:current)
     settings = site_settings(:one)
-    settings.update_attributes({:delivery => true, :drop_point => false})
+    settings.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
     
     BuyerMailer.order_mail(buyer, order).deliver
     sent = ActionMailer::Base.deliveries.first
@@ -57,7 +57,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     order = orders(:current)
     order.update_attributes({:deliver => false})
     settings = site_settings(:one)
-    settings.update_attributes({:delivery => true, :drop_point => true})
+    settings.update_attributes({:delivery => true, :drop_point => true, :require_terms_of_service => false})
     
     BuyerMailer.order_mail(buyer, order).deliver
     sent = ActionMailer::Base.deliveries.first
@@ -81,7 +81,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     order = orders(:current)
     order.update_attributes({:deliver => true})
     settings = site_settings(:one)
-    settings.update_attributes({:delivery => true, :drop_point => true})
+    settings.update_attributes({:delivery => true, :drop_point => true, :require_terms_of_service => false})
     
     BuyerMailer.order_mail(buyer, order).deliver
     sent = ActionMailer::Base.deliveries.first

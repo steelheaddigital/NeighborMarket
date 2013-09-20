@@ -84,17 +84,19 @@
       
     </div>
   </div>
-  <div class="row">
-    <div class="span3" style="margin-left:19px;">
-      <p style="padding-top:10px;">Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
+  <div class="row-fluid">
+    <div class="span3">
+      Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>
     </div>
     <div class="span5"></div>
-    <div class="span3">
-  		<div style="margin-bottom: 5px;">
-  			<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%>
-			<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
-  		</div>
-      <%= f.submit "Update", {:class => "btn btn-primary", :style => "width: 150px; height: 35px;"} %>
+    <div class="span4">
+		<% if @site_settings.require_terms_of_service? %>
+			<div style="margin-bottom: 5px;">
+				<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%> 
+				<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
+			</div>
+		<% end %>
+	    <%= f.submit "Update", {:class => "btn btn-primary", :style => "width: 225px; height: 35px;"} %>
     </div>
   </div>
   <% end %>
