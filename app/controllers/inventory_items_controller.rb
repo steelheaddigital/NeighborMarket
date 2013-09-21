@@ -54,10 +54,10 @@ class InventoryItemsController < ApplicationController
           flash[:notice] = "Inventory item successfully created!"
         else
           flash[:notice] = "Inventory item successfully created. However, the item must be approved by the site manager before it will be visible to buyers."
-          managers = Role.find_by_name("manager").users 
-           managers.each do |manager|
-             ManagerMailer.delay.inventory_approval_required(user, manager, @item)
-           end
+          managers = User.joins(:roles).where('roles.name = ?', "manager")
+          managers.each do |manager|
+            ManagerMailer.delay.inventory_approval_required(user, manager, @item)
+          end
         end
         format.html { redirect_to seller_index_path }
         format.js { redirect_to seller_index_path }
