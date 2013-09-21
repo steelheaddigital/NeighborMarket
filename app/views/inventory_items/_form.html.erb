@@ -28,7 +28,7 @@
 	  <div class="span5">
 	    <div>
 	      <%= f.label "Top Level Category *"   %>
-	      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name) %>
+	      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name, include_blank: true) %>
 	    </div>
 	    <div>
 	      <%= f.label "Second Level Category *" %>
