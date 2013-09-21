@@ -20,6 +20,9 @@
 %>
 
 <div>
+  <%if resource.photo?%>
+    <%= image_tag resource.photo.url(:thumb) %>
+  <%end%>
   <%= f.label "Add a photo" %>
   <%= f.file_field :photo %>
 </div>
