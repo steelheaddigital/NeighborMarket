@@ -46,12 +46,6 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     cancan (1.6.9)
-    capistrano (2.14.2)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.1.0)
     carmen (0.2.13)
     celluloid (0.14.1)
       timers (>= 1.0.0)
@@ -89,7 +83,6 @@ GEM
     foreman (0.62.0)
       thor (>= 0.13.6)
     hashery (2.1.0)
-    highline (1.6.15)
     hike (1.2.3)
     i18n (0.6.1)
     journey (1.0.4)
@@ -110,13 +103,6 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.23)
     multi_json (1.7.9)
-    net-scp (1.1.0)
-      net-ssh (>= 2.6.5)
-    net-sftp (2.1.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (2.6.5)
-    net-ssh-gateway (1.2.0)
-      net-ssh (>= 2.6.5)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
     paperclip (3.4.1)
@@ -165,8 +151,6 @@ GEM
     ref (1.0.5)
     ruby-prof (0.11.3)
     ruby-rc4 (0.1.5)
-    rvm-capistrano (1.2.7)
-      capistrano (>= 2.0.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -204,7 +188,6 @@ DEPENDENCIES
   acts_as_indexed
   aws-sdk
   cancan
-  capistrano
   carmen
   debugger
   delayed_job_active_record
@@ -220,7 +203,6 @@ DEPENDENCIES
   prawn
   rails (= 3.2.13)
   ruby-prof (~> 0.11.2)
-  rvm-capistrano (>= 1.1.0)
   therubyracer
   turn (~> 0.8.3)
   uglifier (>= 1.0.3)
