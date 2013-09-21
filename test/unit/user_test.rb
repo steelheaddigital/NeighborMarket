@@ -139,12 +139,6 @@ class UserTest < ActiveSupport::TestCase
      assert !@seller.valid?
    end
    
-   test "should not save seller without terms of service agreement" do
-     @seller.terms_of_service = false
-     
-     assert !@seller.valid?
-   end
-   
    test "should save user other than seller without phone" do
      @buyer.phone = nil
      
@@ -327,6 +321,22 @@ class UserTest < ActiveSupport::TestCase
     @seller.email = "test.test.com"
    
     assert !@seller.valid?
+   end
+   
+   test "should not save new user without terms of service agreement" do
+     site_setting = SiteSetting.first;
+     site_setting.update_attributes({:require_terms_of_service => true})
+     @seller.terms_of_service = false
+     
+     assert !@seller.valid?
+   end
+   
+   test "should save new user without terms of service agreement if terms of service acceptance not required" do
+     site_setting = SiteSetting.first;
+     site_setting.update_attributes({:require_terms_of_service => false})
+     @seller.terms_of_service = false
+     
+     assert @seller.valid?
    end
    
    test "should save user without password and password confirmation if not a new user and not auto_created pending update" do

@@ -34,8 +34,6 @@ gem 'carmen'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn'
 gem "paperclip", "~> 3.0"
-gem "capistrano"
-gem 'rvm-capistrano', '>= 1.1.0'
 gem 'acts_as_indexed'
 gem 'foreman'
 gem 'aws-sdk'
@@ -43,3 +41,5 @@ gem 'delayed_job_active_record'
 gem 'delayed_job_celluloid'
 gem 'less-rails'
 
+#gem "capistrano"
+#gem 'rvm-capistrano', '>= 1.1.0'

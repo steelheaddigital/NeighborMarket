@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :if => :password_required?
   validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
-  validates :terms_of_service, acceptance: { accept: true }, :unless => :auto_create
+  validates :terms_of_service, acceptance: { accept: true }, :if => :tos_required?
   
   before_save { valid? || true }
   after_save { errors.clear || true }
@@ -158,6 +158,11 @@ class User < ActiveRecord::Base
   def delivery_instructions_required?
     site_settings = SiteSetting.first
     buyer? && site_settings.delivery_only?
+  end
+  
+  def tos_required?
+    tos_required = SiteSetting.first.require_terms_of_service?
+    !auto_create && tos_required
   end
   
   def role?(role)
