@@ -33,6 +33,15 @@ class OrderTest < ActiveSupport::TestCase
       assert_equal(result.to_s, "200.0")
   end
   
+  test "total_price_by_seller returns correct result" do
+      order = Order.new
+      cart = carts(:buyer_not_current)
+      seller = users(:approved_seller_user)
+      order.add_inventory_items_from_cart(cart)
+      result = order.total_price_by_seller(seller.id)
+      assert_equal(result.to_s, "100.0")
+  end
+  
   test "sub_totals returns correct result" do
       order = Order.new
       cart = carts(:full)

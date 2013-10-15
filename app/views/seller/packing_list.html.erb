@@ -64,7 +64,7 @@
             <td></td>
             <td></td>
             <td style="font-weight:bold;">Total:</td>
-            <td><%= number_to_currency order.total_price %></td>
+            <td><%= number_to_currency order.total_price_by_seller(current_user.id) %></td>
           </tr>
         </tbody>
       </table>

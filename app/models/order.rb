@@ -51,6 +51,11 @@ class Order < ActiveRecord::Base
     cart_items.to_a.sum { |item| item.total_price }
   end
   
+  def total_price_by_seller(seller_id)
+    cart_items.select{|item| item.inventory_item.user_id == seller_id }
+              .sum { |item| item.total_price }
+  end
+  
   def sub_totals
     sub_total = {}
     cart_items.group_by{|item| item.inventory_item.user.id}.each do |key, value| 
