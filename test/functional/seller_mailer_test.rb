@@ -93,6 +93,26 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_no_match(/Portland, OR 97218/, sent.body.to_s)
   end
   
+  test "order cycle end mail when not recurring" do
+    seller = users(:no_orders_seller_user)
+    order_cycle = order_cycles(:current)
+    order_cycle_settings = OrderCycleSetting.first
+    order_cycle_settings.recurring = false
+    order_cycle_settings.save
+    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [seller.email], sent.to
+    assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
+    assert !sent.has_attachments?
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 11:03 AM.", sent.body.to_s)
+    assert_no_match(Regexp.new(Regexp.escape('>Please <a href="http://test.neighbormarket.org/users/sign_in">log in</a> to update your inventory for the next order cycle.')), sent.body.to_s)
+    assert_no_match(/You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08\/17\/2012 at 11:03 AM./, sent.body.to_s)
+    assert_no_match(/12345 Test Way/, sent.body.to_s)
+    assert_no_match(/Portland, OR 97218/, sent.body.to_s)
+  end
+  
   test "change_request_complete_mail" do
     request = inventory_item_change_requests(:one)
     SellerMailer.change_request_complete_mail(request).deliver

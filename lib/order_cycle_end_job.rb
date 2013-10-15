@@ -44,6 +44,7 @@ class OrderCycleEndJob
     else
       current_cycle.status = "complete"
       current_cycle.save
+      send_emails(current_cycle)
     end
   end
   
