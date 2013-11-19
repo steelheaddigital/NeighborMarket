@@ -69,9 +69,9 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_equal "pick_list.pdf", sent.attachments['pick_list.pdf'].filename
     assert_equal "application/pdf; charset=UTF-8; filename=packing_list.pdf", sent.attachments['packing_list.pdf'].content_type
     assert_equal "application/pdf; charset=UTF-8; filename=pick_list.pdf", sent.attachments['pick_list.pdf'].content_type
-    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 11:03 AM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 12:03 PM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match(">Please <a href=\"http://test.neighbormarket.org/users/sign_in\">log in</a> to update your inventory for the next order cycle.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
-    assert_match("You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08/17/2012 at 11:03 AM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
+    assert_match("You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08/17/2012 at 12:03 PM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("12345 Test Way", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("Portland, OR 97218", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
   end
@@ -86,7 +86,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_equal [seller.email], sent.to
     assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
     assert !sent.has_attachments?
-    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 11:03 AM.", sent.body.to_s)
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 12:03 PM.", sent.body.to_s)
     assert_match(">Please <a href=\"http://test.neighbormarket.org/users/sign_in\">log in</a> to update your inventory for the next order cycle.", sent.body.to_s)
     assert_no_match(/You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08\/17\/2012 at 11:03 AM./, sent.body.to_s)
     assert_no_match(/12345 Test Way/, sent.body.to_s)
@@ -106,7 +106,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_equal [seller.email], sent.to
     assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
     assert !sent.has_attachments?
-    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 11:03 AM.", sent.body.to_s)
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 12:03 PM.", sent.body.to_s)
     assert_no_match(Regexp.new(Regexp.escape('>Please <a href="http://test.neighbormarket.org/users/sign_in">log in</a> to update your inventory for the next order cycle.')), sent.body.to_s)
     assert_no_match(/You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08\/17\/2012 at 11:03 AM./, sent.body.to_s)
     assert_no_match(/12345 Test Way/, sent.body.to_s)

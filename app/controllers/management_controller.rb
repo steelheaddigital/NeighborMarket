@@ -313,8 +313,8 @@ class ManagementController < ApplicationController
 
   def new_users_report
     if params[:start_date].nil? || params[:end_date].nil?
-      @start_date = Time.now.to_date - 30.days
-      @end_date = Time.now.to_date
+      @start_date = Time.now - 30.days
+      @end_date = Time.now
     else
       @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
@@ -329,8 +329,8 @@ class ManagementController < ApplicationController
   
   def deleted_users_report
     if params[:start_date].nil? || params[:end_date].nil?
-      @start_date = Time.now.to_date - 30.days
-      @end_date = Time.now.to_date
+      @start_date = Time.now - 30.days
+      @end_date = Time.now
     else
       @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
@@ -345,8 +345,8 @@ class ManagementController < ApplicationController
   
   def updated_user_profile_report
     if params[:start_date].nil? || params[:end_date].nil?
-      @start_date = Time.now.to_date - 30.days
-      @end_date = Time.now.to_date
+      @start_date = Time.now - 30.days
+      @end_date = Time.now
     else
       @start_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)

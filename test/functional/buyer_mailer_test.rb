@@ -18,7 +18,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [buyer.email], sent.to
     assert_equal "Your order summary from Test Neighbor Market", sent.subject
-    assert_match("Your order will be available for pickup on 08/17/2012 at 11:03 AM at the following address:", sent.body.to_s)
+    assert_match("Your order will be available for pickup on 08/17/2012 at 12:03 PM at the following address:", sent.body.to_s)
     assert_match("12345 Test Way", sent.body.to_s)
     assert_match("Portland, OR 97218", sent.body.to_s)
     assert_match("Test Directions", sent.body.to_s)
@@ -41,7 +41,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [buyer.email], sent.to
     assert_equal "Your order summary from Test Neighbor Market", sent.subject
-    assert_match("Your order will be delivered on 08/17/2012 at 11:03 AM to the following address:", sent.body.to_s)
+    assert_match("Your order will be delivered on 08/17/2012 at 12:03 PM to the following address:", sent.body.to_s)
     assert_match("12345 Test St.", sent.body.to_s)
     assert_match("Portland, Oregon 97218", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)
@@ -65,7 +65,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [buyer.email], sent.to
     assert_equal "Your order summary from Test Neighbor Market", sent.subject
-    assert_match("Your order will be available for pickup on 08/17/2012 at 11:03 AM at the following address:", sent.body.to_s)
+    assert_match("Your order will be available for pickup on 08/17/2012 at 12:03 PM at the following address:", sent.body.to_s)
     assert_match("12345 Test Way", sent.body.to_s)
     assert_match("Portland, OR 97218", sent.body.to_s)
     assert_match("Test Directions", sent.body.to_s)
@@ -89,7 +89,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [buyer.email], sent.to
     assert_equal "Your order summary from Test Neighbor Market", sent.subject
-    assert_match("Your order will be delivered on 08/17/2012 at 11:03 AM to the following address:", sent.body.to_s)
+    assert_match("Your order will be delivered on 08/17/2012 at 12:03 PM to the following address:", sent.body.to_s)
     assert_match("12345 Test St.", sent.body.to_s)
     assert_match("Portland, Oregon 97218", sent.body.to_s)
     assert_match("Carrot", sent.body.to_s)

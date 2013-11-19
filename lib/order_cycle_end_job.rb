@@ -50,11 +50,8 @@ class OrderCycleEndJob
   
   def send_emails(order_cycle)
     sellers = User.joins(:roles).where(:roles => {:name => 'seller'})
-    timezone = SiteSetting.first.time_zone if SiteSetting.first
-    Time.use_zone(timezone) do
-      sellers.each do |seller|
-        SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
-      end
+    sellers.each do |seller|
+      SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
     end
   end
   

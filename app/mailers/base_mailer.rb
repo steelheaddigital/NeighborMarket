@@ -19,9 +19,13 @@
 
 class BaseMailer < ActionMailer::Base
   helper :application
+  include AbstractController::Callbacks
   
-  def initialize(method_name=nil, *args)
-    Time.zone = SiteSetting.first.time_zone if SiteSetting.first
-    super(method_name, *args)
+  around_filter :set_time_zone
+  
+  def set_time_zone(&block)
+    timezone = SiteSetting.first.time_zone if SiteSetting.first
+    Time.use_zone(timezone, &block)
   end
+  
 end

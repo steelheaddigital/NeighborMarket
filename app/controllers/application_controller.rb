@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_cart
   helper_method :current_order_cycle_pickup_date
   helper_method :current_order_cycle_end_date
-  before_filter :set_time_zone
+  around_filter :set_time_zone
   before_filter :current_order_id
   before_filter :completed_order_id
   after_filter :flash_to_headers
@@ -50,8 +50,9 @@ class ApplicationController < ActionController::Base
     
   end
   
-  def set_time_zone
-    Time.zone = SiteSetting.first.time_zone if SiteSetting.first
+  def set_time_zone(&block)
+    timezone = SiteSetting.first.time_zone if SiteSetting.first
+    Time.use_zone(timezone, &block)
   end
   
   def current_order_id
