@@ -6,24 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-site_settings = SiteSetting.new
+site_settings = SiteSetting.new(
+  :site_name => ENV["SITE_NAME"].dup
+)
 site_settings.save(:validate => false)
 
 User.delete_all
 user = User.new(
   :username => "manager",
-  :email => "gmpmanagertest@gmail.com",
-  :password   => 'Abc123!', 
-  :password_confirmation => 'Abc123!', 
-  :first_name => "Test",
-  :last_name => "Manager",
-  :initial => "M",
-  :phone => "503-123-4567",
-  :address => "123 Test St.",
-  :city => "Portland",
-  :state => "Oregon",
-  :country => "United States",
-  :zip => "97218"
+  :email => ENV["MANAGER_EMAIL"].dup,
+  :password   => ENV["MANAGER_PASSWORD"].dup, 
 )
 user.add_role('manager')
 
