@@ -40,6 +40,7 @@ gem 'aws-sdk'
 gem 'delayed_job_active_record'
 gem 'delayed_job_celluloid'
 gem 'less-rails'
+gem 'figaro'
 
 #gem "capistrano"
 #gem 'rvm-capistrano', '>= 1.1.0'

@@ -54,4 +54,10 @@ class ManagerMailer < BaseMailer
           :subject => "#{@order.user.username} at #{site_settings.site_name} has requested a change to an order")
   end
   
+  def test_email(email)
+    site_settings = SiteSetting.first
+    mail( :to => email,
+          :subject => "Test email from #{site_settings.site_name}")
+  end
+  
 end

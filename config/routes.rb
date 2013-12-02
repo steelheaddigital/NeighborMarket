@@ -60,6 +60,7 @@ NeighborMarket::Application.routes.draw do
       delete 'destroy_price_unit'
       get 'inventory_item_change_requests'
       get 'order_change_requests'
+      post 'test_email'
     end
   end
   

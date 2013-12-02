@@ -18,7 +18,7 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 %>
-
+<%=button_to "Send Test Email", { :action => "test_email" }, { :class => "btn"} %>
 <%= form_for @site_settings, :url => update_site_settings_management_index_path, :method => :post, :html => { :id => "SiteSettingsForm", :class=>"well" } do |f| %>
   <%= f.error_messages %>
   <div class="row-fluid">

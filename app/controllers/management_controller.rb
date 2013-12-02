@@ -411,6 +411,17 @@ class ManagementController < ApplicationController
     end
   end
 
+  def test_email
+    email = current_user.email
+    
+    ManagerMailer.delay.test_email(email)
+    
+    respond_to do |format|
+      format.html{ redirect_to edit_site_settings_management_index_url, notice: "Email sent to your email address. If you do not recieve it, please check your email settings." }
+    end
+    
+  end
+
   private
   
   def historical_orders_report_csv(orders)
