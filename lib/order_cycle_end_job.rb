@@ -53,6 +53,12 @@ class OrderCycleEndJob
     sellers.each do |seller|
       SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
     end
+    
+    orders = Order.where(:order_cycle_id => OrderCycle.current_cycle_id)
+    orders.each do |order|
+      buyer = order.user
+      BuyerMailer.order_cycle_end_mail(buyer, order_cycle).deliver
+    end
   end
   
 end

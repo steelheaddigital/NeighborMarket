@@ -128,4 +128,27 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("TestDescription", sent.body.to_s)
   end
   
+  test "delivery order_cycle_end_email" do
+    buyer = users(:buyer_user)
+    settings = site_settings(:one)
+    order_cycle = order_cycles(:current)
+    settings.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
+    
+    BuyerMailer.order_cycle_end_mail(buyer, order_cycle).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [buyer.email], sent.to
+    assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
+    assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 12:03 PM.", sent.body.to_s)
+    assert_match("Your order will be delivered on 08/17/2012 at 12:03 PM to the following address:", sent.body.to_s)
+    assert_match("12345 Test St.", sent.body.to_s)
+    assert_match("Portland, Oregon 97218", sent.body.to_s)
+    assert_match("Carrot", sent.body.to_s)
+    assert_match("$10.00", sent.body.to_s)
+    assert_match("10", sent.body.to_s) 
+    assert_match("approvedseller", sent.body.to_s) 
+    assert_match("Test payment instructions", sent.body.to_s) 
+  end
+  
 end
