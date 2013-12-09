@@ -28,6 +28,12 @@ class OrdersController < ApplicationController
     #update the cart in case the user changed any quantitities
     if @cart.update_attributes(params[:cart])
       
+      if params[:commit] == "Continue Shopping"
+        last_search_path = session[:last_search_path]
+        redirect_to last_search_path
+        return
+      end
+      
       if(!user_signed_in? || !current_user.buyer?)
         render :not_buyer
         return

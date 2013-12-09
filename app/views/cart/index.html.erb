@@ -28,7 +28,7 @@
     <div class="row-fluid">
       <div class="span12">
 		<span><%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %></span>
-		<span><%= link_to "Continue Shopping", last_search_path, :class => 'btn' %></span>
+		<span><%= f.submit("Continue Shopping", :class => 'btn')%></span>
       </div>
     </div>
     <% end %>
