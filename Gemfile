@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby "1.9.3"
+ruby "2.0.0"
 
 gem 'rails', '3.2.15'
 gem 'pg'
@@ -12,7 +12,7 @@ end
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
-  gem 'ruby-prof', '~> 0.11.2'  # For profiling
+  #gem 'ruby-prof', '~> 0.11.2'  # For profiling
   #gem 'test-unit' # For profiling
 end
 
