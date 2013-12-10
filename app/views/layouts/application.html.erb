@@ -86,6 +86,7 @@
             <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
+			<% cache('categories') do %>
               <% @TopLevelCategories = get_categories %>
               <% @TopLevelCategories.each do |category| %>
                 <li class="dropdown-submenu">
@@ -102,7 +103,8 @@
                     <% end %>
                   </ul>
                 </li>
-              <%  end %>
+              <% end %>
+			  <% end %>
             </ul>
           </li>
           <li>

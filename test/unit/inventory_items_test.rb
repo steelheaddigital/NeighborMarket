@@ -91,10 +91,10 @@ class InventoryItemsTest < ActiveSupport::TestCase
       end
    end
    
-   test "search doesn't return result if quantity_availabe is 0" do
+   test "search returns result if quantity_availabe is 0" do
      item = InventoryItem.search("zero")
      
-     assert_equal 0, item.length
+     assert_equal 1, item.length
    end
    
    test "paranoid destroy sets is_deleted attribute to true and deletes current cart_items when item has cart_items not in current order cycle" do     

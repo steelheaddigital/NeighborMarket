@@ -57,7 +57,7 @@ class InventoryItem < ActiveRecord::Base
   
   def self.search(keywords)
     scope = self.joins(:order_cycles)
-                .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
+                .where("is_deleted = false AND approved = true AND order_cycles.status = 'current'")
     scope.find_with_index(keywords)
   end
   

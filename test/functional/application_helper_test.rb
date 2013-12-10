@@ -31,8 +31,8 @@ class ApplicationHelperTest < ActionView::TestCase
     categories = get_categories
     
     assert_equal 4, categories.count
-    assert_equal 2, categories[1][:count]
-    assert_equal 2, categories[1][:second_level][0][:count]
+    assert_equal 3, categories[1][:count]
+    assert_equal 3, categories[1][:second_level][0][:count]
     assert_equal "Vegetables", categories[1][:name]
     assert_equal "Carrots", categories[1][:second_level][0][:name]
   end

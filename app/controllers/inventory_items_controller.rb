@@ -59,6 +59,7 @@ class InventoryItemsController < ApplicationController
             ManagerMailer.delay.inventory_approval_required(user, manager, @item)
           end
         end
+        expire_fragment('categories')
         format.html { redirect_to seller_index_path }
         format.js { redirect_to seller_index_path }
       else
@@ -95,6 +96,7 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])
+        expire_fragment('categories')
         flash[:notice] = 'Inventory item successfully updated!'
         format.html { redirect_to :back }
         format.js { redirect_to :back }
@@ -126,6 +128,7 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if relation.destroy
+        expire_fragment('categories')
         format.html{ redirect_to :back, notice: "Inventory item successfully deleted from the current order cycle!" }
       else
         format.html{ redirect_to :back, notice: relation.errors.full_messages.first }
@@ -151,7 +154,7 @@ class InventoryItemsController < ApplicationController
   
   def browse
     @inventory_items = InventoryItem.joins(:order_cycles)
-                                    .where("second_level_category_id = ? AND quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
+                                    .where("second_level_category_id = ? AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
                           
     session[:last_search_path] = request.fullpath          
@@ -162,7 +165,7 @@ class InventoryItemsController < ApplicationController
   
   def browse_all
     @inventory_items = InventoryItem.joins(:order_cycles)
-                                    .where("quantity_available > 0 AND is_deleted = false AND approved = true AND order_cycles.status = 'current'")
+                                    .where("is_deleted = false AND approved = true AND order_cycles.status = 'current'")
                                     .order("created_at DESC")
     
     session[:last_search_path] = request.fullpath
