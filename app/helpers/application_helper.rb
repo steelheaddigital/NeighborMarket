@@ -106,12 +106,22 @@ module ApplicationHelper
   
   def order_cycle_message
     cycle = OrderCycle.current_cycle
+    site_settings = SiteSetting.first
+    
+    if site_settings.delivery_only?
+      delivery_method = "delivery"
+    elsif site_settings.drop_point_only?
+      delivery_method = "pickup"
+    else
+      delivery_method = "pickup or delivery"
+    end
+    
     if cycle
-      "The current order cycle will end on #{format_date_time(cycle.end_date)}. Place your order now for delivery on #{format_date_time(cycle.buyer_pickup_date)}"
+      "The current order cycle will end on #{format_date_time(cycle.end_date)}. Place your order now for #{delivery_method} on #{format_date_time(cycle.buyer_pickup_date)}"
     else
       next_cycle = OrderCycle.find_by_status("pending")
       if next_cycle
-        "There is no current order cycle open. The next cycle will start on #{format_date_time(next_cycle.start_date)}. Orders for the next cycle are scheduled to be delivered on #{format_date_time(next_cycle.buyer_pickup_date)}"
+        "There is no current order cycle open. The next cycle will start on #{format_date_time(next_cycle.start_date)}. Orders for the next cycle are scheduled to be available for #{delivery_method} on #{format_date_time(next_cycle.buyer_pickup_date)}"
       else
         "There is no current order cycle and none scheduled. Please check back later."
       end
