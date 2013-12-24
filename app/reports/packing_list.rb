@@ -65,7 +65,7 @@ class PackingList < Prawn::Document
           "",
           "",
           "<b>Total:</b>",
-          number_to_currency(order.total_price).to_s
+          number_to_currency(order.total_price_by_seller(seller.id)).to_s
         ]]
 
         table items,
