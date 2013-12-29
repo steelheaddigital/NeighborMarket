@@ -58,7 +58,7 @@ class ManagementController < ApplicationController
   def edit_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
     @order_cycle_settings.padding ||= 0
-    @order_cycle = get_order_cycle
+    @order_cycle = OrderCycle.get_order_cycle
     
     respond_to do |format|
       format.html
@@ -68,10 +68,16 @@ class ManagementController < ApplicationController
   def update_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
     @order_cycle_settings.padding ||= 0
-    @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
-      
+
+    case params[:commit]
+    when 'Save and Start New Cycle'
+      @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
+    when 'Update Settings'
+      @order_cycle = OrderCycle.update_current_order_cycle(params[:order_cycle], @order_cycle_settings)
+    end
+    
     respond_to do |format|
-      if @order_cycle_settings.save and (params[:commit] == 'Save and Start New Cycle' ? @order_cycle.save_and_set_status : true)
+      if @order_cycle_settings.save and @order_cycle.save_and_set_status
         format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
       else
         format.html { render :edit_order_cycle_settings }
@@ -438,19 +444,6 @@ class ManagementController < ApplicationController
       end
     end
   end 
-  
-  def get_order_cycle
-    if OrderCycle.find_by_status("current")
-      order_cycle = OrderCycle.find_by_status("current")
-    elsif 
-      OrderCycle.find_by_status("pending")
-      order_cycle = OrderCycle.find_by_status("pending")
-    else
-      order_cycle = OrderCycle.new
-    end
-
-    return order_cycle
-  end
   
   def get_added_units
     InventoryItem.joins("LEFT OUTER JOIN price_units ON price_units.name = inventory_items.price_unit")

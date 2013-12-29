@@ -27,7 +27,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      assert !order_cycle.valid?, order_cycle.errors.inspect
    end
    
-   test "new_cycle returns new order_cycle" do
+   test "build_initial_cycle returns new order_cycle" do
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
      order_cycle_settings = order_cycle_settings(:not_recurring)
      
@@ -39,7 +39,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
    end
   
-   test "new_cycle returns new order_cycle when recurring is true" do
+   test "build_initial_cycle returns new order_cycle when recurring is true" do
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-20"}
      order_cycle_settings = order_cycle_settings(:recurring)
      
@@ -49,6 +49,20 @@ class OrderCycleTest < ActiveSupport::TestCase
      expected_end_date = Time.utc_time(2012,8,21)
      assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
+   end
+  
+   test "update_current_order_cycle updates curent order cycle and returns update order cycle" do
+     order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
+     order_cycle_settings = order_cycle_settings(:not_recurring)
+     current_order_cycle_id = order_cycles(:current).id
+     
+     new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+     
+     assert_not_nil(new_cycle)
+     expected_end_date = Time.utc_time(2012,8,21)
+     assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
+     assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
+     assert new_cycle.id == current_order_cycle_id
    end
   
   test "save_and_set_status queues new job and sets status to pending if start_date is after now" do

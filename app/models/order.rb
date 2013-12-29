@@ -30,8 +30,10 @@ class Order < ActiveRecord::Base
   before_validation :set_cart_items_user
   
   before_save do |order|
-    order_cycle_id = OrderCycle.current_cycle_id
-    order.order_cycle_id = order_cycle_id
+    if order.order_cycle_id.nil?
+      order_cycle_id = OrderCycle.current_cycle_id
+      order.order_cycle_id = order_cycle_id
+    end
     update_seller_inventory(order)
   end
     

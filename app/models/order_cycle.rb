@@ -32,9 +32,23 @@ class OrderCycle < ActiveRecord::Base
            :next_end_date_not_before_now
   
   attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date ,:status 
+  attr_accessor :updating
   
   before_validation :get_current_cycle_settings
-  before_save :set_current_order_cycle_to_complete
+  before_save :set_current_order_cycle_to_complete, unless: :updating
+  
+  def self.get_order_cycle
+    if self.find_by_status("current")
+      order_cycle = self.find_by_status("current")
+    elsif 
+      self.find_by_status("pending")
+      order_cycle = self.find_by_status("pending")
+    else
+      order_cycle = self.new
+    end
+
+    return order_cycle
+  end
   
   def get_current_cycle_settings
     @current_cycle_settings = OrderCycleSetting.first
@@ -48,14 +62,26 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def self.build_initial_cycle(order_cycle_params, order_cycle_settings)
-    settings = order_cycle_settings
     order_cycle = self.new(order_cycle_params)
-    if settings.recurring
-      interval = settings.interval.pluralize.to_sym
-      order_cycle.end_date = order_cycle.start_date.advance(interval => 1)
-    end
+    order_cycle.set_order_cycle_end_date(order_cycle_settings)
     
     return order_cycle
+  end
+  
+  def self.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+    order_cycle = self.get_order_cycle
+    order_cycle.assign_attributes(order_cycle_params)
+    order_cycle.set_order_cycle_end_date(order_cycle_settings)
+    order_cycle.updating = true
+    
+    return order_cycle
+  end
+  
+  def set_order_cycle_end_date(settings)
+    if settings.recurring
+      interval = settings.interval.pluralize.to_sym
+      self.end_date = self.start_date.advance(interval => 1)
+    end
   end
   
   def save_and_set_status
