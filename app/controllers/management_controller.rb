@@ -259,7 +259,6 @@ class ManagementController < ApplicationController
       end
     end
     
-    expire_fragment('categories')
     respond_to do |format|
         format.html { redirect_to inventory_item_approval_management_index_path, notice: 'Inventory Items Successfully Updated!'}
     end

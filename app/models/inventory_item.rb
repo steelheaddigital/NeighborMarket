@@ -20,8 +20,8 @@
 class InventoryItem < ActiveRecord::Base
   acts_as_indexed :fields => [:name, :description, :top_level_category_name, :second_level_category_name]
   belongs_to :user
-  belongs_to :top_level_category
-  belongs_to :second_level_category
+  belongs_to :top_level_category, touch: true
+  belongs_to :second_level_category, touch: true
   has_many :cart_items
   has_many :inventory_item_order_cycles
   has_many :order_cycles, :through => :inventory_item_order_cycles, :uniq => true

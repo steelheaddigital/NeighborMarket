@@ -59,7 +59,6 @@ class InventoryItemsController < ApplicationController
             ManagerMailer.delay.inventory_approval_required(user, manager, @item)
           end
         end
-        expire_fragment('categories')
         format.html { redirect_to seller_index_path }
         format.js { redirect_to seller_index_path }
       else
@@ -96,7 +95,6 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if @item.update_attributes(params[:inventory_item])
-        expire_fragment('categories')
         flash[:notice] = 'Inventory item successfully updated!'
         format.html { redirect_to :back }
         format.js { redirect_to :back }
@@ -128,7 +126,6 @@ class InventoryItemsController < ApplicationController
     
     respond_to do |format|
       if relation.destroy
-        expire_fragment('categories')
         format.html{ redirect_to :back, notice: "Inventory item successfully deleted from the current order cycle!" }
       else
         format.html{ redirect_to :back, notice: relation.errors.full_messages.first }

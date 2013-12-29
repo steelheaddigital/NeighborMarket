@@ -38,7 +38,6 @@ class SecondLevelCategoriesController < ApplicationController
     
     respond_to do |format|
       if @top_level_category.save
-        expire_fragment('categories')
         flash[:notice] = 'Category successfully updated!'
         format.html { redirect_to categories_management_index_path }
         format.js { redirect_to categories_management_index_path }
@@ -64,7 +63,6 @@ class SecondLevelCategoriesController < ApplicationController
   
     respond_to do |format|
       if @category.update_attributes(params[:second_level_category])
-        expire_fragment('categories')
         flash[:notice] = 'Category successfully updated!'
         format.html { redirect_to categories_management_index_path }
         format.js { redirect_to categories_management_index_path }
@@ -80,7 +78,6 @@ class SecondLevelCategoriesController < ApplicationController
     
     respond_to do |format|
       if @category.deactivate
-        expire_fragment('categories')
         format.html{ redirect_to categories_management_index_path, notice: 'Category successfully deleted!' }
       else
         format.html{ redirect_to categories_management_index_path, notice: 'Unable to delete the category' }

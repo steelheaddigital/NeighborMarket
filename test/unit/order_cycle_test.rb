@@ -63,6 +63,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
      assert new_cycle.id == current_order_cycle_id
+     assert new_cycle.status == "current"
    end
   
   test "save_and_set_status queues new job and sets status to pending if start_date is after now" do
