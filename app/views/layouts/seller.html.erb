@@ -26,6 +26,7 @@
       <li class=<%= nav_item_is_active('index') || nav_item_is_active('previous_index') %>><%= link_to "Current Inventory", seller_index_path %></a></li>
       <li class=<%= nav_item_is_active('pick_list') || nav_item_is_active('previous_pick_list')%>><%= link_to "Pick List", pick_list_seller_index_path %></li>
       <li class=<%= nav_item_is_active('packing_list') || nav_item_is_active('previous_packing_list') %>><%= link_to "Packing List", packing_list_seller_index_path %></li>
+	  <li class=<%= nav_item_is_active('sales_report') %>><%= link_to "Sales Report", sales_report_seller_index_path %></li>
       <li></li>
     </ul>
   </div>

@@ -1,0 +1,44 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<h4>Enter a date range or leave blank for your entire sales history</h4>
+<%= form_tag sales_report_details_seller_index_path, :class => "well", :id => "SalesReportForm" do %> 
+	<div>
+      <label>Start Date</label>
+      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'start_date'}, {:class => "input-medium"} %>
+    </div>
+	<div>
+      <label>End Date</label>
+      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'end_date'}, {:class => "input-medium"} %>
+    </div>
+	<div>
+		<%= submit_tag "Get Report", :class => "btn", :id => "PreviewSalesReportSubmit" %>
+		<%= submit_tag "Export to CSV", :class => "btn" %>
+	</div>
+<% end %>
+<div id="SalesReportLoading" style="display:none; margin-top: 30px;">
+  <div class="span6"></div>
+  <div>
+    <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
+  </div>
+</div>
+<div id="SalesReportContent">
+</div>

@@ -22,6 +22,7 @@ class SellerController < ApplicationController
   load_and_authorize_resource :class => InventoryItem
   skip_authorize_resource :only => :contact
   require 'will_paginate/array'
+  require 'csv'
   
   def index    
     @all_inventory = get_past_inventory_items
@@ -96,7 +97,65 @@ class SellerController < ApplicationController
     end
   end
   
+  def sales_report
+    
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false }
+    end
+  end
+  
+  def sales_report_details
+    if params[:start_date].values.any?(&:blank?) || params[:end_date].values.any?(&:blank?)
+      @begin_date = OrderCycle.first.end_date
+      @end_date = DateTime.now
+      @items = get_sales_report_details_all
+    else
+      @begin_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
+      @end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
+      @items = get_sales_report_details(@begin_date, @end_date)
+    end
+    @total_price = @items.map{|i| i.attributes["total_price"].to_i}.reduce(:+)
+    @total_quantity = @items.map{|i| i.attributes["total_quantity"].to_i}.reduce(:+)
+    
+    if params[:commit] == "Export to CSV"
+      report_name = "sales_report_#{Date.today.strftime('%d%b%y')}.csv" 
+      send_data sales_report_csv(@items), 
+       :type => 'text/csv; charset=iso-8859-1; header=present', 
+       :disposition => "attachment; filename=#{report_name}"
+    else
+      respond_to do |format|
+        format.html
+        format.js { render :layout => false }
+      end
+    end 
+  end
+  
   private
+  def sales_report_csv(items)
+    CSV.generate do |csv|
+      csv << ["Item Name", "Price Per Unit", "Total Units Sold", "Total Price"]
+      items.each do |item|
+        csv << [item.name, item.price, item.attributes["total_quantity"], item.attributes["total_price"]]
+      end
+    end
+  end 
+  
+  def get_sales_report_details_all
+    seller = current_user
+    InventoryItem.joins(:cart_items => { :order => :order_cycle })
+                 .select('inventory_items.*, sum(cart_items.quantity) as total_quantity, sum(cart_items.quantity * inventory_items.price) as total_price')
+                 .where(:inventory_items => {:user_id => current_user.id})
+                 .group('inventory_items.id, inventory_items.name')
+  end
+  
+  def get_sales_report_details(begin_date, end_date)
+    seller = current_user
+    InventoryItem.joins(:cart_items => { :order => :order_cycle })
+                 .select('inventory_items.*, sum(cart_items.quantity) as total_quantity, sum(cart_items.quantity * inventory_items.price) as total_price')
+                 .where(:inventory_items => {:user_id => current_user.id}, :order_cycles => {:end_date => begin_date..end_date + 1.day})
+                 .group('inventory_items.id, inventory_items.name')
+  end
   
   def get_packing_list_orders(order_cycle_id)
     seller = current_user

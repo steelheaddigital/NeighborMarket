@@ -1,0 +1,48 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<h4>Sales Report: <%= "#{format_short_date(@begin_date + 1.day)} to #{format_short_date(@end_date + 1.day)}" %></h4>
+<table class="table table-bordered table-condensed">
+  <thead>
+    <tr>
+        <th>Item Name</th>
+		<th>Price Per Unit</th>
+        <th>Total Units Sold</th>
+		<th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+		<td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+        <td><%= item.attributes["total_quantity"] %></td>
+		<td><%= number_to_currency(item.attributes["total_price"]) %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td></td>
+      <td style="font-weight:bold;">Total:</td>
+	  <td><%= @total_quantity %></td>
+      <td><%= number_to_currency @total_price %></td>
+    </tr>
+  </tbody>
+</table>

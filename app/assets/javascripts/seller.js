@@ -70,9 +70,35 @@ $(document).on("submit", ".editInventoryItemButton", function(event){
     return false;
 });
 
+$(document).on("click", "#PreviewSalesReportSubmit", function(event){
+    event.preventDefault();
+	var form = $(this).closest("form"),
+     	url = form.attr("action"),
+    	seller = new Seller()
+    
+	seller.SubmitSalesReportForm(form)
+		
+	return false;
+});
+
 function Seller(){
 	
 	var self = this;
+	
+	this.SubmitSalesReportForm = function(form){
+		$("#SalesReportLoading").show();
+        form.ajaxSubmit({
+           dataType: "html",
+           success: function(content){
+			 $("#SalesReportContent").html(content);
+             $("#SalesReportLoading").hide();
+           },
+           error: function(request){
+            $("#SalesReportLoading").hide();
+			$("#SalesReportContent").html(request.responseText).modal('show');
+           }
+        });
+	}
 	
 	this.GetSecondLevelCategories = function(data){
 		var url = '/inventory_items/get_second_level_category'
