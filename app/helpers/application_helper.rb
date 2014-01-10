@@ -48,7 +48,7 @@ module ApplicationHelper
   end
   
   def cache_key_for_categories
-    order_cycle = OrderCycle.current_cycle.id
+    order_cycle = OrderCycle.current_cycle.nil? ? 0 : OrderCycle.current_cycle.id
     top_level_category_count = TopLevelCategory.count
     second_level_category_count = SecondLevelCategory.count
     top_level_category_max_updated_at = TopLevelCategory.maximum(:updated_at).try(:utc).try(:to_s, :number)
