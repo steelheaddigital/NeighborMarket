@@ -22,6 +22,6 @@
 namespace :session_cleaner do
   desc "Removes old sessions"
   task :clean => :environment do
-    ActiveRecord::SessionStore::Session.destroy_all(["updated_at < ?", Devise.remember_for.ago])
+    Session.destroy_all(["updated_at < ?", 1.minute.ago])
   end
 end
