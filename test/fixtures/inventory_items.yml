@@ -68,3 +68,15 @@ inactive_category2:
   price_unit: each
   quantity_available: 10
   description: MyText
+
+autopost:
+  top_level_category: inactive_has_inventory
+  second_level_category: inactive
+  user: approved_seller_user
+  name: test
+  price: 10.00
+  price_unit: each
+  quantity_available: 0
+  description: MyText
+  autopost: true
+  autopost_quantity: 10

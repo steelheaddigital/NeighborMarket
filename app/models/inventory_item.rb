@@ -27,7 +27,7 @@ class InventoryItem < ActiveRecord::Base
   has_many :order_cycles, :through => :inventory_item_order_cycles, :uniq => true
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
-  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved
+  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved, :autopost, :autopost_quantity
   attr_accessor :current_user
   
   validates :top_level_category_id, 
@@ -39,6 +39,8 @@ class InventoryItem < ActiveRecord::Base
   
   validates :price, :numericality => {:greater_than_or_equal_to => 0.01}
   validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
+  validates :autopost_quantity, :numericality => {:greater_than_or_equal_to => 0}, :allow_nil => true
+  validates :autopost_quantity, :presence => true, :if => :autopost?
   validate :ensure_current_order_cycle
   validate :validate_can_edit, :on => :update
   
@@ -46,6 +48,10 @@ class InventoryItem < ActiveRecord::Base
   before_destroy :validate_can_edit
   before_create :add_to_order_cycle
   after_update :notify_buyers
+  
+  def autopost?
+    self.autopost
+  end
   
   def top_level_category_name
     self.top_level_category.name
@@ -161,7 +167,7 @@ class InventoryItem < ActiveRecord::Base
     changed = self.changed
     
     #ignore these fields when deciding whether to send emails
-    a = changed.select { |n| n == "quantity_available" || n == "approved" || n == "updated_at" }
+    a = changed.select { |n| n == "quantity_available" || n == "approved" || n == "updated_at" || n == "autopost" || n == "autopost_quantity"}
     
     #send modified emails if non-ignored fields were changed
     send_order_modified_emails if changed.length > a.length
@@ -170,6 +176,14 @@ class InventoryItem < ActiveRecord::Base
   def send_order_modified_emails
     self.current_cart_items.each do |item|
       BuyerMailer.delay.order_modified_mail(self.user, item.order)
+    end
+  end
+  
+  def self.autopost(order_cycle)
+    InventoryItem.where(:autopost => true).each do |item|
+      item.order_cycles << order_cycle
+      item.quantity_available = item.autopost_quantity
+      item.save
     end
   end
   

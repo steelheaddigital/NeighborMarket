@@ -58,6 +58,14 @@
 		<% end %>
 	</div>
 	<div class="span5" style="margin-left:30px;">
+		<div>
+		  <%= f.label "Auto-post at the beginning of each order cycle?" %>
+		  <%= f.check_box :autopost, {}, "true", "false" %>
+		</div>
+		<div>
+		  <%= f.label "Quantity to auto-post" %>
+		  <%= f.text_field :autopost_quantity, :class => "input-small" %>
+		</div>
 	  <div>
 	    <%= f.label :description %>
 	    <%= f.text_area :description, :size => "10x10" %>

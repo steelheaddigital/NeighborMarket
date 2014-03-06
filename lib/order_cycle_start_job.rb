@@ -24,6 +24,7 @@ class OrderCycleStartJob
     pending_cycle.status = "current"
     if pending_cycle.save
       OrderCycle.queue_order_cycle_end_job(pending_cycle.end_date)
+      InventoryItem.autopost(pending_cycle)
     end
   end
   

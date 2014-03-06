@@ -97,6 +97,8 @@ class OrderCycle < ActiveRecord::Base
       if self.start_date > Time.current
         OrderCycle.queue_order_cycle_start_job(self.start_date)
       else
+        #post new inventory items marked as auto-post
+        InventoryItem.autopost(self) if !self.updating
         OrderCycle.queue_order_cycle_end_job(self.end_date)
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130920121139) do
+ActiveRecord::Schema.define(:version => 20140305042100) do
 
   create_table "cart_items", :force => true do |t|
     t.integer  "cart_id"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(:version => 20130920121139) do
     t.datetime "photo_updated_at"
     t.boolean  "is_deleted",                                             :default => false
     t.boolean  "approved",                                               :default => true
+    t.boolean  "autopost",                                               :default => false
+    t.integer  "autopost_quantity"
   end
 
   create_table "order_change_requests", :force => true do |t|

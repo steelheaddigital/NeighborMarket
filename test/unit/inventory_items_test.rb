@@ -183,4 +183,12 @@ class InventoryItemsTest < ActiveSupport::TestCase
      assert !item.can_edit?
    end
    
+   test "autopost updates autopost inventory items" do
+     order_cycle = order_cycles(:current)
+     InventoryItem.autopost(order_cycle)
+     item = inventory_items(:autopost)
+     
+     assert_equal 10, InventoryItem.find(item.id).quantity_available
+   end
+   
 end
