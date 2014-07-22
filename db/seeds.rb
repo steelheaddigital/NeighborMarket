@@ -7,15 +7,15 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 site_settings = SiteSetting.new(
-  :site_name => ENV["SITE_NAME"].dup
+  :site_name => "Neighbor Market"
 )
 site_settings.save(:validate => false)
 
 User.delete_all
 user = User.new(
   :username => "manager",
-  :email => ENV["MANAGER_EMAIL"].dup,
-  :password   => ENV["MANAGER_PASSWORD"].dup, 
+  :email => "email@somesite.com",
+  :password   => "Abc123!", 
 )
 user.add_role('manager')
 

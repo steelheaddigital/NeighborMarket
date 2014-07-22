@@ -1,7 +1,6 @@
 source 'http://rubygems.org'
-ruby "2.0.0"
 
-gem 'rails', '3.2.16'
+gem 'rails', '3.2.19'
 gem 'pg'
 gem 'unicorn'
 
@@ -38,11 +37,6 @@ gem 'acts_as_indexed'
 gem 'foreman'
 gem 'aws-sdk'
 gem 'delayed_job_active_record'
-gem 'delayed_job_celluloid'
 gem 'less-rails'
-gem 'figaro'
-gem 'memcachier'
 gem 'dalli'
-
-#gem "capistrano"
-#gem 'rvm-capistrano', '>= 1.1.0'
+gem 'daemons'

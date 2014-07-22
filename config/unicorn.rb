@@ -1,12 +1,13 @@
 # config/unicorn.rb
-worker_processes Integer(ENV["WEB_CONCURRENCY"] || 2)
+worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
 timeout 30
 preload_app true
+listen "/tmp/unicorn.sock", :backlog => 64
 
 before_fork do |server, worker|
   
   #Start the Delayed Job worker inside of a Unicorn process
-  @delayed_job_celluloid_pid ||= spawn("bundle exec script/delayed_job_celluloid -n 2")
+  #@delayed_job_celluloid_pid ||= spawn("bundle exec script/delayed_job_celluloid -n 2")
   
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
