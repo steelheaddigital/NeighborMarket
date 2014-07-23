@@ -37,6 +37,11 @@ class neighbormarket (
     db_password      => $db_password,
     db_root_password => $db_root_password
   }->
+  class { 'neighbormarket::backup':
+  	app_directory => $app_directory,
+	user => $user,
+	group => $group
+  }->
   file {
     "${app_directory}/shared/config/database.yml":
       content => template('neighbormarket/database.yml.erb'),
