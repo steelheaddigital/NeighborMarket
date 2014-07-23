@@ -96,7 +96,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   config.vm.define "staging" do |stag|
-    stag.vm.hostname = "demo.neighbormarket.org"
+    stag.vm.hostname = "staging.mysite.com"
     stag.vm.synced_folder ".", "/vagrant", disabled: true
     stag.vm.provider "digital_ocean" do |provider, override|
       override.ssh.private_key_path = '~/.ssh/neighbormarket'
@@ -111,17 +111,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   config.vm.define "production" do |prod|
-    prod.vm.hostname = "production.neighbormarket.org"
+    prod.vm.hostname = "production.mysite.com"
     prod.vm.synced_folder ".", "/vagrant", disabled: true
     prod.vm.provider "digital_ocean" do |provider, override|
-      override.ssh.private_key_path = '~/.ssh/carscout'
+      override.ssh.private_key_path = '~/.ssh/neighbormarket'
       override.vm.box = 'digital_ocean'
       override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
       provider.client_id = ''
       provider.api_key = ''
       provider.image = 'Ubuntu 12.04.4 x32'
       provider.region = "San Francisco 1"
-      provider.ssh_key_name = "carscout"
+      provider.ssh_key_name = "neighbormarket"
     end
   end
   # Enable provisioning with chef solo, specifying a cookbooks path, roles

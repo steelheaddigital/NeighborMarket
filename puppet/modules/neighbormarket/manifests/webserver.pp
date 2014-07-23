@@ -7,13 +7,13 @@ class neighbormarket::webserver (
   if $environment != 'development' {
     file {
       "$app_directory/certs/$hostname.crt":
-        source  => "puppet:///modules/carscout/certs/$hostname.crt",
+        source  => "puppet:///modules/neighbormarket/certs/$hostname.crt",
         owner   => $user,
         group   => $group,
         before  => Class['nginx'];
 
       "$app_directory/certs/$hostname.key":
-        source  => "puppet:///modules/carscout/certs/$hostname.key",
+        source  => "puppet:///modules/neighbormarket/certs/$hostname.key",
         owner   => $user,
         group   => $group,
         before  => Class['nginx'];
