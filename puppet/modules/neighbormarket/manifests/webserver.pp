@@ -63,7 +63,7 @@ class neighbormarket::webserver (
       ensure              => present,
       ssl                 => true,
       www_root            => "$app_directory/current/public",
-      location            => '/uploads',
+      location            => '/system',
       vhost               => $hostname,
       location_cfg_append => $cache_config,
     }
