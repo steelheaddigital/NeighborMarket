@@ -33,7 +33,7 @@ class ManagementControllerTest < ActionController::TestCase
   test "should update order_cycle_settings and create new order cycle if commit equals 'Start New Cycle'" do
     
     assert_difference "OrderCycle.count" do
-      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save and Start New Cycle'
+      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "day"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save and Start New Cycle'
     end
     
     assert_redirected_to edit_order_cycle_settings_management_index_path
@@ -45,7 +45,7 @@ class ManagementControllerTest < ActionController::TestCase
     current_order_cycle_id = order_cycles(:current).id
     
     assert_no_difference "OrderCycle.count" do
-      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "1"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Update Settings'
+      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "day"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Update Settings'
     end
     
     assert OrderCycle.find(current_order_cycle_id).status == "current", "Order cycle status was #{OrderCycle.find(current_order_cycle_id).status} but should have been current"
