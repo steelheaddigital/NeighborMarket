@@ -44,8 +44,8 @@ class BuyerMailer < BaseMailer
   end
   
   def order_cycle_end_mail(buyer, order_cycle)
-    @order = buyer.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
-    @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
+    @order = buyer.orders.find_by_order_cycle_id(order_cycle.id)
+    @order_pickup_date = order_cycle.buyer_pickup_date
     @site_settings = SiteSetting.first
     @order_cycle = order_cycle
     
