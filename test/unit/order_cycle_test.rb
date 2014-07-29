@@ -34,7 +34,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
      
      assert_not_nil(new_cycle)
-     expected_end_date = Time.utc_time(2012,8,21)
+     expected_end_date = Time.new(2012,8,21).utc
      assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
    end
@@ -46,7 +46,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
      
      assert_not_nil(new_cycle)
-     expected_end_date = Time.utc_time(2012,8,21)
+     expected_end_date = Time.new(2012,8,21).utc
      assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
    end
@@ -59,7 +59,7 @@ class OrderCycleTest < ActiveSupport::TestCase
      new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params, order_cycle_settings)
      
      assert_not_nil(new_cycle)
-     expected_end_date = Time.utc_time(2012,8,21)
+     expected_end_date = Time.new(2012,8,21).utc
      assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
      assert new_cycle.id == current_order_cycle_id

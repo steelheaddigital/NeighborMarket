@@ -23,7 +23,7 @@ require_relative '../../lib/order_cycle_start_job'
 class OrderCycle < ActiveRecord::Base
   has_many :orders
   has_many :inventory_item_order_cycles
-  has_many :inventory_items, :through => :inventory_item_order_cycles, :uniq => true
+  has_many :inventory_items, -> { uniq }, :through => :inventory_item_order_cycles
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,

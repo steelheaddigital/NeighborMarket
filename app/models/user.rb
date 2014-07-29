@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   validates_format_of :email, :with => /\A[^@]+@[^@]+\z/, :allow_blank => true, :if => :email_changed?
 
   validates_presence_of :password, :if => :password_required?
-  validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   validates :terms_of_service, acceptance: { accept: true }, :if => :tos_required?
   

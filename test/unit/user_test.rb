@@ -58,7 +58,7 @@ class UserTest < ActiveSupport::TestCase
      @seller.password_confirmation = 'blah'
     
      assert !@seller.valid?
-     assert_equal("Password does not match confirmation", @seller.errors.full_messages.first)
+     assert_equal("Password confirmation doesn't match Password", @seller.errors.full_messages.first)
    end
    
    test "should not save seller without user name" do
