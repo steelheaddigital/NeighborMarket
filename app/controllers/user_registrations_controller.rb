@@ -20,6 +20,7 @@
 class UserRegistrationsController < Devise::RegistrationsController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update, :destroy]
+  before_filter :configure_permitted_parameters
   
   def new
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
@@ -33,7 +34,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def create
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
-    build_resource
+    build_resource(sign_up_params)
     @site_settings = SiteSetting.first
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
@@ -174,6 +175,17 @@ class UserRegistrationsController < Devise::RegistrationsController
       new_role = Role.new
       new_role.name = role.downcase
       resource.roles.build(new_role.attributes)
+  end
+  
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :payment_instructions, :delivery_instructions, :terms_of_service,
+        :email, :password, :password_confirmation)
+    end
+    devise_parameter_sanitizer.for(:account_update) do |u|
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :payment_instructions, :delivery_instructions, :terms_of_service,
+        :email, :password, :password_confirmation)
+    end
   end
   
 end

@@ -116,7 +116,7 @@ class User < ActiveRecord::Base
   
   #Override the devise callback method that sends emails on create to send a different one for auto signups
   def send_on_create_confirmation_instructions
-    send_devise_notification(:confirmation_instructions) if !auto_created && !skip_confirmation_email
+    send_confirmation_instructions if !auto_created && !skip_confirmation_email
     UserMailer.delay.auto_create_user_mail(self) if auto_created && !skip_confirmation_email
   end
   
@@ -126,11 +126,12 @@ class User < ActiveRecord::Base
   
   # Send confirmation instructions by email
   def send_confirmation_instructions
-    self.confirmation_token = nil if reconfirmation_required?
-    @reconfirmation_required = false
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
 
-    generate_confirmation_token! if self.confirmation_token.blank?
-    send_devise_notification(:confirmation_instructions) if !auto_created || !auto_create_updated_at.nil?
+    opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+    send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts) if !auto_created || !auto_create_updated_at.nil?
     UserMailer.delay.auto_create_user_mail(self) if auto_created_pending_update?
   end
   

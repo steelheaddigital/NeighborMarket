@@ -28,7 +28,7 @@ gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'
 
 gem 'devise', "~> 3.2.4"
 gem 'cancan', '~> 1.6.9'
-gem 'carmen', '~> 0.2.13'
+gem 'carmen-rails', '~> 1.0.1'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn', '~> 0.12.0'
 gem "paperclip", "~> 3.0"

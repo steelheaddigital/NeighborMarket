@@ -47,7 +47,11 @@ GEM
     bcrypt (3.1.7)
     builder (3.1.4)
     cancan (1.6.10)
-    carmen (0.2.13)
+    carmen (1.0.1)
+      unicode_utils (~> 1.4.0)
+    carmen-rails (1.0.1)
+      carmen (~> 1.0.0)
+      rails
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -165,6 +169,7 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicode_utils (1.4.0)
     unicorn (4.6.3)
       kgio (~> 2.6)
       rack
@@ -186,7 +191,7 @@ DEPENDENCIES
   activerecord-session_store
   acts_as_indexed (~> 0.8.3)
   cancan (~> 1.6.9)
-  carmen (~> 0.2.13)
+  carmen-rails (~> 1.0.1)
   dalli (~> 2.6.4)
   debugger (~> 1.6.8)
   delayed_job_active_record (~> 4.0.1)
