@@ -20,6 +20,9 @@ class neighbormarket (
     user  => $user,
     group => $group
   }->
+  class { 'neighbormarket::my_fw':
+  	environment   => $environment
+  }->
   class { 'neighbormarket::ruby':
   	version => $ruby_version
   }->
@@ -44,6 +47,8 @@ class neighbormarket (
   }->
   file {
     "${app_directory}/shared/config/database.yml":
+	  replace => false,
+	  ensure => present,
       content => template('neighbormarket/database.yml.erb'),
       owner   => $user,
       group   => $group;
