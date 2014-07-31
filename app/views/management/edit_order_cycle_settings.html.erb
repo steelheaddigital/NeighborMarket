@@ -54,7 +54,7 @@
   <% end %>
   <div class="row-fluid">
     <%= submit_tag "Update Settings", :class => 'btn btn-primary cycleSettingsSubmit' %>
-    <%= submit_tag "Save and Start New Cycle", :confirm => "This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?", :class => 'btn btn-danger cycleSettingsSubmit' %>
+    <%= submit_tag "Save and Start New Cycle", :data => {:confirm => "This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?"}, :class => 'btn btn-danger cycleSettingsSubmit' %>
   </div>
 <%end%>
 <script>

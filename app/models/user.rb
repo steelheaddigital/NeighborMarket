@@ -144,7 +144,10 @@ class User < ActiveRecord::Base
   end
   
   def additional_fields_required?
-    !auto_create && (!buyer? || seller?)
+    if seller? && !auto_create
+      return true
+    end
+    return false
   end
   
   def address_required?
@@ -226,7 +229,7 @@ class User < ActiveRecord::Base
     if(keywords.present?)
       scope = scope.find_with_index(keywords)
     else
-      scope.all
+      scope
     end
     
   end

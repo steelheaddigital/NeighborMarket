@@ -46,7 +46,7 @@
 		   <%@price_units.each do |unit|%>
 		     <tr>
 				<td><%= unit.name%></td>
-				<td><%= button_to "Delete", { :action => "destroy_price_unit", :controller => "management", :price_unit => unit}, {:confirm => "Are you sure you want to delete this unit?", :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
+				<td><%= button_to "Delete", { :action => "destroy_price_unit", :controller => "management", :price_unit => unit}, {:data => {:confirm => "Are you sure you want to delete this unit?"}, :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
 		     </tr>
 		   <%end%>
 		 </tbody>
