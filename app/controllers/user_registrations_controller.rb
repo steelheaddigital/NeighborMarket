@@ -179,12 +179,12 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
-      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :payment_instructions, :delivery_instructions, :terms_of_service,
-        :email, :password, :password_confirmation)
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :payment_instructions, :delivery_instructions, :terms_of_service,
+        :email, :password, :password_confirmation, :photo)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
-      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :payment_instructions, :delivery_instructions, :terms_of_service,
-        :email, :password, :password_confirmation)
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :payment_instructions, :delivery_instructions, :terms_of_service,
+        :email, :password, :password_confirmation, :photo)
     end
   end
   

@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.0.8'
-gem 'pg', '~> 0.15.1'
-gem 'unicorn', '~> 4.6.2'
+gem 'pg', '~> 0.17.1'
+gem 'unicorn', '~> 4.8.3'
 
 group :development, :test do
   gem 'debugger', '~> 1.6.8'

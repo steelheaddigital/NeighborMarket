@@ -26,13 +26,14 @@ class UserMailerTest < ActionMailer::TestCase
   test "auto create user mail" do
     user = User.new(:email => "autocreateuser@test.com")
     user.auto_create_user
+    token = 'abcdefg'
     
-    UserMailer.auto_create_user_mail(user).deliver
+    UserMailer.auto_create_user_mail(user, token).deliver
     sent = ActionMailer::Base.deliveries.first
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [user.email], sent.to
     assert_equal "The manager at Test Neighbor Market has created a new account for you", sent.subject
-    assert_match("<a href=\"http://test.neighbormarket.org/user/auto_create_confirmation?confirmation_token=#{user.confirmation_token}\">Complete my registration</a>", sent.body.to_s)
+    assert_match("<a href=\"http://test.neighbormarket.org/user/auto_create_confirmation?confirmation_token=abcdefg\">Complete my registration</a>", sent.body.to_s)
   end
   
 end
