@@ -208,7 +208,6 @@ unconfirmed_approved_seller_user:
  approved_seller: true                   
  listing_approval_style: manual
  roles: seller_role
- confirmation_token: 2
  
 unconfirmed_buyer_user:
  email: unconfirmed_buyer@test.com
@@ -228,7 +227,6 @@ unconfirmed_buyer_user:
  approved_seller: false                   
  listing_approval_style: manual
  roles: buyer_role
- confirmation_token: 3
 
 auto_created_user:
  email: autocreateduser@test.com

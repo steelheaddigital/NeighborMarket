@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   validates_format_of :email, :with => /\A[^@]+@[^@]+\z/, :allow_blank => true, :if => :email_changed?
 
   validates_presence_of :password, :if => :password_required?
-  validates_confirmation_of :password, :message => "does not match confirmation", :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   validates :terms_of_service, acceptance: { accept: true }, :if => :tos_required?
   
@@ -116,22 +116,31 @@ class User < ActiveRecord::Base
   
   #Override the devise callback method that sends emails on create to send a different one for auto signups
   def send_on_create_confirmation_instructions
-    send_devise_notification(:confirmation_instructions) if !auto_created && !skip_confirmation_email
-    UserMailer.delay.auto_create_user_mail(self) if auto_created && !skip_confirmation_email
+    send_confirmation_instructions if !auto_created && !skip_confirmation_email
+    send_auto_create_confirmation_instructions if auto_created && !skip_confirmation_email
   end
   
   def pending_reconfirmation?
     (self.class.reconfirmable && unconfirmed_email.present?) || auto_created_pending_update?
   end
   
+  def send_auto_create_confirmation_instructions
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
+    
+    UserMailer.delay.auto_create_user_mail(self, @raw_confirmation_token)
+  end
+  
   # Send confirmation instructions by email
   def send_confirmation_instructions
-    self.confirmation_token = nil if reconfirmation_required?
-    @reconfirmation_required = false
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
 
-    generate_confirmation_token! if self.confirmation_token.blank?
-    send_devise_notification(:confirmation_instructions) if !auto_created || !auto_create_updated_at.nil?
-    UserMailer.delay.auto_create_user_mail(self) if auto_created_pending_update?
+    opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+    send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts) if !auto_created || !auto_create_updated_at.nil?
+    UserMailer.delay.auto_create_user_mail(self, @raw_confirmation_token) if auto_created_pending_update?
   end
   
   def password_required?
@@ -143,7 +152,10 @@ class User < ActiveRecord::Base
   end
   
   def additional_fields_required?
-    !auto_create && (!buyer? || seller?)
+    if seller? && !auto_create
+      return true
+    end
+    return false
   end
   
   def address_required?
@@ -225,7 +237,7 @@ class User < ActiveRecord::Base
     if(keywords.present?)
       scope = scope.find_with_index(keywords)
     else
-      scope.all
+      scope
     end
     
   end

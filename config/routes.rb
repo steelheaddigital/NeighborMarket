@@ -7,14 +7,14 @@ NeighborMarket::Application.routes.draw do
   root :to => "home#index"
   devise_for :users, :controllers => { :registrations => 'user_registrations', :sessions => 'sessions', :confirmations => 'user_confirmations' }
   devise_scope :user do 
-    match '/buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up
-    match '/seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }, :as => :seller_sign_up
-    match '/user/become_seller' => 'user_registrations#become_seller', :user => { :become_seller => true } , :as => :become_seller
-    match '/user/become_buyer' => 'user_registrations#become_buyer', :user => { :become_buyer => true } , :as => :become_buyer
-    match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup'
-    match '/user/inactive_signup' => 'user_registrations#inactive_signup'
-    match '/user/auto_create_confirmation' => 'user_confirmations#auto_create_confirmation', :via => "GET"
-    match '/user_registrations/terms_of_service'
+    match '/buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up, via: [:get, :post]
+    match '/seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }, :as => :seller_sign_up, via: [:get, :post]
+    match '/user/become_seller' => 'user_registrations#become_seller', :user => { :become_seller => true } , :as => :become_seller, via: [:get, :post]
+    match '/user/become_buyer' => 'user_registrations#become_buyer', :user => { :become_buyer => true }, :as => :become_buyer, via: [:get, :post]
+    match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup', via: [:get, :post]
+    match '/user/inactive_signup' => 'user_registrations#inactive_signup', via: [:get, :post]
+    get '/user/auto_create_confirmation', to: 'user_confirmations#auto_create_confirmation'
+    match '/user_registrations/terms_of_service', via: [:get, :post]
   end
   
   resources :user do 
@@ -79,7 +79,7 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  match 'seller/:order_id/update_order' => 'seller#update_order', :via => "PUT", :as => :seller_update_order
+  put 'seller/:order_id/update_order', to: 'seller#update_order', :as => :seller_update_order
   resources :seller, :only => ["index"] do
     collection do
       get 'pick_list'
@@ -104,7 +104,7 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  match 'orders/new' => 'orders#new', :via => "POST"
+  post 'orders/new', to: 'orders#new'
   resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
     member do
       get 'finish'
@@ -113,16 +113,16 @@ NeighborMarket::Application.routes.draw do
   
   resources :price_units
   
-  match 'inventory_item_change_request/:inventory_item_id/new' => 'inventory_item_change_request#new', :via => "GET", :as => :new_inventory_item_change_request
-  match 'inventory_item_change_request/:inventory_item_id/create' => 'inventory_item_change_request#create', :via => "POST", :as => :create_inventory_item_change_request
+  get 'inventory_item_change_request/:inventory_item_id/new', to: 'inventory_item_change_request#new', :as => :new_inventory_item_change_request
+  get 'inventory_item_change_request/:inventory_item_id/create', to: 'inventory_item_change_request#create', :as => :create_inventory_item_change_request
   resources :inventory_item_change_request do
     member do
       post 'complete'
     end
   end
   
-  match 'order_change_request/:order_id/new' => 'order_change_request#new', :via => "GET", :as => :new_order_change_request
-  match 'order_change_request/:order_id/create' => 'order_change_request#create', :via => "POST", :as => :create_order_change_request
+  get 'order_change_request/:order_id/new', to: 'order_change_request#new', :as => :new_order_change_request
+  post 'order_change_request/:order_id/create', to: 'order_change_request#create', :as => :create_order_change_request
   resources :order_change_request do
     member do
       post 'complete'

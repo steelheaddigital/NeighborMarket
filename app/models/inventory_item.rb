@@ -24,7 +24,7 @@ class InventoryItem < ActiveRecord::Base
   belongs_to :second_level_category, touch: true
   has_many :cart_items
   has_many :inventory_item_order_cycles
-  has_many :order_cycles, :through => :inventory_item_order_cycles, :uniq => true
+  has_many :order_cycles, -> { uniq }, :through => :inventory_item_order_cycles
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
   attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved, :autopost, :autopost_quantity
@@ -116,7 +116,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def current_cart_items
-    self.cart_items.joins(:order)
+    self.cart_items.includes(:order)
                    .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
   end
   

@@ -59,7 +59,7 @@
 		  </div>
 		  <div>
 		    <%= f.label :drop_point_state %>
-		    <%= f.state_select :drop_point_state, country = "US", {}, {:class => "input-medium"} %>
+		    <%= f.subregion_select :drop_point_state, Carmen::Country.coded('US'), {:class => "input-medium"}  %>
 		  </div>
 		  <div>
 		    <%= f.label :drop_point_zip %>

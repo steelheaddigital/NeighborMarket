@@ -1,43 +1,48 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.19'
-gem 'pg'
-gem 'unicorn'
+gem 'rails', '4.0.8'
+gem 'pg', '~> 0.17.1'
+gem 'unicorn', '~> 4.8.3'
 
 group :development, :test do
-  gem 'debugger'
+  gem 'debugger', '~> 1.6.8'
 end
 
 group :test do
   # Pretty printed test output
-  gem 'turn', '~> 0.8.3', :require => false
+  gem 'turn', '~> 0.9.7'
+  gem 'minitest-colorize'
+  gem 'minitest-focus'
   #gem 'ruby-prof', '~> 0.11.2'  # For profiling
   #gem 'test-unit' # For profiling
 end
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'jquery-rails', '2.1.4'
-  gem 'therubyracer'
-  gem 'uglifier', '>= 1.0.3'
-  gem 'font-awesome-rails'
-end
+
+gem 'jquery-rails', '2.1.4'
+gem 'therubyracer', '~> 0.12.0'
+gem 'uglifier', '>= 2.5.3'
+gem 'font-awesome-rails', '~> 3.2.1.3'
+gem 'less-rails', '~> 2.5.0'
+
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'
 
-gem 'devise', "~> 2.2.0"
-gem 'cancan'
-gem 'carmen'
+gem 'devise', "~> 3.2.4"
+gem 'cancan', '~> 1.6.9'
+gem 'carmen-rails', '~> 1.0.1'
 gem 'will_paginate', '~> 3.0'
-gem 'prawn'
+gem 'prawn', '~> 0.12.0'
 gem "paperclip", "~> 3.0"
-gem 'acts_as_indexed'
-gem 'foreman'
-gem 'aws-sdk'
-gem 'delayed_job_active_record'
-gem 'less-rails'
-gem 'dalli'
-gem 'daemons'
-gem 'whenever'
+gem 'acts_as_indexed', '~> 0.8.3'
+gem 'foreman', '~> 0.62.0'
+gem 'dalli', '~> 2.6.4'
+gem 'whenever', '~> 0.9.2'
+
+gem 'protected_attributes'
+gem 'activerecord-deprecated_finders'
+gem 'activerecord-session_store'
+
+#protected_attributes has to come before delayed_job
+gem 'delayed_job', '~> 4.0.2'
+gem 'delayed_job_active_record', '~> 4.0.1'

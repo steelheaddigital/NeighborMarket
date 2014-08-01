@@ -34,10 +34,10 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     
     assert !deliveries.empty?
     assert_equal 6, deliveries.count
-    assert_equal the_date.advance(:days => 1).utc, new_cycle.start_date
-    assert_equal the_date.advance(:days => 1).utc, new_cycle.end_date
-    assert_equal the_date.advance(:days => 1).utc, new_cycle.seller_delivery_date
-    assert_equal the_date.advance(:days => 1).utc, new_cycle.buyer_pickup_date
+    assert_equal the_date.advance(:days => 1).to_s, new_cycle.start_date.to_datetime.to_s
+    assert_equal the_date.advance(:days => 1).to_s, new_cycle.end_date.to_datetime.to_s
+    assert_equal the_date.advance(:days => 1).to_s, new_cycle.seller_delivery_date.to_datetime.to_s
+    assert_equal the_date.advance(:days => 1).to_s, new_cycle.buyer_pickup_date.to_datetime.to_s
     assert_equal OrderCycle.find(current_cycle.id).status, "complete"
     
   end
