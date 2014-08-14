@@ -49,18 +49,36 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def cart_items_where_order_cycle_minimum_reached
+    #minimum_reached_at_order_cycle_end is always true until the end of the order cycle when it will be changed to false 
+    #if the minimum purchase quantity for the inventory item is not reached
+    cart_items.select{|cart_item| cart_item.minimum_reached_at_order_cycle_end == true}
+  end
+  
+  def has_cart_items_where_order_cycle_minimum_not_reached?
+    cart_items.where(minimum_reached_at_order_cycle_end: false).any?
+  end
+  
+  def has_cart_items_where_order_cycle_minimum_reached?
+    cart_items.where(minimum_reached_at_order_cycle_end: true).any?
+  end
+  
+  def has_items_with_minimum?
+    cart_items.any?{|cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end}
+  end
+  
   def total_price
-    cart_items.to_a.sum { |item| item.total_price }
+    cart_items_where_order_cycle_minimum_reached.to_a.sum { |item| item.total_price }
   end
   
   def total_price_by_seller(seller_id)
-    cart_items.select{|item| item.inventory_item.user_id == seller_id }
-              .sum { |item| item.total_price }
+    cart_items_where_order_cycle_minimum_reached.select{ |item| item.inventory_item.user_id == seller_id }
+                                                .sum { |item| item.total_price }
   end
   
   def sub_totals
     sub_total = {}
-    cart_items.group_by{|item| item.inventory_item.user.id}.each do |key, value| 
+    cart_items_where_order_cycle_minimum_reached.group_by{|item| item.inventory_item.user.id}.each do |key, value| 
       total = value.map{|cart_item| cart_item.total_price}.reduce(:+)
       sub_total[key] = total 
     end

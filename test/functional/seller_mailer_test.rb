@@ -74,6 +74,7 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("You will need to deliver the ordered items, bundled for each buyer and labeled with the corresponding packing list, to the drop point address below on 08/17/2012 at 12:03 PM.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("12345 Test Way", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
     assert_match("Portland, OR 97218", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
+    assert_match("You had some items that were added to orders but then removed because your minimum was not met.  These items are shown below. You are not responsible for delivering these items, they are only shown here for your information.", sent.parts.find {|p| p.content_type.match /html/}.body.raw_source.to_s)
   end
   
   test "order cycle end mail when orders are empty" do

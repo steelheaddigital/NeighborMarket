@@ -74,7 +74,7 @@ class BuyerInvoices < Prawn::Document
         items = [["<b>Seller Name</b>", "<b>Item ID</b>", "<b>Item Name</b>", "<b>Quantity</b>", "<b>Price</b>", "<b>Total Price</b>"]]
         order.sub_totals.each do |key, value|
           seller_name = ""
-          order.cart_items.select{|i| i.inventory_item.user.id == key}.each do |item|
+          order.cart_items_where_order_cycle_minimum_reached.select{|i| i.inventory_item.user.id == key}.each do |item|
             seller_name = item.inventory_item.user.username
               items +=  [[
                   item.inventory_item.user.username,

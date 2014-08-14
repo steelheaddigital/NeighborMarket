@@ -80,3 +80,25 @@ autopost:
   description: MyText
   autopost: true
   autopost_quantity: 10
+  
+has_minimum:
+  top_level_category: vegetable
+  second_level_category: carrot
+  user: approved_seller_user
+  name: test
+  price: 10.00
+  price_unit: each
+  quantity_available: 10
+  description: MyText
+  minimum: 5
+
+has_minimum_not_met:
+  top_level_category: vegetable
+  second_level_category: carrot
+  user: approved_seller_user
+  name: test
+  price: 10.00
+  price_unit: each
+  quantity_available: 10
+  description: MyText
+  minimum: 5

@@ -59,7 +59,7 @@ class OutboundDeliveryLog < Prawn::Document
         move_down(10)
 
         items = [["<b>Seller Name</b>", "<b>Item ID</b>", "<b>Item Name</b>", "<b>Quantity</b>"]]
-        order.cart_items.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.map do |item|
+        order.cart_items_where_order_cycle_minimum_reached.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.map do |item|
             items +=  [[
                 item.inventory_item.user.username,
                 item.inventory_item.id,

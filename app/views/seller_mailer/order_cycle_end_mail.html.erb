@@ -38,6 +38,31 @@
 	        <%= @site_settings.drop_point_city + ", " + @site_settings.drop_point_state + " " + @site_settings.drop_point_zip.to_s %><br>
 	      </div>
 	  <% end %>
+	  <%if @inventory_items_minimum_not_reached.length > 0 %>
+	  	<p>
+			You had some items that were added to orders but then removed because your minimum was not met.  These items are shown below. You are not responsible for delivering these items, they are only shown here for your information.
+		</p>
+		<div>
+			<table border=1 style="border-collapse: collapse;">
+				<thead>
+					<tr>
+						<th>Item Name</th>
+						<th>Total Quantity Ordered</th>
+						<th>Minimum</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @inventory_items_minimum_not_reached.each do |item|%>
+						<tr>
+							<td><%= item.name %></td>
+							<td><%= item.total_quantity_ordered_for_order_cycle(@order_cycle.id) %></td>
+							<td><%= item.minimum %></td>
+						</tr>
+					<%end%>
+				</tbody>
+			</table>
+		</div>
+	  <%end%>
     </div>
   </body>
 </html>

@@ -191,4 +191,33 @@ class InventoryItemsTest < ActiveSupport::TestCase
      assert_equal 10, InventoryItem.find(item.id).quantity_available
    end
    
+   test "has_minimum returns true when item has a minimum" do
+     item = inventory_items(:has_minimum)
+     
+     assert item.has_minimum?
+   end
+   
+   test "minimum_reached returns true when item has a minimum and minimum reached" do
+     item = inventory_items(:has_minimum)
+     
+     assert item.minimum_reached?
+   end
+   
+   test "quantity_needed_to_reach_minimum returns quantity needed to reach minimum" do
+     item = inventory_items(:has_minimum_not_met)
+     
+     result = item.quantity_needed_to_reach_minimum
+     
+     assert_equal 2, result
+   end
+   
+   test "total_quantity_ordered_for_order_cycle returns correct value" do
+     item = inventory_items(:one)
+     order_cycle = order_cycles(:current)
+     
+     result = item.total_quantity_ordered_for_order_cycle(order_cycle.id)
+     
+     assert_equal 10, result
+   end
+   
 end

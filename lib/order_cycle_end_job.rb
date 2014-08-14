@@ -39,12 +39,22 @@ class OrderCycleEndJob
                                  
       if new_cycle.save
         OrderCycle.queue_order_cycle_start_job(new_start_date)
+        remove_items_from_orders_where_minimum_not_met(current_cycle.id)
         send_emails(current_cycle)
       end
     else
-      current_cycle.status = "complete"
-      current_cycle.save
+      current_cycle.update_column(:status, "complete")
+      remove_items_from_orders_where_minimum_not_met(current_cycle.id)
       send_emails(current_cycle)
+    end
+  end
+  
+  def remove_items_from_orders_where_minimum_not_met(current_order_cycle_id)
+    cart_items = CartItem.joins(:order, :inventory_item).where(orders: { order_cycle_id: current_order_cycle_id })
+    cart_items.each do |item|
+      if !item.inventory_item.minimum_reached?
+        item.update_column(:minimum_reached_at_order_cycle_end, false)
+      end
     end
   end
   
@@ -56,8 +66,13 @@ class OrderCycleEndJob
     
     orders = Order.where(:order_cycle_id => order_cycle.id)
     orders.each do |order|
-      buyer = order.user
-      BuyerMailer.order_cycle_end_mail(buyer, order_cycle).deliver
+      if order.has_cart_items_where_order_cycle_minimum_reached?
+        buyer = order.user
+        BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver
+      else
+        BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver
+      end
+      
     end
   end
   

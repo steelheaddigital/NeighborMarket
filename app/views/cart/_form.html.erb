@@ -40,6 +40,9 @@
         <th>Quantity</th>
         <th>Seller</th>
         <th>Payment Instructions</th>
+		<%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
+			<th>Minimum</th>
+		<%end%>
       </tr>
     </thead>
       <tbody>
@@ -47,8 +50,11 @@
           <td><%= item_name(item.object.inventory_item) %> </td>
           <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
           <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
-          <td><%= item.object.inventory_item.user.username %>
-          <td><%= item.object.inventory_item.user.payment_instructions %>
+          <td><%= item.object.inventory_item.user.username %></td>
+          <td><%= item.object.inventory_item.user.payment_instructions %></td>
+		  <%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
+		  	<td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
+		  <%end%>
         </tr>
       </tbody>
     </table>

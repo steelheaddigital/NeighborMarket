@@ -135,7 +135,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @items = CartItem.joins(:order).where(:orders => {:order_cycle_id => order_cycle.id})
+    @items = CartItem.joins(:order).where(minimum_reached_at_order_cycle_end: true, :orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
@@ -180,7 +180,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
@@ -225,7 +225,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.order(:user_id, :id).where(:orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     @site_settings = SiteSetting.first
@@ -297,12 +297,12 @@ class ManagementController < ApplicationController
   
   def historical_orders_report
     if params[:start_date].values.any?(&:blank?) || params[:end_date].values.any?(&:blank?)
-      @orders = Order.all
+      @orders = Order.joins(:cart_items).where(cart_items: {minimum_reached_at_order_cycle_end: true})
     else
       begin_date = DateTime.new(params[:start_date][:year].to_i,params[:start_date][:month].to_i,params[:start_date][:day].to_i)
       end_date = DateTime.new(params[:end_date][:year].to_i,params[:end_date][:month].to_i,params[:end_date][:day].to_i)
-      @orders = Order.joins(:order_cycle)
-                     .where(:order_cycles => {:end_date => begin_date..end_date + 1.day})
+      @orders = Order.joins(:order_cycle, :cart_items)
+                     .where(cart_items: {minimum_reached_at_order_cycle_end: true}, :order_cycles => {:end_date => begin_date..end_date + 1.day})
     end
     if params[:commit] == "Export to CSV"
       report_name = "historical_orders_#{Date.today.strftime('%d%b%y')}.csv" 
@@ -437,7 +437,7 @@ class ManagementController < ApplicationController
         buyer_id = order.user.id
         order_id = order.id
         delivery_date = order.order_cycle.seller_delivery_date
-        order.cart_items.each do |cart_item|
+        order.cart_items_where_order_cycle_minimum_reached.each do |cart_item|
           csv << [cart_item.inventory_item.user.id, buyer_id, order_id, cart_item.inventory_item.name, cart_item.quantity, number_to_currency(cart_item.inventory_item.price).to_s + " " + price_unit_label(cart_item.inventory_item), format_short_date(delivery_date)]
         end
       end

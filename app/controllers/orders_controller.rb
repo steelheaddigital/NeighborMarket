@@ -81,7 +81,7 @@ class OrdersController < ApplicationController
           format.html {redirect_to finish_order_url(@order)}
         else
           @cart = current_cart
-          format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created' }
+          format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created. Please try again later' }
         end
     end
   end

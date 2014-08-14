@@ -29,12 +29,20 @@
     <P>Name: <%= @buyer.username  %></p>
     <p>Email: <%= @buyer.email %>
     <p style="font-weight: bold; padding-top: 15px;">Purchase Information</p>
+	<%if @has_items_with_minimum %>
+		<p>
+		  	You have set a minimum for some of the items purchased in this order but the minimum has not yet been reached.  If the minimum for these items is not reached by the end of the order cycle the items will be removed from the order. The quantity still needed to reach the minimum for these items is displayed in the "Minimum" column below.
+		</p>
+	<%end%>
     <table border=1 style="border-collapse: collapse;">
         <thead>
           <tr>
               <th>Item</th>
               <th>Quantity</th>
               <th>Price</th>
+			  <%if @has_items_with_minimum %>
+			  	<th>Minimum</th>
+			  <%end%>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +51,9 @@
               <td><%= item_name(item.inventory_item)%></td>
               <td style="text-align: center;"><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"%></td>
               <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
+			  <%if @has_items_with_minimum %>
+			  	<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
+			  <%end%>
             </tr>
           <%end%>
         </tbody>

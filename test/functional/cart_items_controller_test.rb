@@ -39,7 +39,7 @@ class CartItemsControllerTest < ActionController::TestCase
     end
     
     assert_not_nil assigns(:cart_item)
-    assert_redirected_to order_change_requests_management_index_path
+    assert_redirected_to edit_order_path(cart_item.order_id)
   end
   
   test "logged in buyer can destroy cart item that is in their session but has no order" do

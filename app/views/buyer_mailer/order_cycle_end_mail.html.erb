@@ -26,10 +26,15 @@
   </head>
   <body>
     <h4 style="padding-bottom:15px;">The current order cycle at <%= @site_settings.site_name %> ended on <%= format_date_time(@order_cycle.end_date) %>. Below is your order summary:</h4>
+	<% if @order.has_cart_items_where_order_cycle_minimum_not_reached? %>
+		<p>
+			<strong>Some items in your original order did not meet the minimum purchase quantity and have been removed from your order.</strong>
+		</p>
+	<%end%>
+	<strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>
 	<div style="margin-bottom:15px;">
 		<%= render :partial => "order_table", :locals => {:order => @order} %>
 	</div>
 	<%= pickup_instructions(@site_settings, @order_pickup_date, @order)%>
-    <strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>
   </body>
 </html>

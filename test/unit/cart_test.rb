@@ -49,4 +49,12 @@ class CartTest < ActiveSupport::TestCase
       assert_equal(result.to_s, "300.0")
   end
   
+  test "has_items_with_minimum? returns true when cart has items with minimum" do 
+    cart = carts(:minimum)
+    
+    result = cart.has_items_with_minimum?
+    
+    assert result
+  end
+  
 end

@@ -4,11 +4,7 @@ timeout 30
 preload_app true
 listen "/tmp/unicorn.sock", :backlog => 64
 
-before_fork do |server, worker|
-  
-  #Start the Delayed Job worker inside of a Unicorn process
-  #@delayed_job_celluloid_pid ||= spawn("bundle exec script/delayed_job_celluloid -n 2")
-  
+before_fork do |server, worker|  
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
     Process.kill 'QUIT', Process.pid
@@ -24,6 +20,10 @@ after_fork do |server, worker|
     puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
   end
 
-  defined?(ActiveRecord::Base) and
-    ActiveRecord::Base.establish_connection
+  if defined?(ActiveRecord::Base)
+    config = ActiveRecord::Base.configurations[Rails.env]
+    config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
+    config['pool']            =   ENV['DB_POOL'] || 5
+    ActiveRecord::Base.establish_connection(config)
+  end
 end

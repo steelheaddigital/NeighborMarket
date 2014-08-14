@@ -39,4 +39,8 @@ class Cart < ActiveRecord::Base
   def total_price
     cart_items.to_a.sum { |item| item.total_price }
   end
+  
+  def has_items_with_minimum?
+    cart_items.any?{|cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end}
+  end
 end

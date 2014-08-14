@@ -49,7 +49,7 @@ class PackingList < Prawn::Document
         move_down(10)
 
         items = [["<b>ID</b>", "<b>Name</b>", "<b>Quantity</b>", "<b>Price</b>", "<b>Total Price</b>"]]
-        order.cart_items.map do |item|
+        order.cart_items_where_order_cycle_minimum_reached.map do |item|
             if item.inventory_item.user_id == seller.id
                 items +=  [[
                     item.inventory_item.id,

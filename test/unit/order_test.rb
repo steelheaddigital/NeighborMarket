@@ -102,4 +102,27 @@ class OrderTest < ActiveSupport::TestCase
     assert order.invalid?
   end
   
+  test "cart_items_where_order_cycle_minimum_reached returns cart items where minimum reached" do
+    order = orders(:current_two)
+    
+    assert_equal 1, order.cart_items_where_order_cycle_minimum_reached.count
+  end
+  
+  test "has_cart_items_where_order_cycle_minimum_not_reached? returns true if order contains cart items where minimum is not reached" do
+    order = orders(:current_two)
+    
+    assert order.has_cart_items_where_order_cycle_minimum_not_reached?
+  end
+  
+  test "has_cart_items_where_order_cycle_minimum_reached returns true if order contains does not contain cart items where minimum is not reached" do
+    order = orders(:current)
+    
+    assert order.has_cart_items_where_order_cycle_minimum_reached?
+  end
+  
+  test "has_items_with_minimum? returns true if order contains contains inventory items with a minimum" do
+    order = orders(:current)
+    
+    assert order.has_items_with_minimum?
+  end
 end

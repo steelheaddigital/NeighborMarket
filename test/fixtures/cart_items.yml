@@ -27,8 +27,25 @@ four:
   inventory_item: three
   quantity: 10
   order: current
+  
+five:
+  cart: minimum
+  inventory_item: has_minimum
+  quantity: 5
+  order: current
+
+minimum_not_met:
+  inventory_item: has_minimum_not_met
+  quantity: 3
+  order: current
+  cart: minimum
 
 no_order:
   cart: no_order
   inventory_item: one
   quantity: 10
+  
+minimum_not_reached_at_order_cycle_end:
+  order: current_two
+  minimum_reached_at_order_cycle_end: false
+  inventory_item: has_minimum

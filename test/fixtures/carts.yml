@@ -15,3 +15,6 @@ buyer_not_current:
 
 no_order:
   user: nil
+
+minimum:
+  user: buyer_user

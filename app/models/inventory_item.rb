@@ -27,7 +27,7 @@ class InventoryItem < ActiveRecord::Base
   has_many :order_cycles, -> { uniq }, :through => :inventory_item_order_cycles
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
   
-  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved, :autopost, :autopost_quantity
+  attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved, :autopost, :autopost_quantity, :minimum
   attr_accessor :current_user
   
   validates :top_level_category_id, 
@@ -122,6 +122,34 @@ class InventoryItem < ActiveRecord::Base
   
   def can_edit?
     user_editable || (!in_current_order_cycle? || current_cart_items.empty?)
+  end
+  
+  def has_minimum?
+    !self.minimum.nil? && self.minimum > 0
+  end
+  
+  def minimum_reached?
+    minimum_reached_for_order_cycle?(OrderCycle.current_cycle_id)
+  end
+  
+  def minimum_reached_for_order_cycle?(order_cycle_id)
+    quantity_purchased = total_quantity_ordered_for_order_cycle(order_cycle_id)
+    quantity_purchased >= self.minimum.to_i
+  end
+  
+  def quantity_needed_to_reach_minimum
+    if self.has_minimum?
+      quantity_purchased = current_cart_items.sum(:quantity)
+      self.minimum.to_i - quantity_purchased 
+    else
+      nil
+    end
+  end
+  
+  def total_quantity_ordered_for_order_cycle(order_cycle_id)
+    cart_items = self.cart_items.includes(:order)
+                   .where(:orders => {:order_cycle_id => order_cycle_id})
+    cart_items.sum(:quantity)
   end
   
   private

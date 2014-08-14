@@ -17,6 +17,17 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     assert_equal 8, deliveries.count
   end
   
+  test "remove_items_from_orders_where_minimum_not_met sets minimum_reached_at_order_cycle_end to false if minimum not met" do
+    order_cycle = order_cycles(:current)
+    cart_item = cart_items(:minimum_not_met)
+    job = OrderCycleEndJob.new
+    
+    job.remove_items_from_orders_where_minimum_not_met(order_cycle.id)
+    updated_cart_item = CartItem.find(cart_item.id)
+    
+    assert !updated_cart_item.minimum_reached_at_order_cycle_end
+  end
+  
   test "perform creates new order cycle and sends emails" do
     OrderCycle.delete_all
     the_date = DateTime.now

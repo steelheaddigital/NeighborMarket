@@ -43,14 +43,23 @@ class BuyerMailer < BaseMailer
           :subject => "Your order change request has been completed")
   end
   
-  def order_cycle_end_mail(buyer, order_cycle)
-    @order = buyer.orders.find_by_order_cycle_id(order_cycle.id)
+  def order_cycle_end_mail(order, order_cycle)
+    @order = order
     @order_pickup_date = order_cycle.buyer_pickup_date
     @site_settings = SiteSetting.first
     @order_cycle = order_cycle
     
-    mail( :to => buyer.email, 
+    mail( :to => order.user.email, 
           :subject => "The current order cycle has ended at #{@site_settings.site_name}" )
+  end
+  
+  def order_cycle_end_mail_no_items(order, order_cycle)
+    @order = order
+    @order_cycle = order_cycle
+    @site_name = SiteSetting.first.site_name
+    
+    mail( :to => order.user.email,
+          :subject => "The current order cycle has ended at #{@site_name}")
   end
   
 end

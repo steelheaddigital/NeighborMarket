@@ -145,7 +145,7 @@ class SellerController < ApplicationController
     seller = current_user
     InventoryItem.joins(:cart_items => { :order => :order_cycle })
                  .select('inventory_items.*, sum(cart_items.quantity) as total_quantity, sum(cart_items.quantity * inventory_items.price) as total_price')
-                 .where(:inventory_items => {:user_id => current_user.id})
+                 .where(:inventory_items => {:user_id => current_user.id}, :cart_items => {minimum_reached_at_order_cycle_end: true})
                  .group('inventory_items.id, inventory_items.name')
   end
   
@@ -153,7 +153,7 @@ class SellerController < ApplicationController
     seller = current_user
     InventoryItem.joins(:cart_items => { :order => :order_cycle })
                  .select('inventory_items.*, sum(cart_items.quantity) as total_quantity, sum(cart_items.quantity * inventory_items.price) as total_price')
-                 .where(:inventory_items => {:user_id => current_user.id}, :order_cycles => {:end_date => begin_date..end_date + 1.day})
+                 .where(:inventory_items => {:user_id => current_user.id}, :order_cycles => {:end_date => begin_date..end_date + 1.day}, :cart_items => {minimum_reached_at_order_cycle_end: true})
                  .group('inventory_items.id, inventory_items.name')
   end
   
@@ -161,14 +161,14 @@ class SellerController < ApplicationController
     seller = current_user
     Order.joins(:cart_items => :inventory_item)
          .select('orders.id, orders.user_id')
-         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle_id})
+         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle_id }, :cart_items => {minimum_reached_at_order_cycle_end: true})
          .group('orders.id, orders.user_id')
   end
   
   def get_pick_list_inventory_items(order_cycle_id)
     user_id = current_user.id
     InventoryItem.joins(:cart_items => :order)
-                  .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL', user_id, order_cycle_id)
+                  .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = TRUE', user_id, order_cycle_id)
                   .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
   end
   

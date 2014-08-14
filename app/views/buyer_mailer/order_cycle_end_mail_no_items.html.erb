@@ -1,0 +1,40 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+	  <h4 style="padding-bottom:15px;">The current order cycle at <%= @site_name %> ended on <%= format_date_time(@order_cycle.end_date)%></h4>
+      <p>
+        Unfortunately none of the items in your order met the minimum purchase quantity set by the seller. Therefore your order has been cancelled and you will not be responsible for paying for the items.
+      </p>
+	  <p>
+		  Having minimums are important to ensure that our small scale producers make the best use of their time and limited resources.  We know this may be inconvenient, but we thank you for your understanding and for your participation. Your participation is what ensures a robust marketplace that will help small producers in your own neighborhood and ensure that minimums are met in the future. We look forward to seeing you next time.
+	  </p>
+	  <p>
+		  Sincerely,<br>
+		  The <%= @site_name %> Team
+	  </p>
+  </body>
+</html>

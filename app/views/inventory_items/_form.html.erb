@@ -66,6 +66,10 @@
 		  <%= f.label "Quantity to auto-post" %>
 		  <%= f.text_field :autopost_quantity, :class => "input-small" %>
 		</div>
+		<div>
+		  <%= tooltip_label("Minimum", "Adding a quantity here will indicate that a minimum quanity must be purchased among all buyers during the order cycle before you will deliver the items to the drop point.")%>
+  		  <%= f.text_field :minimum, :class => "input-small" %>
+		</div>
 	  <div>
 	    <%= f.label :description %>
 	    <%= f.text_area :description, :size => "10x10" %>
@@ -98,4 +102,6 @@
 			});
 		}
 	});
+	
+	$(".icon-question-sign").tooltip();
 </script>

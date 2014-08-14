@@ -46,10 +46,12 @@ class SellerMailer < BaseMailer
                    .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle.id})
                    .group('orders.id, orders.user_id')
     @inventory_items = InventoryItem.joins(:cart_items => :order)
-                                .where('inventory_items.user_id = ? AND orders.order_cycle_id = ?', seller.id, order_cycle.id)
+                                .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = TRUE', seller.id, order_cycle.id)
                                 .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
                                 .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
-    
+    @inventory_items_minimum_not_reached = InventoryItem.joins(:cart_items => :order)
+                                                        .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = FALSE', seller.id, order_cycle.id)
+  
     unless @orders.empty?
       packing_list = PackingList.new.to_pdf(@orders, @seller)
       pick_list = PickList.new.to_pdf(@inventory_items, @order_cycle)
@@ -72,6 +74,7 @@ class SellerMailer < BaseMailer
   def purchase_mail(seller, order, subject)
     @buyer = order.user
     @cart_items = order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
+    @has_items_with_minimum = @cart_items.any?{|item| !item.inventory_item.quantity_needed_to_reach_minimum.nil? && item.inventory_item.quantity_needed_to_reach_minimum > 0}
     mail( :to => seller.email, 
           :subject => subject)
   end
