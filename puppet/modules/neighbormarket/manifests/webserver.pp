@@ -44,7 +44,6 @@ class neighbormarket::webserver (
   } else {
     nginx::resource::vhost { $hostname:
       ensure           => present,
-      rewrite_to_https => true,
       ssl              => true,
       ssl_cert         => "$app_directory/certs/$hostname.crt",
       ssl_key          => "$app_directory/certs/$hostname.key",
