@@ -20,7 +20,14 @@ class neighbormarket::webserver (
 	}
   }
 
-  class { 'nginx': }
+  class { 'nginx': 
+	  proxy_set_header => [
+	    'Host $host',
+	    'X-Real-IP $remote_addr',
+	    'X-Forwarded-For $proxy_add_x_forwarded_for',
+		'X-Forwarded-Proto $scheme'
+	  ]
+	}
 
   nginx::resource::upstream { 'neighbormarket_server':
 	  ensure  => present,
