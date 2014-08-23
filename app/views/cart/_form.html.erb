@@ -59,7 +59,7 @@
 		  	<td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
 		  <%end%>
 			<%if SiteSetting.first.facebook_enabled%>
-				<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
+				<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.object.inventory_item) %>"></span></td>
 			<%end%>
         </tr>
       </tbody>
