@@ -187,4 +187,8 @@ module ApplicationHelper
     html.html_safe
   end
   
+  def contains_item_with_minimum_text(type)
+    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.first.facebook_enabled } encouraging your friends and family to also purchase the item."
+  end
+  
 end

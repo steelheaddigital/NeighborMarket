@@ -213,3 +213,8 @@ legend
 .dropdown-backdrop {
     position: static;
 }
+
+.facebookTableContainer{
+	height: 100%;
+	width: 100%;
+}

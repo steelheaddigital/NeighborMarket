@@ -17,6 +17,11 @@ class SiteSettingTest < ActiveSupport::TestCase
      assert !site_setting.valid?, site_setting.errors.inspect
    end
    
+   test "should not validate if enable_facebook is true but facebook_app_id is blank" do
+     site_setting = SiteSetting.new(:delivery => false, :drop_point => true, :facebook_enabled => true, :facebook_app_id => "")
+     assert !site_setting.valid?, site_setting.errors.inspect
+   end
+   
    test "new_setting returns new site_settings" do
      settings = { "site_name" => "Test", "drop_point_address" => "123 Test St.", "drop_point_city" => "Portland", "drop_point_state" => "Oregon", "drop_point_zip" => "97218"}
      result = SiteSetting.new_setting(settings)

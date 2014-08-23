@@ -19,12 +19,13 @@
 #
 %>
 
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span12">
-      <div id="AddToCartNotice" class="alert fixed-alert">
-      </div>
-      <%= render @inventory_items %>
-    </div>
-  </div>
-</div>
+<% content_for :open_graph_tags  do %>
+	<meta property="og:title" content="<%= @inventory_item.name %>" />
+	<meta property="og:site_name" content="<%= @site_settings.site_name %>" />
+	<meta property="og:url" content="<%= inventory_item_url(@inventory_item) %>" />
+	<meta property="og:description" content="<%= @inventory_item.description %>" />
+	<meta property="og:image" content="<%= URI.join(request.url, @inventory_item.photo.url) %>" />
+	<meta property="og:app_id" content="<%= SiteSetting.first.facebook_app_id %>" />
+	<meta property="og:type" content="product" />
+<% end %>
+<%= render @inventory_item %>

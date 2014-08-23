@@ -22,7 +22,7 @@
 <div class="well-fluid row-fluid" style="padding-right:0; padding-left: 0">
   <% if @order.has_items_with_minimum? %>
 	  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
-	  	Your order contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the "Minimum" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by encouraging your friends and family to also purchase the item.
+		  <%= contains_item_with_minimum_text("order") %>
 	  </p>
   <%end%>
   <div class="row-fluid">
@@ -39,6 +39,9 @@
 	        <th>Quantity</th>
 			<th>Price</th>
 			<th>Total Price</th>
+			<% if @site_settings.facebook_enabled %>
+				<th></th>
+			<% end %>
 	      </tr>
 	    </thead>
 	      <tbody>
@@ -50,12 +53,15 @@
 			          <td><%= item_name(item.inventory_item) %></td>
 					  <td><%= seller_name %></td>
 					  <td><%= item.inventory_item.user.payment_instructions %></td>
-  	  					<% if @order.has_items_with_minimum? %>
-  	  						<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
-  	  					<% end %>
+  	  				  <% if @order.has_items_with_minimum? %>
+  	  					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
+  	  				  <% end %>
 					  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
 			          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
 			          <td><%= number_to_currency(item.total_price).to_s%></td>
+	  				  <% if @site_settings.facebook_enabled%>
+						<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
+	  				  <% end %>
 			        </tr>
 				<%end%>
 				<tr>
@@ -63,11 +69,14 @@
 					<td></td>
 					<td></td>
   					<% if @order.has_items_with_minimum? %>
-  						<td></td>
+						<td></td>
   					<% end %>
 					<td></td>
 			        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
 					<td><%= number_to_currency(value)%></td>
+  					<% if @site_settings.facebook_enabled %>
+						<td></td>
+  					<% end %>
 				</tr>
 			<%end%>
 	        <tr>
@@ -80,9 +89,23 @@
 				<td></td>
 	            <td style="font-weight:bold;">Grand Total:</td>
 	            <td><%= number_to_currency @order.total_price %></td>
+				<% if @site_settings.facebook_enabled%>
+					<td></td>
+				<% end %>
 	        </tr>
 	      </tbody>
 	    </table>
 	  </div>
 	</div>
 </div>
+<script>
+$(function() {
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+      FB.init({
+        appId: '<%= SiteSetting.first.facebook_app_id %>',
+      	version    : 'v2.0',
+		xfbml      : true
+      });
+    });
+})
+</script>

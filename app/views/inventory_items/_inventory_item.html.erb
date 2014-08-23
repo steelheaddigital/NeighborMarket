@@ -1,0 +1,45 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<div class="well-fluid row-fluid">
+  <div class="span2">
+    <%if inventory_item.photo?%>
+      <%= image_tag inventory_item.photo.url(:medium) %>
+    <%else%>
+      No Image Available
+    <%end%>
+  </div>
+  <div class="span10">
+    <h3>
+      <%= item_name(inventory_item) %>
+    </h3>
+    <p><%= inventory_item.description %></p>
+    <p>Quantity Available:  <%= quantity(inventory_item)%></p>
+    <p>Price:  <%= number_to_currency(inventory_item.price).to_s + " " + price_unit_label(inventory_item) %></p>
+    <p>Sold By:  <%= link_to(inventory_item.user.username, user_path(inventory_item.user.id)) %></p>
+	<% if inventory_item.quantity_available > 0 %>
+        <%= form_tag(cart_items_path(:inventory_item_id => inventory_item.id), :class => "addToCartButton") do %>
+        <p>Quantity: <input id="quantity" name="quantity" class="input-small" value="1"></input><span> <%= item_quantity_label(inventory_item, 2) %></span></p>
+        <p><%= submit_tag("Add To Cart", :class => "btn btn-primary") %></p>
+        <% end %>
+	<% end %>
+  </div>
+</div>

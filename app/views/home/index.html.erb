@@ -19,6 +19,14 @@
 #
 %>
 
+<% content_for :open_graph_tags  do %>
+	<meta property="og:title" content="<%= @site_name %>" />
+	<meta property="og:site_name" content="<%= @site_name %>" />
+	<meta property="og:url" content="<%= root_url %>" />
+	<meta property="og:description" content="Support the the local economy in your own neighborhood. Buy directly from your neighbors." />
+	<meta property="og:app_id" content="<%= SiteSetting.first.facebook_app_id %>" />
+	<meta property="og:type" content="website" />
+<% end %>
 <div class ="jumbotron masthead">
   <div class ="container">
     <h1><%= @site_name %> </h1>

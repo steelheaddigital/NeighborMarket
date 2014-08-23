@@ -76,6 +76,9 @@
           <th>Quantity</th>
           <th></th>
           <th></th>
+		  <%if SiteSetting.first.facebook_enabled%>
+		  	<th></th>
+		  <%end%>
       </tr>
     </thead>
     <tbody>
@@ -88,9 +91,23 @@
           <td><%= item.quantity_available%></td>
           <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton"}, :method => "get", :class => "btn", :style => "width:95%;"} %></td>
           <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger", :style => "width:95%;"} %></td>
+		  <%if SiteSetting.first.facebook_enabled%>
+		  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
+		  <%end%>
         </tr>
       <%end%>
     </tbody>
   </table>
   <%= will_paginate @current_inventory %>
 </div>
+<script>
+$(function() {
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+      FB.init({
+        appId: '<%= SiteSetting.first.facebook_app_id %>',
+      	version    : 'v2.0',
+		xfbml      : true
+      });
+    });
+})
+</script>

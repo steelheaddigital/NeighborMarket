@@ -26,7 +26,7 @@
     <%= f.error_messages %>
     <% if @cart.has_items_with_minimum? %>
   	  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
-  	  	Your cart contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the "Minimum" column below.  You can continue to checkout and the items will be added to your order, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by encouraging your friends and family to also purchase the item.
+  	  	<%= contains_item_with_minimum_text("cart") %>
   	  </p>
     <%end%>
     <%= render :partial => "form", :locals => {:f => f} %>

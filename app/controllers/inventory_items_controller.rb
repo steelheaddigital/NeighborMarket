@@ -18,10 +18,19 @@
 #
 
 class InventoryItemsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:search, :browse, :browse_all]
+  before_filter :authenticate_user!, :except => [:show, :search, :browse, :browse_all]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:search, :browse, :browse_all]
+  skip_authorize_resource :only => [:show, :search, :browse, :browse_all]
   require 'will_paginate/array'
+  
+  def show
+    @inventory_item = InventoryItem.find(params[:id])
+    @site_settings = SiteSetting.first
+    
+    respond_to do |format|
+      format.html
+    end
+  end
   
   def new
     @item = InventoryItem.new
