@@ -17,13 +17,13 @@ group :test do
   #gem 'test-unit' # For profiling
 end
 
-
+gem 'bootstrap-sass', '~> 3.2.0'
+gem 'sass-rails', '>= 3.2'
 gem 'jquery-rails', '2.1.4'
-gem 'therubyracer', '~> 0.12.0'
 gem 'uglifier', '>= 2.5.3'
 gem 'font-awesome-rails', '~> 3.2.1.3'
-gem 'less-rails', '~> 2.5.0'
-
+gem 'autoprefixer-rails'
+gem 'bootstrap_form', '~> 2.1.1'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'

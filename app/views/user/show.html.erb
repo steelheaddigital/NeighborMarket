@@ -20,8 +20,8 @@
 %>
 
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span6 well">
+  <div class="row">
+    <div class="col-md-6 well">
       <%if @user.photo?%>
         <p>
           <%= image_tag @user.photo.url(:medium) %>
@@ -36,7 +36,7 @@
         <%= @user.aboutme %>
       </p>
     </div>
-    <div class="span6 well">
+    <div class="col-md-6 well">
       <p><h2>Contact</h2></p>
       <%= form_for @message, :url => contact_user_path, :method => "POST" do |f|%>
         <%= f.error_messages %>

@@ -14,6 +14,21 @@
 	}
 }
 
+body
+{
+	padding-top: 50px;
+}
+
+.search-container
+{
+	margin-bottom: 10px;
+}
+
+.jumbotron.masthead
+{
+	text-align: center;
+}
+
 span form
 {
     margin:0;
@@ -69,9 +84,8 @@ legend
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: #748C73;
-  border: 1px solid #eee;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: $well-bg;
+  border: 1px solid $well-border;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;

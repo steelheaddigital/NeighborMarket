@@ -42,6 +42,4 @@ NeighborMarket::Application.configure do
   config.assets.debug = true
   
   Paperclip.options[:command_path] = "/usr/local/bin/"
-  
-  config.less.compress = false
 end

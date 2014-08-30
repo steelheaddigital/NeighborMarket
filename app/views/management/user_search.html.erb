@@ -20,27 +20,50 @@
 %>
 
 <%= form_tag(user_search_results_management_index_path, :method => "get", :class => 'well', :id => 'UserSearchForm') do %>
-  <h3>User Search</h3>
-  <label>Search Condition</label>
-  <%= text_field_tag(:keywords, params[:keywords], :class => 'input-large') %>
-  <span class="inline-help">Enter a username, first name, or last name</span>
-  <label>Role Type</label>
-  <%= select_tag "role", "<option>Manager</option><option>Seller</option><option>Buyer</option>".html_safe, :include_blank => true, :id => "RoleTypeSelect" %>
-  <label id="SellerApprovalStyleLabel" style="display:none;">Seller Approval Style</label>
-  <%= select_tag "seller_approval_style", "<option>manual</option><option>auto</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
-  <label id="SellerApprovedLabel" style="display:none;">Seller Approved</label>
-  <%= select_tag "seller_approved", "<option>true</option><option>false</option>".html_safe, :include_blank => true, :style => 'display:none;' %>
-  <p><%= submit_tag("Search", :class => 'btn') %></p>
+  	<h3>User Search</h3>
+  	<div class="form-group">
+  		<label>Search Condition (Enter a username, first name, or last name)</label>
+		<div class="row">
+			<div class="col-md-4">
+  				<%= text_field_tag(:keywords, params[:keywords], :class => 'form-control') %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label>Role Type</label>
+		<div class="row">
+			<div class="col-md-4">
+		  	  	<%= select_tag "role", "<option>Manager</option><option>Seller</option><option>Buyer</option>".html_safe, :include_blank => true, :id => "RoleTypeSelect", class: "form-control" %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label id="SellerApprovalStyleLabel" style="display:none;">Seller Approval Style</label>
+		<div class="row">
+			<div class="col-md-4">
+		  	  	<%= select_tag "seller_approval_style", "<option>manual</option><option>auto</option>".html_safe, :include_blank => true, class: "form-control", :style => 'display:none;' %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+  	  	<label id="SellerApprovedLabel" style="display:none;">Seller Approved</label>
+		<div class="row">
+			<div class="col-md-4">
+			  <%= select_tag "seller_approved", "<option>true</option><option>false</option>".html_safe, :include_blank => true, class: "form-control", :style => 'display:none;'%>
+			</div>
+		</div>
+  	</div>
+  	<%= submit_tag("Search", :class => 'btn') %>
 <% end %>
 <div id="ManagerSearchResultsLoading" style="display:none; margin-top: 30px;">
-  <div class="span6"></div>
+  <div class="col-md-6"></div>
   <div>
     <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
   </div>
 </div>
 <div>
-    <div id="ManagerSearchResults">
-  </div>
+	<div id="ManagerSearchResults">
+  	</div>
 </div>
 
 

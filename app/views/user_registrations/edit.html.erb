@@ -20,63 +20,45 @@
 %>
 
 <div class="container">
-  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "well" }) do |f| %>
+  <%= bootstrap_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => "well" }) do |f| %>
   <h2>Edit Profile</h2>
   <%= devise_error_messages! %>
-  <div class="row-fluid">
-    <div class="span3">
-	
-      <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
-      <%= f.text_field :username %></div>
+  <div class="row">
+    <div class="col-md-3">
+		<%= f.text_field :username, label: "User Name* (for public display; make it recognizable to your neighbors)" %>
+		<%= f.email_field :email, label: "Email*" %>
 
-      <div><%= f.label "Email*" %>
-      <%= f.email_field :email %></div>
-	   
-      <div>
-	      <%if resource.auto_created && resource.auto_create_updated_at.nil?%>
-	        <%= f.label "Password*" %>
-	      <% else %>
-	        <%= f.label "Password (leave blank if you don't want to change it)" %>
-	      <% end %>
-      	  <%= f.password_field :password %>
-	  </div>
+		<%if resource.auto_created && resource.auto_create_updated_at.nil?%>
+			<% @password_label = "Password*" %>
+		<% else %>
+			<% @password_label = "Password (leave blank if you don't want to change it)" %>
+		<% end %>
+		<%= f.password_field :password, label: @password_label %>
+		<%= f.password_field :password_confirmation, label: "Password Confirmation*" %>
 
-      <div><%= f.label "Password Confirmation*" %>
-      <%= f.password_field :password_confirmation %></div>
-
-      <div><%= if resource.seller? then f.label "First name*" else f.label "First name" end %>
-      <%= f.text_field :first_name %></div>
-
-      <div><%= if resource.seller? then f.label "Last name*" else f.label "Last name" end %>
-      <%= f.text_field :last_name %></div>
-
-      <div><%= f.label "Initial" %>
-      <%= f.text_field :initial %></div>
+		<%= f.text_field :first_name, label: "First name*" %>
+		<%= f.text_field :last_name, label: "Last name*" %>
+		<%= f.text_field :initial, label: "Initial" %>
     </div>
-    <div class="span1"></div>
-    <div class="span3">
-	  <div><%=if resource.seller? then f.label "Phone*" else f.label "Phone" end%>
-	  <%= f.telephone_field :phone %></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+		<%= f.telephone_field :phone, label: "#{if resource.seller? then 'Phone*' else 'Phone' end}" %>
+		<%= f.text_field :address, label: "#{if resource.seller? then 'Address*' else field_label(:address, @site_settings) end}" %>
+		<%= f.text_field :city, label: "#{if resource.seller? then 'City*' else field_label(:city, @site_settings) end}" %>
+	    <div class="form-group">
+			<%= if resource.seller? then f.label "State*" else f.label field_label(:state, @site_settings) end %>
+	    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
+		</div>
 
-      <div><%= if resource.seller? then f.label "Address*" else f.label field_label(:address, @site_settings) end%>
-      <%= f.text_field :address %></div>
-
-      <div><%= if resource.seller? then f.label "City*" else f.label field_label(:city, @site_settings) end %>
-      <%= f.text_field :city %></div>
-
-      <div><%= if resource.seller? then f.label "State*" else f.label field_label(:state, @site_settings) end %>
-      <%= f.subregion_select :state, Carmen::Country.coded('US')  %></div>
-
-      <div><%= if resource.seller? then f.label "Country*" else f.label field_label(:country, @site_settings) end %>
-      <%= f.country_select :country, {priority: %w(US CA)} %></div>
-
-      <div><%= if resource.seller? then f.label "Zip*" else f.label field_label(:zip, @site_settings) end %>
-      <%= f.text_field :zip %></div>
+	    <div class="form-group">
+			<%= if resource.seller? then f.label "Country*" else f.label field_label(:country, @site_settings) end %>
+	    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
+		</div>
+		<%= f.text_field :zip, label: "#{if resource.seller? then 'Zip*' else field_label(:zip, @site_settings) end}" %>
     </div>
-    <div class="span1"></div>
-    <div class="span3">
-      <div><%= f.label "About Me" %>
-      <%= f.text_area :aboutme, :rows => 10  %></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+      <%= f.text_area :aboutme, :rows => 10, label: "About Me"  %>
       
       <% resource.roles.each do |role| %>
         <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
@@ -84,16 +66,15 @@
       
     </div>
   </div>
-  <div class="row-fluid">
-    <div class="span3">
+  <div class="row">
+    <div class="col-md-3">
       Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => {:confirm => "Are you sure?"}, :method => :delete %>
     </div>
-    <div class="span5"></div>
-    <div class="span4">
+    <div class="col-md-5"></div>
+    <div class="col-md-4">
 		<% if @site_settings.require_terms_of_service? %>
 			<div style="margin-bottom: 5px;">
-				<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%> 
-				<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
+				<%= f.check_box(:terms_of_service, {label: raw("I have read and agree to the #{link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} }")}, true, "false")%> 
 			</div>
 		<% end %>
 	    <%= f.submit "Update", {:class => "btn btn-primary", :style => "width: 225px; height: 35px;"} %>

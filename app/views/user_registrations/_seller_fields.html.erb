@@ -23,10 +23,8 @@
   <%if f.object.photo?%>
     <%= image_tag f.object.photo.url(:thumb) %>
   <%end%>
-  <%= f.label "Add a photo" %>
-  <%= f.file_field :photo %>
+  <%= f.file_field :photo, label: "Add a photo" %>
 </div>
 <div>
-  <%= f.label "Payment Instructions*" %>
-  <%= f.text_area :payment_instructions, :rows => 10 %>
+  <%= f.text_area :payment_instructions, :rows => 10, label: "Payment Instructions*" %>
 </div>

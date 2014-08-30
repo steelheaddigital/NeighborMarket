@@ -20,8 +20,8 @@
 %>
 
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span6 ">
+  <div class="row">
+    <div class="col-md-6 ">
       <p><h3>Send Inventory Item Change Request</h3></p>
 	  <label>Inventory item</label>
       <%= form_for @request, :url => create_inventory_item_change_request_path(:inventory_item_id => @item.id), :method => "POST" do |f|%>

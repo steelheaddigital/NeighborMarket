@@ -20,72 +20,38 @@
 %>
 
 <div class="modal-body">
-  <div class="row-fluid">
-	  <% if !@inventory_guidelines.blank? %>
-	  	<div class="alert">Inventory Guidelines: <%= @inventory_guidelines %></div>
-	  <% end %>
-	  <div class="modalErrorMessages"><%= f.error_messages %></div>
-	  <div class="span5">
-	    <div>
-	      <%= f.label "Top Level Category *"   %>
-	      <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name, include_blank: true) %>
-	    </div>
-	    <div>
-	      <%= f.label "Second Level Category *" %>
-	      <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]})  %>
-	    </div>
-		<div>
-		  <%= f.label :name %>
-		  <%= f.text_field :name %>
-		</div>
-		<div>
-		  <%= f.label "Price *" %>
-		  <%= f.text_field :price, :class => "input-small" %>
-		</div>
-		<div>
-		  <%= f.label "Units *" %>
-		  <%= f.text_field :price_unit, :class => "input-medium", :placeholder => "choose or enter a value", :id => "PriceUnitSelect", "data-url" => units_inventory_items_path %>
-		</div>
-		<div>
-		  <%= f.label "Quantity Available *" %>
-		  <%= f.text_field :quantity_available, :class => "input-small" %>
-		</div>
-		<% if current_user.manager? %>
-			<div>
-			  <%= f.label "Approved" %>
-			  <%= f.check_box :approved, {}, "true", "false" %>
+	<div class=container-fluid>
+		  <div class="row">
+			  <% if !@inventory_guidelines.blank? %>
+			  	<div class="alert alert-danger">Inventory Guidelines: <%= @inventory_guidelines %></div>
+			  <% end %>
+			  <div class="modalErrorMessages"><%= f.error_messages %></div>
+			  <div class="col-md-5">
+			     <%= f.collection_select(:top_level_category_id, @top_level_categories, :id, :name, include_blank: true, label: "Top Level Category *" ) %>
+			    <%= f.select(:second_level_category_id, @second_level_categories.collect{|u| [u.name, u.id]}, {}, { label: "Second Level Category *"})  %>
+				<%= f.text_field :name %>
+				<%= f.text_field :price, label: "Price *" %>
+				<%= f.text_field :price_unit, label: "Units *", :placeholder => "choose or enter a value", :id => "PriceUnitSelect", "data-url" => units_inventory_items_path %>
+				<%= f.text_field :quantity_available, label: "Quantity Available *" %>
+				<% if current_user.manager? %>
+					<%= f.check_box :approved, {label: "Approved"}, "true", "false" %>
+				<% end %>
 			</div>
-		<% end %>
+			<div class="col-md-5" style="margin-left:30px;">
+				<%= f.check_box :autopost, {label: "Auto-post at the beginning of each order cycle?"}, "true", "false" %>
+				<%= f.text_field :autopost_quantity, label: "Quantity to auto-post" %>
+		  		<%= f.text_field :minimum, label: tooltip_label("Minimum", "Adding a quantity here will indicate that a minimum quanity must be purchased among all buyers during the order cycle before you will deliver the items to the drop point.") %>
+			    <%= f.text_area :description, :size => "10x10" %>
+				<%if @item.photo?%>
+					<%= image_tag @item.photo.url(:thumb) %>
+				<%else%>
+					No Image Available
+				<%end%>
+			    <%= f.file_field :photo, label: "Add a photo" %>
+			</div>
+		  </div>
+		</div>
 	</div>
-	<div class="span5" style="margin-left:30px;">
-		<div>
-		  <%= f.label "Auto-post at the beginning of each order cycle?" %>
-		  <%= f.check_box :autopost, {}, "true", "false" %>
-		</div>
-		<div>
-		  <%= f.label "Quantity to auto-post" %>
-		  <%= f.text_field :autopost_quantity, :class => "input-small" %>
-		</div>
-		<div>
-		  <%= tooltip_label("Minimum", "Adding a quantity here will indicate that a minimum quanity must be purchased among all buyers during the order cycle before you will deliver the items to the drop point.")%>
-  		  <%= f.text_field :minimum, :class => "input-small" %>
-		</div>
-	  <div>
-	    <%= f.label :description %>
-	    <%= f.text_area :description, :size => "10x10" %>
-	  </div>
-	  <%if @item.photo?%>
-	    <%= image_tag @item.photo.url(:thumb) %>
-	  <%else%>
-	    No Image Available
-	  <%end%>
-	  <div>
-	    <%= f.label "Add a photo" %>
-	    <%= f.file_field :photo %>
-	  </div>
-	</div>
-  </div>
-</div>
 <div class="modal-footer">
   <a class="btn" data-dismiss="modal" href="#">Close</a>
   <%= f.submit("Save Changes", :class => 'btn btn-primary') %>
@@ -102,6 +68,6 @@
 			});
 		}
 	});
-	
+
 	$(".icon-question-sign").tooltip();
 </script>

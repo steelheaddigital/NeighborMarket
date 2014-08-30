@@ -28,8 +28,8 @@
     <%= form_for @order do |f|%>
       <%= f.error_messages %>
 	  <% if @site_settings.delivery %>
-			  	<div class="row-fluid" style="margin-bottom: 15px;">
-					<div class="span12">
+			  	<div class="row" style="margin-bottom: 15px;">
+					<div class="col-md-12">
 						<% if @order.eligible_for_delivery? %>
 							<h5>Your order is eligible for delivery. Check the box below if you would like your order delivered according to your instructions. Otherwise, you will need to pick up your order at the drop point.</h5>
 				  			Deliver: <%= f.check_box(:deliver, {:style => "margin: 0;"}, "true", "false")%>
@@ -40,8 +40,8 @@
 				</div>
 		<% end %>
 	    <%= render "order" %>
-	    <div class="row-fluid">
-	      <div class="span1">
+	    <div class="row">
+	      <div class="col-md-1">
 	        <%= f.submit "Purchase", { :class => "btn btn-primary" } %>
 	      </div>
 	    </div>

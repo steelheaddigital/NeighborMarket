@@ -19,56 +19,39 @@
 #
 %>
 
-<div class="span12 well">
+<div class="col-md-12 well">
 	<h2>Sign Up</h2>
 	<%= devise_error_messages! %>
-	<div class="row-fluid">
-	  <div class="span3">
-	    <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
-	    <%= f.text_field :username %></div>
-
-	    <div><%= f.label "Email*" %>
-	    <%= f.email_field :email %></div>
-
-	    <div><%= f.label "Password*" %>
-	    <%= f.password_field :password %></div>
-
-	    <div><%= f.label "Password Confirmation*" %>
-	    <%= f.password_field :password_confirmation %></div>
-    
-	    <div><%= f.label "First name*" %>
-	    <%= f.text_field :first_name %></div>
-
-	    <div><%= f.label "Last name*" %>
-	    <%= f.text_field :last_name %></div>
-
-	    <div><%= f.label "Initial" %>
-	    <%= f.text_field :initial %></div>
+	<div class="row">
+	  <div class="col-md-3">
+	    <%= f.text_field :username, label: "User Name* (for public display; make it recognizable to your neighbors)" %>
+	    <%= f.email_field :email, label: "Email*" %>
+	    <%= f.password_field :password, label: "Password*" %>
+	    <%= f.password_field :password_confirmation, label: "Password Confirmation*" %>
+	    <%= f.text_field :first_name, label: "First name*" %>
+	    <%= f.text_field :last_name, label: "Last name*" %>
+	    <%= f.text_field :initial, label: "Initial" %>
 	  </div>
-	  <div class="span1"></div>
-	  <div class="span3">
-	    <div><%= f.label "Phone*" %>
-	    <%= f.telephone_field :phone %></div>  
+	  <div class="col-md-1"></div>
+	  <div class="col-md-3">
+	    <%= f.telephone_field :phone, label: "Phone*" %>  
+	    <%= f.text_field :address, label: "Address*"  %>
+	    <%= f.text_field :city, label: "City*" %>
 
-	    <div><%= f.label "Address*" %>
-	    <%= f.text_field :address %></div>
+	    <div class="form-group">
+			<%= f.label field_label(:country, @site_settings) %>
+	    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
+		</div>
 
-	    <div><%= f.label "City*" %>
-	    <%= f.text_field :city %></div>
-
-	    <div><%= f.label "Country*" %>
-	    <%= f.country_select :country, {priority: %w(US CA)} %></div>
-
-	    <div><%= f.label "State*" %>
-	    <%= f.subregion_select :state, Carmen::Country.coded('US')  %></div>
-
-	    <div><%= f.label "Zip*" %>
-	    <%= f.text_field :zip %></div>
+	    <div class="form-group">
+			<%= f.label field_label(:state, @site_settings) %>
+	    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
+		</div>
+	    <%= f.text_field :zip, label: "Zip*" %>
 	  </div>
-	  <div class="span1"></div>
-	    <div class="span3">
-	      <div><%= f.label "About Me" %>
-	      <%= f.text_area :aboutme, :rows => 10 %></div>
+	  <div class="col-md-1"></div>
+	    <div class="col-md-3">
+	      <%= f.text_area :aboutme, :rows => 10, label: "About Me" %>
 
 	      <% resource.roles.each do |role| %>
 	        <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
@@ -76,14 +59,13 @@
 	    </div>
 	  </div>
 	<%= f.hidden_field :user_type, :value => "seller" %>
-	<div class="row-fluid" style="margin-top: 19px;">
-	  <div class="span8"></div>
-	  <div class="span4">
+	<div class="row">
+	  <div class="col-md-8"></div>
+	  <div class="col-md-4">
   		<% if @site_settings.require_terms_of_service? %>
-  			<div style="margin-bottom: 5px;">
-  				<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%> 
-  				<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
-  			</div>
+			<div style="margin-bottom: 5px;">
+				<%= f.check_box(:terms_of_service, {label: raw("I have read and agree to the #{link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} }")}, true, "false")%> 
+			</div>
   		<% end %>
 	    <%= f.submit "Sign up", {:class => "btn btn-primary", :style => "width: 225px; height: 35px;"}%>
 	  </div>

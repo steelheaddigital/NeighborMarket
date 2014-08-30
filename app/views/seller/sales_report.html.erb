@@ -21,13 +21,17 @@
 
 <h4>Enter a date range or leave blank for your entire sales history</h4>
 <%= form_tag sales_report_details_seller_index_path, :class => "well", :id => "SalesReportForm" do %> 
-	<div>
-      <label>Start Date</label>
-      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'start_date'}, {:class => "input-medium"} %>
+	<div class="form-group">
+		<label>Start Date</label>
+		<div class="rails-bootstrap-forms-datetime-select">
+			<%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'start_date'}, {:class => "form-control"} %>
+		</div>
     </div>
-	<div>
-      <label>End Date</label>
-      <%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'end_date'}, {:class => "input-medium"} %>
+	<div class="form-group">
+		<label>End Date</label>
+		<div class="rails-bootstrap-forms-datetime-select">
+			<%= select_date nil, {:order => [:month, :day, :year], :include_blank => true, :default => nil, :ampm => true, :prefix => 'end_date'}, {:class => "form-control"} %>
+		</div>
     </div>
 	<div>
 		<%= submit_tag "Get Report", :class => "btn", :id => "PreviewSalesReportSubmit" %>
@@ -35,7 +39,7 @@
 	</div>
 <% end %>
 <div id="SalesReportLoading" style="display:none; margin-top: 30px;">
-  <div class="span6"></div>
+  <div class="col-md-6"></div>
   <div>
     <img src="<%= image_path("ajax-loader.gif") %>" alt="loading..."/>
   </div>

@@ -20,49 +20,51 @@
 %>
 
 <div class="container-fluid">
-	<div class="row-fluid">
+	<div class="row" style="margin-bottom: 15px;">
 		<%= form_tag inbound_delivery_log_management_index_path, :method => 'GET', :class => 'form-inline' do %>
-			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
+			<div class="form-group">
+				<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'form-control'}) %>
+			</div>
 			<%= submit_tag 'Submit', :class => 'btn' %>
 			<span>Choose an order cycle end date to load a previous inbound delivery log</span>
 		<% end %>
 	</div>
-	<div class="row-fluid">
-		<%= form_tag save_inbound_delivery_log_management_index_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
-		  <div class="row-fluid" style="margin-bottom: 15px;">
-		    <%= submit_tag "Save", :class => 'btn btn-primary' %>
-		    <%= link_to "Printable Delivery Log (PDF)", inbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn'} %>
-		  </div>
-		  <div class="well-fluid row-fluid">
-		    <div class="span12">
-		      <table class="table">
-		      <thead>  
-		        <tr>
-		          <th>Seller Name</th>
-		          <th>Buyer Name</th>
-		          <th>Item Name</th>
-		          <th>Quantity</th>
-		          <th>Delivered?</th>
-		        </tr>
-		      </thead>
-		        <tbody>
-		          <% @items.sort_by{|item| [item.inventory_item.user.username, item.order.user.username]}.each_with_index do |item, index| %>
-		          <tr>
-		            <td><%= item.inventory_item.user.username %> </td>
-		            <td><%= item.order.user.username %> </td>
-		            <td><%= item_name(item.inventory_item) %> </td>
-		            <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %> </td>
-		            <td><%= check_box_tag "cart_items[" + index.to_s + "][delivered]", "true", item.delivered %></td>
-		            <%= hidden_field_tag "cart_items[" + index.to_s + "][id]", item.id %>
-		          </tr>
-		          <%end%>
-		        </tbody>
-		      </table>
-		    </div>
-		  </div>
-		  <div class="row-fluid">
-		    <%= submit_tag "Save", :class => 'btn btn-primary' %>
-		  </div>
-		<%end%>
+	<div class="row">
+		<div class="col-md-12">
+			<%= form_tag save_inbound_delivery_log_management_index_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
+			  <div class="row" style="margin-bottom: 15px;">
+			    <%= submit_tag "Save", :class => 'btn btn-primary' %>
+			    <%= link_to "Printable Delivery Log (PDF)", inbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn btn-primary'} %>
+			  </div>
+			  <div class="well-fluid row">
+			      <table class="table">
+			      <thead>  
+			        <tr>
+			          <th>Seller Name</th>
+			          <th>Buyer Name</th>
+			          <th>Item Name</th>
+			          <th>Quantity</th>
+			          <th>Delivered?</th>
+			        </tr>
+			      </thead>
+			        <tbody>
+			          <% @items.sort_by{|item| [item.inventory_item.user.username, item.order.user.username]}.each_with_index do |item, index| %>
+			          <tr>
+			            <td><%= item.inventory_item.user.username %> </td>
+			            <td><%= item.order.user.username %> </td>
+			            <td><%= item_name(item.inventory_item) %> </td>
+			            <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %> </td>
+			            <td><%= check_box_tag "cart_items[" + index.to_s + "][delivered]", "true", item.delivered %></td>
+			            <%= hidden_field_tag "cart_items[" + index.to_s + "][id]", item.id %>
+			          </tr>
+			          <%end%>
+			        </tbody>
+			      </table>
+			  </div>
+			  <div class="row">
+			  	<%= submit_tag "Save", :class => 'btn btn-primary' %>
+			  </div>
+			<%end%>
+		</dib>
 	</div>
 </div>

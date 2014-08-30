@@ -19,43 +19,40 @@
 #
 %>
 
-<%= form_for @order_cycle, :url => update_order_cycle_settings_management_index_path, :method => :post, :html => { :id => "OrderCycleSettingsForm", :class=>"well" } do |f| %>
-  <%= f.error_messages %>
-  <%= error_messages_for @order_cycle_settings %>
-  <div>
-    <%= f.label :start_date %>
-    <%= f.datetime_select :start_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
-  </div>
-  <div id="OrderCycleEndDateContainer">
-    <%= f.label :end_date %>
-    <%= f.datetime_select :end_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
-  </div>
-  <div>
-    <%= f.label :seller_delivery_date %>
-    <%= f.datetime_select :seller_delivery_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
-  </div>
-  <div>
-    <%= f.label :buyer_pickup_date %>
-    <%= f.datetime_select :buyer_pickup_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}, {:class => "input-small"} %>
-  </div>
-  <%= fields_for @order_cycle_settings do |s|%>
-    <div id="Recurring">
-      <%= s.label "Recurring?" %>
-      <%= s.check_box :recurring,{},"true","false" %>
-    </div>
-    <div>
-      <%= s.label "Recurring Interval" %>
-      <%= s.select(:interval, {"minute" => "minute","day" => "day","week" => "week", "month" => "month"}, {:include_blank => 'Please Select'}, :class => "input-medium") %>
-    </div>
-    <div>
-      <%= s.label "Padding (amount of time between the end date and the next start date)" %>
-      <%= s.text_field :padding, :class => "input-small" %><span style="margin-left: 10px;"><%= s.select(:padding_interval, {"hours" => "hours","days" => "days"}, {}, :class => "input-small") %></span>
-    </div>
-  <% end %>
-  <div class="row-fluid">
+<%= bootstrap_form_for @order_cycle, :url => update_order_cycle_settings_management_index_path, :method => :post, :html => { :id => "OrderCycleSettingsForm", :class=>"well" } do |f| %>
+<div class="container-fluid">
+	<div class="row">
+	  	<%= f.error_messages %>
+	  	<%= error_messages_for @order_cycle_settings %>
+	  	<%= f.datetime_select :start_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true} %>
+	  	<div id="OrderCycleEndDateContainer">
+	  		<%= f.datetime_select :end_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true} %>
+		</div>
+	  	<%= f.datetime_select :seller_delivery_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true} %>
+	  	<%= f.datetime_select :buyer_pickup_date, {:order => [:month, :day, :year, :hour, :minute], :include => :blank, :ampm => true}%>
+	  <%= fields_for @order_cycle_settings do |s|%>
+	    <div id="Recurring" class="checkbox">
+		  <label>
+	      	<%= s.check_box :recurring,{},"true","false" %> Recurring?
+		  </label>
+	    </div>
+	    <div class="form-group">
+	      <%= s.label "Recurring Interval" %>
+	      <%= s.select(:interval, {"minute" => "minute","day" => "day","week" => "week", "month" => "month"}, {:include_blank => 'Please Select'}, {class: "form-control", style: "width: 25%;"} ) %>
+	    </div>
+	    <div class="form-group">
+	      <%= s.label "Padding (amount of time between the end date and the next start date)" %>
+		  <div>
+		      <%= s.text_field :padding, :class => "form-control", style: "width: 50px; display: inline-block;" %><span style="margin-left: 10px;"><%= s.select(:padding_interval, {"hours" => "hours","days" => "days"}, {}, {:class => "form-control", style: "width: 20%; display: inline-block;"}) %></span>
+		  </div>
+	    </div>
+	  <% end %>
+	</div>
+  <div class="row">
     <%= submit_tag "Update Settings", :class => 'btn btn-primary cycleSettingsSubmit' %>
     <%= submit_tag "Save and Start New Cycle", :data => {:confirm => "This will cancel the current cycle and start a new one. All orders for the current cycle will be lost. Do you want to continue?"}, :class => 'btn btn-danger cycleSettingsSubmit' %>
   </div>
+</div>
 <%end%>
 <script>
 	if($("#order_cycle_setting_recurring").is(":checked")){

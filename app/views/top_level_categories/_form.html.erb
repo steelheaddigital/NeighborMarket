@@ -19,20 +19,13 @@
 #
 %>
 
-<%= form_for(@category, :html => {:id => 'TopLevelCategoryForm' }) do |f| %>
+<%= bootstrap_form_for(@category, :html => {:id => 'TopLevelCategoryForm' }) do |f| %>
 <div class="modal-body">
   <div class="modalErrorMessages">
 	<%= f.error_messages %>
   </div>
-  <div>
-    <%=  f.label "Name*" %>
-    <%=  f.text_field :name %>
-  </div>
-  <div>
-    <%= f.label :description %>
-    <%= f.text_area :description, :rows => 10 %>
-  </div>
- </div>
+  <%=  f.text_field :name, label: "Name*" %>
+  <%= f.text_area :description, :rows => 10 %>
   <div class="modal-footer">
     <a class="btn" data-dismiss="modal" href="#">Close</a>
     <%= f.submit("Save Changes", :class => 'btn btn-primary') %>

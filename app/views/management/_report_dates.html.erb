@@ -19,13 +19,17 @@
 #
 %>
 
-<div>
+<div class="form-group">
   <label>Start Date</label>
-  <%= select_date @start_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'start_date'}, {:class => "input-medium"} %>
+  <div class="rails-bootstrap-forms-datetime-select">
+	  <%= select_date @start_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'start_date'}, {:class => "form-control"} %>
+  </div>
 </div>
-<div>
-  <label>End Date</label>
-  <%= select_date @end_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'end_date'}, {:class => "input-medium"} %>
+<div class="form-group">
+  	<label>End Date</label>
+  	<div class="rails-bootstrap-forms-datetime-select">
+  		<%= select_date @end_date, {:order => [:month, :day, :year], :ampm => true, :prefix => 'end_date'}, {:class => "form-control"} %>
+	</div>
 </div>
 <div>
 	<%= submit_tag "Submit", :class => "btn" %>

@@ -19,63 +19,53 @@
 #
 %>
 
-<div class="span12 well">
+<div class="col-md-12 well">
 	<h2>Sign Up</h2>
 	<%= devise_error_messages! %>
 	<% if @site_settings.all_modes? %>
 		<h5>Delivery Address and Instructions are optional.  However, if you would like the possibility of having your goods delivered when placing an order then this information must be provided. You can always update this information later if you are unsure now.</h5>
 	<% end %>
-	<div class="row-fluid">
-	  <div class="span3">
-	    <div><%= f.label "User Name* (for public display; make it recognizable to your neighbors)" %>
-	    <%= f.text_field :username %></div>
-
-	    <div><%= f.label "Email*" %>
-	    <%= f.email_field :email %></div>
-
-	    <div><%= f.label "Password*" %>
-	    <%= f.password_field :password %></div>
-
-	    <div><%= f.label "Password Confirmation*" %>
-	    <%= f.password_field :password_confirmation %></div>
-	
+	<div class="row">
+	  <div class="col-md-3">
+	    <%= f.text_field :username, label: "User Name* (for public display; make it recognizable to your neighbors)"%>
+	    <%= f.email_field :email, label: "Email*" %>
+	    <%= f.password_field :password, label: "Password*" %>
+	    <%= f.password_field :password_confirmation, label: "Password Confirmation*" %>
 		<%= f.hidden_field :user_type, :value => "buyer" %>
 	  </div>
 	  <% if !@site_settings.drop_point_only? %>
-		  <div class="span1"></div>
-		  <div class="span3">
-		    <div><%= f.label field_label(:address, @site_settings) %>
-		    <%= f.text_field :address %></div>
+		  <div class="col-md-1"></div>
+		  <div class="col-md-3">
+		    <%= f.text_field :address, label: field_label(:address, @site_settings) %>
+		    <%= f.text_field :city, label: field_label(:address, @site_settings)  %>
+		    <div class="form-group">
+				<%= f.label field_label(:country, @site_settings) %>
+		    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
+			</div>
 
-		    <div><%= f.label field_label(:city, @site_settings) %>
-		    <%= f.text_field :city %></div>
+		    <div class="form-group">
+				<%= f.label field_label(:state, @site_settings) %>
+		    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
+			</div>
 
-		    <div><%= f.label field_label(:country, @site_settings) %>
-		    <%= f.country_select(:country, "US") %></div>
-
-		    <div><%= f.label field_label(:state, @site_settings) %>
-		    <%= f.state_select :state %></div>
-
-		    <div><%= f.label field_label(:zip, @site_settings) %>
-		    <%= f.text_field :zip %></div>
+		    <%= f.text_field :zip, label: field_label(:zip, @site_settings) %>
 		  </div>
-	   	  <div class="span1"></div>
-	      <div class="span3">
+	   	  <div class="col-md-1"></div>
+	      <div class="col-md-3">
 	        <% resource.roles.each do |role| %>
 	          <%= render :partial => "#{role.name.downcase.camelize.underscore}_fields", :locals => { :f => f } %>
 	        <% end %>
 	      </div>
 	  <% end %>
 	</div>
-	<div class="row-fluid" style="margin-top: 19px;">
+	<div class="row">
 	  <% if !@site_settings.drop_point_only? %>
-	  	<div class="span9"></div>
+	  	<div class="col-md-9"></div>
 	  <% end %>
-	  <div class="span4">
+	  <div class="col-md-4">
 		<% if @site_settings.require_terms_of_service? %>
 			<div style="margin-bottom: 5px;">
-				<%= f.check_box(:terms_of_service, {:style => "margin: 0;"}, true, "false")%> 
-				<span>I have read and agree to the <%= link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} %></span>
+				<%= f.check_box(:terms_of_service, {label: raw("I have read and agree to the #{link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} }")}, true, "false")%> 
 			</div>
 		<% end %>
 	    <%= f.submit "Sign up", {:class => "btn btn-primary", :style => "width: 225px; height: 35px;"}%>

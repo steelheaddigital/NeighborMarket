@@ -20,9 +20,9 @@
 %>
 
 <%content_for :MainContent do %>
-<div>
-  <div class="row-fluid">
-	<div class="span3">
+<div class="container-fluid">
+  <div class="row">
+	<div class="col-md-3">
 	    <ul class="nav nav-list bs-docs-sidenav">
 	      <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
 	      <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
@@ -65,13 +65,13 @@
 	      <li></li>
 	    </ul>
 	</div>
-  <div class="span9">
+  <div class="col-md-9">
 	<div id="ManagementContent">
 	  <%= content_for?(:MainManagementContent) ? yield(:MainManagementContent) : yield %>
 	</div>
   </div>
 </div>
-<div id="Modal" class="modal hide fade" tabindex="-1" data-width="760">
+<div id="Modal" class="modal fade" tabindex="-1" data-width="760">
 </div>
 </div>
 <script>

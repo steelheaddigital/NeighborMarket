@@ -20,8 +20,8 @@
 %>
 
 <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span6 ">
+  <div class="row">
+    <div class="col-md-6 ">
       <p><h3>Send Order Change Request</h3></p>
 	  <label>Order</label>
       <%= form_for @request, :url => create_order_change_request_path(:order_id => @order.id), :method => "POST" do |f|%>

@@ -20,18 +20,20 @@
 %>
 
 <div class="container-fluid">
-	<div class="row-fluid">
+	<div class="row" style="margin-bottom: 15px;">
 		<%= form_tag packing_list_seller_index_path, :method => 'GET', :class => 'form-inline' do %>
-			<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'input-medium'}) %>
+			<div class="form-group">
+				<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'form-control'}) %>
+			</div>
 			<%= submit_tag 'Submit', :class => 'btn' %>
 			<span>Choose an order cycle end date to load a previous packing list</span>
 		<% end %>
 	</div>
-  <div class="row-fluid" style="margin-bottom: 15px;">
-    <%= link_to "Printable Packing List (PDF)", packing_list_seller_index_path(:format => 'pdf', :selected_previous_order_cycle => { :id =>  @selected_previous_order_cycle}), :class => 'btn' %>
+  <div class="row" style="margin-bottom: 15px;">
+    <%= link_to "Printable Packing List (PDF)", packing_list_seller_index_path(:format => 'pdf', :selected_previous_order_cycle => { :id =>  @selected_previous_order_cycle}), :class => 'btn btn-primary' %>
   </div>
   <%@orders.each do |order|%>
-  <div class="well-fluid row-fluid">
+  <div class="well-fluid row">
       <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.username %></p>
       <p><span style ="font-weight: bold">Buyer Address: </span> <%= buyer_address(order.user)%></p>
       <table class="table" >

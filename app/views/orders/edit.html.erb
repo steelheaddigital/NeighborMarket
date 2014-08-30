@@ -19,16 +19,22 @@
 #
 %>
 
-<h2>Order</h2>
-<%= form_for @order, :html => {:id => "EditOrderForm"} do |f| %>
-	<%= f.error_messages %>
-	<%= render :partial => "cart/form", :locals => {:f => f} %>
-	<%= f.submit("Update Order", :class => 'btn btn-primary') %>
-<% end %>
-<% if current_user.manager?%>
-	<div class="span1">
-		<%= button_to "Cancel Order", { :action => "destroy", :controller => "orders", :id => @order.id}, {:form => {:class => "cancelOrderButton"}, :method => "delete", :class => "btn btn-danger", :data => {:confirm => "Are you sure you want to cancel this order?"}} %>
+<div class="container-fluid">
+	<h2>Order</h2>
+	<%= form_for @order, :html => {:id => "EditOrderForm"} do |f| %>
+		<%= f.error_messages %>
+		<div class="container-fluid">
+			<%= render :partial => "cart/form", :locals => {:f => f} %>
+		</div>
+		<%= f.submit("Update Order", :class => 'btn btn-primary') %>
+	<% end %>
+	<% if current_user.manager?%>
+	<div class="row">
+		<div class="col-md-1">
+			<%= button_to "Cancel Order", { :action => "destroy", :controller => "orders", :id => @order.id}, {:form => {:class => "cancelOrderButton"}, :method => "delete", :class => "btn btn-danger", :data => {:confirm => "Are you sure you want to cancel this order?"}} %>
+		</div>
 	</div>
-<% else %>
-	<%= link_to "Request Order Change", new_order_change_request_path(@order.id), :class => "btn btn-danger"  %>
-<% end %>
+	<% else %>
+		<%= link_to "Request Order Change", new_order_change_request_path(@order.id), :class => "btn btn-danger", style: "position: relative; bottom: 34px; left: 120px;" %>
+	<% end %>
+</div>

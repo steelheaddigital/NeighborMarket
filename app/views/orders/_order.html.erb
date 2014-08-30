@@ -19,83 +19,85 @@
 #
 %>
 
-<div class="well-fluid row-fluid" style="padding-right:0; padding-left: 0">
-  <% if @order.has_items_with_minimum? %>
-	  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
-		  <%= contains_item_with_minimum_text("order") %>
-	  </p>
-  <%end%>
-  <div class="row-fluid">
-	  <div class="span12 tableContainer">
-	    <table class="table" >
-	    <thead>  
-	      <tr>
-	        <th>Item Name</th>
-	        <th>Seller</th>
-	        <th>Payment Instructions</th>
-			<% if @order.has_items_with_minimum? %>
-				<th>Minimum</th>
-			<% end %>
-	        <th>Quantity</th>
-			<th>Price</th>
-			<th>Total Price</th>
-			<% if @site_settings.facebook_enabled %>
-				<th></th>
-			<% end %>
-	      </tr>
-	    </thead>
-	      <tbody>
-			<%@order.sub_totals.each do |key, value|%>
-				<%seller_name = ""%>
-				<%@order.cart_items.select{|i| i.inventory_item.user.id == key && i.minimum_reached_at_order_cycle_end}.each do |item| %>
-					<%seller_name = item.inventory_item.user.username%>
-					<tr>
-			          <td><%= item_name(item.inventory_item) %></td>
-					  <td><%= seller_name %></td>
-					  <td><%= item.inventory_item.user.payment_instructions %></td>
-  	  				  <% if @order.has_items_with_minimum? %>
-  	  					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
-  	  				  <% end %>
-					  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-			          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
-			          <td><%= number_to_currency(item.total_price).to_s%></td>
-	  				  <% if @site_settings.facebook_enabled%>
-						<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.inventory_item) %>"></span></td>
-	  				  <% end %>
-			        </tr>
-				<%end%>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-  					<% if @order.has_items_with_minimum? %>
-						<td></td>
-  					<% end %>
-					<td></td>
-			        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
-					<td><%= number_to_currency(value)%></td>
-  					<% if @site_settings.facebook_enabled %>
-						<td></td>
-  					<% end %>
-				</tr>
-			<%end%>
-	        <tr>
-	            <td></td>
-	            <td></td>
-	            <td></td>
+<div class="container-fluid">
+	<div class="well-fluid row" style="padding-right:0; padding-left: 0">
+	  <% if @order.has_items_with_minimum? %>
+		  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+			  <%= contains_item_with_minimum_text("order") %>
+		  </p>
+	  <%end%>
+	  <div class="row">
+		  <div class="col-md-12 tableContainer">
+		    <table class="table" >
+		    <thead>  
+		      <tr>
+		        <th>Item Name</th>
+		        <th>Seller</th>
+		        <th>Payment Instructions</th>
 				<% if @order.has_items_with_minimum? %>
-					<td></td>
+					<th>Minimum</th>
 				<% end %>
-				<td></td>
-	            <td style="font-weight:bold;">Grand Total:</td>
-	            <td><%= number_to_currency @order.total_price %></td>
-				<% if @site_settings.facebook_enabled%>
-					<td></td>
+		        <th>Quantity</th>
+				<th>Price</th>
+				<th>Total Price</th>
+				<% if @site_settings.facebook_enabled %>
+					<th></th>
 				<% end %>
-	        </tr>
-	      </tbody>
-	    </table>
-	  </div>
+		      </tr>
+		    </thead>
+		      <tbody>
+				<%@order.sub_totals.each do |key, value|%>
+					<%seller_name = ""%>
+					<%@order.cart_items.select{|i| i.inventory_item.user.id == key && i.minimum_reached_at_order_cycle_end}.each do |item| %>
+						<%seller_name = item.inventory_item.user.username%>
+						<tr>
+				          <td><%= item_name(item.inventory_item) %></td>
+						  <td><%= seller_name %></td>
+						  <td><%= item.inventory_item.user.payment_instructions %></td>
+	  	  				  <% if @order.has_items_with_minimum? %>
+	  	  					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
+	  	  				  <% end %>
+						  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+				          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
+				          <td><%= number_to_currency(item.total_price).to_s%></td>
+		  				  <% if @site_settings.facebook_enabled%>
+							<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.inventory_item) %>"></span></td>
+		  				  <% end %>
+				        </tr>
+					<%end%>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+	  					<% if @order.has_items_with_minimum? %>
+							<td></td>
+	  					<% end %>
+						<td></td>
+				        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
+						<td><%= number_to_currency(value)%></td>
+	  					<% if @site_settings.facebook_enabled %>
+							<td></td>
+	  					<% end %>
+					</tr>
+				<%end%>
+		        <tr>
+		            <td></td>
+		            <td></td>
+		            <td></td>
+					<% if @order.has_items_with_minimum? %>
+						<td></td>
+					<% end %>
+					<td></td>
+		            <td style="font-weight:bold;">Grand Total:</td>
+		            <td><%= number_to_currency @order.total_price %></td>
+					<% if @site_settings.facebook_enabled%>
+						<td></td>
+					<% end %>
+		        </tr>
+		      </tbody>
+		    </table>
+		  </div>
+		</div>
 	</div>
 </div>
 <script>

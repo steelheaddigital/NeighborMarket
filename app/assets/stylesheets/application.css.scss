@@ -4,11 +4,5 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
  *= require imports
- *= require docs
- *= require font-awesome
- *= require bootstrap-modal
- *= require neighbor_market
- *= require management
- *= require carts
+ *= require rails_bootstrap_forms
 */
-

@@ -19,10 +19,14 @@
 #
 %>
 
-<div class="modal-header">
-  <button class="close" data-dismiss="modal" type="button">×</button>
-  <h3 id="InventoryHeading">Edit Inventory Item</h3>
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+		  <button class="close" data-dismiss="modal" type="button">×</button>
+		  <h3 id="InventoryHeading">Edit Inventory Item</h3>
+		</div>
+		<%= bootstrap_form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
+			<%= render :partial => 'form', :locals => { :f => f } %>
+		<% end %>
+	</div>
 </div>
-<%= form_for(@item, :html => { :id => 'edit_inventory_item'}) do |f| %>
-	<%= render :partial => 'form', :locals => { :f => f } %>
-<% end %>

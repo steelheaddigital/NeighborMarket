@@ -26,10 +26,19 @@
 	    <% end %>
 	</div>
     <div>
-      <%= f.label "Email" %>
-      <%= f.text_field :email, :class => "input-large" %>
-	  <%= f.label "Manager?"%>
-	  <input type="checkbox" name="manager">
+		<div class="form-group">
+			<label>Email</label>
+			<div class="row">
+				<div class="col-md-4">
+	      			<%= f.text_field :email, class: "form-control" %>
+				</div>
+			</div>
+		</div>
+	  	<div class="checkbox">
+		  	<label>
+		  		<input type="checkbox" name="manager"> Manager?
+			</label>
+		</div>
     </div>
 	<div style="margin-top: 10px;">
 	  <%= f.submit("Create User", :class => 'btn') %>

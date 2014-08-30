@@ -21,17 +21,17 @@
 
 <%= f.fields_for :cart_items do |item| %>
 <% item.object.current_user = current_user %>
-<div class="well row-fluid" style="padding-right:0; padding-left: 0">
-  <div class="span2">
+<div class="well row" style="padding-right:0; padding-left: 0">
+  <div class="col-md-2">
     <p style="padding-left: 19px;">
       <%if item.object.inventory_item.photo?%>
-        <%= image_tag item.object.inventory_item.photo.url(:medium) %>
+        <%= image_tag item.object.inventory_item.photo.url(:medium), class: "img-responsive" %>
       <%else%>
         No Image Available
       <%end%>
     </p>
   </div>
-  <div class="span10 tableContainer">
+  <div class="col-md-10 tableContainer">
     <table class="table">
     <thead>  
       <tr>
@@ -70,12 +70,12 @@
   </div>
 </div>
 <% end %>
-<div class="row-fluid">
-  <div class ="span3"></div>
-  <div class="span1">
+<div class="row">
+  <div class ="col-md-3"></div>
+  <div class="col-md-1">
     <span class="totalLabel" >Total:</span>
   </div>     
-  <div class="span1">
+  <div class="col-md-1">
     <span class="totalCell"><%= number_to_currency @total_price %></span>
   </div>
 </div>

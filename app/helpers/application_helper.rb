@@ -181,7 +181,7 @@ module ApplicationHelper
   def tooltip_label(label_text, tooltip_text)
     html = %[<label>
       #{label_text}
-      <i class="icon-question-sign" title="#{tooltip_text}"></i>
+      <i class="icon-question-sign" data-toggle="tooltip" title="#{tooltip_text}"></i>
     </label>]
     
     html.html_safe
