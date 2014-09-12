@@ -37,7 +37,7 @@
 	      	<% if devise_mapping.rememberable? %>
 		    	<%= f.check_box :remember_me %>
 	      	<% end %>
-	      	<div style="margin-top:10px;"><%= f.submit "Sign in", {:class => "btn"} %></div>
+	      	<div style="margin-top:10px;"><%= f.submit "Sign in", {:class => "btn btn-default"} %></div>
 	    <% end %>
 		<div style="margin-top: 10px;">
 	    	<%= render :partial => "devise/shared/links" %>

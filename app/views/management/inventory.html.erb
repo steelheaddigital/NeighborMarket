@@ -42,7 +42,7 @@
         <td><%= item.second_level_category.name%></td>
         <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
         <td><%= item.quantity_available%></td>
-        <td><%= link_to "Edit", {:controller => "management", :action => "edit_inventory", :id => item.id}, :id => "mgmtEditInventoryItemButton", :class => "btn" %></td>
+        <td><%= link_to "Edit", {:controller => "management", :action => "edit_inventory", :id => item.id}, :id => "mgmtEditInventoryItemButton", :class => "btn btn-default" %></td>
         <td><%= button_to "Delete", { :action => "destroy", :controller => "inventory_items", :id => item.id}, {:form => {:class => "mgmtDeleteInventoryItemButton"}, :data => {:data => {:confirm => "Are you sure you want to delete this item?"}}, :method => "delete", :class => "btn btn-danger", :style => "width:95%;"} %></td>
       </tr>
     <%end%>

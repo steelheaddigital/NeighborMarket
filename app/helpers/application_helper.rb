@@ -158,6 +158,16 @@ module ApplicationHelper
     "active" if params[:action] == page_name
   end
   
+  def second_level_nav_is_active(pages)
+    pages.each do |page|
+      if params[:action] == page
+        return "secondLevel collapse in"
+      else
+        return "secondLevel collapse"
+      end
+    end
+  end
+  
   def last_search_path
     session[:last_search_path]
   end

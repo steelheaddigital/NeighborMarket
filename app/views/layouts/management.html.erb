@@ -23,47 +23,47 @@
 <div class="container-fluid">
   <div class="row">
 	<div class="col-md-3">
-	    <ul class="nav nav-list bs-docs-sidenav">
-	      <li class=<%= nav_item_is_active('edit_site_settings') %>><%= link_to "Site Settings", edit_site_settings_management_index_path %></li>
-	      <li class=<%= nav_item_is_active('edit_order_cycle_settings') %>><%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path%></li>
-		  <li class=<%= nav_item_is_active('categories') %>><%= link_to "Manage Categories", categories_management_index_path %></li>
-		  <li class=<%= nav_item_is_active('manage_units') %>><%= link_to "Manage Units", manage_units_management_index_path %></li>
-	      <li>
-	      	  <span class="secondLevelLabel">Manage Users</span>
-	          <ul class="secondLevel">
-	            <li class=<%= nav_item_is_active('user_search') %>><%= link_to "User Search", user_search_management_index_path %></li>
-	            <li class=<%= nav_item_is_active('add_users') %>><%= link_to "Add Users", add_users_management_index_path %></li>
-	            <li class=<%= nav_item_is_active('approve_sellers') %>><%= link_to "Approve Sellers", approve_sellers_management_index_path %></li>
-				<li class=<%= nav_item_is_active('new_users_report') %>><%= link_to "Recent New Users", new_users_report_management_index_path %></li>
-				<li class=<%= nav_item_is_active('deleted_users_report') %>><%= link_to "Recent Deleted Users", deleted_users_report_management_index_path %></li>
-				<li class=<%= nav_item_is_active('updated_user_profile_report') %>><%= link_to "Recent User Profile Updates", updated_user_profile_report_management_index_path %></li>
-	          </ul>
-	      </li>
-		  <li id="ManageInventoryMenu">
-	          <span class="secondLevelLabel">Manage Inventories</span>
-	          <ul class="secondLevel">
-	            <li class=<%= nav_item_is_active('inventory_item_approval') %>><%= link_to "Approve Inventory", inventory_item_approval_management_index_path %></li>
-				<li class=<%= nav_item_is_active('inventory') %>><%= link_to "Current Inventory", inventory_management_index_path %></li>
-	          </ul>
-	      </li>
-	      <li id="MainCategoriesMenu">
-	          <span class="secondLevelLabel">Reports</span>
-	          <ul class="secondLevel">
-	            <li class=<%= nav_item_is_active('inbound_delivery_log') %>><%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path %></li>
-	            <li class=<%= nav_item_is_active('outbound_delivery_log') %>><%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path %></li>
-	            <li class=<%= nav_item_is_active('buyer_invoices') %>><%= link_to "Buyer Invoices", buyer_invoices_management_index_path %></li>
-				<li class=<%= nav_item_is_active('historical_orders') %>><%= link_to "Order History", historical_orders_management_index_path %></li>
-	          </ul>
-	      </li>
-		  <li id="ChangeRequestsMenu">
-	          <span class="secondLevelLabel">Change Requests</span>
-	          <ul class="secondLevel">
-				<li class=<%= nav_item_is_active('inventory_item_change_requests') %>><%= link_to "Inventory Item Change Requests", inventory_item_change_requests_management_index_path %></li>
-				<li class=<%= nav_item_is_active('order_change_requests') %>><%= link_to "Order Change Requests", order_change_requests_management_index_path %></li>
-	          </ul>
-	      </li>
-	      <li></li>
-	    </ul>
+	    <div class="list-group">
+	      <%= link_to "Site Settings", edit_site_settings_management_index_path, {class: "list-group-item #{nav_item_is_active('edit_site_settings')}" } %>
+	      <%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path, {class: "list-group-item #{nav_item_is_active('edit_order_cycle_settings')}"}%>
+		  <%= link_to "Manage Categories", categories_management_index_path, {class: "list-group-item #{nav_item_is_active('categories')}"} %>
+		  <%= link_to "Manage Units", manage_units_management_index_path, {class: "list-group-item #{nav_item_is_active('manage_units')}"} %>
+	      <div id="ManageUsersMenu" class="list-group-item">
+	      	  <a data-toggle="collapse" data-parent="#ManageUsersMenu" href="#ManageUsersSecondLevel">Manage Users</a>
+	      </div>
+          <div id="ManageUsersSecondLevel" class="<%=second_level_nav_is_active(['user_search','add_users', 'approve_sellers','new_users_report','deleted_users_report','updated_user_profile_report'])%>">
+            <%= link_to "User Search", user_search_management_index_path, {class: "list-group-item #{nav_item_is_active('user_search')}"} %>
+            <%= link_to "Add Users", add_users_management_index_path, {class: "list-group-item #{nav_item_is_active('add_users')}"}  %>
+            <%= link_to "Approve Sellers", approve_sellers_management_index_path, {class: "list-group-item #{nav_item_is_active('approve_sellers')}"}  %>
+			<%= link_to "Recent New Users", new_users_report_management_index_path, {class: "list-group-item #{nav_item_is_active('new_users_report')}"}  %>
+			<%= link_to "Recent Deleted Users", deleted_users_report_management_index_path, {class: "list-group-item #{nav_item_is_active('deleted_users_report')}"}  %>
+			<%= link_to "Recent User Profile Updates", updated_user_profile_report_management_index_path, {class: "list-group-item #{nav_item_is_active('updated_user_profile_report')}"}  %>
+          </div>
+		  <div id="ManageInventoryMenu" class="list-group-item">
+			  <a data-toggle="collapse" data-parent="#ManageInventoryMenu" href="#ManageInventorySecondLevel">Manage Inventories</a>
+	      </div>
+          <div id="ManageInventorySecondLevel" class="<%=second_level_nav_is_active(['inventory_item_approval', 'inventory'])%>">
+            <%= link_to "Approve Inventory", inventory_item_approval_management_index_path, {class: "list-group-item #{nav_item_is_active('inventory_item_approval')}"} %>
+			<%= link_to "Current Inventory", inventory_management_index_path, {class: "list-group-item #{nav_item_is_active('inventory')}"} %>
+          </div>
+	      <div id="MainCategoriesMenu" class="list-group-item">
+	          <a data-toggle="collapse" data-parent="#MainCategoriesMenu" href="#ReportsSecondLevel">Reports</a>
+	      </div>
+          <div id="ReportsSecondLevel" class="<%=second_level_nav_is_active(['inbound_deliver_log', 'outound_deliver_log','buyer_invoices','historical_orders'])%>">
+            <%= link_to "Inbound Delivery Log", inbound_delivery_log_management_index_path, {class: "list-group-item #{nav_item_is_active('inbound_deliver_log')}"}  %>
+            <%= link_to "Outbound Delivery Log", outbound_delivery_log_management_index_path, {class: "list-group-item #{nav_item_is_active('outound_deliver_log')}"}  %>
+            <%= link_to "Buyer Invoices", buyer_invoices_management_index_path, {class: "list-group-item #{nav_item_is_active('buyer_invoices')}"}  %>
+			<%= link_to "Order History", historical_orders_management_index_path, {class: "list-group-item #{nav_item_is_active('historical_orders')}"}  %>
+          </div>
+		  <div id="ChangeRequestsMenu" class="list-group-item">
+	          <a data-toggle="collapse" data-parent="#ChangeRequestsMenu" href="#ChangeRequestsSecondLevel">Change Requests</a>
+	      </div>
+          <div id="ChangeRequestsSecondLevel" class="<%=second_level_nav_is_active(['inventory_item_change_requests', 'order_change_requests'])%>">
+			<%= link_to "Inventory Item Change Requests", inventory_item_change_requests_management_index_path, {class: "list-group-item #{nav_item_is_active('inventory_item_change_requests')}"}  %>
+			<%= link_to "Order Change Requests", order_change_requests_management_index_path, {class: "list-group-item #{nav_item_is_active('order_change_requests')}"}  %>
+          </div>
+	      <div></div>
+	    </div>
 	</div>
   <div class="col-md-9">
 	<div id="ManagementContent">

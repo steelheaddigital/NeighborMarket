@@ -17,18 +17,48 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.category-heading
+#PastInventoryContainer
 {
-	font-weight:bold;
-	text-align: center;
+	border: $gray-light 2px solid;
+	border-radius: $border-radius-base;
+	background-color: $gray-lighter;
 }
 
-.category-cell
+#PreviousSellerInventoryRow
 {
-	display:inline-block;
-	width:24%;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin-right:-3px;
-	padding-left: 4px;
+	height: 330px;
+	overflow: auto;
+}
+
+#AddPastInventoryItems
+{
+	padding-top: 10px;
+}
+
+#PreviousSellerInventorySubmitRow
+{
+	margin-top: 10px; 
+	margin-bottom: 10px;
+}
+
+#PastInventortyToggleContainer
+{
+	margin-left: auto; 
+	margin-right: auto; 
+	width: 210px;
+}
+
+#PastInventortyToggleContainer a
+{
+	border-radius: 0 0 $border-radius-base $border-radius-base;
+}
+
+#NewInventoryItemButton
+{
+	margin-bottom: 10px;
+}
+
+.inventoryItemButton
+{
+	width: 95%;
 }

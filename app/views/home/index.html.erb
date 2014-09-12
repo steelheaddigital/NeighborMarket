@@ -29,15 +29,13 @@
 <% end %>
 <div class="container-fluid">
 	<div class ="jumbotron masthead">
-	  <div class ="container">
 	    <h1><%= @site_name %> </h1>
 	    <p class="site-description"><%= @site_description.html_safe %></p>
-	  </div>
 	</div>
 </div>
-<div class="container-fluid">
+<div class="container">
 	<div class="row marketing">
-	  <div class="col-md-4">
+	  <div class="col-md-4 col-sm-4">
 	    <div style ="font-size:50px; margin-bottom: 20px;">
 	      <i class="icon-shopping-cart icon-large"></i>
 	    </div>
@@ -46,10 +44,10 @@
 	      Support the the local economy in your own neighborhood. Buy directly from your neighbors.
 	    </p>
 	    <p>
-	      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-primary"  %>
+	      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-success"  %>
 	    </p>
 	  </div>
-	  <div class="col-md-4">
+	  <div class="col-md-4 col-sm-4">
 	    <div style ="font-size:50px; margin-bottom: 20px;">
 	      <i class="icon-money icon-large"></i>
 	    </div>
@@ -58,10 +56,10 @@
 	      Sell your homegrown vegetables and homemade goods directly to your neighbors.
 	    </p>
 	    <p>
-	      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-primary" %>
+	      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-success" %>
 	    </p>
 	  </div>
-	  <div class="col-md-4">
+	  <div class="col-md-4 col-sm-4">
 	    <div style ="font-size:50px; margin-bottom: 20px;">
 	      <i class="icon-search icon-large"></i>
 	    </div>
@@ -70,7 +68,7 @@
 	      Not ready to sign up yet?  Browse our inventory and see what your neighbors are making.
 	    </p>
 	    <p>
-	      <%= link_to 'Browse the inventory', browse_all_inventory_items_url, :class => "btn btn-primary" %>
+	      <%= link_to 'Browse the inventory', browse_all_inventory_items_url, :class => "btn btn-success" %>
 	    </p>
 	  </div>
 	</div>

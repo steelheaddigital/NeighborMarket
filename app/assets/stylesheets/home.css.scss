@@ -17,18 +17,19 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.category-heading
+.marketing 
 {
-	font-weight:bold;
-	text-align: center;
+    text-align: center;
 }
 
-.category-cell
+.marketing h2
 {
-	display:inline-block;
-	width:24%;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin-right:-3px;
-	padding-left: 4px;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+.marketing p
+{
+    font-size: 16px;
+    line-height: 1.5;
 }

@@ -57,5 +57,8 @@ $(document).ready(function() {
 	$('.dropdown-submenu').click(function(event){
 	     event.stopPropagation();
 	 });
-	 
 });
+
+$(document).on('click', '.collapseIconLink i', function(){
+	$(this).toggleClass('icon-plus-sign').toggleClass('icon-minus-sign')
+})

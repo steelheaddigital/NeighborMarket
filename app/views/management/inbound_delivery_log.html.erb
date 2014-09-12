@@ -25,7 +25,7 @@
 			<div class="form-group">
 				<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'form-control'}) %>
 			</div>
-			<%= submit_tag 'Submit', :class => 'btn' %>
+			<%= submit_tag 'Submit', :class => 'btn btn-default' %>
 			<span>Choose an order cycle end date to load a previous inbound delivery log</span>
 		<% end %>
 	</div>

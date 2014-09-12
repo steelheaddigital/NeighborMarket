@@ -21,25 +21,24 @@
 
 <div>
   <div>
-    <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn", :method => "get"} %>
+    <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn btn-default", :method => "get"} %>
   </div>
     <%@categories.each do |category|%>
     <div class="accordion-group">
       <div class="accordion-heading">
-          <span class="category-cell"><%=category.name%></span>
-          <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+          <span class="category-cell"><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>"><i class="icon-plus-sign"></i></a><%=category.name%></span>
+          <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn btn-default", :style => "width: 95%;"} %></span>
           <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
-          <span class="category-cell"><a href="#" class ="btn" style="padding-right:10px; padding-left:10px;" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>">Second Level Categories</a></span>
       </div>
-          <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse in">
+          <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse">
               <div style="margin-top: 10px; margin-bottom: 10px;">
-                <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn", :method => "get"} %>
+                <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn btn-default", :method => "get"} %>
               </div>
               <div class="well" style ="padding-bottom: 10px; margin-right: 15px;">
                 <%category.second_level_categories.where(:active => true).each do |second_level_category|%>
                   <div> 
                     <span class="category-cell"><%= second_level_category.name%></span>
-                    <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "editSecondLevelCategoryButton"}, :method => "get", :class => "btn", :style => "width: 95%;"} %></span>
+                    <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "editSecondLevelCategoryButton"}, :method => "get", :class => "btn btn-default", :style => "width: 95%;"} %></span>
                     <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "second_level_categories", :id => second_level_category.id}, {:form => {:class => "deleteSecondLevelCategoryButton"}, :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
                   </div>
                 <%end%>
@@ -48,6 +47,4 @@
     </div>
     <%end%>
 </div>
-<script type="text/javascript">
-  $(".collapse").collapse();
-</script>
+

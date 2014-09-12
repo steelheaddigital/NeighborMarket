@@ -20,7 +20,7 @@
 %>
 
 <div style="margin-bottom: 5px;">
-	<%=button_to "Send Test Email", { :action => "test_email" }, { :class => "btn"} %>
+	<%=button_to "Send Test Email", { :action => "test_email" }, { :class => "btn btn-default"} %>
 </div>
 <div class="well">
 	<%= bootstrap_form_for @site_settings, :url => update_site_settings_management_index_path, :method => :post, :html => { :id => "SiteSettingsForm"} do |f| %>

@@ -17,18 +17,14 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.category-heading
+.totalLabel
 {
-	font-weight:bold;
-	text-align: center;
+    position:relative;
+    float:right;
 }
 
-.category-cell
+.totalCell
 {
-	display:inline-block;
-	width:24%;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin-right:-3px;
-	padding-left: 4px;
+    font-weight:bold;
 }
+

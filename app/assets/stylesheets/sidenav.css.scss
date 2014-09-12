@@ -1,159 +1,24 @@
-/* Side Nav */
-.bs-docs-sidenav {
-    background-color: $well-bg;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    padding-bottom: 5px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    width: 228px;
-}
-.bs-docs-sidenav > li > a,
-.bs-docs-sidenav .secondLevelLabel
- {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-image-outset: 0 0 0 0;
-    border-image-repeat: stretch stretch;
-    border-image-slice: 100% 100% 100% 100%;
-    border-image-source: none;
-    border-image-width: 1 1 1 1;
-    border-left-color-ltr-source: physical;
-    border-left-color-rtl-source: physical;
-    border-left-color-value: #E5E5E5;
-    border-left-style-ltr-source: physical;
-    border-left-style-rtl-source: physical;
-    border-left-style-value: solid;
-    border-left-width-ltr-source: physical;
-    border-left-width-rtl-source: physical;
-    border-left-width-value: 1px;
-    border-right-color-ltr-source: physical;
-    border-right-color-rtl-source: physical;
-    border-right-color-value: #E5E5E5;
-    border-right-style-ltr-source: physical;
-    border-right-style-rtl-source: physical;
-    border-right-style-value: solid;
-    border-right-width-ltr-source: physical;
-    border-right-width-rtl-source: physical;
-    border-right-width-value: 1px;
-    border-top-color: $well-border;
-    border-top-style: solid;
-    border-top-width: 1px;
-    display: block;
-    margin-bottom: -1px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    padding-bottom: 8px;
-    padding-left: 14px;
-    padding-right: 14px;
-    padding-top: 8px;
-	font-size: 1.3em;
-	font-weight: bold;
-}
-.bs-docs-sidenav > li:first-child > a {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-}
-.bs-docs-sidenav > li:last-child > a {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-.bs-docs-sidenav > .active > a {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-bottom-color: -moz-use-text-color;
-    border-bottom-style: none;
-    border-bottom-width: 0;
-    border-image-outset: 0 0 0 0;
-    border-image-repeat: stretch stretch;
-    border-image-slice: 100% 100% 100% 100%;
-    border-image-source: none;
-    border-image-width: 1 1 1 1;
-    border-left-color-ltr-source: physical;
-    border-left-color-rtl-source: physical;
-    border-left-color-value: -moz-use-text-color;
-    border-left-style-ltr-source: physical;
-    border-left-style-rtl-source: physical;
-    border-left-style-value: none;
-    border-left-width-ltr-source: physical;
-    border-left-width-rtl-source: physical;
-    border-left-width-value: 0;
-    border-right-color-ltr-source: physical;
-    border-right-color-rtl-source: physical;
-    border-right-color-value: -moz-use-text-color;
-    border-right-style-ltr-source: physical;
-    border-right-style-rtl-source: physical;
-    border-right-style-value: none;
-    border-right-width-ltr-source: physical;
-    border-right-width-rtl-source: physical;
-    border-right-width-value: 0;
-    border-top-color: -moz-use-text-color;
-    border-top-style: none;
-    border-top-width: 0;
-    box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0, 0, 0, 0.1) inset;
-    padding-bottom: 9px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 9px;
-    position: relative;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-    z-index: 2;
-}
+/*
+Copyright 2013 Neighbor Market
 
-.bs-docs-sidenav > li > a:hover {
-    background-color: $gray-lighter;
-}
+This file is part of Neighbor Market.
 
-.bs-docs-sidenav.affix {
-    top: 40px;
-}
-.bs-docs-sidenav.affix-bottom {
-    bottom: 270px;
-    position: absolute;
-    top: auto;
-}
-.bs-docs-container {
-    max-width: 970px;
-}
-.bs-docs-sidenav {
-    width: 100%;
-}
-.bs-docs-sidenav > li > a {
-}
+Neighbor Market is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-.secondLevelLabel {
- 	color: $link-color;
-	text-decoration: none;
-}
+Neighbor Market is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-.secondLevel{
-	font-weight: bold;
-	font-size: 1.2em;
-	margin-bottom: 10px;
-}
+You should have received a copy of the GNU General Public License
+along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-.secondLevel > li > a{
-	padding:3px;
-}
-
-.nav-list li.active>a, .nav-list li.active>a:hover {
-	color: $pagination-active-color;
-	background-color: $pagination-active-bg;
-	text-shadow: none;
+.secondLevel .list-group-item{
+	padding-left: 40px;
+	border-radius: 0;
+	margin-bottom: -1px;
 }
