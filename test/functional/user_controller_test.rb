@@ -155,11 +155,16 @@ class UserControllerTest < ActionController::TestCase
     
     post :import
     assert_response :not_found
+    
+    buyer = users(:buyer_user)
+    get :show, :id => user.id
+    assert_response :not_found
+    
   end
   
-  test "anonymous user can access show" do
+  test "anonymous user can access show of approved seller" do
     sign_out @user
-    user = users(:buyer_user)
+    user = users(:approved_seller_user)
     
     get :show, :id => user.id
 
@@ -167,7 +172,7 @@ class UserControllerTest < ActionController::TestCase
     assert_not_nil assigns(:user)
   end
   
-  test "anonymous user can access contact" do
+  test "anonymous user can access contact of approved seller" do
     sign_out @user
     user = users(:approved_seller_user)
     

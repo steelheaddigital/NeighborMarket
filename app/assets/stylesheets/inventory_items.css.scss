@@ -12,9 +12,39 @@
 
 .inventorySellerLink img
 {
-	display: inline; 
-	height: auto; 
-	width: 40px;
-	margin-right: 5px;
+	display: inline !important; 
+	height: auto !important; 
+	width: 40px !important; 
+	margin-right: 5px !important; 
 }
 
+#InventoryItemCarousel{
+	.carousel-caption {
+	    z-index: 10;
+	}
+	.carousel .item {
+	    background-color: #f1e8d3;
+		border-radius: 4px;
+	}
+	.carousel-inner > .item > .wrapper > a > img  {
+	    margin: 0 auto;  /*important */
+		height: 300px;
+		width: auto;
+		max-width: 100%;
+	}
+	.wrapper{
+		height: 300px;
+	}
+	.carousel-caption {
+	    background: rgba(0, 0, 0, 0.35);
+		max-width: 100%;
+		width: 100%;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		padding: 0;
+	}
+	.carousel-caption a {
+	    color: $carousel-caption-color;
+	}
+}

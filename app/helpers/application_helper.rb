@@ -201,4 +201,16 @@ module ApplicationHelper
     return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.first.facebook_enabled } encouraging your friends and family to also purchase the item."
   end
   
+  def pageless(total_pages, url=nil, container=nil)
+    opts = {
+        :totalPages => total_pages,
+        :url        => url,
+        :loaderHtml => "<div id=\"pageless-loader\" style=\"text-align: center; width: 100%; display: none;\"><div class=\"msg\" style=\"font-size:2em\">Loading more items...</div><img src=\"#{image_path('ajax-loader.gif')}\" alt=\"loading more results\" style=\"margin:10px auto\"></div>"
+    }
+
+    container && opts[:container] ||= container
+
+    javascript_tag("$('#{container}').pageless(#{opts.to_json});")
+  end
+  
 end

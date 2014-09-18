@@ -29,47 +29,84 @@
 <% end %>
 <div class="container-fluid">
 	<div class ="jumbotron masthead">
-	    <h1><%= @site_name %> </h1>
-	    <p class="site-description"><%= @site_description.html_safe %></p>
+		<div id="SiteDescription">
+		    <h1><%= @site_name %></h1>
+		    <p class="site-description"><%= @site_description.html_safe %></p>
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-5">
+					<div id="InventoryItemCarousel" class="carousel slide" data-interval="20000" data-ride="carousel">
+					  <!-- Wrapper for slides -->
+					  <div class="carousel-inner">
+						<% @items_for_carousel.each_with_index do |item, index| %>
+						    <div class="<%=if index==0 then "item active" else "item" end%>">
+								<div class="wrapper">
+						      	  	<a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url %></a>
+						      		<div class="carousel-caption">
+								  	  <h2><%=link_to(item.name, inventory_item_path(item))%></h2>
+						      		</div>
+						  		</div>
+						    </div>
+						<%end%>
+					  </div>
+					  <!-- Controls -->
+					  <a class="left carousel-control" href="#InventoryItemCarousel" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left icon-chevron-left"></span>
+					  </a>
+					  <a class="right carousel-control" href="#InventoryItemCarousel" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right icon-chevron-right"></span>
+					  </a>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="container">
+						<div class="row marketing">
+						  <div class="col-md-4 col-sm-4">
+						    <div class="marketing-icon-container">
+						      <i class="icon-shopping-cart icon-large"></i>
+						    </div>
+						    <h2>Buy</h2>
+						    <p class="marketing-description">
+						      Support the the local economy in your own neighborhood. Buy directly from your neighbors.
+						    </p>
+						    <p>
+						      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-success"  %>
+						    </p>
+						  </div>
+						  <div class="col-md-4 col-sm-4">
+						    <div class="marketing-icon-container">
+						      <i class="icon-money icon-large"></i>
+						    </div>
+						    <h2>Sell</h2>
+						    <p class="marketing-description">
+						      Sell your homegrown vegetables and homemade goods directly to your neighbors.
+						    </p>
+						    <p>
+						      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-success" %>
+						    </p>
+						  </div>
+						  <div class="col-md-4 col-sm-4">
+						    <div class="marketing-icon-container">
+						      <i class="icon-search icon-large"></i>
+						    </div>
+						    <h2>Browse</h2>
+						    <p class="marketing-description">
+						      Not ready to sign up yet?  Browse our inventory and see what your neighbors are making.
+						    </p>
+						    <p>
+						      <%= link_to 'Browse the inventory', browse_all_inventory_items_url, :class => "btn btn-success" %>
+						    </p>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="container">
-	<div class="row marketing">
-	  <div class="col-md-4 col-sm-4">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-shopping-cart icon-large"></i>
-	    </div>
-	    <h2>Buy</h2>
-	    <p>
-	      Support the the local economy in your own neighborhood. Buy directly from your neighbors.
-	    </p>
-	    <p>
-	      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-success"  %>
-	    </p>
-	  </div>
-	  <div class="col-md-4 col-sm-4">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-money icon-large"></i>
-	    </div>
-	    <h2>Sell</h2>
-	    <p>
-	      Sell your homegrown vegetables and homemade goods directly to your neighbors.
-	    </p>
-	    <p>
-	      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-success" %>
-	    </p>
-	  </div>
-	  <div class="col-md-4 col-sm-4">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-search icon-large"></i>
-	    </div>
-	    <h2>Browse</h2>
-	    <p>
-	      Not ready to sign up yet?  Browse our inventory and see what your neighbors are making.
-	    </p>
-	    <p>
-	      <%= link_to 'Browse the inventory', browse_all_inventory_items_url, :class => "btn btn-success" %>
-	    </p>
-	  </div>
+	<div id="items">
+		<%=render :partial => "items", locals: {items_for_display: @items_for_display}%>
 	</div>
+	<%= will_paginate @items_for_display, {:page_links => false, :params => {:controller => "home", :action => "paginate_items"} }%>
+	<%= pageless(@items_for_display.total_pages, home_paginate_items_path, "#items") %>
 </div>

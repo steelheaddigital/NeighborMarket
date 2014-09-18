@@ -60,7 +60,7 @@
 					<%= f.check_box(:terms_of_service, {label: raw("I have read and agree to the #{link_to "terms of service",  user_registrations_terms_of_service_path, {:id => "TermsOfServiceLink"} }")}, true, "false")%> 
 				</div>
 			<% end %>
-			<div><%= f.submit "Update", {:class => "btn btn-primary", :style => "width: 225px; height: 35px;"} %></div>
+			<div><%= f.submit "Update", {:class => "btn btn-primary", :style => "width: 225px;"} %></div>
 		</div>
 	  </div>
 	<% end %>

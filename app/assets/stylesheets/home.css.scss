@@ -17,6 +17,29 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+@media screen and (min-width: $screen-sm-min){
+	.jumbotron {
+		padding-top: $jumbotron-padding;     
+		padding-bottom: $jumbotron-padding;  
+	}
+}
+
+@media screen and (min-width: $screen-lg-min){	
+	.marketing-description
+	{
+		height: 100px;
+	}
+}
+
+#SiteDescription
+{
+	margin-bottom: 30px;
+}
+
+#items .pagination{
+	display: none;
+}
+
 .marketing 
 {
     text-align: center;
@@ -32,4 +55,15 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 {
     font-size: 16px;
     line-height: 1.5;
+}
+
+.marketing-icon-container
+{
+	font-size:50px; 
+	margin-bottom: 20px;
+}
+
+#pageless-loader.msg
+{
+	color: $gray-darker !important;
 }

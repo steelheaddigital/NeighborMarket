@@ -69,6 +69,9 @@ class Ability
         can :destroy, CartItem if cart.cart_items.where("cart_id = ? AND order_id IS NULL", cart.id).count > 0
         can :manage, Cart if cart
       end
+      can [:show,:contact, :contact_form], User do |u|
+        u.approved_seller?
+      end 
     end
   end
 end

@@ -19,12 +19,13 @@
 
 class UserController < ApplicationController
   require 'csv'
-  before_filter :authenticate_user!, :except => [:show, :contact]
+  before_filter :authenticate_user!, :except => [:show, :contact, :contact_form]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show, :contact]
 
   def show
     @user = User.find(params[:id])
+    @items_for_display = InventoryItem.joins(:order_cycles)
+                                      .where("order_cycles.status = 'current' AND inventory_items.user_id = ?", params[:id])
     @message = UserContactMessage.new
     
     respond_to do |format|
@@ -104,17 +105,20 @@ class UserController < ApplicationController
     end
   
   end
-  
+    
   def contact
     @message = UserContactMessage.new(params[:user_contact_message])
-    user = User.find(params[:id])
+    @user = User.find(params[:id])
     
-    if @message.valid?
-      UserMailer.delay.user_contact_mail(user, @message)
-      redirect_to(user_path(user), :notice => "Your message was successfully sent.")
-    else
-      flash.now.alert = "Please fill all fields."
-      render :show
+    respond_to do |format|
+      if @message.valid?
+        UserMailer.delay.user_contact_mail(@user, @message)
+        format.html { redirect_to(user_path(@user), :notice => "Your message was successfully sent.") }
+        format.js { redirect_to(user_path(@user), :notice => "Your message was successfully sent.") }
+      else
+        format.html { render "_contact" }
+        format.js { render "_contact", :layout => false, :status => 403 }
+      end
     end
     
   end

@@ -40,6 +40,24 @@ legend
 	margin-bottom: 15px;
 }
 
+.infinite-loading{
+	margin-bottom: 400px;
+}
+
+.infinite-loading::after{
+	position: absolute;
+	background: image-url('ajax-loader.gif') no-repeat center;
+	height: 30px;
+	width: 30px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	content: "";
+	left: 0;
+	right: 0;
+}
+
 .well-fluid
 {
   min-height: 20px;

@@ -29,12 +29,14 @@
   	  	<%= contains_item_with_minimum_text("cart") %>
   	  </p>
     <%end%>
-    <%= render :partial => "form", :locals => {:f => f} %>
-    <div class="row">
-      <div class="col-md-12">
-		<span><%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %></span>
-		<span><%= f.submit("Continue Shopping", :class => 'btn btn-default')%></span>
-      </div>
-    </div>
+	<div class="container-fluid">
+    	<%= render :partial => "form", :locals => {:f => f} %>
+	    <div class="row">
+	      <div class="col-md-12">
+			<span><%= f.submit("Confirm order and purchase", :class => 'btn btn-primary') %></span>
+			<span><%= f.submit("Continue Shopping", :class => 'btn btn-default')%></span>
+	      </div>
+	    </div>
+	</div>
     <% end %>
 </div>
