@@ -1,7 +1,7 @@
 <%@items_for_display.each_slice(4) do |slice|%>
 	<div class="row thumbnailRow">
 		<%slice.each do |item|%>
-			<div class="col-md-3">
+			<div class="col-md-3 col-sm-3">
 			    <div class="thumbnail">
 			      <a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium), {style: "height: 200px; width: auto;"} %></a>
 			      <div class="caption">

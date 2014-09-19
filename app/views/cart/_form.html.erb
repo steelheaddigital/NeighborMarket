@@ -32,38 +32,40 @@
     </p>
   </div>
   <div class="col-md-10 tableContainer">
-    <table class="table">
-    <thead>  
-      <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Seller</th>
-        <th>Payment Instructions</th>
-		<%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
-			<th>Minimum</th>
-		<%end%>
-		<%if SiteSetting.first.facebook_enabled%>
-			<th></th>
-		<%end%>
-      </tr>
-    </thead>
-      <tbody>
-        <tr>
-          <td><%= item_name(item.object.inventory_item) %> </td>
-          <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
-          <td><%= item.text_field :quantity, :class => "input-small" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
-          <td><%= item.object.inventory_item.user.username %></td>
-          <td><%= item.object.inventory_item.user.payment_instructions %></td>
-		  <%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
-		  	<td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
-		  <%end%>
-			<%if SiteSetting.first.facebook_enabled%>
-				<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.object.inventory_item) %>"></span></td>
+	  <div class="table-responsive">
+	    <table class="table">
+	    <thead>  
+	      <tr>
+	        <th>Name</th>
+	        <th>Price</th>
+	        <th>Quantity</th>
+	        <th>Seller</th>
+	        <th>Payment Instructions</th>
+			<%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
+				<th>Minimum</th>
 			<%end%>
-        </tr>
-      </tbody>
-    </table>
+			<%if SiteSetting.first.facebook_enabled%>
+				<th></th>
+			<%end%>
+	      </tr>
+	    </thead>
+	      <tbody>
+	        <tr>
+	          <td><%= item_name(item.object.inventory_item) %> </td>
+	          <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
+	          <td><%= item.text_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+	          <td><%= item.object.inventory_item.user.username %></td>
+	          <td><%= item.object.inventory_item.user.payment_instructions %></td>
+			  <%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
+			  	<td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
+			  <%end%>
+				<%if SiteSetting.first.facebook_enabled%>
+					<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.object.inventory_item) %>"></span></td>
+				<%end%>
+	        </tr>
+	      </tbody>
+	    </table>
+	</div>
 	<% if item.object.can_edit? %>
     	<%= link_to "Delete", cart_item_destroy_path(item.object.id), :class => "btn btn-danger deleteCartItemButton" %>
 	<% end %>

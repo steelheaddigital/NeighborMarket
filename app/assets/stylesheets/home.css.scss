@@ -22,6 +22,12 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 		padding-top: $jumbotron-padding;     
 		padding-bottom: $jumbotron-padding;  
 	}
+	
+	.sb-slidebar .topRow
+	{
+		padding-top: 20px; 
+		padding-bottom: 21px; 
+	}	
 }
 
 @media screen and (min-width: $screen-lg-min){	
@@ -29,6 +35,36 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		height: 100px;
 	}
+}
+
+.navicon-line {
+    background-color: $gray-darker;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    height: 4px;
+    margin-bottom: 3px;
+    width: 24px;
+}
+
+.sb-slidebar
+{
+	background-color: $navbar-default-bg;
+}
+
+.sb-slidebar .topRow
+{
+	@include sandstone();
+	padding-top: 19px; 
+	padding-bottom: 20px; 
+	color: $navbar-default-color; 
+	text-align: center
+}
+
+.sb-menu .list-group-item
+{
+	border-radius: 0;
 }
 
 #SiteDescription

@@ -57,6 +57,16 @@ module ApplicationHelper
     "categories/all-#{order_cycle}-#{top_level_category_count}-#{second_level_category_count}-#{top_level_category_max_updated_at}-#{second_level_category_max_updated_at}"
   end
   
+  def cache_key_for_categories_sidemenu
+    order_cycle = OrderCycle.current_cycle.nil? ? 0 : OrderCycle.current_cycle.id
+    top_level_category_count = TopLevelCategory.count
+    second_level_category_count = SecondLevelCategory.count
+    top_level_category_max_updated_at = TopLevelCategory.maximum(:updated_at).try(:utc).try(:to_s, :number)
+    second_level_category_max_updated_at = SecondLevelCategory.maximum(:updated_at).try(:utc).try(:to_s, :number)
+    
+    "categories_sm/all-#{order_cycle}-#{top_level_category_count}-#{second_level_category_count}-#{top_level_category_max_updated_at}-#{second_level_category_max_updated_at}"
+  end
+  
   def get_categories
     categories = Array.new
     current_cycle = OrderCycle.current_cycle

@@ -20,6 +20,9 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 @import "theme/neighbormarket/variables";
 @import "bootstrap";
 @import "theme/neighbormarket/theme";
+@import "slidebars";
+@import "sidenav";
+@import "submenu";
 @import "global";
 @import "layouts";
 @import "home";
@@ -29,6 +32,4 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 @import "seller";
 @import "orders";
 @import "user";
-@import "sidenav";
-@import "submenu";
 @import "font-awesome";

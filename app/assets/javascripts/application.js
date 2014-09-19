@@ -7,4 +7,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
-//= require_tree .
+//= require ./lib/lib
+//= require utils
+//= require global
+//= require management
+//= require seller
+//= require user_registrations
+//= require user
+//= require_self
