@@ -10,7 +10,7 @@
 						<%if item.user.photo?%>
 							<a href="<%=user_path(item.user.id)%>" class="inventorySellerLink"><%= image_tag item.user.photo.url(:thumb), class: "img-responsive" %><%=item.user.username%></a>
 						<%else%>
-							<%= link_to(inventory_item.user.username, user_path(item.user.id)) %>
+							<%= link_to(item.user.username, user_path(item.user.id)) %>
 						<%end%>
 					</p>
 			      </div>

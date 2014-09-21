@@ -119,7 +119,7 @@
 						<% @items_for_carousel.each_with_index do |item, index| %>
 						    <div class="<%=if index==0 then "item active" else "item" end%>">
 								<div class="wrapper">
-						      	  	<a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url %></a>
+						      	  	<a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium) %></a>
 						      		<div class="carousel-caption">
 								  	  <h2><%=link_to(item.name, inventory_item_path(item))%></h2>
 						      		</div>
