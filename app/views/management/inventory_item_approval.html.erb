@@ -23,33 +23,35 @@
 	<%= form_tag update_inventory_item_approval_management_index_path, :method => "POST", :id => 'InventoryItemApprovalForm' do |f| %>
 	  <div class="well-fluid row">
 	    <div class="col-md-12">
-	      <table class="table">
-	      <thead>  
-	        <tr>
-	          <th>Seller Name</th>
-	          <th>Item Name</th>
-			  <th>Top Level Category</th>
-			  <th>Second Level Category</th>
-	          <th>Quantity Available</th>
-	          <th>Price</th>
-			  <th>Approved</th>
-	        </tr>
-	      </thead>
-	        <tbody>
-	          <% @inventory_items.sort_by{|item| [item.user.username, item.created_at]}.each_with_index do |item, index| %>
-	          <tr>
-	            <td><%= item.user.username %> </td>
-	            <td><%= item_name(item) %> </td>
-				<td><%= item.top_level_category.name %> </td>
-				<td><%= item.second_level_category.name %> </td>
-	            <td><%= "#{item.quantity_available}#{" "}#{item_quantity_label(item, item.quantity_available)}" %> </td>
-				<td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-	            <td><%= check_box_tag "inventory_items[" + index.to_s + "][approved]", "true", item.approved %></td>
-	            <%= hidden_field_tag "inventory_items[" + index.to_s + "][id]", item.id %>
-	          </tr>
-	          <%end%>
-	        </tbody>
-	      </table>
+			<div class="table-responsive">
+		      <table class="table">
+		      <thead>  
+		        <tr>
+		          <th>Seller Name</th>
+		          <th>Item Name</th>
+				  <th>Top Level Category</th>
+				  <th>Second Level Category</th>
+		          <th>Quantity Available</th>
+		          <th>Price</th>
+				  <th>Approved</th>
+		        </tr>
+		      </thead>
+		        <tbody>
+		          <% @inventory_items.sort_by{|item| [item.user.username, item.created_at]}.each_with_index do |item, index| %>
+		          <tr>
+		            <td><%= item.user.username %> </td>
+		            <td><%= item_name(item) %> </td>
+					<td><%= item.top_level_category.name %> </td>
+					<td><%= item.second_level_category.name %> </td>
+		            <td><%= "#{item.quantity_available}#{" "}#{item_quantity_label(item, item.quantity_available)}" %> </td>
+					<td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+		            <td><%= check_box_tag "inventory_items[" + index.to_s + "][approved]", "true", item.approved %></td>
+		            <%= hidden_field_tag "inventory_items[" + index.to_s + "][id]", item.id %>
+		          </tr>
+		          <%end%>
+		        </tbody>
+		      </table>
+			</div>
 	    </div>
 	  </div>
 	  <div class="row">

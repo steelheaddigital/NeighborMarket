@@ -27,7 +27,7 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		padding-top: 20px; 
 		padding-bottom: 21px; 
-	}	
+	}
 }
 
 @media screen and (min-width: $screen-lg-min){	
@@ -35,6 +35,17 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		height: 100px;
 	}
+}
+
+body
+{
+	padding-top: 60px;
+}
+
+#sb-site
+{
+	padding-top: 60px;
+	background-color: $body-bg;
 }
 
 .navicon-line {

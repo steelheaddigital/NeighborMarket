@@ -20,6 +20,7 @@
 %>
 
 <h4>Sales Report: <%= "#{format_short_date(@begin_date + 1.day)} to #{format_short_date(@end_date + 1.day)}" %></h4>
+<div class="table-responsive">
 <table class="table table-bordered table-condensed">
   <thead>
     <tr>
@@ -46,3 +47,4 @@
     </tr>
   </tbody>
 </table>
+</div>

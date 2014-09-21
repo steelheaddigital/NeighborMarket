@@ -21,10 +21,12 @@
 
 <div class="container-fluid">
   <div class="row">
-    <h1>Thank You!</h1>
-    <h4 style="padding-bottom:15px;">Below is your order summary. You will also recieve an email containing this information.</h4>
-    <%= pickup_instructions(@site_settings, @order_pickup_date, @order)%>
-    <strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>
-    <%= render "order" %>
+	<div class="col-md-12">
+		<h1>Thank You!</h1>
+		<h4 style="padding-bottom:15px;">Below is your order summary. You will also recieve an email containing this information.</h4>
+		<%= pickup_instructions(@site_settings, @order_pickup_date, @order)%>
+		<strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>
+		<%= render "order" %>
+	</div>
   </div>
 </div>

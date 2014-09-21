@@ -27,6 +27,7 @@ class UserController < ApplicationController
     @items_for_display = InventoryItem.joins(:order_cycles)
                                       .where("order_cycles.status = 'current' AND inventory_items.user_id = ?", params[:id])
     @message = UserContactMessage.new
+    session[:last_search_path] = request.fullpath
     
     respond_to do |format|
       format.html

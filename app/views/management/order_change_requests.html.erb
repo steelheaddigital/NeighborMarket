@@ -20,26 +20,28 @@
 %>
 
 <h4>Order change requests</h4>
-<table class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-        <th>Buyer Name</th>
-        <th>Order Id</th>
-        <th>Change Description</th>
-        <th></th>
-        <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%@requests.each do |request|%>
-      <tr>
-  		<td><%= request.order.user.username if !request.order.nil? %> </td>
-  	  	<td><%= request.order.id if !request.order.nil? %></td>
-        <td><%= request.description%></td>
-        <td><%= link_to "Edit Order", request.order.nil? ? "" : edit_order_path(request.order), {:id => "mgmtEditOrderButton", :class => "btn btn-default", :style => "width:60%;", :disabled => request.order.nil?} %></td>
-        <td><%= button_to "Complete", complete_order_change_request_path(request), { :data => {:confirm => "Are you sure you want to complete this request?"}, :class => "btn btn-primary", :style => "width:95%;" } %></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
+<div class="table-responsive">
+	<table class="table table-bordered table-condensed">
+	  <thead>
+	    <tr>
+	        <th>Buyer Name</th>
+	        <th>Order Id</th>
+	        <th>Change Description</th>
+	        <th></th>
+	        <th></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <%@requests.each do |request|%>
+	      <tr>
+	  		<td><%= request.order.user.username if !request.order.nil? %> </td>
+	  	  	<td><%= request.order.id if !request.order.nil? %></td>
+	        <td><%= request.description%></td>
+	        <td><%= link_to "Edit Order", request.order.nil? ? "" : edit_order_path(request.order), {:id => "mgmtEditOrderButton", :class => "btn btn-default", :style => "width:60%;", :disabled => request.order.nil?} %></td>
+	        <td><%= button_to "Complete", complete_order_change_request_path(request), { :data => {:confirm => "Are you sure you want to complete this request?"}, :class => "btn btn-primary", :style => "width:95%;" } %></td>
+	      </tr>
+	    <%end%>
+	  </tbody>
+	</table>
+</div>
 

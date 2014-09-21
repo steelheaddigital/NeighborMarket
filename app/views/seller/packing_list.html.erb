@@ -36,40 +36,42 @@
   <div class="well-fluid row">
       <p><span style ="font-weight: bold">Buyer Name: </span> <%= order.user.username %></p>
       <p><span style ="font-weight: bold">Buyer Address: </span> <%= buyer_address(order.user)%></p>
-      <table class="table" >
-        <thead>  
-          <tr>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Quantity</th>
-		  	<th>Price</th>
-		  	<th>Total Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% order.cart_items_where_order_cycle_minimum_reached.each do |item| %>
-          <tr>
-            <% if item.inventory_item.user_id == current_user.id %>      
-              <td><%= item.inventory_item.id %></td>
-              <td><%= item_name(item.inventory_item) %></td>
-              <td>
-				<%= item.quantity %>
-				<span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span>
-			  </td>
-			  <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
-			  <td><%= number_to_currency(item.total_price).to_s%></td>
-            <% end %>
-          </tr>
-          <%end%>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td style="font-weight:bold;">Total:</td>
-            <td><%= number_to_currency order.total_price_by_seller(current_user.id) %></td>
-          </tr>
-        </tbody>
-      </table>
+	  <div class="table-responsive">
+	      <table class="table" >
+	        <thead>  
+	          <tr>
+	            <th>Item ID</th>
+	            <th>Item Name</th>
+	            <th>Quantity</th>
+			  	<th>Price</th>
+			  	<th>Total Price</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	          <% order.cart_items_where_order_cycle_minimum_reached.each do |item| %>
+	          <tr>
+	            <% if item.inventory_item.user_id == current_user.id %>      
+	              <td><%= item.inventory_item.id %></td>
+	              <td><%= item_name(item.inventory_item) %></td>
+	              <td>
+					<%= item.quantity %>
+					<span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span>
+				  </td>
+				  <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
+				  <td><%= number_to_currency(item.total_price).to_s%></td>
+	            <% end %>
+	          </tr>
+	          <%end%>
+	          <tr>
+	            <td></td>
+	            <td></td>
+	            <td></td>
+	            <td style="font-weight:bold;">Total:</td>
+	            <td><%= number_to_currency order.total_price_by_seller(current_user.id) %></td>
+	          </tr>
+	        </tbody>
+	      </table>
+  	</div>
   </div>
   <%end%>
 </div>

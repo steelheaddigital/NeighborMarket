@@ -3,3 +3,5 @@
 //= require jquery.form
 //= require jquery.pageless
 //= require slidebars
+//= require jquery.slidebars
+

@@ -19,12 +19,13 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 
 .totalLabel
 {
-    position:relative;
-    float:right;
+    display: inline-block;
+	padding-right: 3px;
 }
 
 .totalCell
 {
+	display: inline-block;
     font-weight:bold;
 }
 

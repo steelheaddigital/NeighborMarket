@@ -41,26 +41,28 @@
 		      <p><span style ="font-weight: bold">Buyer Name: </span><%= order.user.username %></p>
 		      <p><p><span style ="font-weight: bold">Order Complete: </span><%= check_box_tag "orders[" + index.to_s + "][complete]", "true", order.complete %></p>
 		      <%= hidden_field_tag "orders[" + index.to_s + "][id]", order.id %>
-		        <table class="table" >
-		        <thead>  
-		          <tr>
-		            <th>Seller Name</th>
-		            <th>Item ID</th>
-		            <th>Item Name</th>
-		            <th>Quantity</th>
-		          </tr>
-		        </thead>
-		          <tbody>
-		            <% order.cart_items_where_order_cycle_minimum_reached.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
-		            <tr>    
-		                <td><%= item.inventory_item.user.username %>
-		                <td><%= item.inventory_item.id %></td>
-		                <td><%= item_name(item.inventory_item) %></td>
-		                <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
-		            </tr>
-		            <%end%>
-		          </tbody>
-		        </table>
+			  <div class="table-responsive">
+			  	<table class="table" >
+			        <thead>  
+			          <tr>
+			            <th>Seller Name</th>
+			            <th>Item ID</th>
+			            <th>Item Name</th>
+			            <th>Quantity</th>
+			          </tr>
+			        </thead>
+			          <tbody>
+			            <% order.cart_items_where_order_cycle_minimum_reached.sort_by{|cart_item| [cart_item.inventory_item.user.username]}.each do |item|%>
+			            <tr>    
+			                <td><%= item.inventory_item.user.username %>
+			                <td><%= item.inventory_item.id %></td>
+			                <td><%= item_name(item.inventory_item) %></td>
+			                <td><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}" %></td>
+			            </tr>
+			            <%end%>
+			          </tbody>
+			        </table>
+				</div>
 		    </div>
 		    <%end%>
 		    <div class="row">

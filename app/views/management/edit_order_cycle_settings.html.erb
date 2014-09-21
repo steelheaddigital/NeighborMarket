@@ -54,8 +54,10 @@
   </div>
 </div>
 <%end%>
-<script>
-	if($("#order_cycle_setting_recurring").is(":checked")){
-		$("#OrderCycleEndDateContainer").addClass("hidden");
-	}
-</script
+<% content_for :scripts do %>
+	<script>
+		if($("#order_cycle_setting_recurring").is(":checked")){
+			$("#OrderCycleEndDateContainer").addClass("hidden");
+		}
+	</script>
+<%end%>

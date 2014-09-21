@@ -185,5 +185,12 @@
 		<%=render :partial => "items", locals: {items_for_display: @items_for_display}%>
 	</div>
 	<%= will_paginate @items_for_display, {:page_links => false, :params => {:controller => "home", :action => "paginate_items"} }%>
-	<%= pageless(@items_for_display.total_pages, home_paginate_items_path, "#items") %>
 </div>
+<% content_for :scripts do %>
+	<%= pageless(@items_for_display.total_pages, home_paginate_items_path, "#items") %>
+	<script type="text/javascript">
+		$(function() {
+			$("#innerContent").slidebars();
+		})
+	</script>
+<%end%>

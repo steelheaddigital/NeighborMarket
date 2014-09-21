@@ -1,3 +1,8 @@
+#innerContent
+{
+	margin-bottom: 15px;
+}
+
 .jumbotron.masthead
 {
 	text-align: center;
@@ -158,4 +163,10 @@ legend
 .collapseIconLink:hover{
 	color: $gray-darker;
 	text-decoration: none;
+}
+
+.inlineButton
+{
+	display: inline-block;
+	margin-top: 10px;
 }

@@ -223,4 +223,19 @@ module ApplicationHelper
     javascript_tag("$('#{container}').pageless(#{opts.to_json});")
   end
   
+  def facebook
+    app_id = SiteSetting.first.facebook_app_id
+    tag = "$(function() {"\
+	    "$.getScript('//connect.facebook.net/en_US/sdk.js', function(){"\
+  	      "FB.init({"\
+  	        "appId: '#{app_id}',"\
+  	      	"version    : 'v2.0',"\
+  			"xfbml      : true"\
+  	      "});"\
+  	    "});"\
+	    "})"\
+      
+      javascript_tag(tag)
+  end
+  
 end

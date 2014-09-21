@@ -20,26 +20,28 @@
 %>
 
 <h4>Inventory item change requests</h4>
-<table class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-        <th>Seller Name</th>
-        <th>Inventory Item Name</th>
-        <th>Change Description</th>
-        <th></th>
-        <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%@requests.each do |request|%>
-      <tr>
-  		<td><%= request.inventory_item.user.username %> </td>
-  	  	<td><%= item_name(request.inventory_item)%></td>
-        <td><%= request.description%></td>
-        <td><%= link_to "Edit Item", {:controller => "management", :action => "edit_inventory", :id => request.inventory_item.id}, :id => "mgmtEditInventoryItemButton", :class => "btn btn-default", :style => "width:60%;" %></td>
-        <td><%= button_to "Complete", complete_inventory_item_change_request_path(request), { :data => {:confirm => "Are you sure you want to complete this request?"}, :class => "btn btn-primary", :style => "width:95%;"} %></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
+<div class="table-responsive">
+	<table class="table table-bordered table-condensed">
+	  <thead>
+	    <tr>
+	        <th>Seller Name</th>
+	        <th>Inventory Item Name</th>
+	        <th>Change Description</th>
+	        <th></th>
+	        <th></th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <%@requests.each do |request|%>
+	      <tr>
+	  		<td><%= request.inventory_item.user.username %> </td>
+	  	  	<td><%= item_name(request.inventory_item)%></td>
+	        <td><%= request.description%></td>
+	        <td><%= link_to "Edit Item", {:controller => "management", :action => "edit_inventory", :id => request.inventory_item.id}, :id => "mgmtEditInventoryItemButton", :class => "btn btn-default", :style => "width:60%;" %></td>
+	        <td><%= button_to "Complete", complete_inventory_item_change_request_path(request), { :data => {:confirm => "Are you sure you want to complete this request?"}, :class => "btn btn-primary", :style => "width:95%;"} %></td>
+	      </tr>
+	    <%end%>
+	  </tbody>
+	</table>
+</div>
 

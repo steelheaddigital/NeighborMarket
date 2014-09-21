@@ -62,7 +62,7 @@
 			<%end%>
 		</div>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5" style="margin-bottom: 15px;">
 		<div>
   	      <%if @user.photo?%>
   	          <%= image_tag @user.photo.url(:medium), {class: "img-rounded"} %>
@@ -79,14 +79,6 @@
 <div class="modal fade" id="ContactModal" tabindex="-1" role="dialog" aria-labelledby="ContactModalLabel" aria-hidden="true">
 	<%= render :partial => "contact", :locals => {message: @message}%>
 </div>
-<script>
-$(function() {
-    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-      FB.init({
-        appId: '<%= SiteSetting.first.facebook_app_id %>',
-      	version    : 'v2.0',
-		xfbml      : true
-      });
-    });
-})
-</script>
+<% content_for :scripts do %>
+	<%=facebook%>
+<%end%>

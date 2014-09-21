@@ -34,7 +34,7 @@
 		<div class="sb-slidebar sb-left">
 			<%= content_for :slide_bar %>
 		</div>
-		<div id="sb-site">
+		<div id="innerContent">
 			<div class="navbar navbar-default navbar-fixed-top">
 		        <div class="container-fluid">
 					<div class="navbar-header">
@@ -118,21 +118,7 @@
 	  $(function() {
 	  	$("#InventoryModal").modal({show: false});
 	  	$(".icon-question-sign").tooltip();
-		
-		$.slidebars();
-
-		// Slidebars Submenus
-		$('.sb-toggle-submenu').off('click').on('click', function() {
-			$submenu = $(this).next('.sb-submenu');
-			$(this).add($submenu).toggleClass('sb-submenu-active'); // Toggle active class.
-
-			if ($submenu.hasClass('sb-submenu-active')) {
-				$submenu.slideDown(200);
-			} else {
-				$submenu.slideUp(200);
-			}
-		});
-
 	  })
 	</script>
+	<%= content_for :scripts %>
 </html>

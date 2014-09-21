@@ -42,6 +42,7 @@
 			<% if !@site_settings.drop_point_only? %>
 		    	<p><span style ="font-weight: bold">Delivery Instructions: </span> <%= order.user.delivery_instructions.to_s %></p>
 			<% end %>
+			<div class="table-responsive">
 		      <table class="table" >
 		      <thead>  
 		        <tr>
@@ -86,6 +87,7 @@
 		          </tr>
 		        </tbody>
 		      </table>
+		  	</div>
 		  </div>
 		<%end%>
 	  </div>

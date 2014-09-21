@@ -30,7 +30,13 @@ class OrdersController < ApplicationController
       
       if params[:commit] == "Continue Shopping"
         last_search_path = session[:last_search_path]
-        redirect_to last_search_path
+        if last_search_path.nil?
+          redirect_to root_path
+        else
+          session[:last_search_path] = nil
+          redirect_to last_search_path
+        end
+        
         return
       end
       

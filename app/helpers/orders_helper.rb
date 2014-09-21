@@ -39,9 +39,9 @@ module OrdersHelper
   
   def delivery_message(site_settings, order_pickup_date, order)
     html = ''
-    html += '<div class="row-fluid" style="padding-bottom: 15px;">' +
-      '<div class="span12 orderFinishAddress">' +
-        '<h5>Your order will be delivered on ' + format_date_time(order_pickup_date) + ' to the following address:</h5><br>' +
+    html += '<div style="padding-bottom: 15px;">' +
+      '<div class="orderFinishAddress">' +
+        '<h5>Your order will be delivered on ' + format_date_time(order_pickup_date) + ' to the following address:</h5>' +
         '<div style="padding-left: 30px;">' +
           '<strong>' + order.user.address + ' </strong><br>' +
           '<strong>' + order.user.city + ", " + order.user.state + " " + order.user.zip.to_s + '</strong><br>' +
@@ -54,9 +54,9 @@ module OrdersHelper
   
   def pickup_message(site_settings, order_pickup_date)
     html = ''
-    html += '<div class="row-fluid" style="padding-bottom: 15px;">' +
-      '<div class="span12 orderFinishAddress">' +
-        '<h5>Your order will be available for pickup on ' + format_date_time(order_pickup_date) + ' at the following address:</h5><br>' +
+    html += '<div style="padding-bottom: 15px;">' +
+      '<div class="orderFinishAddress">' +
+        '<h5>Your order will be available for pickup on ' + format_date_time(order_pickup_date) + ' at the following address:</h5>' +
         '<div style="padding-left: 30px;">' +
           '<strong>' + site_settings.drop_point_address + ' </strong><br>' +
           '<strong>' + site_settings.drop_point_city + ", " + site_settings.drop_point_state + " " + site_settings.drop_point_zip.to_s + '</strong><br>' +

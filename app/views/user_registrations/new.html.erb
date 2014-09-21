@@ -30,9 +30,12 @@
 </div>
 <div id="Modal" class="modal hide fade" tabindex="-1" data-width="760">
 </div>
-<script>
-  $("#Modal").modal({show:false});
-</script>
+<% content_for :scripts do %>
+	<script>
+	  $("#Modal").modal({show:false});
+	</script>
+<%end%>
+
 
 
  

@@ -74,21 +74,11 @@
 <% end %>
 <div class="row">
   <div class ="col-md-3"></div>
-  <div class="col-md-1">
+  <div class="col-md-2">
     <span class="totalLabel" >Total:</span>
-  </div>     
-  <div class="col-md-1">
     <span class="totalCell"><%= number_to_currency @total_price %></span>
   </div>
 </div>
-<script>
-$(function() {
-    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-      FB.init({
-        appId: '<%= SiteSetting.first.facebook_app_id %>',
-      	version    : 'v2.0',
-		xfbml      : true
-      });
-    });
-})
-</script>
+<% content_for :scripts do %>
+	<%=facebook%>
+<%end%>

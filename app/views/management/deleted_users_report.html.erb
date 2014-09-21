@@ -23,20 +23,21 @@
 	<%=render 'report_dates'%>
 <% end %>
 <h4>Showing users deleted between <%=format_short_date(@start_date)%> and <%=format_short_date(@end_date)%></h4>
-<table class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-        <th>Username</th>
-        <th>Delete Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= user.username %></td>
-		<td><%= format_short_date(user.deleted_at) %></td>
-      </tr>
-    <%end%>
-  </tbody>
-</table>
-
+<div class="table-responsive">
+	<table class="table table-bordered table-condensed">
+	  <thead>
+	    <tr>
+	        <th>Username</th>
+	        <th>Delete Date</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <% @users.each do |user| %>
+	      <tr>
+	        <td><%= user.username %></td>
+			<td><%= format_short_date(user.deleted_at) %></td>
+	      </tr>
+	    <%end%>
+	  </tbody>
+	</table>
+</div>
