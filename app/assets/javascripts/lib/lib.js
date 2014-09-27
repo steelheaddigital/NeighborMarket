@@ -4,4 +4,5 @@
 //= require jquery.pageless
 //= require slidebars
 //= require jquery.slidebars
+//= require jquery.rating
 

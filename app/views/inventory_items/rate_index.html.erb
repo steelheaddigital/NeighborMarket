@@ -1,0 +1,38 @@
+<div class="container-fluid">
+	<%@inventory_items.each do |inventory_item|%>
+		<div class="well-fluid row">
+		  <div class="col-md-3 col-sm-4">
+		    <%if inventory_item.photo?%>
+		      <%= image_tag inventory_item.photo.url(:medium), class: "img-responsive" %>
+		    <%else%>
+		      No Image Available
+		    <%end%>
+		  </div>
+		  <div class="col-md-9 col-sm-8 itemDescription">
+		    <h2>
+		      <%= item_name(inventory_item) %>
+		    </h2>
+		    <p><%= inventory_item.description %></p>
+		    <p>
+				<label>Sold By:</label>
+				<%if inventory_item.user.photo?%>
+					<a href="<%=user_path(inventory_item.user.id)%>" class="inventorySellerLink"><%= image_tag inventory_item.user.photo.url(:thumb), class: "img-responsive" %><%=inventory_item.user.username%></a>
+				<%else%>
+					<%= link_to(inventory_item.user.username, user_path(inventory_item.user.id)) %>
+				<%end%>
+			</p>
+	        <%= form_tag rate_inventory_items_path(inventory_item), {class: "form"} do %>
+				<div class="form-group">
+					<%= radio_button_tag "rating", 1, inventory_item.evaluations('rating').where(source_type: current_user.class.name, source_id: current_user.id) == 1, class: "star" %>
+					<%= radio_button_tag "rating", 1, inventory_item.evaluations('rating').where(source_type: current_user.class.name, source_id: current_user.id) == 2, class: "star" %>
+					<%= radio_button_tag "rating", 1, inventory_item.evaluations('rating').where(source_type: current_user.class.name, source_id: current_user.id) == 3, class: "star" %>
+					<%= radio_button_tag "rating", 1, inventory_item.evaluations('rating').where(source_type: current_user.class.name, source_id: current_user.id) == 4, class: "star" %>
+					<%= radio_button_tag "rating", 1, inventory_item.evaluations('rating').where(source_type: current_user.class.name, source_id: current_user.id) == 5, class: "star" %>
+					<div class="clearfix"></div>
+				</div>
+		        <p><%= submit_tag("Submit Rating", :class => "btn btn-primary") %></p>
+	        <% end %>
+		  </div>
+		</div>
+	<%end%>
+</div>

@@ -186,4 +186,12 @@ class InventoryItemsController < ApplicationController
     render :json => units
   end
   
+  def rate_index
+    @inventory_items = InventoryItem.joins(:cart_items => :order).where("orders.user_id = ?", current_user.id).uniq
+  end
+  
+  def rate
+    
+  end
+  
 end

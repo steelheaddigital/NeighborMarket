@@ -77,6 +77,8 @@ NeighborMarket::Application.routes.draw do
       get 'browse'
       get 'browse_all'
       get 'units'
+      get 'rate_index'
+      post 'rate'
     end
   end
   
