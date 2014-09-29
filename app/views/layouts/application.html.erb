@@ -122,12 +122,12 @@
 			<div id="InventoryModal" class="modal fade" tabindex="-1" data-width="760">
 			</div>
 		</div>
+		<script>
+			$(function() {
+				$("#InventoryModal").modal({show: false});
+				$(".icon-question-sign").tooltip();
+			});
+		</script>
+		<%= content_for :scripts %>
 	</body>
-	<script>
-	  $(function() {
-	  	$("#InventoryModal").modal({show: false});
-	  	$(".icon-question-sign").tooltip();
-	  })
-	</script>
-	<%= content_for :scripts %>
 </html>
