@@ -186,12 +186,21 @@ class InventoryItemsController < ApplicationController
     render :json => units
   end
   
-  def rate_index
+  def user_ratings
     @inventory_items = InventoryItem.joins(:cart_items => :order).where("orders.user_id = ?", current_user.id).uniq
+    
+    respond_to do |format|
+      format.html
+    end
   end
   
   def rate
+    inventory_item = InventoryItem.find(params[:id])
+    inventory_item.update_or_create_rating(current_user.id, params[:rating])
     
+    respond_to do |format|
+      format.js { render :nothing => true }
+    end
   end
   
 end

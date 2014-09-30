@@ -70,6 +70,7 @@ NeighborMarket::Application.routes.draw do
       post 'delete_from_current_inventory'
       get 'change_request'
       post 'send_change_request'
+      post 'rate'
     end
     collection do
       get 'get_second_level_category'
@@ -77,8 +78,7 @@ NeighborMarket::Application.routes.draw do
       get 'browse'
       get 'browse_all'
       get 'units'
-      get 'rate_index'
-      post 'rate'
+      get 'user_ratings'
     end
   end
   
