@@ -38,10 +38,18 @@ class neighbormarket::backup (
       group   => $group;
     }->
     file {
-      "${app_directory}/Backup/schedules/db_backup.rb":
+      "${app_directory}/Backup/models/public_backup.rb":
 	  replace => false,
 	  ensure => present,
-      content => template('neighbormarket/db_backup_schedule.rb.erb'),
+      content => template('neighbormarket/public_backup.rb.erb'),
+      owner   => $user,
+      group   => $group;
+    }->
+    file {
+      "${app_directory}/Backup/schedules/backup.rb":
+	  replace => false,
+	  ensure => present,
+      content => template('neighbormarket/backup_schedule.rb.erb'),
       owner   => $user,
       group   => $group;
     }
