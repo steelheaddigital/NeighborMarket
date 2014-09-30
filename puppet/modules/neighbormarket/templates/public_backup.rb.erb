@@ -1,6 +1,6 @@
 Model.new(:public_backup, 'public directory backup') do
 	archive :public_archive do |archive|
-		archive.user_sudo
+		archive.use_sudo
 		archive.add '/home/neighbormarket/shared/public'
 	end
   
