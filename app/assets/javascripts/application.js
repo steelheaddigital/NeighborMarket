@@ -14,5 +14,5 @@
 //= require seller
 //= require user_registrations
 //= require user
-//= require inventory_item
+//= require reviews
 //= require_self

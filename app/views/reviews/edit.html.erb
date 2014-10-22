@@ -1,3 +1,4 @@
+<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -16,9 +17,19 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+%>
 
-class Rating < ActiveRecord::Base
-	belongs_to :rateable, polymorphic: true
-  
-  attr_accessible :user_id, :rating
-end
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+		  <button class="close" data-dismiss="modal" type="button">×</button>
+		  <h3 id="InventoryHeading">Write a Review</h3>
+		</div>
+		<%= form_for @review, html: { id: "ReviewForm"  } do |f| %>
+			<%= f.hidden_field :user_id %>
+			<%= hidden_field_tag :reviewable_type,  @reviewable_type%>
+			<%= hidden_field_tag :reviewable_id, @reviewable_id %>
+			<%= render :partial => 'form', :locals => { :f => f } %>
+		<% end %>
+	</div>
+</div>

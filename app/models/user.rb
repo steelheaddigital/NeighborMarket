@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :order_change_requests
   has_many :inventory_item_change_requests
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
+  has_many :reviews
   
   validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, :presence => true, :unless => :auto_create
@@ -293,6 +294,15 @@ class User < ActiveRecord::Base
     self.roles.clear
     
     self.save
+  end
+  
+  def avg_seller_rating
+    ratings = self.inventory_items.joins(:reviews).average("reviews.rating")
+    if !ratings.nil?
+      ratings.round(2)
+    else
+      nil
+    end
   end
   
 end

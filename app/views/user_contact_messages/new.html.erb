@@ -25,7 +25,7 @@
 	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	    <h4 class="modal-title" id="myModalLabel">Contact</h4>
 	  </div>
-	  <%= bootstrap_form_for @message, :url => contact_user_path, :method => "POST" do |f|%>
+	  <%= bootstrap_form_for @message, :url => create_user_contact_message_path(@user), :method => "POST" do |f|%>
 	  <div class="modal-body">
 	      <%= f.error_messages %>
 	      <%= f.text_field :email%>

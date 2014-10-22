@@ -26,6 +26,7 @@ class InventoryItemsController < ApplicationController
   def show
     @inventory_item = InventoryItem.find(params[:id])
     @site_settings = SiteSetting.first
+    @reviews = @inventory_item.reviews.joins(:user).select('reviews.*, users.username AS username').paginate(:page => 1, :per_page => 3)
     
     respond_to do |format|
       format.html
@@ -186,20 +187,17 @@ class InventoryItemsController < ApplicationController
     render :json => units
   end
   
-  def user_ratings
-    @inventory_items = InventoryItem.joins(:cart_items => :order).where("orders.user_id = ?", current_user.id).uniq
-    
+  def user_reviews
+    @inventory_items = InventoryItem.select("inventory_items.*, reviews.id AS review_id, reviews.rating AS rating, reviews.review AS review, order_cycles.buyer_pickup_date AS sale_date")
+                                    .joins(:cart_items => { :order => :order_cycle })
+                                    .joins("LEFT JOIN reviews ON reviews.reviewable_id = inventory_items.id AND reviews.reviewable_type = 'InventoryItem'")
+                                    .where("orders.user_id = ? AND order_cycles.status = 'complete'", current_user.id)
+                                    .order("order_cycles.buyer_pickup_date DESC")
+                                    .uniq
+
     respond_to do |format|
       format.html
-    end
-  end
-  
-  def rate
-    inventory_item = InventoryItem.find(params[:id])
-    inventory_item.update_or_create_rating(current_user.id, params[:rating])
-    
-    respond_to do |format|
-      format.js { render :nothing => true }
+      format.js { render :layout => false }
     end
   end
   

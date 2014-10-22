@@ -71,16 +71,6 @@ class UserControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JS
   end
   
-  test "should send contact" do
-    user = users(:approved_seller_user)
-    
-    post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
-    
-    assert_redirected_to user_url(user)
-    assert_not_nil assigns(:message)
-    
-  end
-  
   test "should auto create users from file" do
     assert_difference 'User.count', 2 do
       post :import, :file => fixture_file_upload('files/user_upload.csv', 'text/csv')
@@ -170,16 +160,6 @@ class UserControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil assigns(:user)
-  end
-  
-  test "anonymous user can access contact of approved seller" do
-    sign_out @user
-    user = users(:approved_seller_user)
-    
-    post :contact, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}
-    
-    assert_redirected_to user_url(user)
-    assert_not_nil assigns(:message)
   end
   
 end

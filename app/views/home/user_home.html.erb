@@ -19,45 +19,47 @@
 #
 %>
 
-<div class ="jumbotron masthead" style="padding-bottom: 40px; padding-top: 20px;">
-  <div class ="container">
-    <p>Welcome <%= current_user.username %>.  What would you like to do?</p>
+<div class ="jumbotron masthead" >
+  <div class ="container-fluid">
+	<div class="row" style="margin-bottom: 40px;">
+    	<p>Welcome <%= current_user.username %>.  What would you like to do?</p>
+	</div>
+	<div class="row marketing">
+	  <%if @current_order_id || @completed_order_id%>
+		  <div style="display: inline-block; margin-right: 100px;">
+		    <div style ="font-size:50px; margin-bottom: 20px;">
+		      <i class="icon-shopping-cart icon-large"></i>
+		    </div>
+		    <p style="padding-top: 15px;">
+	            <% if @current_order_id %>
+	                <%= link_to('Edit My Order', edit_order_path(@current_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
+	            <% end %>
+	            <% if @completed_order_id %>
+	                <%= link_to('Edit My Order', order_path(@completed_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
+	            <% end %>
+		    </p>
+		  </div>
+	  <%end%>
+	  <%if @seller %>
+		  <div style="display: inline-block; margin-right: 100px;">
+		    <div style ="font-size:50px; margin-bottom: 20px;">
+		      <i class="icon-money icon-large"></i>
+		    </div>
+		    <p style="padding-top: 15px;">
+		      <%= link_to 'Sell', seller_index_path, :class => "btn btn-primary", :style => "width: 150px;" %>
+		    </p>
+		  </div>
+	  <%end%>
+	  <%if @manager %>
+		  <div style="display: inline-block; margin-right: 100px;">
+		    <div style ="font-size:50px; margin-bottom: 20px;">
+		      <i class="icon-search icon-large"></i>
+		    </div>
+		    <p>
+		      <%= link_to 'Manage', edit_site_settings_management_index_path, :class => "btn btn-primary", :style => "width: 150px;" %>
+		    </p>
+		  </div>
+	  <%end%>
+	</div>
   </div>
-</div>
-<div class="row marketing">
-  <%if @current_order_id || @completed_order_id%>
-	  <div style="display: inline-block; margin-right: 100px;">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-shopping-cart icon-large"></i>
-	    </div>
-	    <p style="padding-top: 15px;">
-            <% if @current_order_id %>
-                <%= link_to('Edit My Order', edit_order_path(@current_order_id), :class => "btn btn-primary", :style => "width: 100px;") %>
-            <% end %>
-            <% if @completed_order_id %>
-                <%= link_to('Edit My Order', order_path(@completed_order_id), :class => "btn btn-primary", :style => "width: 100px;") %>
-            <% end %>
-	    </p>
-	  </div>
-  <%end%>
-  <%if @seller %>
-	  <div style="display: inline-block; margin-right: 100px;">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-money icon-large"></i>
-	    </div>
-	    <p style="padding-top: 15px;">
-	      <%= link_to 'Sell', seller_index_path, :class => "btn btn-primary", :style => "width: 100px;" %>
-	    </p>
-	  </div>
-  <%end%>
-  <%if @manager %>
-	  <div style="display: inline-block; margin-right: 100px;">
-	    <div style ="font-size:50px; margin-bottom: 20px;">
-	      <i class="icon-search icon-large"></i>
-	    </div>
-	    <p>
-	      <%= link_to 'Manage', edit_site_settings_management_index_path, :class => "btn btn-primary", :style => "width: 100px;" %>
-	    </p>
-	  </div>
-  <%end%>
 </div>

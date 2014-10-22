@@ -130,19 +130,19 @@ function Seller(){
 			   $("#SellerContent").html(data);
 	       },
 	       error: function(request){
-	           $("#InventoryModal").html(request.responseText).modal('show');
+	           $("#Modal").html(request.responseText).modal('show');
 	       }
 	    });
 	}
     
     this.LoadInventoryDialog = function(url){
-        $("#InventoryModal").load(url, function() 
-            {$("#SellerNotice").hide();
+        $("#Modal").load(url, function() {
+			$("#SellerNotice").hide();
 			$(this).modal('show');
         });
     }
 
     this.CloseInventoryDialog = function(){
-        $("#InventoryModal").modal('hide');
+        $("#Modal").modal('hide');
     }
 }

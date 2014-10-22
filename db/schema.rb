@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140929115955) do
+ActiveRecord::Schema.define(version: 20141004110110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,14 +128,18 @@ ActiveRecord::Schema.define(version: 20140929115955) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ratings", force: true do |t|
+  create_table "reviews", force: true do |t|
     t.integer  "rating"
-    t.integer  "rateable_id"
-    t.string   "rateable_type"
+    t.text     "review"
+    t.integer  "reviewable_id"
+    t.string   "reviewable_type"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "reviews", ["reviewable_id", "reviewable_type"], name: "index_reviews_on_reviewable_id_and_reviewable_type", using: :btree
+  add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string "name"
@@ -181,6 +185,7 @@ ActiveRecord::Schema.define(version: 20140929115955) do
     t.boolean "require_terms_of_service", default: true
     t.boolean "facebook_enabled",         default: false
     t.text    "facebook_app_id"
+    t.boolean "reputation_enabled",       default: false
   end
 
   create_table "top_level_categories", force: true do |t|

@@ -26,11 +26,13 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     @items_for_display = InventoryItem.joins(:order_cycles)
                                       .where("order_cycles.status = 'current' AND inventory_items.user_id = ?", params[:id])
-    @message = UserContactMessage.new
+                                      
+    @average_rating = @user.avg_seller_rating
     session[:last_search_path] = request.fullpath
     
     respond_to do |format|
       format.html
+      format.js { render :layout => false }
     end
   end
   
@@ -105,23 +107,6 @@ class UserController < ApplicationController
       end
     end
   
-  end
-    
-  def contact
-    @message = UserContactMessage.new(params[:user_contact_message])
-    @user = User.find(params[:id])
-    
-    respond_to do |format|
-      if @message.valid?
-        UserMailer.delay.user_contact_mail(@user, @message)
-        format.html { redirect_to(user_path(@user), :notice => "Your message was successfully sent.") }
-        format.js { redirect_to(user_path(@user), :notice => "Your message was successfully sent.") }
-      else
-        format.html { render "_contact" }
-        format.js { render "_contact", :layout => false, :status => 403 }
-      end
-    end
-    
   end
   
   def import

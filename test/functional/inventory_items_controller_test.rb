@@ -231,6 +231,13 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JSON
   end
   
+  test  "user_reviews returns inventory items" do
+    get :user_reviews
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+  end
+  
   test "seller cannot access items other than their own" do
     item = inventory_items(:two)
     
@@ -261,6 +268,9 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
     
     get :destroy, :id => item.id
+    assert_redirected_to new_user_session_path
+    
+    get :user_reviews
     assert_redirected_to new_user_session_path
     
   end

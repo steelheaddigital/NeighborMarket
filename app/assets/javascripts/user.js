@@ -17,6 +17,15 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+$(document).on("click", ".contactButton", function(event){
+    event.preventDefault();
+    var url = $(this).attr("href"),
+     	user = new User()
+    
+    user.LoadContactDialog(url);
+    
+    return false;
+});
 
 $(document).on("submit", "#new_user_contact_message", function(){
     var user = new User();
@@ -28,6 +37,13 @@ function User(){
 	
 	var self = this;
 	
+    this.LoadContactDialog = function(url){
+        $("#Modal").load(url, function() {
+            var modal = $(this);
+			modal.modal('show');
+        });
+    }
+	
     this.SubmitContactForm = function(form){
 		submitButton = form.find(':submit');
 		submitButton.attr('disabled', 'disabled');
@@ -35,16 +51,18 @@ function User(){
 		form.ajaxSubmit({
 	       dataType: "html",
 	       success: function(data, textStatus, request){
-	           self.CloseDialog();
-			   $("body").html(data);
+           		$("#InnerContent").html(request.responseText);
+  				var ratings = $("#InnerContent").find("input[type=radio].star");
+  				ratings.rating();
+				self.CloseDialog();
 	       },
 	       error: function(request){
-	           $("#ContactModal").html(request.responseText).modal('show');
+	           $("#Modal").html(request.responseText).modal('show');
 	       }
 	    });
 	}
 	
     this.CloseDialog = function(){
-        $("#ContactModal").modal('hide');
+        $("#Modal").modal('hide');
     }
 }

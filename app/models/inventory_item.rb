@@ -26,7 +26,7 @@ class InventoryItem < ActiveRecord::Base
   has_many :inventory_item_order_cycles
   has_many :order_cycles, -> { uniq }, :through => :inventory_item_order_cycles
   has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
-  has_many :ratings, as: :rateable
+  has_many :reviews, as: :reviewable
   
   attr_accessible :top_level_category_id, :second_level_category_id, :name, :price, :price_unit, :quantity_available, :description, :photo, :is_deleted, :approved, :autopost, :autopost_quantity, :minimum
   attr_accessor :current_user
@@ -153,13 +153,22 @@ class InventoryItem < ActiveRecord::Base
     cart_items.sum(:quantity)
   end
   
-  def update_or_create_rating(user_id, rating)
-    existing_rating = self.ratings.where(user_id: user_id).first
-    if !existing_rating.nil?
-      existing_rating.update_attribute(:rating, rating)
+  def update_or_create_review(user_id, rating, review)
+    existing_review = self.reviews.where(user_id: user_id).first
+    if !existing_review.nil?
+      existing_review.update_attributes({rating: rating, review: review})
     else
-      self.ratings.build(user_id: user_id, rating: rating)
+      self.reviews.build(user_id: user_id, rating: rating, review: review)
       self.save
+    end
+  end
+  
+  def avg_rating
+    ratings = self.reviews.average("reviews.rating")
+    if !ratings.nil?
+      ratings.round(2)
+    else
+      nil
     end
   end
   

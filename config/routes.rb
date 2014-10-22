@@ -21,7 +21,6 @@ NeighborMarket::Application.routes.draw do
   resources :user do 
     member do
       post "approve_seller"
-      post "contact"
     end
     collection do
       post "import"
@@ -70,7 +69,7 @@ NeighborMarket::Application.routes.draw do
       post 'delete_from_current_inventory'
       get 'change_request'
       post 'send_change_request'
-      post 'rate'
+      post 'review'
     end
     collection do
       get 'get_second_level_category'
@@ -78,7 +77,7 @@ NeighborMarket::Application.routes.draw do
       get 'browse'
       get 'browse_all'
       get 'units'
-      get 'user_ratings'
+      get 'user_reviews'
     end
   end
   
@@ -131,6 +130,11 @@ NeighborMarket::Application.routes.draw do
       post 'complete'
     end
   end
+  
+  resources :reviews
+  
+  get 'user_contact_messages/:id', to: 'user_contact_messages#new', as: 'new_user_contact_message'
+  post 'user_contact_messages/:id', to: 'user_contact_messages#create', as: 'create_user_contact_message'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

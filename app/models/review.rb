@@ -1,4 +1,3 @@
-<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -17,19 +16,10 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
-%>
 
-<div class="modal-dialog modal-lg">
-	<div class="modal-content">
-		<div class="modal-header">
-		  <button class="close" data-dismiss="modal" type="button">×</button>
-		  <h3 class="modal-title">Terms of Service</h3>
-		</div>
-		<div class="modal-body">
-			<%= @terms_of_service.html_safe%>
-		</div>
-		<div class="modal-footer">
-		  <a class="btn btn-default" data-dismiss="modal" href="#">Close</a>
-		</div>
-	</div>
-</div>
+class Review < ActiveRecord::Base
+	belongs_to :reviewable, polymorphic: true
+  belongs_to :user
+  
+  attr_accessible :review, :rating
+end

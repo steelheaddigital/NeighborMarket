@@ -28,7 +28,7 @@ class SiteSetting < ActiveRecord::Base
   validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
   
   
-  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service, :facebook_enabled, :facebook_app_id
+  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service, :facebook_enabled, :facebook_app_id, :reputation_enabled
   
   def self.new_setting(settings)
     current_site_settings = self.first

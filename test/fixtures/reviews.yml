@@ -1,0 +1,4 @@
+one:
+  user: buyer_user
+  reviewable: one (InventoryItem)
+  rating: 3

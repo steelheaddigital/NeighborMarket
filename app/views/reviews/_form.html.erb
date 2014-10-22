@@ -1,0 +1,48 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<div class="modal-body">
+	<div class=container-fluid>
+		  <div class="row">
+			  <div class="col-md-12">
+				<div class="form-group">
+					<div>
+						<%= f.label :rating %>
+					</div>
+					<%= f.radio_button :rating, 1, class: "star" %>
+					<%= f.radio_button :rating, 2, class: "star" %>
+					<%= f.radio_button :rating, 3, class: "star" %>
+					<%= f.radio_button :rating, 4, class: "star" %>
+					<%= f.radio_button :rating, 5, class: "star" %>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<%= f.label :review %>
+					<%= f.text_area :review , :rows => 5, class: "form-control" %>
+				</div>
+			  </div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+  <a class="btn btn-default inlineButton" data-dismiss="modal" href="#">Cancel</a>
+  <%= f.submit("Submit Your Review", :class => 'btn btn-primary inlineButton') %>
+</div>

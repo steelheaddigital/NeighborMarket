@@ -52,6 +52,7 @@ class Ability
     
     if user.approved_seller?
       can :manage, InventoryItem, :user_id => user.id
+      cannot :review, InventoryItem, :user_id => user.id
       can :create, InventoryItemChangeRequest
     end
     
@@ -60,6 +61,7 @@ class Ability
       can :create, Order
       can :finish, Order
       can :create, OrderChangeRequest
+      can :review, InventoryItem, :id => InventoryItem.joins(:cart_items => :order).where("orders.user_id = ?", user.id).pluck(:id)
     end
     
     if user
@@ -69,9 +71,10 @@ class Ability
         can :destroy, CartItem if cart.cart_items.where("cart_id = ? AND order_id IS NULL", cart.id).count > 0
         can :manage, Cart if cart
       end
-      can [:show,:contact, :contact_form], User do |u|
+      can [:show, :contact], User do |u|
         u.approved_seller?
-      end 
+      end
+      can :create, UserContactMessage
     end
   end
 end

@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   around_filter :set_time_zone
   before_filter :current_order_id
   before_filter :completed_order_id
-  after_filter :flash_to_headers
+  after_filter :add_headers
   
   def after_sign_in_path_for(resource)
     if resource.manager? && current_order_id.nil? && completed_order_id.nil?
@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def flash_to_headers
+  def add_headers
     #For AJAX Requests, add the flash message to custom headers so they can be displayed via JS
     return unless request.xhr?
     response.headers['X-Notice'] = flash[:notice]  unless flash[:notice].blank?
