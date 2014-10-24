@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004110110) do
+ActiveRecord::Schema.define(version: 20141022123026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,11 +27,17 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.boolean  "minimum_reached_at_order_cycle_end", default: true
   end
 
+  add_index "cart_items", ["cart_id"], name: "index_cart_items_on_cart_id", using: :btree
+  add_index "cart_items", ["inventory_item_id"], name: "index_cart_items_on_inventory_item_id", using: :btree
+  add_index "cart_items", ["order_id"], name: "index_cart_items_on_order_id", using: :btree
+
   create_table "carts", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0
@@ -57,6 +63,9 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.datetime "updated_at",                        null: false
     t.integer  "user_id"
   end
+
+  add_index "inventory_item_change_requests", ["inventory_item_id"], name: "index_inventory_item_change_requests_on_inventory_item_id", using: :btree
+  add_index "inventory_item_change_requests", ["user_id"], name: "index_inventory_item_change_requests_on_user_id", using: :btree
 
   create_table "inventory_item_order_cycles", force: true do |t|
     t.integer "inventory_item_id", null: false
@@ -87,6 +96,10 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.integer  "minimum"
   end
 
+  add_index "inventory_items", ["second_level_category_id"], name: "index_inventory_items_on_second_level_category_id", using: :btree
+  add_index "inventory_items", ["top_level_category_id"], name: "index_inventory_items_on_top_level_category_id", using: :btree
+  add_index "inventory_items", ["user_id"], name: "index_inventory_items_on_user_id", using: :btree
+
   create_table "order_change_requests", force: true do |t|
     t.integer  "user_id"
     t.integer  "order_id"
@@ -95,6 +108,9 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
+
+  add_index "order_change_requests", ["order_id"], name: "index_order_change_requests_on_order_id", using: :btree
+  add_index "order_change_requests", ["user_id"], name: "index_order_change_requests_on_user_id", using: :btree
 
   create_table "order_cycle_settings", force: true do |t|
     t.boolean "recurring",        default: false
@@ -113,6 +129,8 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.datetime "buyer_pickup_date"
   end
 
+  add_index "order_cycles", ["status"], name: "index_order_cycles_on_status", using: :btree
+
   create_table "orders", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at",                     null: false
@@ -121,6 +139,9 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.integer  "order_cycle_id"
     t.boolean  "deliver",        default: false
   end
+
+  add_index "orders", ["order_cycle_id"], name: "index_orders_on_order_cycle_id", using: :btree
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "price_units", force: true do |t|
     t.string   "name"
@@ -149,6 +170,8 @@ ActiveRecord::Schema.define(version: 20141004110110) do
     t.integer "role_id"
     t.integer "user_id"
   end
+
+  add_index "roles_users", ["role_id", "user_id"], name: "index_roles_users_on_role_id_and_user_id", using: :btree
 
   create_table "second_level_categories", force: true do |t|
     t.integer  "top_level_category_id"
