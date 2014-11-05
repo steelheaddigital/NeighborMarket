@@ -37,7 +37,7 @@ class ReviewsController < ApplicationController
     
     respond_to do |format|
       if @review.save
-        flash[:notice] = 'Review Successfully Submitted'
+        flash[:notice] = 'Review successfully submitted'
         format.html {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
         format.js {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
       else
@@ -61,12 +61,25 @@ class ReviewsController < ApplicationController
     @review = Review.find(params[:id])
     respond_to do |format|
       if @review.update_attributes(params[:review])
-        flash[:notice] = 'Review Successfully Updated'
+        flash[:notice] = 'Review successfully updated'
         format.html {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
         format.js {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
       else
         format.html { render :edit }
         format.js { render :edit, :layout => false, :status => 403 }
+      end
+    end
+  end
+  
+  def destroy
+    @review = Review.find(params[:id])
+    respond_to do |format|
+      if @review.destroy
+        flash[:notice] = 'Review successfully deleted'
+        format.html {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
+      else
+        flash[:notice] = 'Review could not be deleted'
+        format.html {redirect_to controller: @reviewable.class.to_s.pluralize.underscore, action: :user_reviews}
       end
     end
   end

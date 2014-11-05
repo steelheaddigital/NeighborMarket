@@ -24,6 +24,7 @@ gem 'uglifier', '>= 2.5.3'
 gem 'font-awesome-rails', '~> 3.2.1.3'
 gem 'autoprefixer-rails'
 gem 'bootstrap_form', '~> 2.1.1'
+gem 'bootstrap-will_paginate', '~> 0.0.10'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'

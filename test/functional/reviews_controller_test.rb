@@ -116,6 +116,21 @@ class ReviewsControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JS
   end
   
+  test "should destroy review" do
+    item = inventory_items(:one)
+    review = reviews(:one)
+    
+    assert_difference 'Review.count', -1 do
+      post :destroy, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
+    end
+    
+    assert_not_nil assigns(:reviewable_type)
+    assert_not_nil assigns(:reviewable_id)
+    assert_not_nil assigns(:reviewable)
+    assert_not_nil assigns(:review)
+    assert_redirected_to user_reviews_inventory_items_url
+  end
+  
   test "user cannot review items that they have not purchased" do
     sign_out @user
     @user  = users(:approved_seller_user)
@@ -133,6 +148,9 @@ class ReviewsControllerTest < ActionController::TestCase
     assert_response :not_found
     
     post :update, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
+    assert_response :not_found
+    
+    post :destroy, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
     assert_response :not_found
     
   end
@@ -156,6 +174,9 @@ class ReviewsControllerTest < ActionController::TestCase
     post :update, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
     assert_response :not_found
     
+    post :destroy, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
+    assert_response :not_found
+    
   end
   
   test "anonymous user cannot access protected actions" do
@@ -173,6 +194,9 @@ class ReviewsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
     
     post :update, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
+    assert_redirected_to new_user_session_path
+    
+    post :destroy, :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
     assert_redirected_to new_user_session_path
   end
   

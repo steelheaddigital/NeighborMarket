@@ -70,7 +70,7 @@
 				<% if SiteSetting.first.reputation_enabled && !inventory_item.avg_rating.nil? %>
 					<div class="row">
 						<div class="col-md-12">
-							<h3>Reviews</h3>
+							<h3>Reviews (<%=inventory_item.reviews.count%>)</h3>
 							<p>
 								<span>
 									<%= radio_button_tag "rating", 0.5, inventory_item.avg_rating > 0 && inventory_item.avg_rating <= 0.5, class: "star {split:2}", disabled: "disabled" %>
@@ -86,25 +86,28 @@
 								</span>
 								<span class="avgRating"><%= inventory_item.avg_rating %> average rating</span>
 							</p>
-							<% @reviews.each do |review| %>
-							<div class="panel panel-default">
-								<div class="panel-body">
-									<span>
-										<%= radio_button_tag "rating#{inventory_item.id}", 1, !review.rating.nil? && review.rating == 1, class: "star", disabled: "disabled" %>
-										<%= radio_button_tag "rating#{inventory_item.id}", 2, !review.rating.nil? && review.rating == 2, class: "star", disabled: "disabled" %>
-										<%= radio_button_tag "rating#{inventory_item.id}", 3, !review.rating.nil? && review.rating == 3, class: "star", disabled: "disabled" %>
-										<%= radio_button_tag "rating#{inventory_item.id}", 4, !review.rating.nil? && review.rating == 4, class: "star", disabled: "disabled" %>
-										<%= radio_button_tag "rating#{inventory_item.id}", 5, !review.rating.nil? && review.rating == 5, class: "star", disabled: "disabled" %>
-									</span>
-									<span class="avgRating">
-										By <%= review.username%> <span><%= format_short_date(review.updated_at)%></span>
-									</span>
-									<p>
-										<%= review.review %>
-									</p>
+							<div class="reviewsContainer">
+								<% @reviews.each do |review| %>
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<span>
+											<%= radio_button_tag "rating#{review.id}", 1, !review.rating.nil? && review.rating == 1, class: "star", disabled: "disabled" %>
+											<%= radio_button_tag "rating#{review.id}", 2, !review.rating.nil? && review.rating == 2, class: "star", disabled: "disabled" %>
+											<%= radio_button_tag "rating#{review.id}", 3, !review.rating.nil? && review.rating == 3, class: "star", disabled: "disabled" %>
+											<%= radio_button_tag "rating#{review.id}", 4, !review.rating.nil? && review.rating == 4, class: "star", disabled: "disabled" %>
+											<%= radio_button_tag "rating#{review.id}", 5, !review.rating.nil? && review.rating == 5, class: "star", disabled: "disabled" %>
+										</span>
+										<span class="avgRating">
+											By <%= review.username%> <span><%= format_short_date(review.updated_at)%></span>
+										</span>
+										<p>
+											<%= review.review %>
+										</p>
+									</div>
 								</div>
+								<%end%>
+								<%= will_paginate @reviews %>
 							</div>
-							<%end%>
 						</div>
 					</div>
 				<% end %>

@@ -45,6 +45,8 @@ GEM
     bcrypt (3.1.7)
     bootstrap-sass (3.2.0.1)
       sass (~> 3.2)
+    bootstrap-will_paginate (0.0.10)
+      will_paginate
     bootstrap_form (2.1.1)
     builder (3.1.4)
     cancan (1.6.10)
@@ -189,6 +191,7 @@ DEPENDENCIES
   acts_as_indexed (~> 0.8.3)
   autoprefixer-rails
   bootstrap-sass (~> 3.2.0)
+  bootstrap-will_paginate (~> 0.0.10)
   bootstrap_form (~> 2.1.1)
   cancan (~> 1.6.9)
   carmen-rails (~> 1.0.1)

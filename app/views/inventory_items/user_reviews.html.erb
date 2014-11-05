@@ -21,10 +21,11 @@
 					<label>Latest purchase date: </label>
 					<%= format_date_time(inventory_item.sale_date)%>
 				</p>
-				<p>
+				<div>
 					<label>Your Review</label>
 					<%= link_to "Edit", edit_review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review' if !inventory_item.rating.nil? %>
-				</p>
+						<%= button_to "Delete", review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), method: 'delete', form_class: 'inline',  data: { confirm: "Are you sure?" }, class: 'btn-link' if !inventory_item.rating.nil? %>
+				</div>
 				<% if inventory_item.rating.nil? && inventory_item.review.nil? %>
 					<p>
 						<%= link_to "New Review", new_review_path(:reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review' %>

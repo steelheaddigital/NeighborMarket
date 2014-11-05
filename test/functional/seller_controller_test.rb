@@ -131,7 +131,7 @@ class SellerControllerTest < ActionController::TestCase
   test "should export csv if commit equals Export to CSV" do
     post :sales_report_details, :commit => "Export to CSV", :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
     
-    assert_match("Item Name,Price Per Unit,Total Units Sold,Total Price\nCarrot,10.0,20,200.0\nJam,10.0,10,100.0\n", @response.body.to_s)
+    assert_equal("Item Name,Price Per Unit,Total Units Sold,Total Price\nCarrot,10.0,20,200.0\ntest,10.0,3,30.0\ntest,10.0,5,50.0\nJam,10.0,10,100.0\n", @response.body.to_s)
     assert_response(:success)
   end
   
