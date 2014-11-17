@@ -26,7 +26,6 @@ class InventoryItemsController < ApplicationController
   def show
     @inventory_item = InventoryItem.find(params[:id])
     @site_settings = SiteSetting.first
-    @reviews = @inventory_item.reviews.joins(:user).select('reviews.*, users.username AS username').order('reviews.created_at DESC').paginate(:page => params[:page], :per_page => 2)
     
     respond_to do |format|
       format.html

@@ -112,31 +112,33 @@
 		</div>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-5">
-					<div id="InventoryItemCarousel" class="carousel slide" data-interval="20000" data-ride="carousel">
-					  <!-- Wrapper for slides -->
-					  <div class="carousel-inner">
-						<% @items_for_carousel.each_with_index do |item, index| %>
-						    <div class="<%=if index==0 then "item active" else "item" end%>">
-								<div class="wrapper">
-						      	  	<a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium) %></a>
-						      		<div class="carousel-caption">
-								  	  <h2><%=link_to(item.name, inventory_item_path(item))%></h2>
-						      		</div>
-						  		</div>
-						    </div>
-						<%end%>
-					  </div>
-					  <!-- Controls -->
-					  <a class="left carousel-control" href="#InventoryItemCarousel" role="button" data-slide="prev">
-					    <span class="glyphicon glyphicon-chevron-left icon-chevron-left"></span>
-					  </a>
-					  <a class="right carousel-control" href="#InventoryItemCarousel" role="button" data-slide="next">
-					    <span class="glyphicon glyphicon-chevron-right icon-chevron-right"></span>
-					  </a>
+				<% if @items_for_carousel.count > 0 %>
+					<div class="col-md-5">
+						<div id="InventoryItemCarousel" class="carousel slide" data-interval="20000" data-ride="carousel">
+						  <!-- Wrapper for slides -->
+						  <div class="carousel-inner">
+							<% @items_for_carousel.each_with_index do |item, index| %>
+							    <div class="<%=if index==0 then "item active" else "item" end%>">
+									<div class="wrapper">
+							      	  	<a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium) %></a>
+							      		<div class="carousel-caption">
+									  	  <h2><%=link_to(item.name, inventory_item_path(item))%></h2>
+							      		</div>
+							  		</div>
+							    </div>
+							<%end%>
+						  </div>
+						  <!-- Controls -->
+						  <a class="left carousel-control" href="#InventoryItemCarousel" role="button" data-slide="prev">
+						    <span class="glyphicon glyphicon-chevron-left icon-chevron-left"></span>
+						  </a>
+						  <a class="right carousel-control" href="#InventoryItemCarousel" role="button" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right icon-chevron-right"></span>
+						  </a>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-7">
+				<% end %>
+				<div class=<%= "col-md-7" if @items_for_carousel.count > 0 %> >
 					<div class="container">
 						<div class="row marketing">
 						  <div class="col-md-4 col-sm-4">

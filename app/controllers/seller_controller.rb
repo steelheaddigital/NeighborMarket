@@ -131,6 +131,15 @@ class SellerController < ApplicationController
     end 
   end
   
+  def reviews
+    @inventory_items = InventoryItem.joins(:reviews).where(user_id: current_user.id).uniq
+    @average_rating = current_user.avg_seller_rating
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   private
   def sales_report_csv(items)
     CSV.generate do |csv|

@@ -135,6 +135,13 @@ class SellerControllerTest < ActionController::TestCase
     assert_response(:success)
   end
   
+  test "should get reviews" do
+    get :reviews
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+  end
+  
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
@@ -147,6 +154,8 @@ class SellerControllerTest < ActionController::TestCase
     get :packing_list
     assert_redirected_to new_user_session_path
     
+    get :reviews
+    assert_redirected_to new_user_session_path
   end
   
 end

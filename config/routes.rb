@@ -87,6 +87,7 @@ NeighborMarket::Application.routes.draw do
       get 'pick_list'
       get 'packing_list'
       get 'sales_report'
+      get 'reviews'
       post 'sales_report_details'
       post 'add_past_inventory'
     end
