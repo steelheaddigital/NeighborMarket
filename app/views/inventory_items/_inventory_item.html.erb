@@ -38,6 +38,9 @@
 					    <h2>
 					      <%= item_name(inventory_item) %>
 					    </h2>
+						<%if SiteSetting.first.facebook_enabled%>
+							<p><span class="fb-share-button" data-href="<%= inventory_item_url(inventory_item) %>", data-layout="button"></span></p>
+						<%end%>
 					    <p><%= inventory_item.description %></p>
 					</div>
 				</div>

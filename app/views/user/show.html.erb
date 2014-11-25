@@ -32,6 +32,9 @@
 	<div class="row">
 	    <div class="col-md-12">
 	        <h1><%= @user.username %></h1>
+			<%if SiteSetting.first.facebook_enabled%>
+				<p><span class="fb-share-button" data-href="<%= user_url(@user) %>", data-layout="button"></span></p>
+			<%end%>
 	    </div>
 	</div>
   <div class="row">
@@ -56,9 +59,6 @@
 				<span class="avgRating"><%= @average_rating %> average rating</span>
 			</p>
 		<% end %>
-		<%if SiteSetting.first.facebook_enabled%>
-			<p><span class="fb-share-button" data-href="<%= user_url(@user) %>", data-layout="button"></span></p>
-		<%end%>
 		<div class="itemCountContainer">
 			<h3><%=@items_for_display.count%> Current Items</h3>
 		</div>
