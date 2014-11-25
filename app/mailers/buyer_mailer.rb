@@ -62,4 +62,10 @@ class BuyerMailer < BaseMailer
           :subject => "The current order cycle has ended at #{@site_name}")
   end
   
+  def post_pickup_mail(buyer)
+    @site_name = SiteSetting.first.site_name
+    mail( :to => buyer.email,
+          :subject => "Thank you for participating in #{@site_name}")
+  end
+  
 end

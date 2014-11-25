@@ -192,5 +192,17 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_equal "The current order cycle has ended at Test Neighbor Market", sent.subject
     assert_match("The current order cycle at Test Neighbor Market ended on 08/17/2012 at 12:03 PM", sent.body.to_s)
   end
+
+  test "post_pickup_mail" do
+    settings = site_settings(:one)
+    buyer = users(:buyer_user)
+    
+    BuyerMailer.post_pickup_mail(buyer).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [buyer.email], sent.to
+    assert_match("Please rate and review your purchased products when you have a chance by logging in <a href=\"http://test.neighbormarket.org/inventory_items/user_reviews\">here</a>.", sent.body.to_s)
+  end
   
 end

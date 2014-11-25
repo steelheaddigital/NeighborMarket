@@ -41,11 +41,13 @@ class OrderCycleEndJob
         OrderCycle.queue_order_cycle_start_job(new_start_date)
         remove_items_from_orders_where_minimum_not_met(current_cycle.id)
         send_emails(current_cycle)
+        queue_post_pickup_job(current_cycle)
       end
     else
       current_cycle.update_column(:status, "complete")
       remove_items_from_orders_where_minimum_not_met(current_cycle.id)
       send_emails(current_cycle)
+      queue_post_pickup_job(current_cycle)
     end
   end
   
@@ -72,8 +74,17 @@ class OrderCycleEndJob
       else
         BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver
       end
-      
     end
+    
+  end
+  
+  def queue_post_pickup_job(order_cycle)
+      job = PostPickupJob.new(order_cycle.id)
+      send_date = order_cycle.buyer_pickup_date + 1.day
+      Delayed::Job.where("queue = ?","post_pickup").each do |job|
+  	    job.destroy
+      end
+      Delayed::Job.enqueue(job, 0, send_date, :queue => 'post_pickup')
   end
   
 end

@@ -69,6 +69,13 @@ class SellerMailer < BaseMailer
           :subject => "Your inventory item change request has been completed")
   end
   
+  def new_review_mail(review)
+    @review = review
+    @inventory_item = InventoryItem.find(review.reviewable_id)
+    mail( :to => @inventory_item.user.email,
+          :subject => "A new review has been submitted for #{@inventory_item.name} at #{SiteSetting.first.site_name}")
+  end
+  
   private
   
   def purchase_mail(seller, order, subject)

@@ -17,14 +17,18 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class Review < ActiveRecord::Base
-	belongs_to :reviewable, polymorphic: true
-  belongs_to :user
-  after_create :notify_seller
+class PostPickupJob < Struct.new(:order_cycle_id)
   
-  attr_accessible :review, :rating
-  
-  def notify_seller
-    SellerMailer.delay.new_review_mail(self)
+  def perform
+    if SiteSetting.first.reputation_enabled
+      orders = Order.where(:order_cycle_id => order_cycle_id)
+      orders.each do |order|
+        if order.has_cart_items_where_order_cycle_minimum_reached?
+          buyer = order.user
+          BuyerMailer.post_pickup_mail(buyer).deliver
+        end
+      end
+    end  
   end
+  
 end

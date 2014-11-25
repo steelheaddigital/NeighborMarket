@@ -124,5 +124,18 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_equal "Your inventory item change request has been completed", sent.subject
     assert_match("TestDescription", sent.body.to_s)
   end
+
+  test "new_review_mail" do 
+    review = reviews(:one)
+    item = InventoryItem.find(review.reviewable_id)
+    SellerMailer.new_review_mail(review).deliver
+    sent = ActionMailer::Base.deliveries.first
+    
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [item.user.email], sent.to
+    assert_equal "A new review has been submitted for Carrot at Test Neighbor Market", sent.subject
+    assert_match("A new review was submitted for Carrot on #{review.created_at.strftime("%m/%d/%Y")} at #{review.created_at.strftime("%I:%M %p")} by buyer", sent.body.to_s)
+    assert_match("<a href=\"http://test.neighbormarket.org/seller/reviews\">Log in</a> to view all of your reviews and ratings.", sent.body.to_s)
+  end
   
 end

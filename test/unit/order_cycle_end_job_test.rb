@@ -52,5 +52,16 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     assert_equal OrderCycle.find(current_cycle.id).status, "complete"
     
   end
+  
+  test "queue_post_pickup_job queues new post_pickup_job" do
+    order_cycle = order_cycles(:current)
+    job = OrderCycleEndJob.new
+    
+    job.queue_post_pickup_job(order_cycle)
+    queued_job = Delayed::Job.where("queue = ?","post_pickup")
+    
+    assert_not_nil queued_job.first
+    assert_equal queued_job.first.run_at, order_cycle.buyer_pickup_date + 1.day
+  end
 
 end

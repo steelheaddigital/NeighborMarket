@@ -1,3 +1,4 @@
+<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -16,15 +17,20 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+%>
 
-class Review < ActiveRecord::Base
-	belongs_to :reviewable, polymorphic: true
-  belongs_to :user
-  after_create :notify_seller
-  
-  attr_accessible :review, :rating
-  
-  def notify_seller
-    SellerMailer.delay.new_review_mail(self)
-  end
-end
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+	  <p>
+		  A new review was submitted for <%= @inventory_item.name %> on <%= format_date_time(@review.created_at) %> by <%= @review.user.username %>.
+	  </p>
+	  <p><strong>Rating: </strong><%= @review.rating %></p>
+	  <div style="font-weight: bold;">Review</div>
+	  <p><%= @review.review %></p>
+	  <p><a href="<%= reviews_seller_index_url %>">Log in</a> to view all of your reviews and ratings.</p>
+  </body>
+</html>

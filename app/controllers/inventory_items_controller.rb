@@ -20,7 +20,7 @@
 class InventoryItemsController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :search, :browse, :browse_all]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show, :search, :browse, :browse_all]
+  skip_authorize_resource :only => [:show, :search, :browse, :browse_all, :user_reviews]
   require 'will_paginate/array'
   
   def show
