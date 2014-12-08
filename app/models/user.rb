@@ -174,7 +174,7 @@ class User < ActiveRecord::Base
   end
   
   def tos_required?
-    tos_required = SiteSetting.first.require_terms_of_service?
+    tos_required = SiteContent.first.require_terms_of_service?
     !auto_create && tos_required
   end
   

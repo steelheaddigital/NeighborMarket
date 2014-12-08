@@ -34,27 +34,6 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => PriceUnit
   load_and_authorize_resource :class => InventoryItemChangeRequest
   
-  def edit_site_settings
-    @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def update_site_settings
-    
-    @site_settings = SiteSetting.new_setting(params[:site_setting])
-    
-    respond_to do |format|
-      if @site_settings.save
-        format.html { redirect_to edit_site_settings_management_index_path, notice: 'Site Settings Successfully Saved!'}
-      else
-        format.html { render :edit_site_settings }
-      end
-    end
-  end
-  
   def edit_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
     @order_cycle_settings.padding ||= 0
@@ -279,7 +258,7 @@ class ManagementController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id)
-    @inventory_guidelines = SiteSetting.first.inventory_guidelines
+    @inventory_guidelines = SiteContent.first.inventory_guidelines
     
     respond_to do |format|
       format.html

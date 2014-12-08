@@ -30,8 +30,6 @@ NeighborMarket::Application.routes.draw do
   
   resources :management do
     collection do
-      get 'edit_site_settings'
-      post 'update_site_settings'
       get 'edit_order_cycle_settings'
       post 'update_order_cycle_settings'
       get 'approve_sellers'
@@ -61,6 +59,18 @@ NeighborMarket::Application.routes.draw do
       get 'inventory_item_change_requests'
       get 'order_change_requests'
       post 'test_email'
+    end
+  end
+  
+  resources :site_settings, :only => ["index"] do
+    collection do
+      post 'update', as: 'update'
+    end
+  end
+  
+  resources :site_contents, :only => ["index"] do 
+    collection do
+      post 'update', as: 'update'
     end
   end
   

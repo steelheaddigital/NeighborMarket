@@ -332,8 +332,8 @@ class UserTest < ActiveSupport::TestCase
    end
    
    test "should save new user without terms of service agreement if terms of service acceptance not required" do
-     site_setting = SiteSetting.first;
-     site_setting.update_attributes({:require_terms_of_service => false})
+     site_content = SiteContent.first;
+     site_content.update_attributes({:require_terms_of_service => false})
      @seller.terms_of_service = false
      
      assert @seller.valid?

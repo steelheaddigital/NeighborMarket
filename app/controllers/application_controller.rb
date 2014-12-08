@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   
   def after_sign_in_path_for(resource)
     if resource.manager? && current_order_id.nil? && completed_order_id.nil?
-      return edit_site_settings_management_index_path
+      return site_settings_path
     end
     
     if resource.approved_seller? && current_order_id.nil? && completed_order_id.nil?

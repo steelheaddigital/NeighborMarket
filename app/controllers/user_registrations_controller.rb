@@ -26,6 +26,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     resource = build_resource({})
     @site_settings = SiteSetting.first
+    @site_contents = SiteContent.first
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
 
@@ -134,7 +135,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def terms_of_service
-    @terms_of_service = SiteSetting.first.terms_of_service
+    @terms_of_service = SiteContent.first.terms_of_service
     
     respond_to do |format|
       format.html

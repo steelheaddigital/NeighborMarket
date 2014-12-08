@@ -12,11 +12,6 @@ class SiteSettingTest < ActiveSupport::TestCase
      assert !site_setting.valid?, site_setting.errors.inspect
    end
    
-   test "should not validate if require_terms_of_service is true and terms_of_service is blank" do
-     site_setting = SiteSetting.new(:delivery => false, :drop_point => true, :terms_of_service => "", :require_terms_of_service => true)
-     assert !site_setting.valid?, site_setting.errors.inspect
-   end
-   
    test "should not validate if enable_facebook is true but facebook_app_id is blank" do
      site_setting = SiteSetting.new(:delivery => false, :drop_point => true, :facebook_enabled => true, :facebook_app_id => "")
      assert !site_setting.valid?, site_setting.errors.inspect

@@ -25,10 +25,8 @@ class SiteSetting < ActiveRecord::Base
                       
   validate :must_have_at_least_one_mode
   validate :must_have_facebook_app_id_if_facebook_enabled
-  validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
   
-  
-  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service, :facebook_enabled, :facebook_app_id, :reputation_enabled
+  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :facebook_enabled, :facebook_app_id, :reputation_enabled
   
   def self.new_setting(settings)
     current_site_settings = self.first
@@ -51,10 +49,6 @@ class SiteSetting < ActiveRecord::Base
   
   def all_modes?
     drop_point == true && delivery == true
-  end
-  
-  def require_terms_of_service?
-    require_terms_of_service
   end
   
   def site_mode

@@ -164,8 +164,14 @@ module ApplicationHelper
     end
   end
   
-  def nav_item_is_active(page_name)
-    "active" if params[:action] == page_name
+  def nav_item_is_active(*args)
+    args.each do |arg|
+      if arg.kind_of?(Hash)
+        return "active" if arg[:action] == params[:action] && arg[:controller] == params[:controller]
+      else
+        return "active" if arg == params[:action]
+      end
+    end
   end
   
   def second_level_nav_is_active(pages)
