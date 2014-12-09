@@ -25,7 +25,7 @@
 	<meta property="og:url" content="<%= inventory_item_url(@inventory_item) %>" />
 	<meta property="og:description" content="<%= @inventory_item.description %>" />
 	<meta property="og:image" content="<%= URI.join(request.url, @inventory_item.photo.url) %>" />
-	<meta property="og:app_id" content="<%= SiteSetting.first.facebook_app_id %>" />
+	<meta property="og:app_id" content="<%= SiteSetting.instance.facebook_app_id %>" />
 	<meta property="og:type" content="product" />
 <% end %>
 <%= render @inventory_item %>

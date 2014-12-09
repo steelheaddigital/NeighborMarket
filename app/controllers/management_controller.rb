@@ -207,7 +207,7 @@ class ManagementController < ApplicationController
     @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     
     respond_to do |format|
       format.html
@@ -258,7 +258,7 @@ class ManagementController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id)
-    @inventory_guidelines = SiteContent.first.inventory_guidelines
+    @inventory_guidelines = SiteContent.instance.inventory_guidelines
     
     respond_to do |format|
       format.html

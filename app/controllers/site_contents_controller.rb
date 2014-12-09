@@ -22,8 +22,8 @@ class SiteContentsController < ApplicationController
   load_and_authorize_resource
   
   def index
-    @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
-    @site_contents = SiteContent.first ? SiteContent.first : SiteContent.new
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
     
     respond_to do |format|
       format.html
@@ -31,11 +31,11 @@ class SiteContentsController < ApplicationController
   end
   
   def update
-    @site_contents = SiteContent.new_content(params[:site_content])
-    @site_settings = SiteSetting.first
+    @site_contents = SiteContent.instance
+    @site_settings = SiteSetting.instance
     
     respond_to do |format|
-      if @site_contents.save
+      if @site_contents.update(params[:site_content])
         format.html { redirect_to site_contents_path, notice: 'Content Successfully Saved!'}
       else
         format.html { render :index }

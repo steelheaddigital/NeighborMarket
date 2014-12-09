@@ -20,7 +20,7 @@
 class PostPickupJob < Struct.new(:order_cycle_id)
   
   def perform
-    if SiteSetting.first.reputation_enabled
+    if SiteSetting.instance.reputation_enabled
       orders = Order.where(:order_cycle_id => order_cycle_id)
       orders.each do |order|
         if order.has_cart_items_where_order_cycle_minimum_reached?

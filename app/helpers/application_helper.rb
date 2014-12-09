@@ -126,7 +126,7 @@ module ApplicationHelper
   
   def order_cycle_message
     cycle = OrderCycle.current_cycle
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     
     if site_settings.delivery_only?
       delivery_method = "delivery"
@@ -157,8 +157,8 @@ module ApplicationHelper
   end
   
   def site_name
-    if SiteSetting.first
-      SiteSetting.first.site_name
+    if SiteSetting.instance
+      SiteSetting.instance.site_name
     else
       "Neighbor Market"
     end
@@ -214,7 +214,7 @@ module ApplicationHelper
   end
   
   def contains_item_with_minimum_text(type)
-    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.first.facebook_enabled } encouraging your friends and family to also purchase the item."
+    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.instance.facebook_enabled } encouraging your friends and family to also purchase the item."
   end
   
   def pageless(total_pages, url=nil, container=nil)
@@ -230,7 +230,7 @@ module ApplicationHelper
   end
   
   def facebook
-    app_id = SiteSetting.first.facebook_app_id
+    app_id = SiteSetting.instance.facebook_app_id
     tag = "$(function() {"\
 	    "$.getScript('//connect.facebook.net/en_US/sdk.js', function(){"\
   	      "FB.init({"\

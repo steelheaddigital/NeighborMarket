@@ -39,12 +39,12 @@
 	    <%= f.text_field :city, label: "City*" %>
 
 	    <div class="form-group">
-			<%= f.label field_label(:country, @site_settings) %>
+			<%= f.label field_label(:country) %>
 	    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
 		</div>
 
 	    <div class="form-group">
-			<%= f.label field_label(:state, @site_settings) %>
+			<%= f.label field_label(:state) %>
 	    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
 		</div>
 	    <%= f.text_field :zip, label: "Zip*" %>

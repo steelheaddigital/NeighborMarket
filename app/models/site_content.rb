@@ -17,21 +17,11 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class SiteContent < ActiveRecord::Base 
+class SiteContent < ActiveRecord::Base
+  acts_as_singleton
   validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
   
   attr_accessible :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service
-  
-  def self.new_content(contents)
-    current_contents = self.first
-    if current_contents
-      current_contents.assign_attributes(contents)
-      return current_contents
-    else
-      new_contents = self.new(contents)
-      return new_contents
-    end
-  end
   
   def require_terms_of_service?
     require_terms_of_service

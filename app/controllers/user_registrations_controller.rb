@@ -25,8 +25,8 @@ class UserRegistrationsController < Devise::RegistrationsController
   def new
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     resource = build_resource({})
-    @site_settings = SiteSetting.first
-    @site_contents = SiteContent.first
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
 
@@ -36,7 +36,8 @@ class UserRegistrationsController < Devise::RegistrationsController
   def create
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     build_resource(sign_up_params)
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
     
@@ -60,7 +61,8 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def edit
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
     super
   end
   
@@ -72,7 +74,8 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
     
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     
     if params[:user][:become_seller] == "true"
@@ -125,17 +128,19 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def become_seller
-    @site_settings = SiteSetting.first
+    @site_contents = SiteContent.instance
+    @site_settings = SiteSetting.instance
     add_role(resource, "seller")
   end
   
   def become_buyer
-    @site_settings = SiteSetting.first
+    @site_contents = SiteContent.instance
+    @site_settings = SiteSetting.instance
     add_role(resource, "buyer")
   end
   
   def terms_of_service
-    @terms_of_service = SiteContent.first.terms_of_service
+    @terms_of_service = SiteContent.instance.terms_of_service
     
     respond_to do |format|
       format.html

@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_time_zone(&block)
-    timezone = SiteSetting.first.time_zone if SiteSetting.first
+    timezone = SiteSetting.instance.time_zone if SiteSetting.instance
     Time.use_zone(timezone, &block)
   end
   
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   end
   
   def site_name
-    SiteSetting.first.site_name
+    SiteSetting.instance.site_name
   end
     
   

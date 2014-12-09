@@ -23,14 +23,14 @@ class BuyerMailer < BaseMailer
   def order_mail(buyer, order)
     @order = order
     @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     mail( :to => buyer.email, 
           :subject => "Your order summary from #{@site_settings.site_name}")
   end
   
   def order_modified_mail(seller, order)
     @order = order
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     
     mail( :to => @order.user.email,
           :subject => "Your order at #{@site_settings.site_name} has been modified")
@@ -46,7 +46,7 @@ class BuyerMailer < BaseMailer
   def order_cycle_end_mail(order, order_cycle)
     @order = order
     @order_pickup_date = order_cycle.buyer_pickup_date
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     @order_cycle = order_cycle
     
     mail( :to => order.user.email, 
@@ -56,14 +56,14 @@ class BuyerMailer < BaseMailer
   def order_cycle_end_mail_no_items(order, order_cycle)
     @order = order
     @order_cycle = order_cycle
-    @site_name = SiteSetting.first.site_name
+    @site_name = SiteSetting.instance.site_name
     
     mail( :to => order.user.email,
           :subject => "The current order cycle has ended at #{@site_name}")
   end
   
   def post_pickup_mail(buyer)
-    @site_name = SiteSetting.first.site_name
+    @site_name = SiteSetting.instance.site_name
     mail( :to => buyer.email,
           :subject => "Thank you for participating in #{@site_name}")
   end

@@ -19,7 +19,8 @@
 
 module UserRegistrationsHelper
 
-  def delivery_instructions_message(site_settings)
+  def delivery_instructions_message
+    site_settings = SiteSetting.instance
     if site_settings.delivery_only?
     	"<h5>Please add delivery instructions to your profile. Your delivery address is the address you have already entered when you set up your seller profile.</h5>".html_safe
     elsif site_settings.all_modes?
@@ -29,16 +30,16 @@ module UserRegistrationsHelper
     end
   end
 
-  def delivery_instructions_label(site_settings)
-    if site_settings.delivery_only?
+  def delivery_instructions_label
+    if SiteSetting.instance.delivery_only?
     	"Delivery Instructions*"
     else
       "Delivery Instructions"
     end
   end
   
-  def field_label(field_name, site_settings)
-    field_labels(site_settings)[field_name]
+  def field_label(field_name)
+    field_labels(SiteSetting.instance)[field_name]
   end
   
   

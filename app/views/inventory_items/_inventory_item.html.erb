@@ -38,7 +38,7 @@
 					    <h2>
 					      <%= item_name(inventory_item) %>
 					    </h2>
-						<%if SiteSetting.first.facebook_enabled%>
+						<%if SiteSetting.instance.facebook_enabled%>
 							<p><span class="fb-share-button" data-href="<%= inventory_item_url(inventory_item) %>", data-layout="button"></span></p>
 						<%end%>
 					    <p><%= inventory_item.description %></p>
@@ -70,7 +70,7 @@
 						</div>
 					</div>
 				</div>
-				<% if SiteSetting.first.reputation_enabled && !inventory_item.avg_rating.nil? %>
+				<% if SiteSetting.instance.reputation_enabled && !inventory_item.avg_rating.nil? %>
 					<%= render partial: "review", locals: {inventory_item: inventory_item}%>
 				<%end%>
 				</div>

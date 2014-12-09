@@ -36,19 +36,19 @@
 	  <% if !@site_settings.drop_point_only? %>
 		  <div class="col-md-1"></div>
 		  <div class="col-md-3">
-		    <%= f.text_field :address, label: field_label(:address, @site_settings) %>
-		    <%= f.text_field :city, label: field_label(:address, @site_settings)  %>
+		    <%= f.text_field :address, label: field_label(:address) %>
+		    <%= f.text_field :city, label: field_label(:address)  %>
 		    <div class="form-group">
 				<%= f.label field_label(:country, @site_settings) %>
 		    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
 			</div>
 
 		    <div class="form-group">
-				<%= f.label field_label(:state, @site_settings) %>
+				<%= f.label field_label(:state) %>
 		    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
 			</div>
 
-		    <%= f.text_field :zip, label: field_label(:zip, @site_settings) %>
+		    <%= f.text_field :zip, label: field_label(:zip) %>
 		  </div>
 	   	  <div class="col-md-1"></div>
 	      <div class="col-md-3">

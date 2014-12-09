@@ -20,8 +20,8 @@
 class HomeController < ApplicationController
   def index
     session[:last_search_path] = nil
-    site_settings = SiteSetting.first
-    site_contents = SiteContent.first
+    site_settings = SiteSetting.instance
+    site_contents = SiteContent.instance
     current_inventory_items = InventoryItem.joins(:order_cycles)
                                            .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', "current")
     @items_for_carousel = current_inventory_items.order("RANDOM()")
