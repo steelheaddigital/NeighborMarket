@@ -127,7 +127,8 @@ class OrdersController < ApplicationController
   end
   
   def show
-    @order = Order.find(params[:id])    
+    @order = Order.find(params[:id])
+    @site_settings = SiteSetting.instance 
     
     respond_to do |format|
       format.html
