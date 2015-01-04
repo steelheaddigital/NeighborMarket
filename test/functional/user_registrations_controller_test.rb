@@ -102,4 +102,20 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     assert_equal 'Bye! Your account was successfully cancelled. We hope to see you again soon.', flash[:notice]
   end
   
+  test "should get become_buyer" do
+    user  = users(:approved_seller_user)
+    sign_in user
+    get :become_buyer, :user=>{:become_buyer=>true}
+    
+    assert_response :success
+  end
+  
+  test "should get become_seller" do
+    user  = users(:buyer_user)
+    sign_in user
+    get :become_seller, :user=>{:become_seller=>true}
+    
+    assert_response :success
+  end
+  
 end

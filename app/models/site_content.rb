@@ -17,18 +17,14 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class PostPickupJob < Struct.new(:order_cycle_id)
+class SiteContent < ActiveRecord::Base
+  acts_as_singleton
+  validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
   
-  def perform
-    if SiteSetting.instance.reputation_enabled
-      orders = Order.where(:order_cycle_id => order_cycle_id)
-      orders.each do |order|
-        if order.has_cart_items_where_order_cycle_minimum_reached?
-          buyer = order.user
-          BuyerMailer.post_pickup_mail(buyer).deliver
-        end
-      end
-    end  
+  attr_accessible :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service
+  
+  def require_terms_of_service?
+    require_terms_of_service
   end
   
 end

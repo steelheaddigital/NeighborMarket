@@ -108,6 +108,7 @@ class OrdersControllerTest < ActionController::TestCase
     get :show, :id => order.id
     
     assert_not_nil :order
+    assert_not_nil :site_settings
   end
   
   test "should destroy order" do

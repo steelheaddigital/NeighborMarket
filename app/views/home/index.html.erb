@@ -24,7 +24,7 @@
 	<meta property="og:site_name" content="<%= @site_name %>" />
 	<meta property="og:url" content="<%= root_url %>" />
 	<meta property="og:description" content="Support the the local economy in your own neighborhood. Buy directly from your neighbors." />
-	<meta property="og:app_id" content="<%= SiteSetting.first.facebook_app_id %>" />
+	<meta property="og:app_id" content="<%= SiteSetting.instance.facebook_app_id %>" />
 	<meta property="og:type" content="website" />
 <% end %>
 <% content_for :sub_nav do %>

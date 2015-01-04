@@ -24,7 +24,7 @@ class BaseMailer < ActionMailer::Base
   around_filter :set_time_zone
   
   def set_time_zone(&block)
-    timezone = SiteSetting.first.time_zone if SiteSetting.first
+    timezone = SiteSetting.instance.time_zone if SiteSetting.instance
     Time.use_zone(timezone, &block)
   end
   

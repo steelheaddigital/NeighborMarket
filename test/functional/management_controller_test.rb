@@ -8,20 +8,6 @@ class ManagementControllerTest < ActionController::TestCase
     sign_in @user
   end
   
-  test "should get edit_site_settings" do
-    get :edit_site_settings
-    
-    assert_response :success
-    assert_not_nil assigns (:site_settings)
-  end
-  
-  test "should update site_settings" do
-    post :update_site_settings, :site_setting => { :site_name => "Test", :drop_point_address => "123 Test St.", :drop_point_city => "Portland", :drop_point_state => "Oregon", :drop_point_zip => "97218", :terms_of_service => "test"}
-    
-    assert_redirected_to edit_site_settings_management_index_path
-    assert_not_nil assigns (:site_settings)
-  end
-  
   test "should get order_cycle_settings" do
     get :edit_order_cycle_settings
     
@@ -400,12 +386,6 @@ class ManagementControllerTest < ActionController::TestCase
   test "anonymous user cannot access protected actions" do
     sign_out @user
     
-    get :edit_site_settings
-    assert_redirected_to new_user_session_path
-    
-    post :update_site_settings
-    assert_redirected_to new_user_session_path
-    
     get :approve_sellers
     assert_redirected_to new_user_session_path
     
@@ -483,12 +463,6 @@ class ManagementControllerTest < ActionController::TestCase
     sign_out @user
     @user  = users(:approved_seller_user)
     sign_in @user
-    
-    get :edit_site_settings
-    assert_response :not_found
-    
-    post :update_site_settings
-    assert_response :not_found
     
     get :approve_sellers
     assert_response :not_found

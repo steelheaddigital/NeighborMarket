@@ -1,0 +1,38 @@
+<%= bootstrap_form_for @site_settings, :url => update_site_settings_path, :method => :post, :html => { :id => "SiteSettingsForm"} do |f| %>
+	<div class="container-fluid">
+	  <%= f.error_messages %>
+	  <div class="row">
+		  <div class="col-md-6">
+			  <div class="form-group">
+			    <%= f.label :time_zone %>
+			    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => "Pacific Time (US & Canada)" }, { :class => "form-control" } %>
+			  </div>
+			  <%= f.text_field :site_name, label: "Site name (Displayed on front page and in emails.)" %>
+			  <%= f.check_box :reputation_enabled %>
+			  <fieldset>
+				  <legend>Site Modes</legend>
+				  <%= f.check_box(:drop_point, {label: "Drop Point"}, true, "false")%>
+				  <%= f.check_box(:delivery, {label: "Delivery"}, true, "false")%>
+			  </fieldset>
+			  <fieldset>
+				  <legend>Facebook Settings</legend>
+				  <%= f.check_box(:facebook_enabled, {label: "Enable Facebook Sharing" }, true, "false")%>
+				  <%= f.text_field :facebook_app_id, label: "Facebook App ID"%>
+			  </fieldset>
+		  </div>
+		  <div class="col-md-6">
+			  <%= f.text_field :drop_point_address%>
+			  <%= f.text_field :drop_point_city%>
+			  <div class="form-group">
+			    <%= f.label :drop_point_state %>
+			    <%= f.subregion_select :drop_point_state, Carmen::Country.coded('US'), {}, {:class => "form-control"}  %>
+			  </div>
+			  <%= f.text_field :drop_point_zip%>
+			  <%= f.text_area :directions, :rows => 5, label: "Drop point directions"%>
+		  </div>
+	  </div>
+	  <div class="row">
+	    <%= submit_tag "Save Settings", :class => 'btn btn-primary' %>
+	  </div>
+	</div>
+<%end%>

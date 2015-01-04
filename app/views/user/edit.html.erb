@@ -47,18 +47,18 @@
 				 </div>
 				 <div class="col-md-4">
 					<%= f.telephone_field :phone, label: "#{if @user.seller? then 'Phone*' else 'Phone' end}" %>
-					<%= f.text_field :address, label: "#{if @user.seller? then 'Address*' else field_label(:address, @site_settings) end}" %>
-					<%= f.text_field :city, label: "#{if @user.seller? then 'City*' else field_label(:city, @site_settings) end}" %>
+					<%= f.text_field :address, label: "#{if @user.seller? then 'Address*' else field_label(:address) end}" %>
+					<%= f.text_field :city, label: "#{if @user.seller? then 'City*' else field_label(:city) end}" %>
 				    <div class="form-group">
-						<%= if @user.seller? then f.label "State*" else f.label field_label(:state, @site_settings) end %>
+						<%= if @user.seller? then f.label "State*" else f.label field_label(:state) end %>
 				    	<%= f.country_select :country, {priority: %w(US CA)}, class: "form-control" %>
 					</div>
 
 				    <div class="form-group">
-						<%= if @user.seller? then f.label "Country*" else f.label field_label(:country, @site_settings) end %>
+						<%= if @user.seller? then f.label "Country*" else f.label field_label(:country) end %>
 				    	<%= f.subregion_select :state, Carmen::Country.coded('US'), {}, { class: "form-control" } %>
 					</div>
-					<%= f.text_field :zip, label: "#{if @user.seller? then 'Zip*' else field_label(:zip, @site_settings) end}" %>
+					<%= f.text_field :zip, label: "#{if @user.seller? then 'Zip*' else field_label(:zip) end}" %>
 				    <%= f.text_area :aboutme, :rows => 5, label: "About Me"  %>
 				</div>
 				<div class="col-md-4">

@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
   
   def new
     @cart = current_cart
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     #update the cart in case the user changed any quantitities
     if @cart.update_attributes(params[:cart])
       
@@ -83,7 +83,7 @@ class OrdersController < ApplicationController
           session[:cart_id] = nil
           
           @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
-          @site_settings = SiteSetting.first
+          @site_settings = SiteSetting.instance
           format.html {redirect_to finish_order_url(@order)}
         else
           @cart = current_cart
@@ -95,7 +95,7 @@ class OrdersController < ApplicationController
   def finish
     @order = Order.find(params[:id])
     @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     
     respond_to do |format|
       format.html
@@ -127,7 +127,8 @@ class OrdersController < ApplicationController
   end
   
   def show
-    @order = Order.find(params[:id])    
+    @order = Order.find(params[:id])
+    @site_settings = SiteSetting.instance 
     
     respond_to do |format|
       format.html

@@ -20,23 +20,25 @@
 module BuyerMailerHelper
   include ApplicationHelper
 
-  def pickup_instructions(site_settings, order_pickup_date, order)
+  def pickup_instructions(order_pickup_date, order)
+    site_settings = SiteSetting.instance
     if site_settings.delivery_only?
-      delivery_message(site_settings, order_pickup_date, order)
+      delivery_message(order_pickup_date, order)
     elsif site_settings.all_modes?
     	if order.deliver
-        delivery_message(site_settings, order_pickup_date, order)
+        delivery_message(order_pickup_date, order)
       else
-        pickup_message(site_settings, order_pickup_date)
+        pickup_message(order_pickup_date)
       end
     elsif site_settings.drop_point_only?
-      pickup_message(site_settings, order_pickup_date)
+      pickup_message(order_pickup_date)
     end
   end
   
   private
   
-  def delivery_message(site_settings, order_pickup_date, order)
+  def delivery_message(order_pickup_date, order)
+    site_settings = SiteSetting.instance
     html = ''
     html += '<div style="padding-bottom: 15px;">' +
       '<div style="padding:10px; border: 3px solid gray;">' +
@@ -51,7 +53,8 @@ module BuyerMailerHelper
     html.html_safe
   end
   
-  def pickup_message(site_settings, order_pickup_date)
+  def pickup_message(order_pickup_date)
+    site_settings = SiteSetting.instance
     html = ''
     html += '<div style="padding-bottom: 15px;">' +
       '<div style="padding:10px; border: 3px solid gray;">' +

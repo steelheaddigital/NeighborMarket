@@ -21,14 +21,14 @@ class UserMailer < BaseMailer
   
   def user_contact_mail(user, message)
     @message = message
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     mail( :to => user.email,
           :reply_to => message.email,
           :subject => "#{site_settings.site_name} - #{message.subject}")
   end
   
   def auto_create_user_mail(user, token)
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     @user = user
     @token = token
     mail( :to => user.email, 

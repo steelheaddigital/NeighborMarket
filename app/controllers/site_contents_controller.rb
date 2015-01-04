@@ -17,18 +17,30 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class PostPickupJob < Struct.new(:order_cycle_id)
+class SiteContentsController < ApplicationController
+  before_filter :authenticate_user!
+  load_and_authorize_resource
   
-  def perform
-    if SiteSetting.instance.reputation_enabled
-      orders = Order.where(:order_cycle_id => order_cycle_id)
-      orders.each do |order|
-        if order.has_cart_items_where_order_cycle_minimum_reached?
-          buyer = order.user
-          BuyerMailer.post_pickup_mail(buyer).deliver
-        end
-      end
-    end  
+  def index
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
+    
+    respond_to do |format|
+      format.html
+    end
   end
   
+  def update
+    @site_contents = SiteContent.instance
+    @site_settings = SiteSetting.instance
+    
+    respond_to do |format|
+      if @site_contents.update(params[:site_content])
+        format.html { redirect_to site_contents_path, notice: 'Content Successfully Saved!'}
+      else
+        format.html { render :index }
+      end
+    end
+  end
+
 end

@@ -20,25 +20,25 @@
 class SellerMailer < BaseMailer
 
   def seller_approved_mail(user)
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     mail(:to => user.email, :subject => "Your #{@site_settings.site_name} Seller Account Is Approved" )
   end
   
   def new_purchase_mail(seller, order)
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     subject = "A purchase of your product has been made at #{site_settings.site_name}"
     purchase_mail(seller, order, subject)
   end
   
   def updated_purchase_mail(seller, order)
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     subject = "An order containing your product has been updated at #{site_settings.site_name}"
     purchase_mail(seller, order, subject)
   end
   
   def order_cycle_end_mail(seller, order_cycle)
     @order_cycle_settings = OrderCycleSetting.first
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     @seller = seller
     @order_cycle = order_cycle
     @orders = Order.joins(:cart_items => :inventory_item)
@@ -73,7 +73,7 @@ class SellerMailer < BaseMailer
     @review = review
     @inventory_item = InventoryItem.find(review.reviewable_id)
     mail( :to => @inventory_item.user.email,
-          :subject => "A new review has been submitted for #{@inventory_item.name} at #{SiteSetting.first.site_name}")
+          :subject => "A new review has been submitted for #{@inventory_item.name} at #{SiteSetting.instance.site_name}")
   end
   
   private

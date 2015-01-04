@@ -36,6 +36,6 @@
 	<div style="margin-bottom:15px;">
 		<%= render :partial => "order_table", :locals => {:order => @order} %>
 	</div>
-	<%= pickup_instructions(@site_settings, @order_pickup_date, @order)%>
+	<%= pickup_instructions(@order_pickup_date, @order)%>
   </body>
 </html>

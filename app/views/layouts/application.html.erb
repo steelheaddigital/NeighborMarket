@@ -57,7 +57,7 @@
 						<ul class="nav navbar-nav">
 						  <li><%= link_to "Home", root_path %></li>
 							<% if user_signed_in? && current_user.manager?%>
-								<li><%= link_to('Manage', edit_site_settings_management_index_path) %></li>
+								<li><%= link_to('Manage', site_settings_path) %></li>
 							<% end %>
 							<% if user_signed_in? && current_user.approved_seller? %>
 								<li><%= link_to('Sell', seller_index_path) %></li>
@@ -68,7 +68,7 @@
 							<% if @completed_order_id %>
 								<li><%= link_to('Current Order', order_path(@completed_order_id)) %></li>
 							<% end %>
-							<% if user_signed_in? && current_user.buyer? && SiteSetting.first.reputation_enabled %>
+							<% if user_signed_in? && current_user.buyer? && SiteSetting.instance.reputation_enabled %>
 								<li><%= link_to('Ratings and Reviews', user_reviews_inventory_items_path) %></li>
 							<% end %>
 						</ul>

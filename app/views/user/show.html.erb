@@ -21,18 +21,18 @@
 
 <% content_for :open_graph_tags  do %>
 	<meta property="og:title" content="<%= @user.username %>" />
-	<meta property="og:site_name" content="<%= SiteSetting.first.site_name %>" />
+	<meta property="og:site_name" content="<%= SiteSetting.instance.site_name %>" />
 	<meta property="og:url" content="<%= user_url(@user) %>" />
 	<meta property="og:description" content="<%= @user.aboutme %>" />
 	<meta property="og:image" content="<%= URI.join(request.url, @user.photo.url) %>" />
-	<meta property="og:app_id" content="<%= SiteSetting.first.facebook_app_id %>" />
+	<meta property="og:app_id" content="<%= SiteSetting.instance.facebook_app_id %>" />
 	<meta property="og:type" content="profile" />
 <% end %>
 <div class="container-fluid">
 	<div class="row">
 	    <div class="col-md-12">
 	        <h1><%= @user.username %></h1>
-			<%if SiteSetting.first.facebook_enabled%>
+			<%if SiteSetting.instance.facebook_enabled%>
 				<p><span class="fb-share-button" data-href="<%= user_url(@user) %>", data-layout="button"></span></p>
 			<%end%>
 	    </div>
@@ -42,7 +42,7 @@
         <p>
           <%= @user.aboutme %>
         </p>
-		<% if SiteSetting.first.reputation_enabled && !@average_rating.nil? %>
+		<% if SiteSetting.instance.reputation_enabled && !@average_rating.nil? %>
 			<p>
 				<span>
 					<%= radio_button_tag "rating", 0.5, @average_rating > 0 && @average_rating <= 0.5, class: "star {split:2}", disabled: "disabled" %>

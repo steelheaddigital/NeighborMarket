@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141022123026) do
+ActiveRecord::Schema.define(version: 20141204140700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,13 @@ ActiveRecord::Schema.define(version: 20141022123026) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
+  create_table "site_contents", force: true do |t|
+    t.text    "site_description"
+    t.text    "inventory_guidelines"
+    t.text    "terms_of_service"
+    t.boolean "require_terms_of_service", default: true
+  end
+
   create_table "site_settings", force: true do |t|
     t.string  "site_name"
     t.string  "drop_point_address"
@@ -199,16 +206,12 @@ ActiveRecord::Schema.define(version: 20141022123026) do
     t.string  "drop_point_state"
     t.integer "drop_point_zip"
     t.string  "time_zone"
-    t.boolean "drop_point",               default: true
-    t.boolean "delivery",                 default: false
+    t.boolean "drop_point",         default: true
+    t.boolean "delivery",           default: false
     t.text    "directions"
-    t.text    "site_description"
-    t.text    "inventory_guidelines"
-    t.text    "terms_of_service"
-    t.boolean "require_terms_of_service", default: true
-    t.boolean "facebook_enabled",         default: false
+    t.boolean "facebook_enabled",   default: false
     t.text    "facebook_app_id"
-    t.boolean "reputation_enabled",       default: false
+    t.boolean "reputation_enabled", default: false
   end
 
   create_table "top_level_categories", force: true do |t|

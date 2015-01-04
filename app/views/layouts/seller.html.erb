@@ -28,7 +28,7 @@
 	      <%= link_to "Pick List", pick_list_seller_index_path, {class: "list-group-item #{nav_item_is_active('pick_list') }"} %>
 	      <%= link_to "Packing List", packing_list_seller_index_path, {class: "list-group-item #{nav_item_is_active('packing_list') || nav_item_is_active('previous_packing_list') }"} %>
 		  <%= link_to "Sales Report", sales_report_seller_index_path, {class: "list-group-item #{nav_item_is_active('sales_report')}"} %>
-		  <% if SiteSetting.first.reputation_enabled %>
+		  <% if SiteSetting.instance.reputation_enabled %>
 		  	<%= link_to "Reviews", reviews_seller_index_path, {class: "list-group-item #{nav_item_is_active('reviews')}"} %>
 		  <% end %>
 	    </div>

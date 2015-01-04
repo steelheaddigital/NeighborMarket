@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
   end
   
   def address_required?
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     if site_settings.delivery_only?
       !auto_create
     else
@@ -169,12 +169,12 @@ class User < ActiveRecord::Base
   end
   
   def delivery_instructions_required?
-    site_settings = SiteSetting.first
+    site_settings = SiteSetting.instance
     buyer? && site_settings.delivery_only?
   end
   
   def tos_required?
-    tos_required = SiteSetting.first.require_terms_of_service?
+    tos_required = SiteContent.instance.require_terms_of_service?
     !auto_create && tos_required
   end
   

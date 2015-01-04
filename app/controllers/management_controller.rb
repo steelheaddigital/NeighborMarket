@@ -34,27 +34,6 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => PriceUnit
   load_and_authorize_resource :class => InventoryItemChangeRequest
   
-  def edit_site_settings
-    @site_settings = SiteSetting.first ? SiteSetting.first : SiteSetting.new
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def update_site_settings
-    
-    @site_settings = SiteSetting.new_setting(params[:site_setting])
-    
-    respond_to do |format|
-      if @site_settings.save
-        format.html { redirect_to edit_site_settings_management_index_path, notice: 'Site Settings Successfully Saved!'}
-      else
-        format.html { render :edit_site_settings }
-      end
-    end
-  end
-  
   def edit_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
     @order_cycle_settings.padding ||= 0
@@ -180,7 +159,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id}).distinct
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
@@ -225,10 +204,10 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id}).distinct
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     
     respond_to do |format|
       format.html
@@ -279,7 +258,7 @@ class ManagementController < ApplicationController
     @item = InventoryItem.find(params[:id])
     @top_level_categories = TopLevelCategory.all
     @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id)
-    @inventory_guidelines = SiteSetting.first.inventory_guidelines
+    @inventory_guidelines = SiteContent.instance.inventory_guidelines
     
     respond_to do |format|
       format.html

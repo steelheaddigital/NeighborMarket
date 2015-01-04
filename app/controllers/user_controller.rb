@@ -60,7 +60,7 @@ class UserController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
-    @site_settings = SiteSetting.first
+    @site_settings = SiteSetting.instance
     
     respond_to do |format|
       format.html
