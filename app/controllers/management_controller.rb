@@ -159,7 +159,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id}).distinct
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
@@ -204,7 +204,7 @@ class ManagementController < ApplicationController
     else
       order_cycle = OrderCycle.latest_cycle
     end
-    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id})
+    @orders = Order.joins(:cart_items).order(:user_id, :id).where(:cart_items => {minimum_reached_at_order_cycle_end: true}, :orders => {:order_cycle_id => order_cycle.id}).distinct
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     @site_settings = SiteSetting.instance
