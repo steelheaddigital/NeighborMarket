@@ -20,11 +20,12 @@
 %>
 
 <div class="container-fluid">
-  <h2>Your Order</h2>
+  <h2>Verify Your Order</h2>
+  <div>Please verify your order and then press the "Purchase" button to complete.</div>
+  <p class="notice"><%= flash[:notice] %></p>
   <% if @current_order %>
     <h4>*Includes items previously added to your order for this cycle</h4>
   <%end%>
-    <p class="notice"><%= flash[:notice] %></p>
     <%= form_for @order do |f|%>
       <%= f.error_messages %>
 	  <% if @site_settings.delivery %>
