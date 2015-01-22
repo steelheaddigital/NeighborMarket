@@ -20,11 +20,20 @@
 class SiteContent < ActiveRecord::Base
   acts_as_singleton
   validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
+  before_save :sanitize_html
   
   attr_accessible :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service
   
   def require_terms_of_service?
     require_terms_of_service
+  end
+  
+  
+  private 
+  
+  def sanitize_html
+    self.site_description = Sanitize.fragment(site_description, Sanitize::Config::RELAXED)
+    self.terms_of_service = Sanitize.fragment(terms_of_service, Sanitize::Config::RELAXED)
   end
   
 end

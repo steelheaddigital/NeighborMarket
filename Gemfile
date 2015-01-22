@@ -40,6 +40,7 @@ gem 'foreman', '~> 0.62.0'
 gem 'dalli', '~> 2.6.4'
 gem 'whenever', '~> 0.9.2'
 gem 'acts_as_singleton', '~> 0.0.8'
+gem 'sanitize', '~> 3.1.0'
 
 gem 'protected_attributes'
 gem 'activerecord-deprecated_finders'
