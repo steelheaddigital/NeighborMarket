@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
-  config.vm.provision :shell, :inline => "wget https://apt.puppetlabs.com/puppetlabs-release-precise.deb && dpkg -i puppetlabs-release-precise.deb && apt-get update -y --fix-missing && apt-get install puppet -y"
+  config.vm.provision :shell, :inline => "wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb && dpkg -i puppetlabs-release-trusty.deb && apt-get update -y --fix-missing && apt-get install puppet -y"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -104,7 +104,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
       provider.client_id = ''
       provider.api_key = ''
-      provider.image = 'Ubuntu 14.04 x32'
+      provider.image = '14.04 x32'
       provider.region = "San Francisco 1"
       provider.ssh_key_name = "neighbormarket"
     end
@@ -119,7 +119,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
       provider.client_id = ''
       provider.api_key = ''
-      provider.image = 'Ubuntu 14.04 x32'
+      provider.image = '14.04 x32'
       provider.region = "San Francisco 1"
       provider.ssh_key_name = "neighbormarket"
     end
