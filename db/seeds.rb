@@ -6,10 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-site_settings = SiteSetting.new(
-  :site_name => "Neighbor Market"
+site_settings = SiteSetting.instance.update(
+  :site_name => "Neighbor Market",
+  :time_zone => "Pacific Time (US & Canada)"
 )
-site_settings.save(:validate => false)
 
 User.delete_all
 user = User.new(

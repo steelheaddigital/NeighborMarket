@@ -1,20 +1,14 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.0.12'
-gem 'pg', '~> 0.17.1'
+gem 'rails', '4.0.13'
+gem 'pg', '~> 0.18.1'
 gem 'unicorn', '~> 4.8.3'
-
-group :development, :test do
-  gem 'debugger', '~> 1.6.8'
-end
 
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.9.7'
   gem 'minitest-colorize'
   gem 'minitest-focus'
-  #gem 'ruby-prof', '~> 0.11.2'  # For profiling
-  #gem 'test-unit' # For profiling
 end
 
 gem 'bootstrap-sass', '~> 3.2.0'

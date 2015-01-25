@@ -23,7 +23,7 @@ class neighbormarket::database (
     group  => 'postgres'
   }->
   class { 'postgresql::globals':
-    version             => '9.2',
+    version             => '9.4',
     manage_package_repo => true,
     encoding            => 'UTF8',
     locale              => 'en_US.UTF-8'

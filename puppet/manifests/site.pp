@@ -2,7 +2,7 @@ node 'development.neighbormarket.local' {
   class { 'neighbormarket':
     hostname         => $fqdn,
     environment      => 'development',
-    ruby_version     => '2.0.0-p481',
+    ruby_version     => '2.2.0',
     app_directory    => '/home/neighbormarket',
     user             => 'neighbormarket',
     group            => 'neighbormarket',
@@ -19,7 +19,7 @@ node 'demo.neighbormarket.org' {
   class { 'neighbormarket':
     hostname         => $fqdn,
     environment      => 'production',
-    ruby_version     => '2.0.0-p481',
+    ruby_version     => '2.2.0',
     app_directory    => '/home/neighbormarket',
     user             => 'neighbormarket',
     group            => 'neighbormarket',
@@ -36,7 +36,7 @@ node 'production.neighbormarket.org' {
   class { 'neighbormarket':
     hostname         => $fqdn,
     environment      => 'production',
-    ruby_version     => '2.0.0-p481',
+    ruby_version     => '2.2.0',
     app_directory    => '/home/neighbormarket',
     user             => 'neighbormarket',
     group            => 'neighbormarket',

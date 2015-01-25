@@ -1,7 +1,7 @@
 class neighbormarket (
   $hostname         = 'development.neighbormarket.local',
   $environment      = 'development',
-  $ruby_version     = '2.0.0-p481',
+  $ruby_version     = '2.2.0',
   $app_directory    = '/home/neighbormarket',
   $user             = 'neighbormarket',
   $group            = 'neighbormarket',

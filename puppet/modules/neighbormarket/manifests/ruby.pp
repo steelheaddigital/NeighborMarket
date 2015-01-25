@@ -1,5 +1,5 @@
 class neighbormarket::ruby (
-  $version = '2.0.0-p481'
+  $version = '2.2.0'
 ) {
 	class { 'rbenv': }
 	rbenv::plugin { [ 'sstephenson/ruby-build', 'sstephenson/rbenv-gem-rehash' ]: }
