@@ -91,9 +91,15 @@
 								<li><%= link_to('Sign up as a seller', seller_sign_up_url) %></li>
 							<% end %>
 							<li>
+								<%=link_to('About', info_about_url)%>
+							</li>
+							<li class="hidden-xs">
+								<span id="CartSeperator"></span>
+							</li>
+							<li >
 								<a id ="CartButton" href= "<%= cart_index_path %>" >
 									<i class="icon-shopping-cart"></i>
-									Shopping Cart
+									Cart
 									<span id="CartCount" class="badge badge-info" style="margin-left:5px;"><%= current_cart.cart_items.count %></span>
 								</a>
 							<li>

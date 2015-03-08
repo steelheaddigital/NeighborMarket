@@ -4,6 +4,7 @@
 	<%= f.text_area :inventory_guidelines, :rows => 5, label: "Inventory guidelines (Displayed on seller inventory form.)"%>
 	<%= f.check_box(:require_terms_of_service, {label: "Require terms of service agreement at user sign-up"}, true, "false")%>
 	<%= f.text_area :terms_of_service, :rows => 5 %>
+	<%= f.text_area :about, :rows => 5 %>
 	<div class="row">
 		<%= submit_tag "Save Content", :class => 'btn btn-primary' %>
 	</div>

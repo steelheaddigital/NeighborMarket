@@ -147,6 +147,13 @@ NeighborMarket::Application.routes.draw do
   get 'user_contact_messages/:id', to: 'user_contact_messages#new', as: 'new_user_contact_message'
   post 'user_contact_messages/:id', to: 'user_contact_messages#create', as: 'create_user_contact_message'
   
+  get 'info/about', to: 'info#about'
+  get 'info/terms', to: 'info#terms'
+  get 'info/privacy', to: 'info#privacy'
+
+  post 'contact', to: 'contact#create'
+  resources :contact, :only => ["index"]
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

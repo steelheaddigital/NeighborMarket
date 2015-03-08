@@ -1,3 +1,4 @@
+<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -16,24 +17,9 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+%>
 
-class SiteContent < ActiveRecord::Base
-  acts_as_singleton
-  validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
-  before_save :sanitize_html
-  
-  attr_accessible :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service, :about
-  
-  def require_terms_of_service?
-    require_terms_of_service
-  end
-  
-  
-  private 
-  
-  def sanitize_html
-    self.site_description = Sanitize.fragment(site_description, Sanitize::Config::RELAXED)
-    self.terms_of_service = Sanitize.fragment(terms_of_service, Sanitize::Config::RELAXED)
-  end
-  
-end
+<div class ="col-md-9">
+	<h1>Terms of Service</h1>
+	<%= @terms_of_service.html_safe %>
+</div>
