@@ -27,10 +27,10 @@
 			</div>
 			<%= submit_tag 'Submit', :class => 'btn btn-default' %>
 			<span>Choose an order cycle end date to load previous buyer invoices</span>
+			<div style="margin-top: 15px;">
+				<%= submit_tag 'Printable Invoices (PDF)', :class => 'btn btn-primary' %>
+			</div>
 		<% end %>
-	</div>
-	<div class ="row" style="margin-bottom: 15px;">
-	  <%= link_to "Printable Invoices (PDF)", buyer_invoices_management_index_path(:format => 'pdf'), {:class => 'btn btn-primary'} %>
 	</div>
 	<div class="row">
 		<div class="col-md-12">

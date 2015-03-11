@@ -117,14 +117,11 @@ class ManagementController < ApplicationController
     @items = CartItem.joins(:order).where(minimum_reached_at_order_cycle_end: true, :orders => {:order_cycle_id => order_cycle.id})
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
-    
-    respond_to do |format|
-      format.html
-      format.pdf do
-        output = InboundDeliveryLog.new.to_pdf(@items)
-        send_data output, :filename => "inbound_delivery_log.pdf",
-                          :type => "application.pdf"
-      end
+
+    if params[:commit] == 'Printable Delivery Log (PDF)'
+      output = InboundDeliveryLog.new.to_pdf(@items)
+      send_data output, :filename => "inbound_delivery_log.pdf",
+                        :type => "application.pdf"
     end
   end
   
@@ -163,13 +160,10 @@ class ManagementController < ApplicationController
     @previous_order_cycles = OrderCycle.last_ten_cycles
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     
-    respond_to do |format|
-      format.html
-      format.pdf do
-        output = OutboundDeliveryLog.new.to_pdf(@orders)
-        send_data output, :filename => "outbound_delivery_log.pdf",
-                          :type => "application.pdf"
-      end
+    if params[:commit] == 'Printable Delivery Log (PDF)'
+      output = OutboundDeliveryLog.new.to_pdf(@orders)
+      send_data output, :filename => "outbound_delivery_log.pdf",
+                        :type => "application.pdf"
     end
   end
   
@@ -209,13 +203,10 @@ class ManagementController < ApplicationController
     @selected_previous_order_cycle = @previous_order_cycles.find{|e| e.id == order_cycle.id}
     @site_settings = SiteSetting.instance
     
-    respond_to do |format|
-      format.html
-      format.pdf do
-        output = BuyerInvoices.new.to_pdf(@orders, @site_settings)
-        send_data output, :filename => "buyer_invoices.pdf",
-                          :type => "application.pdf"
-      end
+    if params[:commit] == 'Printable Invoices (PDF)'
+      output = BuyerInvoices.new.to_pdf(@orders, @site_settings)
+      send_data output, :filename => "buyer_invoices.pdf",
+                        :type => "application.pdf"
     end
   end
   

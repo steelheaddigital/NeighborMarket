@@ -27,15 +27,14 @@
 			</div>
 			<%= submit_tag 'Submit', :class => 'btn btn-default' %>
 			<span>Choose an order cycle end date to load a previous inbound delivery log</span>
+			<div style="margin-top: 15px;">
+				<%= submit_tag 'Printable Delivery Log (PDF)', :class => 'btn btn-primary' %>
+			</div>
 		<% end %>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<%= form_tag save_inbound_delivery_log_management_index_path, :method => "POST", :id => 'InboundDeliveryLogForm' do |f| %>
-			  <div class="row" style="margin-bottom: 15px;">
-			    <%= submit_tag "Save", :class => 'btn btn-primary' %>
-			    <%= link_to "Printable Delivery Log (PDF)", inbound_delivery_log_management_index_path(:format => 'pdf'), {:class => 'btn btn-primary'} %>
-			  </div>
 			  <div class="well-fluid row">
 			      <table class="table">
 			      <thead>  

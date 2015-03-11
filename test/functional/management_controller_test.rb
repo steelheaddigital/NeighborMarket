@@ -119,7 +119,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get inbound_delivery_log pdf" do
-    get :inbound_delivery_log, :format => 'pdf'
+    get :inbound_delivery_log, :commit => 'Printable Delivery Log (PDF)'
     
     assert_response :success
     assert_not_nil assigns (:items)
@@ -128,7 +128,7 @@ class ManagementControllerTest < ActionController::TestCase
   
   test "should get previous inbound_delivery_log pdf" do
     order_cycle = order_cycles(:complete)
-    get :inbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    get :inbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :commit => 'Printable Delivery Log (PDF)'
     
     assert_response :success
     assert_not_nil assigns(:items)
@@ -165,7 +165,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get outbound_delivery_log pdf" do
-    get :outbound_delivery_log, :format => 'pdf'
+    get :outbound_delivery_log, :commit => 'Printable Delivery Log (PDF)'
     
     assert_response :success
     assert_not_nil assigns (:orders)
@@ -176,7 +176,7 @@ class ManagementControllerTest < ActionController::TestCase
   
   test "should get previous outbound_delivery_log pdf" do
     order_cycle = order_cycles(:complete)
-    get :outbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    get :outbound_delivery_log, :selected_previous_order_cycle => {:id => order_cycle.id}, :commit => 'Printable Delivery Log (PDF)'
     
     assert_response :success
     assert_not_nil assigns (:orders)
@@ -215,7 +215,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get buyer_invoices pdf" do
-    get :buyer_invoices, :format => 'pdf'
+    get :buyer_invoices, :commit => 'Printable Invoices (PDF)'
     
     assert_response :success
     assert_not_nil assigns (:orders)
@@ -225,7 +225,7 @@ class ManagementControllerTest < ActionController::TestCase
   
   test "should get previous buyer_invoices pdf" do
     order_cycle = order_cycles(:complete)
-    get :buyer_invoices, :selected_previous_order_cycle => {:id => order_cycle.id}, :format => 'pdf'
+    get :buyer_invoices, :selected_previous_order_cycle => {:id => order_cycle.id}, :commit => 'Printable Invoices (PDF)'
     
     assert_response :success
     assert_not_nil assigns(:orders)
