@@ -17,7 +17,7 @@ role :db,  %w{production.neighbormarket.org}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'app.carscout.co', user: 'carscout', roles: %w{web app db}
+server 'production.neighbormarket.org', user: 'neighbormarket', roles: %w{web app db}
 
 
 # Custom SSH Options
