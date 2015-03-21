@@ -18,7 +18,9 @@
 #
 
 class CartItemsController < ApplicationController
+  include CurrentCart
   load_and_authorize_resource :only => [:destroy]
+  before_action :set_cart, only: [:create, :update, :destroy]
   
   def create
     @cart = current_cart

@@ -18,6 +18,8 @@
 #
 
 class CartController < ApplicationController
+  include CurrentCart
+  
   def index
     @cart = current_cart
     @total_price = @cart.total_price

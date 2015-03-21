@@ -18,6 +18,8 @@
 #
 
 class ApplicationController < ActionController::Base
+  include CurrentCart
+  
   protect_from_forgery
   helper_method :current_cart
   helper_method :current_order_cycle_pickup_date
@@ -80,20 +82,20 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_user, session)
   end
   
-  def current_cart
-    Cart.find(session[:cart_id])
-    
-  rescue ActiveRecord::RecordNotFound
-    
-    if(user_signed_in?)
-      @cart = Cart.create(:user_id => current_user.id)
-    else
-      @cart = Cart.create()
-    end
-    
-    session[:cart_id] = @cart.id
-    @cart
-  end
+  # def current_cart
+  #   Cart.find(session[:cart_id])
+  #
+  # rescue ActiveRecord::RecordNotFound
+  #
+  #   if(user_signed_in?)
+  #     @cart = Cart.create(:user_id => current_user.id)
+  #   else
+  #     @cart = Cart.create()
+  #   end
+  #
+  #   session[:cart_id] = @cart.id
+  #   @cart
+  # end
   
   def site_name
     SiteSetting.instance.site_name
