@@ -32,14 +32,19 @@ NeighborMarket::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  # Only use best-standards-support built into browsers
-  config.action_dispatch.best_standards_support = :builtin
-
-  # Do not compress assets
-  config.assets.compress = false
+  # Raise an error on page load if there are pending migrations.
+  config.active_record.migration_error = :page_load
 
   # Expands the lines which load the assets
   config.assets.debug = true
   
   Paperclip.options[:command_path] = "/usr/local/bin/"
+  
+  # Adds additional error checking when serving assets at runtime.
+  # Checks for improperly declared sprockets dependencies.
+  # Raises helpful error messages.
+  config.assets.raise_runtime_errors = true
+  
+  # Raises error for missing translations
+  # config.action_view.raise_on_missing_translations = true
 end

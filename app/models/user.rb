@@ -18,7 +18,9 @@
 #
 
 class User < ActiveRecord::Base
-  acts_as_indexed :fields => [:username, :first_name, :last_name]
+  include PgSearch
+  pg_search_scope :user_search, :against => [:username, :first_name, :last_name]
+  #acts_as_indexed :fields => [:username, :first_name, :last_name]
   has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy
@@ -236,7 +238,7 @@ class User < ActiveRecord::Base
       scope = scope.where('listing_approval_style = ?', "#{seller_approval_style}")
     end
     if(keywords.present?)
-      scope = scope.find_with_index(keywords)
+      scope = scope.user_search(keywords)
     else
       scope
     end

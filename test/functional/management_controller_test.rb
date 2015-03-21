@@ -48,7 +48,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get approve_sellers js" do
-    get :approve_sellers, :format => 'js'
+    xhr :get, :approve_sellers, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns (:sellers)
@@ -62,7 +62,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get user_search js" do
-    get :user_search, :format => 'js'
+    xhr :get, :user_search, :format => 'js'
     
     assert_response :success
     assert_equal response.content_type, Mime::JS
@@ -76,7 +76,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get user_search_results js" do
-    get :user_search_results, :keywords => 'manager', :format => 'js'
+    xhr :get, :user_search_results, :keywords => 'manager', :format => 'js'
     
     assert_response :success
     assert_not_nil assigns (:users)
@@ -92,7 +92,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get categories js" do
-    get :categories, :format => 'js'
+    xhr :get, :categories, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns (:categories)
@@ -258,7 +258,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get inventory js" do
-    get :inventory, :format => 'js'
+    xhr :get, :inventory, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns (:inventory_items)
@@ -277,7 +277,7 @@ class ManagementControllerTest < ActionController::TestCase
   
   test "should get edit_inventory js" do
     inventory_item = inventory_items(:one)
-    get :edit_inventory, :id => inventory_item.id, :format => 'js'
+    xhr :get, :edit_inventory, :id => inventory_item.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns (:item)
@@ -300,7 +300,7 @@ class ManagementControllerTest < ActionController::TestCase
   end
   
   test "should get historical_orders_report js" do
-    post :historical_orders_report, :format => 'js', :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
+    xhr :post, :historical_orders_report, :format => 'js', :start_date => {:year => "2012", :month => "08", :day => "16"}, :end_date => {:year => "2012", :month => "08", :day => "17"}
     
     assert_response :success
     assert_not_nil assigns(:orders)

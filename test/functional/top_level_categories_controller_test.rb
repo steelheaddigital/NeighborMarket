@@ -15,7 +15,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   end
   
   test "should get new js" do
-    get :new, :format => 'js'
+    xhr :get, :new, :format => 'js'
     assert_response :success
     assert_not_nil assigns(:category)
     assert_equal response.content_type, Mime::JS
@@ -30,7 +30,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   
   test "should get edit js" do
     category = top_level_categories(:vegetable)
-    get :edit, :id => category.id, :format => 'js'
+    xhr :get, :edit, :id => category.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:category)
@@ -50,7 +50,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   
   test "should create top level category js" do
     assert_difference 'TopLevelCategory.count' do
-      post :create, :top_level_category => { :name => 'Fruit', :description => 'Fruity'}, :format => 'js'
+      xhr :post, :create, :top_level_category => { :name => 'Fruit', :description => 'Fruity'}, :format => 'js'
     end
     
     assert_not_nil assigns(:category)
@@ -73,7 +73,7 @@ class TopLevelCategoriesControllerTest < ActionController::TestCase
   test "should update top level category js" do  
     category = top_level_categories(:vegetable)
     
-    post :update, :id => category.id, :top_level_category => { :name => 'Changed Carrots' }, :format => 'js'
+    xhr :post, :update, :id => category.id, :top_level_category => { :name => 'Changed Carrots' }, :format => 'js'
     
     assert_not_nil :category
     assert_not_nil :top_level_category

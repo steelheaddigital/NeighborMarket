@@ -21,7 +21,7 @@ class UserContactMessagesControllerTest < ActionController::TestCase
   test "should get contact form js" do
     user = users(:approved_seller_user)
     
-    get :new, :id => user.id, :format => 'js'
+    xhr :get, :new, :id => user.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:user)
@@ -42,7 +42,7 @@ class UserContactMessagesControllerTest < ActionController::TestCase
   test "should send contact js" do
     user = users(:approved_seller_user)
     
-    post :create, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}, :format => 'js'
+    xhr :post, :create, :id => user.id, :user_contact_message => {:email => 'test@test.com', :body => 'test', :subject => 'test'}, :format => 'js'
     
     assert_redirected_to user_url(user)
     assert_not_nil assigns(:message)

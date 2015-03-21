@@ -14,7 +14,8 @@ NeighborMarket::Application.configure do
   config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  config.assets.js_compressor = :uglifier
+  config.assets.css_compressor = :sass
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
@@ -22,9 +23,7 @@ NeighborMarket::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
-
-  # Defaults to Rails.root.join("public/assets")
-  # config.assets.manifest = YOUR_PATH
+  # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
@@ -34,10 +33,13 @@ NeighborMarket::Application.configure do
   config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :info
 
-  # Use a different logger for distributed setups
-  # config.logger = SyslogLogger.new
+  # Prepend all log lines with the following tags.
+  # config.log_tags = [ :subdomain, :uuid ]
+
+  # Use a different logger for distributed setups.
+  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production
   config.cache_store = :dalli_store
@@ -50,9 +52,6 @@ NeighborMarket::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-
-  # Enable threaded mode
-  # config.threadsafe!
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
@@ -78,5 +77,14 @@ NeighborMarket::Application.configure do
   }
   
   Paperclip.options[:command_path] = "/usr/bin/"
+  
+  # Disable automatic flushing of the log to improve performance.
+  # config.autoflush_log = false
+  
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
+  
+  # Do not dump schema after migrations.
+  config.active_record.dump_schema_after_migration = false
   
 end

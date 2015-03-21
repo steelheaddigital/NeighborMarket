@@ -149,8 +149,7 @@ class InventoryItemsController < ApplicationController
   end
   
   def search
-    @inventory_items = InventoryItem.search(params[:keywords])
-                                    .sort!{|a,b| b.created_at <=> a.created_at}
+    @inventory_items = InventoryItem.search(params[:keywords]).order('created_at')
 
     session[:last_search_path] = request.fullpath
     respond_to do |format|

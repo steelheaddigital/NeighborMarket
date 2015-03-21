@@ -29,8 +29,8 @@ class CartItemsControllerTest < ActionController::TestCase
   
   test "logged in manager can destroy cart item that is in order" do
     cart_item = cart_items(:one)
-    cart_item_four = cart_items(:four)
-    cart_item_four.destroy
+    # cart_item_four = cart_items(:four)
+    # cart_item_four.destroy
     @user = users(:manager_user)
     sign_in @user
     

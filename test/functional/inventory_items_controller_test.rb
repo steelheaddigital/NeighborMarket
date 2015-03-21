@@ -19,7 +19,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
   end
   
   test "should get new js" do
-    get :new, :format => 'js'
+    xhr :get, :new, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:item)
@@ -52,7 +52,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     second_level_category = second_level_categories(:carrot)
     
     assert_difference 'InventoryItem.count' do
-      post :create, :format => 'js', :inventory_item => { :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+      xhr :post, :create, :format => 'js', :inventory_item => { :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
     end
     
     assert_not_nil assigns(:item)
@@ -75,7 +75,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
   
   test "should get edit js" do
     item = inventory_items(:one)
-    get :edit, :id => item.id, :format => 'js'
+    xhr :get, :edit, :id => item.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:item)
@@ -137,7 +137,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     item = inventory_items(:one)
     request.env["HTTP_REFERER"] = seller_index_path
     
-    post :update, :format => 'js', :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
+    xhr :post, :update, :format => 'js', :id => item.id, :inventory_item => { :top_level_category_id => item.top_level_category.id, :second_level_category_id => item.second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"}
     
     assert_not_nil assigns(:item)
     assert_not_nil assigns(:top_level_categories)

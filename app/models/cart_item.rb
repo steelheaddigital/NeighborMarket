@@ -64,7 +64,7 @@ class CartItem < ActiveRecord::Base
   
   def check_order
     if self.order
-      self.order.destroy if self.order.cart_items.count == 0
+      self.order.destroy if self.order.cart_items.count == 0 && !self.order.destroyed? && !self.order.will_destroy?
     end
   end
   

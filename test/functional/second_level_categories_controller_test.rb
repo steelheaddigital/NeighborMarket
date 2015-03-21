@@ -18,7 +18,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
   
   test "should get edit js" do
     category = second_level_categories(:carrot)
-    get :edit, :id => category.id, :format => 'js'
+    xhr :get, :edit, :id => category.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:category)
@@ -37,7 +37,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
   
   test "should get new js" do
     category = top_level_categories(:vegetable)
-    get :new, :id => category.id, :format => 'js'
+    xhr :get, :new, :id => category.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:category)
@@ -62,7 +62,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     top_level_category = top_level_categories(:vegetable)
     
     assert_difference 'SecondLevelCategory.count' do
-      post :create, :format => 'js', :second_level_category => { :name => 'Cabbage', :description => 'some cabbages', :top_level_category_id => top_level_category.id}
+      xhr :post, :create, :format => 'js', :second_level_category => { :name => 'Cabbage', :description => 'some cabbages', :top_level_category_id => top_level_category.id}
     end
     
     assert_not_nil assigns(:category)
@@ -85,7 +85,7 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
   test "should update second level category js" do
     category = second_level_categories(:carrot)
     
-    post :update, :format => 'js', :id => category.id, :second_level_category => { :name => 'Changed Carrots' }
+    xhr :post, :update, :format => 'js', :id => category.id, :second_level_category => { :name => 'Changed Carrots' }
     
     assert_not_nil :category
     assert_not_nil :second_level_category

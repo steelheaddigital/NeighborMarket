@@ -45,7 +45,7 @@ class UserControllerTest < ActionController::TestCase
   test "edit should get edit js" do
     user = users(:buyer_user)
     
-    get :edit, :id => user.id, :format => 'js'
+    xhr :get, :edit, :id => user.id, :format => 'js'
     
     assert_response :success
     assert_not_nil assigns(:user)
@@ -65,7 +65,7 @@ class UserControllerTest < ActionController::TestCase
   test "update should update user js" do
     user = users(:approved_seller_user)
     
-    post :update, :id => user.id, :user => { :seller_approved => true }, :format => 'js'
+    xhr :post, :update, :id => user.id, :user => { :seller_approved => true }, :format => 'js'
     
     assert_not_nil assigns(:user)
     assert_equal response.content_type, Mime::JS

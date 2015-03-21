@@ -18,7 +18,9 @@
 #
 
 class InventoryItem < ActiveRecord::Base
-  acts_as_indexed :fields => [:name, :description, :top_level_category_name, :second_level_category_name]
+  include PgSearch
+  
+  pg_search_scope :item_search, :against => [:name, :description]
   belongs_to :user
   belongs_to :top_level_category, touch: true
   belongs_to :second_level_category, touch: true
@@ -65,7 +67,7 @@ class InventoryItem < ActiveRecord::Base
   def self.search(keywords)
     scope = self.joins(:order_cycles)
                 .where("is_deleted = false AND approved = true AND order_cycles.status = 'current'")
-    scope.find_with_index(keywords)
+    scope.item_search(keywords)
   end
   
   def decrement_quantity_available(quantity)

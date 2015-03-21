@@ -23,7 +23,7 @@ class ReviewsControllerTest < ActionController::TestCase
   test "should get new reviewjs" do
     item = inventory_items(:one)
     
-    get :new, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :format => 'js'
+    xhr :get, :new, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :format => 'js'
     
     assert_not_nil assigns(:reviewable_type)
     assert_not_nil assigns(:reviewable_id)
@@ -49,7 +49,7 @@ class ReviewsControllerTest < ActionController::TestCase
   test "should create review js" do
     item = inventory_items(:one)
     
-    post :create, :format => 'js', :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
+    xhr :post, :create, :format => 'js', :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
     
     assert_not_nil assigns(:reviewable_type)
     assert_not_nil assigns(:reviewable_id)
@@ -77,7 +77,7 @@ class ReviewsControllerTest < ActionController::TestCase
     review = reviews(:one)
     item = inventory_items(:one)
     
-    get :edit, :format => 'js', :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
+    xhr :get, :edit, :format => 'js', :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem"
     
     assert_not_nil assigns(:reviewable_type)
     assert_not_nil assigns(:reviewable_id)
@@ -105,7 +105,7 @@ class ReviewsControllerTest < ActionController::TestCase
     item = inventory_items(:one)
     review = reviews(:one)
     
-    post :update, :format => 'js', :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
+    xhr :post, :update, :format => 'js', :id => review.id, :reviewable_id => item.id, :reviewable_type => "InventoryItem", :review => { :rating => 5, :review => "Blah Blah Blah", :user_id => @user.id }
     
     assert_not_nil assigns(:reviewable_type)
     assert_not_nil assigns(:reviewable_id)
