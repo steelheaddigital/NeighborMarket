@@ -59,6 +59,7 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => 6..128, :allow_blank => true
   validates :terms_of_service, acceptance: { accept: true }, :if => :tos_required?
+  validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
   before_save { valid? || true }
   after_save { errors.clear || true }

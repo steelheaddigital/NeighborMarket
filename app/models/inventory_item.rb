@@ -46,6 +46,7 @@ class InventoryItem < ActiveRecord::Base
   validates :autopost_quantity, :presence => true, :if => :autopost?
   validate :ensure_current_order_cycle
   validate :validate_can_edit, :on => :update
+  validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
   before_destroy :ensure_not_referenced_by_any_cart_item
   before_destroy :validate_can_edit
