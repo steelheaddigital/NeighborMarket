@@ -199,7 +199,7 @@ class OrderCycle < ActiveRecord::Base
     Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
 	    job.destroy
     end
-    Delayed::Job.enqueue(job, 0, start_date, :queue => 'order_cycle_start')
+    Delayed::Job.enqueue(job, { priority: 0, run_at: start_date, queue: 'order_cycle_start' })
   end
 	  
   def self.queue_order_cycle_end_job(end_date)
@@ -207,7 +207,7 @@ class OrderCycle < ActiveRecord::Base
     Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
       job.destroy
     end
-	  Delayed::Job.enqueue(job, 0, end_date, :queue => 'order_cycle_end')
+	  Delayed::Job.enqueue(job, { priority: 0, run_at: end_date, queue: 'order_cycle_end' })
   end
   
 end

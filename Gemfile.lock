@@ -61,7 +61,7 @@ GEM
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cocaine (0.5.4)
+    cocaine (0.5.7)
       climate_control (>= 0.0.3, < 1.0)
     crass (1.0.1)
     dalli (2.6.4)
@@ -103,7 +103,7 @@ GEM
     nokogumbo (1.2.0)
       nokogiri
     orm_adapter (0.5.0)
-    paperclip (3.5.4)
+    paperclip (4.2.1)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
@@ -207,7 +207,7 @@ DEPENDENCIES
   foreman (~> 0.62.0)
   jquery-rails (= 2.1.4)
   minitest-focus
-  paperclip (~> 3.0)
+  paperclip (~> 4.2.1)
   pg (~> 0.18.1)
   pg_search (~> 0.7.9)
   prawn (~> 0.12.0)

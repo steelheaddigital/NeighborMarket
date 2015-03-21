@@ -25,7 +25,7 @@ gem 'cancan', '~> 1.6.9'
 gem 'carmen-rails', '~> 1.0.1'
 gem 'will_paginate', '~> 3.0'
 gem 'prawn', '~> 0.12.0'
-gem "paperclip", "~> 3.0"
+gem "paperclip", "~> 4.2.1"
 gem 'pg_search', "~> 0.7.9"
 gem 'foreman', '~> 0.62.0'
 gem 'dalli', '~> 2.6.4'

@@ -84,7 +84,7 @@ class OrderCycleEndJob
       Delayed::Job.where("queue = ?","post_pickup").each do |job|
   	    job.destroy
       end
-      Delayed::Job.enqueue(job, 0, send_date, :queue => 'post_pickup')
+      Delayed::Job.enqueue(job, { priority: 0, run_at: send_date, queue: 'post_pickup' })
   end
   
 end

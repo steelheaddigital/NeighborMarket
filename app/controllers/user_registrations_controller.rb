@@ -51,7 +51,7 @@ class UserRegistrationsController < Devise::RegistrationsController
           user = User.find(resource.id)
           send_new_seller_email(user)
         end
-        expire_session_data_after_sign_in!
+        expire_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
       end
     else
