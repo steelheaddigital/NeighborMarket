@@ -7,7 +7,7 @@ one:
   name: Carrot
   price: 10.00
   price_unit: each
-  quantity_available: 10
+  quantity_available: 11
   description: MyText
 
 two:

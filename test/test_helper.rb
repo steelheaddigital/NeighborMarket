@@ -10,3 +10,7 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :cart_items, :carts, :inventory_items, :order_cycle_settings, :order_cycles, :orders, :roles, :second_level_categories, :site_settings, :top_level_categories, :users, :price_units, :inventory_item_order_cycles, :inventory_item_change_requests, :order_change_requests, :reviews, :site_contents
 end
+
+def logger
+    Rails.logger
+end

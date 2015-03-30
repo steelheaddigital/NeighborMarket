@@ -12,10 +12,10 @@ class OrderTest < ActiveSupport::TestCase
     assert_not_nil order.cart_items
   end
   
-  test "add_inventory_items_from_cart adds quantity to existing item in order" do
+  test "add_inventory_items_from_cart adds quantity to existing item if item was newly added to cart (does not have order_id)" do
     order = orders(:current)
     order.user_id = users(:buyer_user).id
-    cart = carts(:full)
+    cart = carts(:no_order)
     inventory_item = inventory_items(:one)
 
     assert_no_difference 'order.cart_items.size' do
@@ -23,6 +23,20 @@ class OrderTest < ActiveSupport::TestCase
     end
     assert_not_nil order.cart_items
     assert_equal(20, order.cart_items.find{|x| x.inventory_item_id == inventory_item.id}.quantity)
+  end
+  
+  test "add_inventory_items_from_cart sets quantity of existing item to cart item quantity if item was already in the order" do
+    order = orders(:current)
+    order.user_id = users(:buyer_user).id
+    cart = carts(:full)
+    inventory_item = inventory_items(:one)
+    cart.cart_items.where(inventory_item_id: inventory_item.id).take.update_column(:quantity, 15)
+
+    assert_no_difference 'order.cart_items.size' do
+      order.add_inventory_items_from_cart(cart)
+    end
+    assert_not_nil order.cart_items
+    assert_equal(15, order.cart_items.find{|x| x.inventory_item_id == inventory_item.id}.quantity)
   end
   
   test "total_price returns correct result" do
@@ -55,10 +69,10 @@ class OrderTest < ActiveSupport::TestCase
     order = orders(:current)
     order.current_user = users(:manager_user)
     cart_item_id = order.cart_items.first.id
-    order.attributes = {:cart_items_attributes => [:id => cart_item_id, :quantity => 9]}
+    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
     
     assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
-      order.save
+      order.update_attributes(params[:order])
     end
   end
   
@@ -66,20 +80,21 @@ class OrderTest < ActiveSupport::TestCase
     
     order = orders(:current)
     cart_item_id = order.cart_items.first.id
-    order.attributes = {:cart_items_attributes => [:id => cart_item_id, :quantity => 10]}
+    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 20 } } }
     
     assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available', -10 do
-      order.save
+      order.update_attributes(params[:order])
     end
     
   end
   
   test "seller inventory decreased by associated cart item quantity when new order" do
     
-    cart = carts(:full)
+    cart = carts(:no_order)
     order = Order.new
     order.cart_items = cart.cart_items
     
+    assert order.valid?
     assert_difference 'order.cart_items.first.inventory_item.quantity_available', -10 do
       order.save
     end
@@ -100,6 +115,15 @@ class OrderTest < ActiveSupport::TestCase
     order = orders(:not_current)
     
     assert order.invalid?
+  end
+  
+  test "returns validation error if cart item quantity is greater than quantity available" do
+    order = orders(:current)
+    cart = carts(:invalid)
+    order.add_inventory_items_from_cart(cart)
+    
+    assert order.invalid?
+    assert_equal order.errors.full_messages.last, "Cart items quantity cannot be greater than quantity available of 21 for item Carrot"
   end
   
   test "cart_items_where_order_cycle_minimum_reached returns cart items where minimum reached" do

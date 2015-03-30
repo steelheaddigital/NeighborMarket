@@ -49,3 +49,9 @@ minimum_not_reached_at_order_cycle_end:
   order: current_two
   minimum_reached_at_order_cycle_end: false
   inventory_item: has_minimum
+  quantity: 10
+  
+invalid:
+  cart: invalid
+  inventory_item: one
+  quantity: 12

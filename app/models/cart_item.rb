@@ -49,7 +49,7 @@ class CartItem < ActiveRecord::Base
   
   def validate_can_edit
     if !can_edit?
-      if self.quantity_was > self.quantity
+      if self.quantity_was > self.quantity && self.cart.nil?
         errors.add(:quantity, "cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"#{Rails.application.routes.url_helpers.new_order_change_request_path(:order_id => self.order.id)}\">send a request</a> to the site manager.".html_safe)
       end
     end
@@ -69,7 +69,8 @@ class CartItem < ActiveRecord::Base
   end
   
   def validate_quantity
-    if self.order
+    inventory_item.reload
+    if !self.order_id.nil?
       if (inventory_item.quantity_available + self.quantity_was) - self.quantity < 0
         errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available + self.quantity_was} for item #{inventory_item.name}")
       end

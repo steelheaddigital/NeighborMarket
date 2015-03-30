@@ -20,7 +20,7 @@
 class CartItemsController < ApplicationController
   include CurrentCart
   load_and_authorize_resource :only => [:destroy]
-  before_action :set_cart, only: [:create, :update, :destroy]
+  before_action :set_cart, only: [:create]
   
   def create
     @cart = current_cart
@@ -33,7 +33,7 @@ class CartItemsController < ApplicationController
         format.html { redirect_to cart_index_path }
       else
         message = @cart_item.errors.full_messages.first
-        format.html { redirect_to cart_index_path, notice: message }
+        format.html { redirect_to :back, notice: message }
       end
     end
     

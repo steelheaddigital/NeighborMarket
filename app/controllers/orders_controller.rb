@@ -18,6 +18,8 @@
 #
 
 class OrdersController < ApplicationController
+  include CurrentCart
+  
   before_filter :authenticate_user!, :except => [:new]
   load_and_authorize_resource
   skip_authorize_resource :only => [:new]
@@ -26,7 +28,7 @@ class OrdersController < ApplicationController
     @cart = current_cart
     @site_settings = SiteSetting.instance
     #update the cart in case the user changed any quantitities
-    if @cart.update_attributes(params[:cart])
+    if @cart.update_attributes(params[:cart]) 
       
       if params[:commit] == "Continue Shopping"
         last_search_path = session[:last_search_path]
@@ -45,50 +47,25 @@ class OrdersController < ApplicationController
         return
       end
       
-      @current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
-      if @current_order
-        @order = @current_order
-      else
-        @order = current_user.orders.build
-      end
-      @order.add_inventory_items_from_cart(@cart)
-      
-      respond_to do |format|
-        format.html
-      end
+      @order = update_or_create_order(@cart)
     else
-      message = @cart.errors.full_messages.first
-      redirect_to cart_index_path, :notice => message
+      @total_price = @cart.total_price
+      render "cart/index"
     end
     
   end
   
   def create
-    current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
-    if current_order
-      @order = current_order
-    else
-      @order = current_user.orders.build
-    end
-    @order.add_inventory_items_from_cart(current_cart)
-    if !params[:order].nil?
-      @order.update_attribute(:deliver, params[:order][:deliver])
-    end
+    @order = update_or_create_order(current_cart)
     
     respond_to do |format|
-        if @order.save
-          send_emails(@order, false)
-        
-          Cart.destroy(session[:cart_id])
-          session[:cart_id] = nil
-          
-          @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
-          @site_settings = SiteSetting.instance
-          format.html {redirect_to finish_order_url(@order)}
-        else
-          @cart = current_cart
-          format.html {redirect_to cart_index_url, notice: 'Sorry, your order could not be created. Please try again later' }
-        end
+      if @order.save
+        send_emails_and_destroy_cart(@order, false)
+        format.html {redirect_to finish_order_url(@order)}
+      else
+        message = "Your order could not be processed because #{@order.errors.full_messages.first}"
+        format.html { redirect_to cart_index_path, notice: message }
+      end
     end
   end
   
@@ -114,15 +91,29 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
     @order.current_user = current_user
-    @total_price = @order.total_price
     
     respond_to do |format|
-      if @order.update_attributes(params[:order])
-        send_emails(@order, true)
-        format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
+      previous_action = session[:previous_action]
+      if previous_action[:controller] == "orders" && previous_action[:action] == "new"
+        @order.add_inventory_items_from_cart(current_cart)
+        if @order.save
+          logger.debug "order saved"
+          send_emails_and_destroy_cart(@order, true)
+          format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
+        else
+          message = "Your order could not be processed because #{@order.errors.full_messages.first}"
+          format.html { redirect_to cart_index_path, notice: message }
+        end
       else
-        format.html { render "edit" }
+        if @order.update_attributes(params[:order])
+          send_emails(@order, true)
+          format.html { redirect_to edit_order_path, notice: 'Order successfully updated!'}
+        else
+          @total_price = @order.total_price
+          format.html { render "edit" }
+        end
       end
+      
     end
   end
   
@@ -148,6 +139,24 @@ class OrdersController < ApplicationController
   end
   
   private
+  
+  def update_or_create_order(cart)
+    current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
+    if current_order
+      order = current_order
+    else
+      order = current_user.orders.build
+    end
+    order.add_inventory_items_from_cart(cart)
+    
+    return order
+  end
+  
+  def send_emails_and_destroy_cart(order, update)
+    send_emails(order, update)
+    Cart.destroy(session[:cart_id])
+    session.delete(:cart_id)
+  end
   
   def send_emails(order, update)
     #Send an email to each seller notifying them of the sale

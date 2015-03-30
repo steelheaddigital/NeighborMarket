@@ -17,24 +17,18 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class SiteContent < ActiveRecord::Base
-  acts_as_singleton
-  validates :terms_of_service, :presence => true, :if => :require_terms_of_service?
-  before_save :sanitize_html
+class SessionsController < Devise::SessionsController
+  respond_to :html
   
-  attr_accessible :site_description, :inventory_guidelines, :terms_of_service, :require_terms_of_service, :about
-  
-  def require_terms_of_service?
-    require_terms_of_service
-  end
-  
-  
-  private 
-  
-  def sanitize_html
-    self.site_description = Sanitize.fragment(site_description, Sanitize::Config::RELAXED)
-    self.terms_of_service = Sanitize.fragment(terms_of_service, Sanitize::Config::RELAXED)
-    self.about = Sanitize.fragment(terms_of_service, Sanitize::Config::RELAXED)
-  end
+  def destroy
+    
+    cart_id = session[:cart_id]
+    if cart_id
+      cart = Cart.find(cart_id)
+      cart.destroy if cart
+    end
+    
+    super
+  end  
   
 end

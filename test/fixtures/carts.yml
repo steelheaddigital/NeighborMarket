@@ -18,3 +18,6 @@ no_order:
 
 minimum:
   user: buyer_user
+  
+invalid:
+  user: buyer_user

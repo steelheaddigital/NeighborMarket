@@ -118,7 +118,7 @@ NeighborMarket::Application.routes.draw do
   end
   
   post 'orders/new', to: 'orders#new'
-  resources :orders, :only => ["create", "edit", "update", "show", "destroy"] do
+  resources :orders, :only => ["new", "create", "edit", "update", "show", "destroy"] do
     member do
       get 'finish'
     end

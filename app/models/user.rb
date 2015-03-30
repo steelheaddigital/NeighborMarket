@@ -19,8 +19,8 @@
 
 class User < ActiveRecord::Base
   include PgSearch
+  
   pg_search_scope :user_search, :against => [:username, :first_name, :last_name]
-  #acts_as_indexed :fields => [:username, :first_name, :last_name]
   has_and_belongs_to_many :roles
   has_many :inventory_items, :dependent => :destroy
   has_many :carts, :dependent => :destroy

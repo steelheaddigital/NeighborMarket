@@ -12,6 +12,7 @@ class CartItemsControllerTest < ActionController::TestCase
     
     assert_not_nil assigns(:cart)
     assert_not_nil assigns(:cart_item)
+    assert_not_nil session[:cart_id]
     assert_redirected_to cart_index_path
   end
     

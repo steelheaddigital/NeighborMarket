@@ -23,6 +23,8 @@ class Cart < ActiveRecord::Base
   accepts_nested_attributes_for :cart_items
   attr_accessible :user_id, :cart_items_attributes
   
+  validate :validate_cart_items
+  
   def add_inventory_item(inventory_item_id, quantity)
     current_item = cart_items.find_by_inventory_item_id(inventory_item_id)
     
@@ -43,4 +45,17 @@ class Cart < ActiveRecord::Base
   def has_items_with_minimum?
     cart_items.any?{|cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end}
   end
+  
+  private
+  
+  def validate_cart_items
+    cart_items.each do |cart_item|
+      if !cart_item.changed? && !cart_item.valid?
+        cart_item.errors.full_messages.each do |message|
+          errors[:base] << message
+        end
+      end
+    end
+  end
+  
 end

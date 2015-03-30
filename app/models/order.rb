@@ -18,7 +18,7 @@
 #
 
 class Order < ActiveRecord::Base
-  has_many :cart_items, :dependent => :destroy
+  has_many :cart_items, dependent: :destroy, autosave: true
   belongs_to :user
   belongs_to :order_cycle
   
@@ -27,24 +27,25 @@ class Order < ActiveRecord::Base
   attr_accessor :current_user
   
   validate :ensure_current_order_cycle
+  
   before_validation :set_cart_items_user
+
   before_destroy :will_destroy, prepend: true
-  before_save do |order|
-    if order.order_cycle_id.nil?
-      order_cycle_id = OrderCycle.current_cycle_id
-      order.order_cycle_id = order_cycle_id
-    end
-    update_seller_inventory(order)
-  end
+  before_save :update_order_cycle_id, 
+              :update_seller_inventory
+  after_save :disassociate_cart_items_from_cart
   
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|
-      item.cart_id = nil
-      existing_item = cart_items.find{|x| x.inventory_item_id == item.inventory_item_id}
+      existing_item = self.cart_items.find{|x| x.inventory_item_id == item.inventory_item_id}
       if !existing_item.nil?
-        existing_item.quantity += item.quantity
+        if item.order_id.nil?
+          existing_item.quantity += item.quantity
+        else
+          existing_item.quantity = item.quantity
+        end
       else
-        cart_items << item
+        self.cart_items << item
       end
     end
   end
@@ -114,16 +115,32 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def update_seller_inventory(order)
-    order.cart_items.each do |item|
+  def update_order_cycle_id
+    if self.order_cycle_id.nil?
+      current_order_cycle_id = OrderCycle.current_cycle_id
+      self.order_cycle_id = current_order_cycle_id
+    end
+  end
+  
+  def update_seller_inventory
+    self.cart_items.each do |item|
       #if the quantity was changed and the cart_item is part of an order
-      if item.quantity_changed? and item.order_id
-        difference = item.quantity - item.quantity_was
-        item.inventory_item.decrement_quantity_available(difference)
-      #this is a new or existing order
+      if !item.order_id.nil?
+        if item.quantity_changed?
+          difference = item.quantity - item.quantity_was
+          item.inventory_item.decrement_quantity_available(difference)
+        end
+      #this is a new order
       else
         item.inventory_item.decrement_quantity_available(item.quantity)
       end
+    end
+  end
+  
+  def disassociate_cart_items_from_cart
+    self.cart_items.each do |item|
+      item.cart_id = nil
+      item.save
     end
   end
   

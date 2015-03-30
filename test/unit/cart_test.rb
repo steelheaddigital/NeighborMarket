@@ -57,4 +57,10 @@ class CartTest < ActiveSupport::TestCase
     assert result
   end
   
+  test "is_not_valid_if_contains_invalid_cart_item" do
+    cart = carts(:invalid)
+    
+    assert cart.invalid?
+  end
+  
 end

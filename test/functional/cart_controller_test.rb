@@ -8,7 +8,6 @@ class CartControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns(:cart)
-    assert_not_nil session[:cart_id]
   end
   
   test "should get item_count" do

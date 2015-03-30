@@ -7,7 +7,7 @@ module CurrentCart
     if(user_signed_in?)
       cart = Cart.create(:user_id => current_user.id)
     else
-      cart = Cart.create()
+      cart = Cart.create
     end
     session[:cart_id] = cart.id
   end

@@ -9,7 +9,7 @@ class CartItemTest < ActiveSupport::TestCase
   
   test "quantity can't be greater than quantity available" do
     inventory_item = inventory_items(:one)
-    item = CartItem.new(:inventory_item_id => inventory_item.id, :quantity => 11)
+    item = CartItem.new(:inventory_item_id => inventory_item.id, :quantity => 12)
     
     assert !item.valid?
   end
@@ -39,13 +39,13 @@ class CartItemTest < ActiveSupport::TestCase
     end
   end
   
-  test "does not update quantity if user is buyer and item has order and quantity is decreased" do
-    item = cart_items(:one)
-    item.current_user = users(:buyer_user)
+  test "does not update quantity if user is buyer and item has order but is not in cart and quantity is decreased" do
+    item = cart_items(:minimum_not_reached_at_order_cycle_end)
+    item.current_user = users(:buyer_user_not_current)
     
     item.update_attributes(:quantity => 9)
     
-    assert !item.valid?
+    assert item.invalid?
   end
   
   test "updates quantity if user is buyer and item has order and quantity is increased" do

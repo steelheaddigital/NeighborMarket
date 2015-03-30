@@ -26,14 +26,16 @@ class OrdersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:order)
   end
   
-  test "create should update current order when buyer has an open order" do 
+  test "create should update current order when buyer has an open order" do
+    cart = carts(:full)
+    cart_items(:one).update_attribute(:quantity, 1)
+    cart_items(:four).update_attribute(:quantity, 1)
+    
     assert_no_difference 'Order.count' do
-      post :create, :order => { :deliver => false }
+      post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
     end
     
-    assert_not_nil assigns(:order)
-    assert_not_nil assigns(:order_pickup_date)
-    assert_not_nil assigns(:site_settings)
+    assert_not_nil assigns(:order), "order was nil"
     assert_redirected_to finish_order_path(assigns(:order))
   end
   
@@ -41,14 +43,15 @@ class OrdersControllerTest < ActionController::TestCase
     sign_out @user
     @user  = users(:buyer_user_no_order)
     sign_in @user
+    cart = carts(:full)
+    cart_items(:one).update_attribute(:quantity, 1)
+    cart_items(:four).update_attribute(:quantity, 1)
     
     assert_difference 'Order.count' do
-      post :create, :order => { :deliver => false }
+      post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
     end
     
     assert_not_nil assigns(:order)
-    assert_not_nil assigns(:order_pickup_date)
-    assert_not_nil assigns(:site_settings)
     assert_redirected_to finish_order_path(assigns(:order))
   end
   
@@ -81,8 +84,11 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   test "should update cart_items in order if user is buyer and quantity is increased" do
-    order = orders(:current)
-    cart_item = cart_items(:one)
+    sign_out @user
+    @user  = users(:buyer_user_not_current)
+    sign_in @user
+    order = orders(:current_two)
+    cart_item = cart_items(:minimum_not_reached_at_order_cycle_end)
     
     post :update, :id => order.id, :order => { :cart_items_attributes => { 0 => { :quantity => 11, :id => cart_item.id } } }
     
@@ -92,14 +98,32 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   test "should not update cart_items in order if user is buyer and quantity is decreased" do
-    order = orders(:current)
-    cart_item = cart_items(:one)
+    sign_out @user
+    @user  = users(:buyer_user_not_current)
+    sign_in @user
+    order = orders(:current_two)
+    cart_item = cart_items(:minimum_not_reached_at_order_cycle_end)
     
     post :update, :id => order.id, :order => { :cart_items_attributes => { 0 => { :quantity => 9, :id => cart_item.id } } }
     
     assert_not_nil :order
     assert !assigns(:order).valid?
-    assert_equal "Cart items quantity cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"/order_change_request/485700622/new\">send a request</a> to the site manager.", assigns(:order).errors.full_messages.first
+    assert_equal "Cart items quantity cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"/order_change_request/406222160/new\">send a request</a> to the site manager.", assigns(:order).errors.full_messages.first
+  end
+  
+  test "update should add items from cart when previous action is new" do
+    cart = carts(:full)
+    order = orders(:current)
+    inventory_item = inventory_items(:not_in_cart)
+    new_item = cart.cart_items.create({quantity: 10, inventory_item_id: inventory_item.id})
+    
+    assert_difference 'order.cart_items.count' do
+      @request.env['HTTP_REFERER'] = 'http://test.com/orders/new'
+      post :update, { :id => order.id }, { :cart_id => cart.id }
+    end
+    
+    assert_redirected_to edit_order_path
+    assert_equal 'Order successfully updated!', flash[:notice]
   end
   
   test "should show order" do

@@ -21,7 +21,6 @@
 
 <div id ="Cart" class="container-fluid">
   <h2>Your Cart</h2>
-    <p class="notice"><%= flash[:notice] %></p>
     <%= form_for @cart, :url => orders_new_path, :method => "POST" do |f| %>
     <%= f.error_messages %>
     <% if @cart.has_items_with_minimum? %>
@@ -30,7 +29,7 @@
   	  </p>
     <%end%>
 	<div class="container-fluid">
-    	<%= render :partial => "form", :locals => {:f => f} %>
+    	<%= render :partial => "cart/form", :locals => {:f => f} %>
 	    <div class="row">
 	      <div class="col-md-12">
 			<%= f.submit("Confirm order and purchase", :class => 'btn btn-primary inlineButton') %>
