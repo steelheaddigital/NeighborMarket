@@ -1,5 +1,5 @@
-# config valid only for Capistrano 3.1
-lock '3.2.1'
+# config valid only for Capistrano 3.4.0
+lock '3.4.0'
 
 set :application, 'neighbormarket'
 set :repo_url, 'https://github.com/tmooney3979/NeighborMarket.git'
