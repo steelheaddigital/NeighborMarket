@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'capistrano', '~> 3.2.0'
+gem 'capistrano', '~> 3.4.0'
 gem 'capistrano-rails'
-gem 'capistrano-rbenv', '~> 2.0'
-gem 'whenever'
+gem 'capistrano-rbenv', '~> 2.0.3'
