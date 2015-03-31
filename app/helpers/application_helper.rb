@@ -231,15 +231,15 @@ module ApplicationHelper
   
   def facebook
     app_id = SiteSetting.instance.facebook_app_id
-    tag = "$(function() {"\
-	    "$.getScript('//connect.facebook.net/en_US/sdk.js', function(){"\
-  	      "FB.init({"\
-  	        "appId: '#{app_id}',"\
-  	      	"version    : 'v2.0',"\
-  			"xfbml      : true"\
-  	      "});"\
-  	    "});"\
-	    "})"\
+    tag = %[$(function() {
+	    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+  	      FB.init({
+  	        appId: '#{app_id}',
+  	      	version: 'v2.0',
+  			    xfbml: true
+  	      });
+  	    });
+	    })]
       
       javascript_tag(tag)
   end

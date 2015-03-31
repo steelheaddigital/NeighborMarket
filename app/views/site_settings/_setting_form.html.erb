@@ -19,6 +19,11 @@
 				  <%= f.check_box(:facebook_enabled, {label: "Enable Facebook Sharing" }, true, "false")%>
 				  <%= f.text_field :facebook_app_id, label: "Facebook App ID"%>
 			  </fieldset>
+			  <fieldset>
+				  <legend>Google Analytics Settings</legend>
+				  <%= f.check_box(:google_analytics_enabled, {label: "Enable Google Analytics Tracking" }, true, "false")%>
+				  <%= f.text_field :google_analytics_app_id, label: "Google Analytics Tracking ID"%>
+			  </fieldset>
 		  </div>
 		  <div class="col-md-6">
 			  <%= f.text_field :drop_point_address%>

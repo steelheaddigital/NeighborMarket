@@ -24,10 +24,11 @@ class SiteSetting < ActiveRecord::Base
                       :message => "should be like 12345 or 12345-1234",
                       :allow_blank => true
                       
-  validate :must_have_at_least_one_mode
-  validate :must_have_facebook_app_id_if_facebook_enabled
+  validate :must_have_at_least_one_mode,
+           :must_have_facebook_app_id_if_facebook_enabled,
+           :must_have_google_analytics_app_id_if_google_analytics_enabled
   
-  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :facebook_enabled, :facebook_app_id, :reputation_enabled
+  attr_accessible :site_name, :drop_point_address, :drop_point_city, :drop_point_state, :drop_point_zip, :time_zone, :drop_point, :delivery, :directions, :facebook_enabled, :facebook_app_id, :reputation_enabled, :google_analytics_enabled, :google_analytics_app_id
   
   def delivery_only?
     delivery == true && drop_point == false
@@ -60,6 +61,12 @@ class SiteSetting < ActiveRecord::Base
   def must_have_facebook_app_id_if_facebook_enabled
     if facebook_enabled && facebook_app_id.blank?
       errors.add(:facebook_app_id, "must be provided to enable Facebook integration")
+    end
+  end
+  
+  def must_have_google_analytics_app_id_if_google_analytics_enabled
+    if google_analytics_enabled && google_analytics_app_id.blank?
+      errors.add(:google_analytics_app_id, "must be provided to enable Google Analytics tracking")
     end
   end
   

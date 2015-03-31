@@ -6,4 +6,5 @@
 //= require jquery.slidebars
 //= require jquery.metadata
 //= require jquery.rating
+//= require google_analytics_turbolinks
 

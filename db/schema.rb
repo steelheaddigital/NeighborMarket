@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150321193005) do
+ActiveRecord::Schema.define(version: 20150331120457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,12 +197,14 @@ ActiveRecord::Schema.define(version: 20150321193005) do
     t.string  "drop_point_state"
     t.integer "drop_point_zip"
     t.string  "time_zone"
-    t.boolean "drop_point",         default: true
-    t.boolean "delivery",           default: false
+    t.boolean "drop_point",               default: true
+    t.boolean "delivery",                 default: false
     t.text    "directions"
-    t.boolean "facebook_enabled",   default: false
+    t.boolean "facebook_enabled",         default: false
     t.text    "facebook_app_id"
-    t.boolean "reputation_enabled", default: false
+    t.boolean "reputation_enabled",       default: false
+    t.boolean "google_analytics_enabled", default: false
+    t.text    "google_analytics_app_id"
   end
 
   create_table "top_level_categories", force: true do |t|

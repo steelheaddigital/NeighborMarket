@@ -20,6 +20,12 @@ class SiteSettingTest < ActiveSupport::TestCase
      assert !site_setting.valid?, site_setting.errors.inspect
    end
    
+   test "should not validate if google_analytics_enabled is true but google_analytics_app_id is blank" do
+     site_setting = SiteSetting.instance
+     site_setting.update(:delivery => false, :drop_point => true, :google_analytics_enabled => true, :google_analytics_app_id => "")
+     assert !site_setting.valid?, site_setting.errors.inspect
+   end
+   
    test "delivery_only returns true when site is set for delivery only" do
      settings = SiteSetting.instance
      settings.update({:delivery => true, :drop_point => false})
