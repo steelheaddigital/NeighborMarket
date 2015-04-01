@@ -34,7 +34,6 @@ gem 'sanitize', '~> 3.1.0'
 
 gem 'protected_attributes', '~> 1.0.9'
 gem 'activerecord-deprecated_finders', '~> 1.0.3'
-gem 'activerecord-session_store'
 
 #protected_attributes has to come before delayed_job
 gem 'delayed_job', '~> 4.0.2'

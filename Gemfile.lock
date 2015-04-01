@@ -29,10 +29,6 @@ GEM
       activesupport (= 4.1.10)
       arel (~> 5.0.0)
     activerecord-deprecated_finders (1.0.3)
-    activerecord-session_store (0.1.0)
-      actionpack (>= 4.0.0, < 5)
-      activerecord (>= 4.0.0, < 5)
-      railties (>= 4.0.0, < 5)
     activesupport (4.1.10)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -186,7 +182,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-deprecated_finders (~> 1.0.3)
-  activerecord-session_store
   acts_as_singleton (~> 0.0.8)
   autoprefixer-rails
   bootstrap-sass (~> 3.2.0)
