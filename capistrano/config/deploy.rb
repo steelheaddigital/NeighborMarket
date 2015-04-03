@@ -26,7 +26,7 @@ set :deploy_to, '/home/neighbormarket'
 set :linked_files, %w{config/database.yml .env}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/sitemaps}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -39,6 +39,10 @@ set :rbenv_ruby, '2.2.0'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
+
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { stage }
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 namespace :deploy do
 
@@ -118,4 +122,15 @@ namespace :foreman do
   
   before 'deploy', 'foreman:create_env_file'
   before 'deploy:publishing', 'foreman:export'
+end
+
+namespace :sitemaps do
+  desc 'Generate a new site map'
+  task :generate do
+    on roles(:app) do |host|
+      execute :bundle, "exec foreman run rake sitemap:generate RAILS_ENV=#{rails_env}"
+    end
+  end
+  
+  after "deploy:publishing", "sitemaps:generate"
 end

@@ -75,6 +75,9 @@ class User < ActiveRecord::Base
   attr_accessor :login, :become_seller, :become_buyer, :skip_confirmation_email
   attr_writer :auto_create
   
+  scope :active, -> { where(deleted_at: nil) }
+  scope :active_sellers, -> { joins(:roles).where("roles.name='seller' AND users.approved_seller=true AND users.deleted_at IS NULL").active}
+  
   def auto_create
     @auto_create || false
   end
@@ -188,7 +191,7 @@ class User < ActiveRecord::Base
   
   def seller?
     self.roles.each do |role|
-      if role.name == "seller" || self.become_seller
+      if role.name == "seller" || self.become_seller && self.deleted_at.nil?
         return true
       end
     end
@@ -197,7 +200,7 @@ class User < ActiveRecord::Base
   
   def buyer?
     self.roles.each do |role|
-      if role.name == "buyer"
+      if role.name == "buyer" && self.deleted_at.nil?
         return true
       end
     end
@@ -206,7 +209,7 @@ class User < ActiveRecord::Base
   
   def manager?
     self.roles.each do |role|
-      if role.name == "manager"
+      if role.name == "manager" && self.deleted_at.nil?
         return true
       end
     end
@@ -227,7 +230,7 @@ class User < ActiveRecord::Base
   
   def self.search(keywords, role, seller_approved, seller_approval_style)
     
-    scope = self.where('deleted_at IS NULL')
+    scope = self.active
     
     if(role.present?)
       scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}")

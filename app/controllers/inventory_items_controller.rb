@@ -20,7 +20,6 @@
 class InventoryItemsController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :search, :browse, :browse_all]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show, :search, :browse, :browse_all, :user_reviews]
   require 'will_paginate/array'
   
   def show
@@ -161,7 +160,7 @@ class InventoryItemsController < ApplicationController
     @inventory_items = InventoryItem.joins(:order_cycles)
                                     .where("second_level_category_id = ? AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
                                     .order("created_at DESC")
-                          
+                   
     session[:last_search_path] = request.fullpath          
     respond_to do |format|
       format.html { render :search }

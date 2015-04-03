@@ -9,6 +9,7 @@ one:
   price_unit: each
   quantity_available: 11
   description: MyText
+  approved: true
 
 two:
   top_level_category: preserves

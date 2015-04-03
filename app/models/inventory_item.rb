@@ -48,10 +48,11 @@ class InventoryItem < ActiveRecord::Base
   validate :validate_can_edit, :on => :update
   validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
-  before_destroy :ensure_not_referenced_by_any_cart_item
-  before_destroy :validate_can_edit
   before_create :add_to_order_cycle
   after_update :notify_buyers
+  before_destroy :ensure_not_referenced_by_any_cart_item, :validate_can_edit
+  
+  scope :published, -> { joins(:order_cycles).where("order_cycles.id=? AND inventory_items.approved=true AND inventory_items.is_deleted=false", OrderCycle.current_cycle_id)}
   
   def autopost?
     self.autopost
@@ -117,6 +118,10 @@ class InventoryItem < ActiveRecord::Base
   def in_current_order_cycle?
     order_cycle = order_cycles.find_by_status("current")
     return !order_cycle.nil?
+  end
+  
+  def published?
+    self.in_current_order_cycle? && self.approved
   end
   
   def current_cart_items

@@ -272,7 +272,16 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
     get :user_reviews
     assert_redirected_to new_user_session_path
+  end
+  
+  test "anonymous user cannot access unpublished items" do
+    sign_out @user
+    item = inventory_items(:one)
+    item.update_attribute(:approved, false)
     
+    get :show, :id => item.id
+    
+    assert_response :not_found
   end
   
   test "anonymous user can access browse" do
@@ -293,6 +302,16 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
     assert_response :success
     assert_not_nil assigns(:inventory_items)
+  end
+  
+  test "anonymous user can access published items" do
+    sign_out @user
+    item = inventory_items(:one)
+    
+    get :show, :id => item.id
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_item)
   end
   
 end

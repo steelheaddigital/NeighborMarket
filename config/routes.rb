@@ -1,11 +1,7 @@
 NeighborMarket::Application.routes.draw do
-
-  get "home/index"
-  get "home/refresh"
-  get "home/user_home"
-  get "home/paginate_items"
   
   root :to => "home#index"
+  
   devise_for :users, :controllers => { :registrations => 'user_registrations', :sessions => 'sessions', :confirmations => 'user_confirmations' }
   devise_scope :user do 
     match '/buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up, via: [:get, :post]
@@ -17,6 +13,12 @@ NeighborMarket::Application.routes.draw do
     get '/user/auto_create_confirmation', to: 'user_confirmations#auto_create_confirmation'
     match '/user_registrations/terms_of_service', via: [:get, :post]
   end
+  
+  get "sitemap.xml", to: "home#sitemap", defaults: { format: :xml }, as: :sitemap
+  get "robots.txt", to: "home#robots", defaults: { format: :text }, as: :robots
+  get "home/index"
+  get "home/user_home"
+  get "home/paginate_items"
   
   resources :user do 
     member do

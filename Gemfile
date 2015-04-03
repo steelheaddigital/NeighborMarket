@@ -31,6 +31,8 @@ gem 'foreman', '~> 0.62.0'
 gem 'dalli', '~> 2.6.4'
 gem 'acts_as_singleton', '~> 0.0.8'
 gem 'sanitize', '~> 3.1.0'
+gem 'dynamic_sitemaps', '~> 2.0.0'
+gem 'whenever', '~> 0.9.4'
 
 gem 'protected_attributes', '~> 1.0.9'
 gem 'activerecord-deprecated_finders', '~> 1.0.3'
