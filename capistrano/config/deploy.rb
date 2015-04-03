@@ -40,8 +40,7 @@ set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rben
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
-set :whenever_command, "bundle exec whenever"
-set :whenever_environment, defer { stage }
+set :whenever_environment, ->{ fetch(:stage) }
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 namespace :deploy do
@@ -128,7 +127,9 @@ namespace :sitemaps do
   desc 'Generate a new site map'
   task :generate do
     on roles(:app) do |host|
-      execute :bundle, "exec foreman run rake sitemap:generate RAILS_ENV=#{rails_env}"
+      within release_path do
+        execute :bundle, "exec foreman run rake sitemap:generate RAILS_ENV=#{fetch(:rails_env)}"
+      end
     end
   end
   
