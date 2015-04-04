@@ -69,7 +69,7 @@
 					<%slice.each do |item|%>
 						<div class="col-md-4">
 						    <div class="thumbnail">
-						      <a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium), {style: "height: 150px; width: auto;"} %></a>
+						      <a href="<%=inventory_item_path(item)%>"><%= image_tag item.photo.url(:medium), {alt: item.name, style: "height: 150px; width: auto;"} %></a>
 						      <div class="caption">
 						        <h3><%=link_to(item.name, inventory_item_path(item))%></h3>
 						      </div>
@@ -83,7 +83,7 @@
     <div class="col-md-5" style="margin-bottom: 15px;">
 		<div>
   	      <%if @user.photo?%>
-  	          <%= image_tag @user.photo.url(:medium), {class: "img-rounded"} %>
+  	          <%= image_tag @user.photo.url(:medium), {alt: @user.username, class: "img-rounded"} %>
   	      <%end%>
   		</div>
 		<div style="margin-top: 10px;">

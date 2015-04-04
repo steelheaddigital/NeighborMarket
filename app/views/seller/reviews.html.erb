@@ -38,7 +38,7 @@
 <h2>Item Reviews and Ratings</h2>
 <% @inventory_items.each do |inventory_item| %>
 	<div class="well">
-    	<span class="itemReviewTitle"><%= image_tag(inventory_item.photo.url(:thumb), class: "img-responsive") if inventory_item.photo.file? %><%= item_name(inventory_item) %></span>
+    	<span class="itemReviewTitle"><%= image_tag(inventory_item.photo.url(:thumb), alt: inventory_item.name, class: "img-responsive") if inventory_item.photo.file? %><%= item_name(inventory_item) %></span>
 		<%= render partial: "inventory_items/review", locals: {inventory_item: inventory_item}%>
 	</div>
 <% end %>

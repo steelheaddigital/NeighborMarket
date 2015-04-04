@@ -43,7 +43,7 @@
 		  		<%= f.text_field :minimum, label: tooltip_label("Minimum", "Adding a quantity here will indicate that a minimum quanity must be purchased among all buyers during the order cycle before you will deliver the items to the drop point.") %>
 			    <%= f.text_area :description, :size => "10x10" %>
 				<%if @item.photo?%>
-					<%= image_tag @item.photo.url(:thumb) %>
+					<%= image_tag @item.photo.url(:thumb), alt: item.name %>
 				<%else%>
 					No Image Available
 				<%end%>

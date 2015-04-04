@@ -24,7 +24,7 @@
 	  <div class="col-md-3 col-sm-4">
 		<div class="row">
 		    <%if inventory_item.photo?%>
-		      <%= image_tag inventory_item.photo.url(:medium), class: "img-responsive" %>
+		      <%= image_tag inventory_item.photo.url(:medium), alt: inventory_item.name, class: "img-responsive" %>
 		    <%else%>
 		      No Image Available
 		    <%end%>
@@ -53,7 +53,7 @@
 							    <p>
 									<label>Sold By:</label>
 									<%if inventory_item.user.photo?%>
-										<a href="<%=user_path(inventory_item.user.id)%>" class="inventorySellerLink"><%= image_tag inventory_item.user.photo.url(:thumb), class: "img-responsive" %><%=inventory_item.user.username%></a>
+										<a href="<%=user_path(inventory_item.user.id)%>" class="inventorySellerLink"><%= image_tag inventory_item.user.photo.url(:thumb), alt: inventory_item.user.username, class: "img-responsive" %><%=inventory_item.user.username%></a>
 									<%else%>
 										<%= link_to(inventory_item.user.username, user_path(inventory_item.user.id)) %>
 									<%end%>

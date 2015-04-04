@@ -25,7 +25,7 @@
 			<div class="well-fluid row">
 			  <div class="col-md-3 col-sm-4">
 			    <%if inventory_item.photo?%>
-			      <%= image_tag inventory_item.photo.url(:medium), class: "img-responsive" %>
+			      <%= image_tag inventory_item.photo.url(:medium), alt: inventory_item.name, class: "img-responsive" %>
 			    <%else%>
 			      No Image Available
 			    <%end%>
