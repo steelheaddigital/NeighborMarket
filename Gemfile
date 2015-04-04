@@ -16,6 +16,8 @@ gem 'font-awesome-rails', '~> 3.2.1.3'
 gem 'autoprefixer-rails'
 gem 'bootstrap_form', '~> 2.1.1'
 gem 'bootstrap-will_paginate', '~> 0.0.10'
+gem 'dynamic_sitemaps', '~> 2.0.0'
+gem 'headliner', '~> 0.1.3'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', :git => 'git://github.com/tmooney3979/dynamic_form'
@@ -31,7 +33,6 @@ gem 'foreman', '~> 0.62.0'
 gem 'dalli', '~> 2.6.4'
 gem 'acts_as_singleton', '~> 0.0.8'
 gem 'sanitize', '~> 3.1.0'
-gem 'dynamic_sitemaps', '~> 2.0.0'
 gem 'whenever', '~> 0.9.4'
 
 gem 'protected_attributes', '~> 1.0.9'

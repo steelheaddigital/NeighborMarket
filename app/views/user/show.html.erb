@@ -19,7 +19,8 @@
 #
 %>
 
-<% content_for :open_graph_tags  do %>
+<% content_for :meta_tags  do %>
+	<meta content="<%= @user.aboutme %>" name="description" />
 	<meta property="og:title" content="<%= @user.username %>" />
 	<meta property="og:site_name" content="<%= SiteSetting.instance.site_name %>" />
 	<meta property="og:url" content="<%= user_url(@user) %>" />
@@ -31,7 +32,7 @@
 <div class="container-fluid">
 	<div class="row">
 	    <div class="col-md-12">
-	        <h1><%= @user.username %></h1>
+	        <h1><%= title @user.username %></h1>
 			<%if SiteSetting.instance.facebook_enabled%>
 				<p><span class="fb-share-button" data-href="<%= user_url(@user) %>", data-layout="button"></span></p>
 			<%end%>

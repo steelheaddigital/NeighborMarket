@@ -20,7 +20,7 @@
 %>
 
 <div class="col-md-12 well">
-	<h2>Sign Up</h2>
+	<h2><%= title "Buyer Sign Up" %></h2>
 	<%= devise_error_messages! %>
 	<% if @site_settings.all_modes? %>
 		<h5>Delivery Address and Instructions are optional.  However, if you would like the possibility of having your goods delivered when placing an order then this information must be provided. You can always update this information later if you are unsure now.</h5>

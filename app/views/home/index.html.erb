@@ -19,7 +19,8 @@
 #
 %>
 
-<% content_for :open_graph_tags  do %>
+<% content_for :meta_tags  do %>
+	<meta content="Support the the local economy in your own neighborhood. Buy directly from your neighbors." name="description" />
 	<meta property="og:title" content="<%= @site_name %>" />
 	<meta property="og:site_name" content="<%= @site_name %>" />
 	<meta property="og:url" content="<%= root_url %>" />

@@ -19,7 +19,8 @@
 #
 %>
 
-<% content_for :open_graph_tags  do %>
+<% content_for :meta_tags  do %>
+	<meta content="<%= @inventory_item.description %>" name="description" />
 	<meta property="og:title" content="<%= @inventory_item.name %>" />
 	<meta property="og:site_name" content="<%= @site_settings.site_name %>" />
 	<meta property="og:url" content="<%= inventory_item_url(@inventory_item) %>" />

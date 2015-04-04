@@ -36,7 +36,7 @@
 				<div class="row">
 					<div class="col-md-12 itemDescription">
 					    <h2>
-					      <%= item_name(inventory_item) %>
+					      <%= title item_name(inventory_item) %>
 					    </h2>
 						<%if SiteSetting.instance.facebook_enabled%>
 							<p><span class="fb-share-button" data-href="<%= inventory_item_url(inventory_item) %>", data-layout="button"></span></p>
