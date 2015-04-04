@@ -19,7 +19,6 @@
 
 /vender/bundle
 /public/system
-/public/sitemaps
 
 #ignore the OSX files
 .DS_Store

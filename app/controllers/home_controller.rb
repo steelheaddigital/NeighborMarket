@@ -52,7 +52,7 @@ class HomeController < ApplicationController
   end
   
   def sitemap
-    path = Rails.root.join("public", "sitemaps", "sitemap.xml")
+    path = Rails.root.join("public", "system", "sitemaps", "sitemap.xml")
     if File.exists?(path)
       render xml: open(path).read
     else
