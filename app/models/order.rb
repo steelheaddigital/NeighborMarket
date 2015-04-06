@@ -21,6 +21,7 @@ class Order < ActiveRecord::Base
   has_many :cart_items, dependent: :destroy, autosave: true
   belongs_to :user
   belongs_to :order_cycle
+  has_many :payments, dependent: :destroy
   
   accepts_nested_attributes_for :cart_items
   attr_accessible :cart_items_attributes, :deliver

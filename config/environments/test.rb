@@ -37,4 +37,9 @@ NeighborMarket::Application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   
+  # Force ActiveMerchant into test mode
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+    ::PAYPAL_ADAPTIVE_GATEWAY = ActiveMerchant::Billing::BogusGateway.new
+  end 
 end

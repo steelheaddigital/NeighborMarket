@@ -20,9 +20,41 @@
 class OrdersController < ApplicationController
   include CurrentCart
   
-  before_filter :authenticate_user!, :except => [:new]
+  before_filter :authenticate_user!, :except => [:new, :paypal_checkout, :paypal_ipn_notification]
   load_and_authorize_resource
-  skip_authorize_resource :only => [:new]
+  skip_authorize_resource :only => [:new, :paypal_checkout, :paypal_ipn_notification]
+  
+  def paypal_checkout
+    if(!user_signed_in? || !current_user.buyer?)
+      render :not_buyer
+      return
+    end
+    
+    purchase = PAYPAL_ADAPTIVE_GATEWAY.setup_purchase(action_type: "CREATE")
+    
+    recipients = current_cart.cart_items.map{|item| {email: item.inventory_item.user.email, amount: item.total_price, primary: false} }
+    response = PAYPAL_ADAPTIVE_GATEWAY.setup_purchase(
+      :action_type => "CREATE"
+      :return_url => create_order_url,
+      :cancel_url => cart_index_url,
+      :ipn_notification_url => paypal_ipn_notification_orders_url,
+      #:receiver_list => recipients
+    )
+    
+    PAYPAL_ADAPTIVE_GATEWAY.set_payment_options(
+      :display_options => {
+        :business_name => SiteSetting.instance.site_name,
+      },
+      
+    )
+    
+    # For redirecting the customer to the actual paypal site to finish the payment.
+    redirect_to (PAYPAL_ADAPTIVE_GATEWAY.redirect_url_for(response["payKey"]))
+  end
+  
+  def paypal_notify
+    notify = Paypal::Notification.new(request.raw_post)
+  end
   
   def new
     @cart = current_cart

@@ -124,6 +124,10 @@ NeighborMarket::Application.routes.draw do
     member do
       get 'finish'
     end
+    collection do
+      post 'paypal_notify'
+      get 'paypal_checkout'
+    end
   end
   
   resources :price_units
