@@ -88,8 +88,11 @@ class ApplicationController < ActionController::Base
   end
   
   def set_action
-    url = Rails.application.routes.recognize_path(request.referrer, method: request.method.to_sym)
-    session[:previous_action] = {controller: url[:controller], action: url[:action]}
+    begin
+      url = Rails.application.routes.recognize_path(request.referrer)
+      session[:previous_action] = {controller: url[:controller], action: url[:action]}
+    rescue ActionController::RoutingError
+    end
   end
   
   rescue_from CanCan::AccessDenied do |exception|
