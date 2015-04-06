@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_action
-    url = Rails.application.routes.recognize_path(request.referrer)
+    url = Rails.application.routes.recognize_path(request.referrer, method: request.method.to_sym)
     session[:previous_action] = {controller: url[:controller], action: url[:action]}
   end
   
