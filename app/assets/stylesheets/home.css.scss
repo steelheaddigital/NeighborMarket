@@ -114,3 +114,21 @@ body
 {
 	color: $gray-darker !important;
 }
+
+#MobileBrowseMenu
+{
+	display: inline-block; 
+	padding-top: 5px;
+}
+
+#MobileBrowseMenu .line
+{
+	display: block;
+}
+
+.mobileBrowseLabel
+{
+	position: relative; 
+	bottom: 7px; 
+	padding-left: 3px;
+}
