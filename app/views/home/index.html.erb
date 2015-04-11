@@ -34,12 +34,12 @@
 			<ul class="nav navbar-left hidden-lg">
 				<li>
 					<a class="sb-toggle-left" href="#">
-						<span style="display: inline-block; padding-top: 5px;">
-							<div class="navicon-line"></div>
-							<div class="navicon-line"></div>
-							<div class="navicon-line"></div>
-						</span>
-						<span style="position: relative; bottom: 7px; padding-left: 3px;">Browse Categories</span>
+						<div id="MobileBrowseMenu">
+							<span class="navicon-line line"></span>
+							<span class="navicon-line line"></span>
+							<span class="navicon-line line"></span>
+						</div>
+						<span class="mobileBrowseLabel">Browse Categories</span>
 					</a>
 				</li>
 			</ul>
@@ -69,13 +69,15 @@
 			        </li>
 			      <% end %>
 				  <% end %>
-			  </ul>
+			  	</ul>
+			  </li>
+			</ul>
 		</div>
 		<div class="col-md-8 col-sm-7">
 		    <form id="MainSearchForm" class="form-inline navbar-left" action="<%= search_inventory_items_path %>">
 				<div class="form-group">
 					<div class="input-group">
-		      	  		<input name="keywords" type="text" class="form-control" placeholder="What are you looking for?"></input>
+		      	  		<input name="keywords" type="text" class="form-control" placeholder="What are you looking for?" />
 						<button type="submit" class="btn btn-success icon-search" style="border-bottom-left-radius: 0; border-top-left-radius: 0; line-height: 22px; font-size: 22px;"></button>
 					</div>
 				</div>
@@ -96,7 +98,7 @@
 			  </a>
 	          <div class="sb-submenu secondLevel" style="display: none;">
 	            <% category[:second_level].each do |second_level_category|%>
-	                <a class="sb-close list-group-item" href="<%= browse_inventory_items_path(:second_level_category_id => second_level_category[:id]) %>" class="secondLevelBrowseMenu"><%= second_level_category[:name] %> 
+	                <a class="sb-close list-group-item secondLevelBrowseMenu" href="<%= browse_inventory_items_path(:second_level_category_id => second_level_category[:id]) %>"><%= second_level_category[:name] %> 
 					<span>(<%= second_level_category[:count] %>)</span>
 					</a>
 	            <% end %>
