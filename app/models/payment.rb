@@ -18,6 +18,6 @@
 #
 
 class Payment < ActiveRecord::Base
-  belongs_to :orders
+  belongs_to :order
   
 end

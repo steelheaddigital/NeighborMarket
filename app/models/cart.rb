@@ -18,6 +18,8 @@
 #
 
 class Cart < ActiveRecord::Base
+  include Totals
+  
   has_many :cart_items, :autosave => true, :dependent => :destroy
   belongs_to :user
   accepts_nested_attributes_for :cart_items
