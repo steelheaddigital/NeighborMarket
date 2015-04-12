@@ -38,7 +38,7 @@ class HomeController < ApplicationController
   
   def paginate_items
     current_inventory_items = InventoryItem.joins(:order_cycles)
-                                           .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', "current")
+                                           .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', 'current')
     @items_for_display = current_inventory_items.paginate(:page => params[:page], :per_page => 8)
     
     render "_items", :layout => false
@@ -52,15 +52,14 @@ class HomeController < ApplicationController
   end
   
   def sitemap
-    path = Rails.root.join("public", "system", "sitemaps", "sitemap.xml")
-    if File.exists?(path)
+    path = Rails.root.join('public', 'sitemaps', 'sitemap.xml')
+    if File.exist?(path)
       render xml: open(path).read
     else
-      render text: "Sitemap not found.", status: :not_found
+      render text: 'Sitemap not found.', status: :not_found
     end
   end
 
   def robots
   end
-
 end

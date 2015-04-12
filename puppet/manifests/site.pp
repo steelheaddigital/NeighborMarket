@@ -3,7 +3,7 @@ node 'development.neighbormarket.local' {
     hostname         => $fqdn,
     environment      => 'development',
     ruby_version     => '2.2.0',
-    app_directory    => '/home/neighbormarket',
+    app_directory    => '/vagrant',
     user             => 'neighbormarket',
     group            => 'neighbormarket',
     db_host          => 'localhost',

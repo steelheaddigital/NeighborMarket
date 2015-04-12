@@ -17,7 +17,7 @@ class neighbormarket::webserver (
         owner   => $user,
         group   => $group,
         before  => Class['nginx'];
-	}
+	  }
   }
 
   class { 'nginx': 
@@ -25,7 +25,7 @@ class neighbormarket::webserver (
 	    'Host $host',
 	    'X-Real-IP $remote_addr',
 	    'X-Forwarded-For $proxy_add_x_forwarded_for',
-		'X-Forwarded-Proto $scheme'
+		  'X-Forwarded-Proto $scheme'
 	  ]
 	}
 
@@ -40,6 +40,13 @@ class neighbormarket::webserver (
     nginx::resource::vhost { $hostname:
       ensure      => present,
       proxy       => 'http://neighbormarket_server',
+    }
+
+    nginx::resource::location { "$hostname-sitemaps":
+      ensure              => present,
+      www_root            => "$app_directory/public",
+      location            => '/sitemaps',
+      vhost               => $hostname,
     }
   } else {
     nginx::resource::vhost { $hostname:
@@ -72,6 +79,14 @@ class neighbormarket::webserver (
       location            => '/system',
       vhost               => $hostname,
       location_cfg_append => $cache_config,
+    }
+
+    nginx::resource::location { "$hostname-sitemaps":
+      ensure              => present,
+      ssl                 => true,
+      www_root            => "$app_directory/current/public",
+      location            => '/sitemaps',
+      vhost               => $hostname,
     }
   }
 }
