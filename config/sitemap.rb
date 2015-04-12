@@ -4,10 +4,10 @@ host ENV["HOST"]
 
 DynamicSitemaps.configure do |config|
   config.path = Rails.root.join("public")
-  config.folder = "system/sitemaps" # This folder is emptied on each sitemap generation
+  config.folder = "sitemaps" # This folder is emptied on each sitemap generation
 end
 
-sitemap "site#{SecureRandom.uuid}".to_sym do
+sitemap :site do
   url root_url, last_mod: Time.now, change_freq: "daily", priority: 1.0
   url info_about_url
   url info_privacy_url
@@ -24,11 +24,11 @@ end
 # using "resources :pages" in config/routes.rb. This will also
 # automatically set <lastmod> to the date and time in page.updated_at:
 #
-sitemap_for InventoryItem.published, name: "published_inventory_items#{SecureRandom.uuid}".to_sym do |inventory_item|
+sitemap_for InventoryItem.published, name: :published_inventory_items do |inventory_item|
   url inventory_item, last_mod: inventory_item.updated_at
 end
 
-sitemap_for User.active_sellers, name: "sellers#{SecureRandom.uuid}".to_sym do |seller|
+sitemap_for User.active_sellers, name: :sellers do |seller|
   url seller, last_mod: seller.updated_at
 end
 
