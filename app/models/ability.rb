@@ -75,9 +75,10 @@ class Ability
         u.approved_seller?
       end
       can :create, UserContactMessage
-      can [:show, :search, :browse, :browse_all, :view_user_reviews], InventoryItem do |item|
+      can [:show, :search, :browse_all, :view_user_reviews], InventoryItem do |item|
         item.published?
       end
+      can :show, SecondLevelCategory
     end
   end
 end
