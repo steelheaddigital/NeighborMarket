@@ -16,6 +16,7 @@ sitemap :site do
   url seller_sign_up_url
   url contact_index_url
   url search_inventory_items_url
+  url sellers_url
 end
 
 # You can have multiple sitemaps like the above – just make sure their names are different.
@@ -32,6 +33,9 @@ sitemap_for User.active_sellers, name: :sellers do |seller|
   url seller, last_mod: seller.updated_at
 end
 
+sitemap_for SecondLevelCategory, name: :categories do |category|
+  url category
+end
 # For products with special sitemap name and priority, and link to comments:
 #
 #   sitemap_for Product.published, name: :published_products do |product|

@@ -20,6 +20,7 @@ NeighborMarket::Application.routes.draw do
   get "home/user_home"
   get "home/paginate_items"
   
+  get 'sellers', to: 'user#index', as: 'sellers'
   resources :user do 
     member do
       post "approve_seller"

@@ -19,15 +19,24 @@
 
 class UserController < ApplicationController
   require 'csv'
-  before_filter :authenticate_user!, :except => [:show, :contact, :contact_form]
+  before_filter :authenticate_user!, except: [:index, :show, :contact, :contact_form]
   load_and_authorize_resource
+
+  def index
+    @sellers = User.active_sellers.joins(inventory_items: [:order_cycles])
+               .where("order_cycles.status = 'current'")
+               .distinct
+
+    respond_to do |format|
+      format.html { render layout: 'layouts/navigational' }
+    end   
+  end
 
   def show
     @user = User.find(params[:id])
-    @items_for_display = InventoryItem.joins(:order_cycles)
-                                      .where("order_cycles.status = 'current' AND inventory_items.user_id = ?", params[:id])
-                                      
+    @items_for_display = @user.current_inventory       
     @average_rating = @user.avg_seller_rating
+
     session[:last_search_path] = request.fullpath
     
     respond_to do |format|
@@ -111,32 +120,32 @@ class UserController < ApplicationController
   
   def import
     if params[:file].present?
-       infile = params[:file].read 
-       n, errs = 0, [] 
-       
-       CSV.parse(infile) do |row| 
-         n += 1 
-         # SKIP: header i.e. first row OR blank row 
-         next if n == 1 or row.join.blank?
-         user = User.new(:email => row[0])  
-         if !user.auto_create_user # try to create new user, otherwise collect error records to export
-           row << user.errors.full_messages.first
-           errs << row 
-         end 
-       end 
-     # Export Error file for later upload upon correction 
+      infile = params[:file].read 
+      n, errs = 0, [] 
+     
+      CSV.parse(infile) do |row| 
+        n += 1 
+        # SKIP: header i.e. first row OR blank row 
+        next if n == 1 || row.join.blank?
+        user = User.new(email: row[0])  
+        unless user.auto_create_user # try to create new user, otherwise collect error records to export
+          row << user.errors.full_messages.first
+          errs << row 
+        end 
+      end 
+      # Export Error file for later upload upon correction 
       if errs.any? 
-         err_file = "errors_#{Date.today.strftime('%d%b%y')}.csv" 
-         errs.insert(0, ["email", "error"]) 
-         err_csv = CSV.generate do |csv| 
-           errs.each {|row| csv << row} 
-         end 
-         send_data err_csv, 
-          :type => 'text/csv; charset=iso-8859-1; header=present', 
-          :disposition => "attachment; filename=#{err_file}"
-       else 
-          redirect_to add_users_management_index_path, notice: "Users successfully uploaded!"
-       end
+        err_file = "errors_#{Date.today.strftime('%d%b%y')}.csv" 
+        errs.insert(0, ["email", "error"]) 
+        err_csv = CSV.generate do |csv| 
+          errs.each { |row| csv << row } 
+        end 
+        send_data err_csv, 
+        type: 'text/csv; charset=iso-8859-1; header=present', 
+        disposition: "attachment; filename=#{err_file}"
+      else 
+        redirect_to add_users_management_index_path, notice: 'Users successfully uploaded!'
+      end
     end
   end
   

@@ -543,4 +543,19 @@ class UserTest < ActiveSupport::TestCase
     
   end
 
+  test 'current_inventory gets inventory for user' do
+    user = users(:approved_seller_user)
+
+    inventory = user.current_inventory.to_a
+
+    assert_equal 4, inventory.count
+  end
+
+  test 'categories gets categories for user inventory items' do
+    user = users(:approved_seller_user)
+
+    categories = user.categories.to_a
+
+    assert_equal 2, categories.count
+  end
 end

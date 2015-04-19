@@ -82,9 +82,7 @@
     </div>
     <div class="col-md-5" style="margin-bottom: 15px;">
 		<div>
-  	      <%if @user.photo?%>
-  	          <%= image_tag @user.photo.url(:medium), {alt: @user.username, class: "img-rounded"} %>
-  	      <%end%>
+  	    	<%= image_tag @user.photo.url(:medium), {alt: @user.username, class: "img-rounded"} %>
   		</div>
 		<div style="margin-top: 10px;">
 			<%= link_to "Contact #{@user.username}", new_user_contact_message_path(@user), class: "btn btn-primary contactButton", style: "width: 300px;"%>

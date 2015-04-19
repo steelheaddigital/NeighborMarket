@@ -20,7 +20,7 @@
 %>
 
 <% content_for :meta_tags  do %>
-	<meta content="<%= @site_description %>" name="description" />
+	<meta content="Support the the local economy in your own neighborhood. Buy directly from your neighbors." name="description" />
 	<meta property="og:title" content="<%= @site_name %>" />
 	<meta property="og:site_name" content="<%= @site_name %>" />
 	<meta property="og:url" content="<%= root_url %>" />
@@ -91,14 +91,14 @@
 						  </div>
 						  <div class="col-md-4 col-sm-4">
 						    <div class="marketing-icon-container">
-						      <i class="icon-search icon-large"></i>
+						      <i class="icon-user icon-large"></i>
 						    </div>
-						    <h2>Browse</h2>
+						    <h2>Meet the sellers</h2>
 						    <p class="marketing-description">
-						      Not ready to sign up yet?  Browse our inventory and see what your neighbors are making.
+						      See what your neighbors are making.
 						    </p>
 						    <p>
-						      <%= link_to 'Browse the inventory', browse_all_inventory_items_url, :class => "btn btn-success" %>
+						      <%= link_to 'Meet the sellers', sellers_url, :class => "btn btn-success" %>
 						    </p>
 						  </div>
 						</div>
