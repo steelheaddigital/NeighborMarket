@@ -40,7 +40,7 @@ class Order < ActiveRecord::Base
   
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|
-      existing_item = self.cart_items.find{|x| x.inventory_item_id == item.inventory_item_id}
+      existing_item = cart_items.find { |x| x.inventory_item_id == item.inventory_item_id }
       if !existing_item.nil?
         if item.order_id.nil?
           existing_item.quantity += item.quantity
@@ -48,7 +48,7 @@ class Order < ActiveRecord::Base
           existing_item.quantity = item.quantity
         end
       else
-        self.cart_items << item
+        cart_items << item
       end
     end
   end
@@ -63,23 +63,23 @@ class Order < ActiveRecord::Base
   end
   
   def has_items_with_minimum?
-    cart_items.any?{|cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end}
+    cart_items.any? { |cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end }
   end
   
   def eligible_for_delivery?
-    !self.user.address.blank? && !self.user.city.blank? && !self.user.state.blank? && !self.user.country.blank? && !self.user.zip.blank? && !self.user.delivery_instructions.blank?
+    !user.address.blank? && !user.city.blank? && !user.state.blank? && !user.country.blank? && !user.zip.blank? && !user.delivery_instructions.blank?
   end
   
   def will_destroy?
     @will_destroy
   end
   
-  def process_payment(gateway)
-    if gateway == "paypal"
-      sub_totals.each do |subtotal| {
-        seller = User.find(subtotal.key)
-        payments.create!(receiver_id: seller.id, payer_id: self.user.id, payment_gross: subtotal.value)
-      }
+  def process_payments(gateway)
+    if gateway == 'paypal'
+      sub_totals.each do |key, value| 
+        seller = User.find(key)
+        payments.create!(receiver_id: seller.id, payer_id: user.id, payment_gross: value)
+      end
     end
     return true
   rescue
@@ -93,8 +93,8 @@ class Order < ActiveRecord::Base
   end
   
   def set_cart_items_user
-    self.cart_items.each do |item|
-      item.current_user = self.current_user
+    cart_items.each do |item|
+      item.current_user = current_user
     end
   end
   
@@ -102,20 +102,20 @@ class Order < ActiveRecord::Base
     current_order_cycle_id = OrderCycle.current_cycle_id
     if order_cycle
       if order_cycle.id != current_order_cycle_id
-        errors.add("","Order is not in the current open order cycle and cannot be edited")
+        errors.add('', 'Order is not in the current open order cycle and cannot be edited')
       end
     end
   end
   
   def update_order_cycle_id
-    if self.order_cycle_id.nil?
+    if order_cycle_id.nil?
       current_order_cycle_id = OrderCycle.current_cycle_id
       self.order_cycle_id = current_order_cycle_id
     end
   end
   
   def update_seller_inventory
-    self.cart_items.each do |item|
+    cart_items.each do |item|
       #if the quantity was changed and the cart_item is part of an order
       if !item.order_id.nil?
         if item.quantity_changed?
@@ -130,7 +130,7 @@ class Order < ActiveRecord::Base
   end
   
   def disassociate_cart_items_from_cart
-    self.cart_items.each do |item|
+    cart_items.each do |item|
       item.cart_id = nil
       item.save
     end
