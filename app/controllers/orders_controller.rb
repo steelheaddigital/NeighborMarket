@@ -30,7 +30,10 @@ class OrdersController < ApplicationController
       return
     end
 
-    recipients = current_cart.cart_items.map { |item| { email: item.inventory_item.user.email, amount: item.total_price, primary: false } }
+    recipients = current_cart.cart_items.joins(inventory_item: [:user])
+                                        .select('users.email AS email, SUM(cart_items.quantity * inventory_items.price) AS amount')
+                                        .group('users.email')
+                                        .map { |item| { email: item.email, amount: item.amount, primary: false } }
     response = PAYPAL_ADAPTIVE_GATEWAY.setup_purchase(
       return_url: "#{create_order_url}?gateway=paypal",
       cancel_url: cart_index_url,
@@ -183,7 +186,7 @@ class OrdersController < ApplicationController
   def send_emails(order, update)
     # Send an email to each seller notifying them of the sale
     sellers_array = get_sellers(order)
-    sellers = sellers_array.uniq { |x| x.id }
+    sellers = sellers_array.uniq(&:id)
     if update
       sellers.each do |seller|
         SellerMailer.delay.updated_purchase_mail(seller, order)

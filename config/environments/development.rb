@@ -38,7 +38,7 @@ NeighborMarket::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   
-  Paperclip.options[:command_path] = "/usr/local/bin/"
+  Paperclip.options[:command_path] = '/usr/local/bin/'
   
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
@@ -49,15 +49,7 @@ NeighborMarket::Application.configure do
   # config.action_view.raise_on_missing_translations = true
   
   # Force ActiveMerchant into test mode
- config.after_initialize do
-   ActiveMerchant::Billing::Base.mode = :test
-   paypal_options = {
-     login: ENV["PAYPAL_API_USERNAME"],
-     password: ENV["PAYPAL_API_PASSWORD"],
-     signature: ENV["PAYPAL_API_SIGNATURE"],
-     appid: ENV["PAYPAL_APP_ID"]
-   }
-   ::PAYPAL_ADAPTIVE_GATEWAY = ActiveMerchant::Billing::PaypalAdaptivePayment.new(paypal_options)
-   
- end 
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+  end 
 end
