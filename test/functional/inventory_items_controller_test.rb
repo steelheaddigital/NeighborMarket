@@ -275,7 +275,6 @@ class InventoryItemsControllerTest < ActionController::TestCase
   
   test "anonymous user can access search" do
     sign_out @user
-    top_level_category = top_level_categories(:vegetable)
     
     get :search, :keywords => "carrot"
     

@@ -31,7 +31,7 @@ class UserController < ApplicationController
     session[:last_search_path] = request.fullpath
     
     respond_to do |format|
-      format.html
+      format.html { render layout: 'layouts/navigational' }
       format.js { render :layout => false }
     end
   end

@@ -28,7 +28,7 @@ class SecondLevelCategoriesController < ApplicationController
                    
     session[:last_search_path] = request.fullpath          
     respond_to do |format|
-      format.html { render 'inventory_items/search' }
+      format.html { render 'inventory_items/search', layout: 'layouts/navigational'  }
     end
   end
 

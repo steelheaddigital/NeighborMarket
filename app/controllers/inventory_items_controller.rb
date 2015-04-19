@@ -27,7 +27,7 @@ class InventoryItemsController < ApplicationController
     @site_settings = SiteSetting.instance
     
     respond_to do |format|
-      format.html
+      format.html { render layout: 'layouts/navigational' }
     end
   end
   
@@ -152,7 +152,7 @@ class InventoryItemsController < ApplicationController
 
     session[:last_search_path] = request.fullpath
     respond_to do |format|
-      format.html
+      format.html { render layout: 'layouts/navigational' }
     end
   end
   
@@ -163,7 +163,7 @@ class InventoryItemsController < ApplicationController
     
     session[:last_search_path] = request.fullpath
     respond_to do |format|
-      format.html { render :search }
+      format.html { render :search, layout: 'layouts/navigational' }
     end
   end
   

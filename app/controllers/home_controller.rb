@@ -23,9 +23,9 @@ class HomeController < ApplicationController
     site_settings = SiteSetting.instance
     site_contents = SiteContent.instance
     current_inventory_items = InventoryItem.joins(:order_cycles)
-                                           .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', "current")
+                              .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', "current")
     @items_for_carousel = current_inventory_items.order("RANDOM()")
-                                                 .limit(5)
+                          .limit(5)
     @items_for_display = current_inventory_items.paginate(:page => 1, :per_page => 8)
     if site_settings
       @site_name = if site_settings.site_name.blank? then "Neighbor Market" else site_settings.site_name end
@@ -34,6 +34,8 @@ class HomeController < ApplicationController
       @site_name = "Neighbor Market"
       @site_description = "Welcome to the Neighbor Market"
     end
+
+    render layout: 'layouts/navigational'
   end
   
   def paginate_items

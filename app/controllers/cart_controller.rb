@@ -25,7 +25,7 @@ class CartController < ApplicationController
     @total_price = @cart.total_price
     
     respond_to do |format|
-      format.html
+      format.html { render layout: 'layouts/navigational' }
     end
   end
   
@@ -33,7 +33,7 @@ class CartController < ApplicationController
     @item_count = current_cart.cart_items.count
     
     respond_to do |format|
-      format.json {render :json => @item_count}
+      format.json { render json: @item_count }
     end
   end
 end
