@@ -393,7 +393,7 @@ class ManagementController < ApplicationController
     ManagerMailer.delay.test_email(email)
     
     respond_to do |format|
-      format.html{ redirect_to edit_site_settings_management_index_url, notice: "Email sent to your email address. If you do not recieve it, please check your email settings." }
+      format.html { redirect_to edit_site_settings_management_index_url, notice: 'Email sent to your email address. If you do not recieve it, please check your email settings.' }
     end
     
   end
