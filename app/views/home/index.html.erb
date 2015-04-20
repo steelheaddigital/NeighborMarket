@@ -114,9 +114,4 @@
 </div>
 <% content_for :scripts do %>
 	<%= pageless(@items_for_display.total_pages, home_paginate_items_path, "#items") %>
-	<script type="text/javascript">
-		$(function() {
-			$("#innerContent").slidebars();
-		});
-	</script>
 <%end%>

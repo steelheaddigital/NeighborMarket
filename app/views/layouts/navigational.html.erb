@@ -98,4 +98,11 @@
 	  <% end %>
 	</div>
 <%end%>
+<% content_for :scripts do %>
+	<script type="text/javascript">
+		$(function() {
+			$("#innerContent").slidebars();
+		});
+	</script>
+<%end%>
 <%= render :template => 'layouts/application' %>
