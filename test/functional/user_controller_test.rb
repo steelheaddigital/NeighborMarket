@@ -8,6 +8,14 @@ class UserControllerTest < ActionController::TestCase
     sign_in @user
   end
   
+  test 'should get index' do
+    sign_out @user
+    get :index
+
+    assert_response :success
+    assert_not_nil assigns(:sellers)
+  end
+
   test "should get new" do    
     get :new
     

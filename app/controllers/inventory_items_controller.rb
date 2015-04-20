@@ -18,7 +18,7 @@
 #
 
 class InventoryItemsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :search, :browse, :browse_all]
+  before_filter :authenticate_user!, :except => [:show, :search, :browse_all]
   load_and_authorize_resource
   require 'will_paginate/array'
   
@@ -27,7 +27,7 @@ class InventoryItemsController < ApplicationController
     @site_settings = SiteSetting.instance
     
     respond_to do |format|
-      format.html
+      format.html { render layout: 'layouts/navigational' }
     end
   end
   
@@ -152,18 +152,7 @@ class InventoryItemsController < ApplicationController
 
     session[:last_search_path] = request.fullpath
     respond_to do |format|
-      format.html
-    end
-  end
-  
-  def browse
-    @inventory_items = InventoryItem.joins(:order_cycles)
-                                    .where("second_level_category_id = ? AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:second_level_category_id])
-                                    .order("created_at DESC")
-                   
-    session[:last_search_path] = request.fullpath          
-    respond_to do |format|
-      format.html { render :search }
+      format.html { render layout: 'layouts/navigational' }
     end
   end
   
@@ -174,7 +163,7 @@ class InventoryItemsController < ApplicationController
     
     session[:last_search_path] = request.fullpath
     respond_to do |format|
-      format.html { render :search }
+      format.html { render :search, layout: 'layouts/navigational' }
     end
   end
   

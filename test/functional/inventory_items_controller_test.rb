@@ -205,17 +205,6 @@ class InventoryItemsControllerTest < ActionController::TestCase
     
   end
   
-  test "browse returns inventory items"do
-    
-    second_level_category = second_level_categories(:carrot)
-    
-    get :browse, :second_level_category_id => second_level_category.id
-    
-    assert_response :success
-    assert_not_nil assigns(:inventory_items)
-    
-  end
-  
   test "browse_all returns inventory items"do
     get :browse_all
     
@@ -284,19 +273,8 @@ class InventoryItemsControllerTest < ActionController::TestCase
     assert_response :not_found
   end
   
-  test "anonymous user can access browse" do
-    sign_out @user
-    second_level_category = second_level_categories(:carrot)
-    
-    get :browse, :second_level_category_id => second_level_category.id
-    
-    assert_response :success
-    assert_not_nil assigns(:inventory_items)
-  end
-  
   test "anonymous user can access search" do
     sign_out @user
-    top_level_category = top_level_categories(:vegetable)
     
     get :search, :keywords => "carrot"
     

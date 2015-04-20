@@ -8,6 +8,16 @@ class SecondLevelCategoriesControllerTest < ActionController::TestCase
     sign_in @user
   end
   
+  test 'should get show' do
+    sign_out @user
+    second_level_category = second_level_categories(:carrot)
+    
+    get :show, id: second_level_category.id
+    
+    assert_response :success
+    assert_not_nil assigns(:inventory_items)
+  end
+
   test "should get edit" do
     category = second_level_categories(:carrot)
     get :edit, :id => category.id

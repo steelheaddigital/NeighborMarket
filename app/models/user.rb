@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   has_many :orders, :dependent => :destroy
   has_many :order_change_requests
   has_many :inventory_item_change_requests
-  has_attached_file :photo, :styles => { :medium => "300x300>", :thumb => "100x100>" }
+  has_attached_file :photo, 
+                    :styles => { :medium => "300x300>", :thumb => "100x100>" },
+                    :default_url => ':style/default_user.png'
   has_many :reviews
   
   validates :username, :uniqueness => true, :unless => :auto_create
@@ -273,7 +275,7 @@ class User < ActiveRecord::Base
   def soft_delete
     update_column(:deleted_at, Time.now)
     update_column(:email, nil)
-    update_column(:encrypted_password, "")
+    update_column(:encrypted_password, '')
     update_column(:reset_password_token, nil)
     update_column(:reset_password_sent_at, nil)
     update_column(:remember_created_at, nil)
@@ -296,19 +298,28 @@ class User < ActiveRecord::Base
     update_column(:payment_instructions, nil)
     update_column(:approved_seller, false)
     update_column(:listing_approval_style, "")
-    self.photo.clear
-    self.roles.clear
+    photo.clear
+    roles.clear
     
-    self.save
+    save
   end
   
   def avg_seller_rating
-    ratings = self.inventory_items.joins(:reviews).average("reviews.rating")
-    if !ratings.nil?
+    ratings = inventory_items.joins(:reviews).average('reviews.rating')
+    unless ratings.nil?
       ratings.round(2)
-    else
-      nil
     end
+  end
+
+  def current_inventory
+    inventory_items.joins(:order_cycles).where("order_cycles.status = 'current'")
+  end
+
+  def categories
+    current_inventory.joins(:second_level_category)
+      .select('second_level_categories.name')
+      .group('second_level_categories.id')
+      .pluck('second_level_categories.name')
   end
   
 end

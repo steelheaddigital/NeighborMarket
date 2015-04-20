@@ -18,9 +18,20 @@
 #
 
 class SecondLevelCategoriesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: [:show]
   load_and_authorize_resource
   
+  def show
+    @inventory_items = InventoryItem.joins(:order_cycles)
+                       .where("second_level_category_id = ? AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:id])
+                       .order('created_at DESC')
+                   
+    session[:last_search_path] = request.fullpath          
+    respond_to do |format|
+      format.html { render 'inventory_items/search', layout: 'layouts/navigational'  }
+    end
+  end
+
   def new
     @top_level_category = TopLevelCategory.find(params[:id])
     @category = @top_level_category.second_level_categories.build

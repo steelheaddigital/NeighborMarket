@@ -20,6 +20,7 @@ NeighborMarket::Application.routes.draw do
   get "home/user_home"
   get "home/paginate_items"
   
+  get 'sellers', to: 'user#index', as: 'sellers'
   resources :user do 
     member do
       post "approve_seller"
@@ -86,7 +87,6 @@ NeighborMarket::Application.routes.draw do
     collection do
       get 'get_second_level_category'
       get 'search'
-      get 'browse'
       get 'browse_all'
       get 'units'
       get 'user_reviews'
@@ -107,6 +107,7 @@ NeighborMarket::Application.routes.draw do
   
   resources :top_level_categories 
   
+  get 'second_level_categories/:second_level_category_id/browse', to: 'inventory_items#browse', as: 'browse_inventory_items'
   resources :second_level_categories
   
   resources :cart_items, :only => ["create"] do

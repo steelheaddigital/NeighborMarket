@@ -1,0 +1,108 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<% content_for :sub_nav do %>
+	<div class="row">
+		<div class="col-md-2" style="min-width: 230px;">
+			<ul class="nav navbar-left hidden-lg">
+				<li>
+					<a class="sb-toggle-left" href="#">
+						<div id="MobileBrowseMenu">
+							<span class="navicon-line line"></span>
+							<span class="navicon-line line"></span>
+							<span class="navicon-line line"></span>
+						</div>
+						<span class="mobileBrowseLabel">Browse Categories</span>
+					</a>
+				</li>
+			</ul>
+			<ul class ="nav nav-pills navbar-left hidden-xs hidden-sm hidden-md">
+			  <li class="dropdown" id="MainCategoriesMenu">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			    Browse Categories
+			    <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+				<% cache(cache_key_for_categories) do %>
+			      <% top_level_categories = get_categories %>
+			      <% top_level_categories.each do |category| %>
+			        <li class="dropdown-submenu">
+					  <a href="#"><%= category[:name] %>
+					  	<span>(<%= category[:count] %>)</span>
+					  </a>
+			          <ul class="dropdown-menu">
+			            <% category[:second_level].each do |second_level_category|%>
+			            <li>
+			                <a href="<%= second_level_category_path(second_level_category[:id]) %>" class="secondLevelBrowseMenu"><%= second_level_category[:name] %> 
+							<span>(<%= second_level_category[:count] %>)</span>
+							</a>
+			            </li>
+			            <% end %>
+			          </ul>
+			        </li>
+			      <% end %>
+				  <% end %>
+			  	</ul>
+			  </li>
+			</ul>
+		</div>
+		<div class="col-md-8 col-sm-7">
+		    <form id="MainSearchForm" class="form-inline navbar-left" action="<%= search_inventory_items_path %>">
+				<div class="form-group">
+					<div class="input-group">
+		      	  		<input name="keywords" type="text" class="form-control" placeholder="What are you looking for?" />
+						<button type="submit" class="btn btn-success icon-search" style="border-bottom-left-radius: 0; border-top-left-radius: 0; line-height: 22px; font-size: 22px;"></button>
+					</div>
+				</div>
+		    </form>
+		</div>
+	</div>
+<%end%>
+<%= content_for :slide_bar do %>
+	<div class="topRow">
+		Categories
+	</div>
+	<div class="sb-menu list-group">
+	<% cache(cache_key_for_categories_sidemenu) do %>
+	  <% top_level_categories = get_categories %>
+	      <% top_level_categories.each do |category| %>
+			  <a href="#" class="list-group-item sb-toggle-submenu"><%= category[:name]%>
+			  	<span>(<%= category[:count] %>)</span>
+			  </a>
+	          <div class="sb-submenu secondLevel" style="display: none;">
+	            <% category[:second_level].each do |second_level_category|%>
+	                <a class="sb-close list-group-item secondLevelBrowseMenu" href="<%= second_level_category_path(second_level_category[:id]) %>"><%= second_level_category[:name] %> 
+					<span>(<%= second_level_category[:count] %>)</span>
+					</a>
+	            <% end %>
+	          </div>
+	      <% end %>
+	  <% end %>
+	</div>
+<%end%>
+<% content_for :scripts do %>
+	<script type="text/javascript">
+		$(function() {
+			$("#innerContent").slidebars();
+		});
+	</script>
+<%end%>
+<%= render :template => 'layouts/application' %>

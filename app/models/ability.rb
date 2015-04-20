@@ -71,13 +71,15 @@ class Ability
         can :destroy, CartItem if cart.cart_items.where("cart_id = ? AND order_id IS NULL", cart.id).count > 0
         can :manage, Cart if cart
       end
+      can :index, User
       can [:show, :contact], User do |u|
         u.approved_seller?
       end
       can :create, UserContactMessage
-      can [:show, :search, :browse, :browse_all, :view_user_reviews], InventoryItem do |item|
+      can [:show, :search, :browse_all, :view_user_reviews], InventoryItem do |item|
         item.published?
       end
+      can :show, SecondLevelCategory
     end
   end
 end
