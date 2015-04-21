@@ -127,7 +127,7 @@ NeighborMarket::Application.routes.draw do
     end
     collection do
       post 'paypal_notify'
-      get 'paypal_checkout'
+      get 'checkout'
     end
   end
   

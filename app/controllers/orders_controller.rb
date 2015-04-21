@@ -19,30 +19,21 @@
 
 class OrdersController < ApplicationController
   include CurrentCart
+  include PaymentProcessorFactory
 
   before_filter :authenticate_user!, except: [:new, :paypal_checkout, :paypal_ipn_notification]
   load_and_authorize_resource
-  skip_authorize_resource only: [:new, :paypal_checkout, :paypal_ipn_notification]
+  skip_authorize_resource only: [:new, :checkout, :paypal_notify]
 
-  def paypal_checkout
+  def checkout
     if !user_signed_in? || !current_user.buyer?
       render :not_buyer
       return
     end
 
-    recipients = current_cart.cart_items.joins(inventory_item: [:user])
-                                        .select('users.email AS email, SUM(cart_items.quantity * inventory_items.price) AS amount')
-                                        .group('users.email')
-                                        .map { |item| { email: item.email, amount: item.amount, primary: false } }
-    response = PAYPAL_ADAPTIVE_GATEWAY.setup_purchase(
-      return_url: "#{create_order_url}?gateway=paypal",
-      cancel_url: cart_index_url,
-      ipn_notification_url: paypal_ipn_notification_orders_url,
-      receiver_list: recipients
-    )
+    redirect_url = payment_processor.purchase(current_cart)
 
-    # For redirecting the customer to the actual paypal site to finish the payment.
-    redirect_to PAYPAL_ADAPTIVE_GATEWAY.redirect_url_for(response['payKey'])
+    redirect_to redirect_url
   end
 
   def paypal_notify
