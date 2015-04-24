@@ -27,7 +27,6 @@
 			<%= render :partial => "cart/form", :locals => {:f => f} %>
 		</div>
 		<%= f.submit("Update Order", :class => 'btn btn-primary inlineButton') %>
-		<%= link_to(image_tag("https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"), paypal_checkout_orders_path)%>
 	<% end %>
 	<% if current_user.manager?%>
 	<div class="row">

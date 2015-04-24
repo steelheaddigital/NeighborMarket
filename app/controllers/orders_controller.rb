@@ -19,26 +19,11 @@
 
 class OrdersController < ApplicationController
   include CurrentCart
-  include PaymentProcessorFactory
+  include PaymentProcessor
 
-  before_filter :authenticate_user!, except: [:new, :paypal_checkout, :paypal_ipn_notification]
+  before_filter :authenticate_user!, except: [:new]
   load_and_authorize_resource
-  skip_authorize_resource only: [:new, :checkout, :paypal_notify]
-
-  def checkout
-    if !user_signed_in? || !current_user.buyer?
-      render :not_buyer
-      return
-    end
-
-    redirect_url = payment_processor.purchase(current_cart)
-
-    redirect_to redirect_url
-  end
-
-  def paypal_notify
-    notify = PaypalAdaptivePayment::Notification.new(request.raw_post)
-  end
+  skip_authorize_resource only: [:new]
 
   def new
     @cart = current_cart
@@ -73,11 +58,10 @@ class OrdersController < ApplicationController
   
   def create
     @order = update_or_create_order(current_cart)
-    
+
     respond_to do |format|
       if @order.save
-        send_emails_and_destroy_cart(@order, false)
-        format.html { redirect_to finish_order_url(@order) }
+        format.html { redirect_to payment_processor.purchase(@order) }
       else
         message = "Your order could not be processed because #{@order.errors.full_messages.first}"
         format.html { redirect_to cart_index_path, notice: message }
@@ -89,7 +73,8 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
     @site_settings = SiteSetting.instance
-    
+    send_emails_and_destroy_cart(@order, false)
+
     respond_to do |format|
       format.html
     end

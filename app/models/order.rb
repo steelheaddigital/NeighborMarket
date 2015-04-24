@@ -23,7 +23,7 @@ class Order < ActiveRecord::Base
   has_many :cart_items, dependent: :destroy, autosave: true
   belongs_to :user
   belongs_to :order_cycle
-  has_many :payments, dependent: :destroy
+  has_many :payments
   
   accepts_nested_attributes_for :cart_items
   attr_accessible :cart_items_attributes, :deliver
@@ -72,18 +72,6 @@ class Order < ActiveRecord::Base
   
   def will_destroy?
     @will_destroy
-  end
-  
-  def process_payments(gateway)
-    if gateway == 'paypal'
-      sub_totals.each do |key, value| 
-        seller = User.find(key)
-        payments.create!(receiver_id: seller.id, payer_id: user.id, payment_gross: value)
-      end
-    end
-    return true
-  rescue
-    return false
   end
   
   private

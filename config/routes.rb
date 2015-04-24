@@ -121,13 +121,10 @@ NeighborMarket::Application.routes.draw do
   end
   
   post 'orders/new', to: 'orders#new'
+  get 'orders/create', to: 'orders#create', as: 'create_order'
   resources :orders, :only => ["new", "create", "edit", "update", "show", "destroy"] do
     member do
       get 'finish'
-    end
-    collection do
-      post 'paypal_notify'
-      get 'checkout'
     end
   end
   
@@ -160,6 +157,8 @@ NeighborMarket::Application.routes.draw do
 
   post 'contact', to: 'contact#create'
   resources :contact, :only => ["index"]
+
+  post 'payments/confirm', to: 'payments#confirm', as: :payments_confirm
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

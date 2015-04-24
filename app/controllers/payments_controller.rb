@@ -17,10 +17,10 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class Payment < ActiveRecord::Base
-  belongs_to :order
-  belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
-  belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
+class PaymentsController < ApplicationController
+  include PaymentProcessor
 
-  attr_accessible :transaction_id, :payment_gross, :payment_fee, :payment_status, :payment_date, :receiver_id, :sender_id
+  def confirm
+    payment_processor.confirm(request.raw_post)
+  end
 end

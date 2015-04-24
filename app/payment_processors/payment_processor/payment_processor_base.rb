@@ -17,10 +17,19 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class Payment < ActiveRecord::Base
-  belongs_to :order
-  belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
-  belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
+module PaymentProcessor
+  class PaymentProcessorBase
+    protected    
 
-  attr_accessible :transaction_id, :payment_gross, :payment_fee, :payment_status, :payment_date, :receiver_id, :sender_id
+    def process_payments(order)
+      recipients = []
+      order.sub_totals.each do |key, value| 
+        seller = User.find(key)
+        payment = order.payments.create(receiver_id: seller.id, sender_id: order.user.id, payment_gross: value)
+        recipients.push(email: seller.email, amount: value, primary: false, invoice_id: payment.id)
+      end
+
+      recipients
+    end
+  end
 end
