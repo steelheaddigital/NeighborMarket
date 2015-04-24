@@ -31,23 +31,22 @@ class OrderCycle < ActiveRecord::Base
            :next_end_date_not_before_next_start_date,
            :next_end_date_not_before_now
   
-  attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date ,:status 
+  attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date, :status 
   attr_accessor :updating
   
   before_validation :get_current_cycle_settings
   before_save :set_current_order_cycle_to_complete, unless: :updating
   
   def self.get_order_cycle
-    if self.find_by_status("current")
-      order_cycle = self.find_by_status("current")
-    elsif 
-      self.find_by_status("pending")
-      order_cycle = self.find_by_status("pending")
+    if find_by_status('current')
+      order_cycle = find_by_status('current')
+    elsif find_by_status('pending')
+      order_cycle = find_by_status('pending')
     else
-      order_cycle = self.new
+      order_cycle = new
     end
 
-    return order_cycle
+    order_cycle
   end
   
   def get_current_cycle_settings
@@ -62,47 +61,47 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def self.build_initial_cycle(order_cycle_params, order_cycle_settings)
-    order_cycle = self.new(order_cycle_params)
+    order_cycle = new(order_cycle_params)
     order_cycle.set_order_cycle_end_date(order_cycle_settings)
     
-    return order_cycle
+    order_cycle
   end
   
   def self.update_current_order_cycle(order_cycle_params, order_cycle_settings)
-    order_cycle = self.get_order_cycle
+    order_cycle = get_order_cycle
     order_cycle.assign_attributes(order_cycle_params)
     order_cycle.set_order_cycle_end_date(order_cycle_settings)
-    order_cycle.updating = true
+    order_cycle.updating = true unless order_cycle.id.nil?
     
-    return order_cycle
+    order_cycle
   end
   
   def set_order_cycle_end_date(settings)
     if settings.recurring
       interval = settings.interval.pluralize.to_sym
-      self.end_date = self.start_date.advance(interval => 1)
+      self.end_date = start_date.advance(interval => 1)
     end
   end
   
   def save_and_set_status
-    if self.start_date > Time.current
-      self.status = "pending"
+    if start_date > Time.current
+      self.status = 'pending'
     else
-      self.status = "current"
+      self.status = 'current'
     end
     
-    success = self.save
+    success = save
     if success
       #complete_pending_cycles
-      if self.start_date > Time.current
-        OrderCycle.queue_order_cycle_start_job(self.start_date)
+      if start_date > Time.current
+        OrderCycle.queue_order_cycle_start_job(start_date)
       else
         #post new inventory items marked as auto-post
-        InventoryItem.autopost(self) if !self.updating
-        OrderCycle.queue_order_cycle_end_job(self.end_date)
+        InventoryItem.autopost(self) unless updating
+        OrderCycle.queue_order_cycle_end_job(end_date)
       end
     end
-    return success
+    success
   end
   
   def end_date_not_before_today
@@ -134,7 +133,7 @@ class OrderCycle < ActiveRecord::Base
       next_start_date = end_date.advance(@current_cycle_settings.padding_interval.to_sym => @current_cycle_settings.padding)
       next_end_date = end_date.advance(@current_cycle_settings.interval.pluralize.to_sym => 2)
       if next_end_date < next_start_date
-        errors.add(:end_date, 'of '+ next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be before the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p") + '. Check the value of Padding.')
+        errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be before the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p") + '. Check the value of Padding.')
       end
     end
   end
@@ -143,7 +142,7 @@ class OrderCycle < ActiveRecord::Base
     if @current_cycle_settings.recurring
       next_end_date = end_date.advance(@current_cycle_settings.interval.pluralize.to_sym => 2)
       if next_end_date.to_datetime < DateTime.current
-        errors.add(:end_date, 'of '+ next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be today')
+        errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be today')
       end
     end
   end
@@ -160,54 +159,50 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def self.current_cycle
-    self.find_by_status("current")
+    find_by_status("current")
   end
   
   def self.pending_delivery
-    self.where("buyer_pickup_date >= ? AND status = ?", DateTime.now.utc, "complete").first
+    where("buyer_pickup_date >= ? AND status = ?", DateTime.now.utc, "complete").first
   end
   
   def self.current_cycle_id
-    return current_cycle ? current_cycle.id : 0
+    current_cycle ? current_cycle.id : 0
   end
   
   def self.latest_cycle
-    self.where("status != ?", "pending").last
+    where("status != ?", "pending").last
   end
   
   def self.last_ten_cycles
-    self.where("status != ?", "pending").last(10)
+    where("status != ?", "pending").last(10)
   end
   
   def self.last_completed
-    last_order_cycle_date = self.where(:status => "complete")
-                                      .maximum(:end_date)
-    last_completed = self.where(:end_date => last_order_cycle_date).last()
+    last_order_cycle_date = where(status: 'complete')
+                            .maximum(:end_date)
+    last_completed = where(end_date: last_order_cycle_date).last
     if last_completed
       last_completed
     else
-      self.latest_cycle
+      latest_cycle
     end
   end
   
   def self.active_cycle
-    self.where("status IN('pending', 'current')").last
+    where("status IN('pending', 'current')").last
   end
     
   def self.queue_order_cycle_start_job(start_date)
     job = OrderCycleStartJob.new
-    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
-	    job.destroy
-    end
+    Delayed::Job.where('queue = ? OR queue = ?', 'order_cycle_end', 'order_cycle_start').each(&:destroy)
     Delayed::Job.enqueue(job, { priority: 0, run_at: start_date, queue: 'order_cycle_start' })
   end
-	  
+
   def self.queue_order_cycle_end_job(end_date)
     job = OrderCycleEndJob.new
-    Delayed::Job.where("queue = ? OR queue = ?","order_cycle_end","order_cycle_start").each do |job|
-      job.destroy
-    end
-	  Delayed::Job.enqueue(job, { priority: 0, run_at: end_date, queue: 'order_cycle_end' })
+    Delayed::Job.where('queue = ? OR queue = ?', 'order_cycle_end', 'order_cycle_start').each(&:destroy)
+    Delayed::Job.enqueue(job, { priority: 0, run_at: end_date, queue: 'order_cycle_end' })
   end
   
 end

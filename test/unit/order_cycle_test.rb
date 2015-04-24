@@ -64,6 +64,22 @@ class OrderCycleTest < ActiveSupport::TestCase
      assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
      assert new_cycle.id == current_order_cycle_id
      assert new_cycle.status == "current"
+     assert new_cycle.updating == true
+   end
+
+   test 'update_current_order_cycle does not set updating attribute if new order_cycle' do
+    order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
+    order_cycle_settings = order_cycle_settings(:not_recurring)
+    order_cycles(:current).destroy
+    order_cycles(:not_current).destroy
+     
+    new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+
+    assert_not_nil(new_cycle)
+    expected_end_date = Time.new(2012,8,21).utc
+    assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
+    assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
+    assert new_cycle.updating.nil?
    end
   
   test "save_and_set_status queues new job and sets status to pending if start_date is after now" do

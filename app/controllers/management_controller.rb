@@ -56,8 +56,8 @@ class ManagementController < ApplicationController
     end
     
     respond_to do |format|
-      if @order_cycle_settings.save and @order_cycle.save_and_set_status
-        format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!'}
+      if @order_cycle_settings.save && @order_cycle.save_and_set_status
+        format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!' }
       else
         format.html { render :edit_order_cycle_settings }
       end
