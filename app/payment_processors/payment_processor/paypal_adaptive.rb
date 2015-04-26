@@ -17,28 +17,18 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'singleton'
 require 'paypal-sdk-adaptivepayments'
 
 module PaymentProcessor
   class PaypalAdaptive < PaymentProcessorBase
     include Rails.application.routes.url_helpers
     include PayPal::SDK::AdaptivePayments
-    include Singleton
 
     attr_reader :gateway
 
-    def initialize
-      PayPal::SDK.configure(
-        mode: Rails.env.production? ? 'live' : 'sandbox',
-        username: ENV['PAYPAL_API_USERNAME'],
-        password: ENV['PAYPAL_API_PASSWORD'],
-        signature: ENV['PAYPAL_API_SIGNATURE'],
-        app_id: ENV['PAYPAL_APP_ID']
-      )
-
-      @host = ENV['HOST']
-      self.gateway = PayPal::SDK::AdaptivePayments.new
+    def initialize(gateway, host)
+      @host = host
+      self.gateway = gateway
     end
 
     def purchase(order)
@@ -62,7 +52,7 @@ module PaymentProcessor
 
       response = gateway.pay(pay)
       if response.success? && response.payment_exec_status != 'ERROR'
-        gateway.payment_url(response)  # Url to complete payment
+        gateway.payment_url(response)
       else
         fail response.error[0].message
       end
@@ -70,7 +60,7 @@ module PaymentProcessor
   
 
     def confirm(request)
-      if PayPal::SDK::Core::API::IPN.valid?(request.raw_post)
+      if gateway.ipn_valid?(request.raw_post)
         request.params['transaction'].each do |_index, params|
           payment_id = params['invoiceId']
           transaction_id = params['id_for_sender']

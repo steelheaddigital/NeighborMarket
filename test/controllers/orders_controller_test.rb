@@ -30,13 +30,17 @@ class OrdersControllerTest < ActionController::TestCase
     cart = carts(:full)
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
-    
-    assert_no_difference 'Order.count' do
-      post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order]
+
+    @controller.stub :payment_processor, mock_payment_processor do
+      assert_no_difference 'Order.count' do
+        post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
+      end
+      
+      assert_not_nil assigns(:order), "order was nil"
+      assert_redirected_to 'http://processor-path'
     end
-    
-    assert_not_nil assigns(:order), "order was nil"
-    assert_redirected_to finish_order_path(assigns(:order))
   end
   
   test "create should create new order when buyer has no open order" do 
@@ -46,18 +50,23 @@ class OrdersControllerTest < ActionController::TestCase
     cart = carts(:full)
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order]
+
+    @controller.stub :payment_processor, mock_payment_processor do
+      assert_difference 'Order.count' do
+        post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
+      end
     
-    assert_difference 'Order.count' do
-      post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
+      assert_not_nil assigns(:order)
+      assert_redirected_to 'http://processor-path'
     end
-    
-    assert_not_nil assigns(:order)
-    assert_redirected_to finish_order_path(assigns(:order))
   end
   
   test "finish should get finish" do
     order = orders(:current)
-    get(:finish, {:id => order.id})
+    cart = carts(:full)
+    get(:finish, { id: order.id }, { cart_id: cart.id })
     
     assert_response :success
     assert_not_nil assigns(:order)

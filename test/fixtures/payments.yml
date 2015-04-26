@@ -1,0 +1,13 @@
+one:
+  id: 1
+  order: current
+  receiver: approved_seller_user
+  sender: buyer_user
+  amount: 10.00
+
+two:
+  id: 2
+  order: current
+  receiver: no_orders_seller_user
+  sender: buyer_user
+  amount: 20.00
