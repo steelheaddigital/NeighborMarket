@@ -19,8 +19,11 @@
 
 class PaymentsController < ApplicationController
   include PaymentProcessor
+  skip_before_filter :verify_authenticity_token, only: :confirm
 
   def confirm
-    payment_processor.confirm(request.raw_post)
+    payment_processor.confirm(request)
+
+    render nothing: true
   end
 end

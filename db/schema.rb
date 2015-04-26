@@ -146,10 +146,9 @@ ActiveRecord::Schema.define(version: 20150406021959) do
   create_table "payments", force: true do |t|
     t.string   "transaction_id"
     t.string   "receiver_id"
-    t.string   "payer_id"
-    t.decimal  "payment_gross"
-    t.decimal  "payment_fee"
-    t.string   "payment_status"
+    t.string   "sender_id"
+    t.decimal  "amount"
+    t.string   "status"
     t.datetime "payment_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -157,8 +156,8 @@ ActiveRecord::Schema.define(version: 20150406021959) do
   end
 
   add_index "payments", ["order_id"], name: "index_payments_on_order_id", using: :btree
-  add_index "payments", ["payer_id"], name: "index_payments_on_payer_id", using: :btree
   add_index "payments", ["receiver_id"], name: "index_payments_on_receiver_id", using: :btree
+  add_index "payments", ["sender_id"], name: "index_payments_on_sender_id", using: :btree
 
   create_table "price_units", force: true do |t|
     t.string   "name"

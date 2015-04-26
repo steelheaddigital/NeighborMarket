@@ -18,54 +18,77 @@
 #
 
 require 'singleton'
+require 'paypal-sdk-adaptivepayments'
 
 module PaymentProcessor
   class PaypalAdaptive < PaymentProcessorBase
-    include ActiveMerchant::Billing::Integrations
     include Rails.application.routes.url_helpers
+    include PayPal::SDK::AdaptivePayments
     include Singleton
 
     attr_reader :gateway
 
     def initialize
-      paypal_options = {
-        login: ENV['PAYPAL_API_USERNAME'],
+      PayPal::SDK.configure(
+        mode: Rails.env.production? ? 'live' : 'sandbox',
+        username: ENV['PAYPAL_API_USERNAME'],
         password: ENV['PAYPAL_API_PASSWORD'],
         signature: ENV['PAYPAL_API_SIGNATURE'],
-        appid: ENV['PAYPAL_APP_ID']
-      }
+        app_id: ENV['PAYPAL_APP_ID']
+      )
 
       @host = ENV['HOST']
-      self.gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(paypal_options)
+      self.gateway = PayPal::SDK::AdaptivePayments.new
     end
 
     def purchase(order)
-      recipients = process_payments(order)
+      payment = process_payments(order)
 
-      response = gateway.setup_purchase(
-        return_url: finish_order_url(id: order.id, host: @host),
-        cancel_url: cart_index_url(host: @host),
-        ipn_notification_url: payments_confirm_url(host: @host),
-        custom: order.id,
-        receiver_list: recipients
+      receiver_list = {}
+      payment[:recipients].each do |r|
+        receiver = [{ amount: r[:amount], invoiceId: r[:payment_id], email: r[:seller].email }]
+        receiver_list[:receiver] = receiver
+      end
+
+      pay = gateway.build_pay(
+        actionType: 'PAY',
+        currencyCode: 'USD',
+        returnUrl: finish_order_url(id: order.id, host: @host),
+        cancelUrl: cart_index_url(host: @host),
+        ipnNotificationUrl: payments_confirm_url(host: @host),
+        reverseAllParallelPaymentsOnError: true,
+        receiverList: receiver_list
       )
 
-      gateway.redirect_url_for(response['payKey'])
+      response = gateway.pay(pay)
+      if response.success? && response.payment_exec_status != 'ERROR'
+        gateway.payment_url(response)  # Url to complete payment
+      else
+        fail response.error[0].message
+      end
     end
   
 
-    def confirm(raw_post)
-      notify = PaypalAdaptivePayment::Notification.new(raw_post)
-      payment = Payment.find_by order_id: notify.invoice
-      #if notify.acknowledge
-        transactions = notify.params['transaction']
-        transactions.each do |transaction| 
-          if(payment.transaction_id.nil? || payment.transaction_id != transaction.transaction_id)
-            payment = Payment.find(transaction.invoiceId)
-            payment.update_attributes(transaction_id: transaction.id_for_sender_txn)
+    def confirm(request)
+      if PayPal::SDK::Core::API::IPN.valid?(request.raw_post)
+        request.params['transaction'].each do |_index, params|
+          payment_id = params['invoiceId']
+          transaction_id = params['id_for_sender']
+          status = params['status_for_sender_txn']
+          receiver_email = params['receiver']
+          amount = params['amount']
+          payment = Payment.find(payment_id)
+
+          next unless receiver_email == payment.receiver.email && amount.to_f == payment.amount
+          if payment.transaction_id.nil?
+            payment.update_attributes(transaction_id: transaction_id, status: status, payment_date: DateTime.now)
+          else
+            payment.update_attributes(status: status)
           end
         end
-      #end
+      else
+        Rails.logger.error "Failed to verify Paypal's IPN notification"
+      end
     end
 
     private 
