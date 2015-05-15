@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   attr_writer :auto_create
   
   scope :active, -> { where(deleted_at: nil) }
-  scope :active_sellers, -> { joins(:roles).where("roles.name='seller' AND users.approved_seller=true AND users.deleted_at IS NULL").active}
+  scope :active_sellers, -> { joins(:roles).where("roles.name='seller' AND users.approved_seller=true AND users.deleted_at IS NULL").active }
   
   def auto_create
     @auto_create || false
@@ -320,6 +320,10 @@ class User < ActiveRecord::Base
       .select('second_level_categories.name')
       .group('second_level_categories.id')
       .pluck('second_level_categories.name')
+  end
+
+  def current_order
+    orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
   end
   
 end

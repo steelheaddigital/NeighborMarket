@@ -40,6 +40,9 @@
 					</div>
 				</div>
 		<% end %>
+		<% @processor_params.each do |key, value| %>
+			<%= hidden_field_tag key.to_s, value[0] %>
+		<% end %>
 	    <%= render "order" %>
 	    <div class="row">
 	      <div class="col-md-1">

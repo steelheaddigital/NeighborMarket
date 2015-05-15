@@ -19,7 +19,6 @@
 
 class OrdersController < ApplicationController
   include CurrentCart
-  include PaymentProcessor
 
   before_filter :authenticate_user!, except: [:new]
   load_and_authorize_resource
@@ -49,6 +48,7 @@ class OrdersController < ApplicationController
       end
 
       @order = update_or_create_order(@cart)
+      @processor_params = CGI.parse(request.query_string)
     else
       @total_price = @cart.total_price
       render 'cart/index'
@@ -58,10 +58,10 @@ class OrdersController < ApplicationController
   
   def create
     @order = update_or_create_order(current_cart)
-
+    purchase_redirect_url = @order.purchase(params)
     respond_to do |format|
-      if @order.save
-        format.html { redirect_to payment_processor.purchase(@order) }
+      if purchase_redirect_url
+        format.html { redirect_to purchase_redirect_url }
       else
         message = "Your order could not be processed because #{@order.errors.full_messages.first}"
         format.html { redirect_to cart_index_path, notice: message }
@@ -70,7 +70,7 @@ class OrdersController < ApplicationController
   end
   
   def finish
-    @order = Order.find(params[:id])
+    @order = current_user.current_order
     @order_pickup_date = OrderCycle.current_cycle.buyer_pickup_date
     @site_settings = SiteSetting.instance
     send_emails_and_destroy_cart(@order, false)
@@ -95,10 +95,11 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       previous_action = session[:previous_action]
+      #This check is necessary because the user may already have a current order but has now started a new one.
+      #In that case they are coming from New, but @order has an ID so the request ends up here.
       if previous_action[:controller] == 'orders' && previous_action[:action] == 'new'
         @order.add_inventory_items_from_cart(current_cart)
         if @order.save
-          logger.debug 'order saved'
           send_emails_and_destroy_cart(@order, true)
           format.html { redirect_to edit_order_path, notice: 'Order successfully updated!' }
         else
@@ -142,7 +143,7 @@ class OrdersController < ApplicationController
   private
   
   def update_or_create_order(cart)
-    current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
+    current_order = current_user.current_order
     if current_order
       order = current_order
     else

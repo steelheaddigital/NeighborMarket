@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406021959) do
+ActiveRecord::Schema.define(version: 20150512114700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,21 +143,35 @@ ActiveRecord::Schema.define(version: 20150406021959) do
   add_index "orders", ["order_cycle_id"], name: "index_orders_on_order_cycle_id", using: :btree
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
+  create_table "payment_processor_settings", force: true do |t|
+    t.string "processor_type", default: "InPerson"
+  end
+
   create_table "payments", force: true do |t|
     t.string   "transaction_id"
-    t.string   "receiver_id"
-    t.string   "sender_id"
+    t.integer  "receiver_id"
+    t.integer  "sender_id"
     t.decimal  "amount"
     t.string   "status"
     t.datetime "payment_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "order_id"
+    t.string   "processor_type"
+    t.string   "payment_type"
   end
 
   add_index "payments", ["order_id"], name: "index_payments_on_order_id", using: :btree
   add_index "payments", ["receiver_id"], name: "index_payments_on_receiver_id", using: :btree
   add_index "payments", ["sender_id"], name: "index_payments_on_sender_id", using: :btree
+
+  create_table "paypal_express_settings", force: true do |t|
+    t.boolean "allow_in_person_payments",     default: true
+    t.string  "username"
+    t.text    "password"
+    t.text    "api_signature"
+    t.integer "payment_processor_setting_id", default: 1
+  end
 
   create_table "price_units", force: true do |t|
     t.string   "name"

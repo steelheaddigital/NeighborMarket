@@ -22,5 +22,5 @@ class Payment < ActiveRecord::Base
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
 
-  attr_accessible :transaction_id, :amount, :status, :payment_date, :receiver_id, :sender_id
+  attr_accessible :transaction_id, :amount, :status, :payment_date, :receiver_id, :sender_id, :order_id, :processor_type, :payment_type
 end

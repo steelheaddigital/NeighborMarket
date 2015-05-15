@@ -29,4 +29,9 @@
 		<%= render 'content_form' %>
 	</div>
 <% end %>
+<% content_for :PaymentProcessorSettingsContent do %>
+	<div role="tabpanel" class="well tab-pane active" id="payment_processor_settings">
+		<%= render 'payment_processor_settings/setting_form' %>
+	</div>
+<% end %>
 <%= render :template => 'layouts/_site_settings' %>

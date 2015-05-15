@@ -15,4 +15,5 @@
 //= require user_registrations
 //= require user
 //= require reviews
+//= require payment_processor_settings
 //= require_self

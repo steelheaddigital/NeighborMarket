@@ -19,20 +19,5 @@
 
 module PaymentProcessor
   class PaymentProcessorBase
-    protected    
-
-    def process_payments(order)
-      recipients = []
-      order.sub_totals.each do |seller_id, amount| 
-        seller = User.find(seller_id)
-        payment = order.payments.create(receiver_id: seller.id, sender_id: order.user.id, amount: amount)
-        recipients.push(seller: seller, amount: amount, payment_id: payment.id)
-      end
-
-      { order: order, 
-        sender: order.user, 
-        recipients: recipients 
-      }
-    end
   end
 end

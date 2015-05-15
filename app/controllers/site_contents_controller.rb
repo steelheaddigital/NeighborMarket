@@ -18,29 +18,23 @@
 #
 
 class SiteContentsController < ApplicationController
+  include Settings
   before_filter :authenticate_user!
   load_and_authorize_resource
   
   def index
-    @site_settings = SiteSetting.instance
-    @site_contents = SiteContent.instance
-    
     respond_to do |format|
       format.html
     end
   end
   
   def update
-    @site_contents = SiteContent.instance
-    @site_settings = SiteSetting.instance
-    
     respond_to do |format|
       if @site_contents.update(params[:site_content])
-        format.html { redirect_to site_contents_path, notice: 'Content Successfully Saved!'}
+        format.html { redirect_to site_contents_path, notice: 'Content Successfully Saved!' }
       else
         format.html { render :index }
       end
     end
   end
-
 end

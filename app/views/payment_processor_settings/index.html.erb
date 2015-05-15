@@ -1,3 +1,4 @@
+<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -16,25 +17,21 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+%>
 
-class SiteSettingsController < ApplicationController
-  include Settings
-  before_filter :authenticate_user!
-  load_and_authorize_resource
-  
-  def index
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def update
-    respond_to do |format|
-      if @site_settings.update(params[:site_setting])
-        format.html { redirect_to site_settings_path, notice: 'Site Settings Successfully Saved!' }
-      else
-        format.html { render :index }
-      end
-    end
-  end
-end
+<% content_for :SiteSettingsContent do %>
+	<div role="tabpanel" class="well tab-pane" id="settings">
+		<%= render 'site_settings/setting_form' %>
+	</div>
+<% end %>
+<% content_for :SiteContentsContent do %>
+	<div role="tabpanel" class="well tab-pane" id="content">
+		<%= render 'site_contents/content_form' %>
+	</div>
+<% end %>
+<% content_for :PaymentProcessorSettingsContent do %>
+	<div role="tabpanel" class="well tab-pane active" id="payment_processor_settings">
+		<%= render 'setting_form' %>
+	</div>
+<% end %>
+<%= render :template => 'layouts/_site_settings' %>

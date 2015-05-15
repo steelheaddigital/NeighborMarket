@@ -17,7 +17,7 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-module Totals
+module Totalable
   extend ActiveSupport::Concern
   
   def cart_items_where_order_cycle_minimum_reached

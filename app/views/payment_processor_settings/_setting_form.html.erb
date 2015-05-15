@@ -1,0 +1,43 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<%= bootstrap_form_for @processor_settings, as: :payment_processor_setting, :url => update_payment_processor_settings_path, :method => :post, :html => { :id => "PaymentProcessorSettingsForm"} do |f| %>
+	<div class="container-fluid">
+		<%= f.error_messages %>
+		<div class="row">
+		  	<div class="col-md-6">
+				<%= f.radio_button :processor_type, 'InPerson', { label: 'In Person', 'data-toggle': 'show' }%>
+				<%= f.radio_button :processor_type, 'PaypalExpress', { label: 'Paypal Express', 'data-target': 'PaypalExpressSettings', 'data-toggle': 'show' } %>
+				<div id="PaypalExpressSettings" class="payment-processor-setting-container <%= 'hidden' unless @processor_settings.processor_type == 'PaypalExpress' %>">
+					<%= f.fields_for :paypal_express_setting do |ff| %>
+						<%= ff.check_box :allow_in_person_payments, label: 'Allow in-person payments' %>
+						<%= ff.text_field :username, label: 'Username' %>
+						<%= ff.password_field :password, label: 'Password' %>
+						<%= ff.text_field :api_signature, label: 'API signature' %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<%= submit_tag "Save Payment Processor Settings", :class => 'btn btn-primary' %>
+		</div>
+	</div>
+<%end%>

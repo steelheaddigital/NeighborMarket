@@ -18,7 +18,7 @@
 #
 
 class Cart < ActiveRecord::Base
-  include Totals
+  include Totalable
   
   has_many :cart_items, :autosave => true, :dependent => :destroy
   belongs_to :user

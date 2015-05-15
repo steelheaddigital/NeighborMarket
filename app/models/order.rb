@@ -18,7 +18,8 @@
 #
 
 class Order < ActiveRecord::Base
-  include Totals
+  include Totalable
+  include PaymentProcessor
   
   has_many :cart_items, dependent: :destroy, autosave: true
   belongs_to :user
@@ -38,6 +39,16 @@ class Order < ActiveRecord::Base
               :update_seller_inventory
   after_save :disassociate_cart_items_from_cart
   
+  def purchase(params)
+    purchase_redirect_url = payment_processor.purchase(self, params)
+    if save
+      purchase_redirect_url
+    end
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    false
+  end
+
   def add_inventory_items_from_cart(cart)
     cart.cart_items.each do |item|
       existing_item = cart_items.find { |x| x.inventory_item_id == item.inventory_item_id }

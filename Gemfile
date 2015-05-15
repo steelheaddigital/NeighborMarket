@@ -6,6 +6,7 @@ gem 'unicorn', '~> 4.8.3'
 
 group :test do
   gem 'minitest-focus'
+  gem 'minitest-stub_any_instance'
 end
 
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -34,7 +35,8 @@ gem 'dalli', '~> 2.6.4'
 gem 'acts_as_singleton', '~> 0.0.8'
 gem 'sanitize', '~> 3.1.0'
 gem 'whenever', '~> 0.9.4'
-gem 'paypal-sdk-adaptivepayments', '~> 1.117.0'
+gem 'paypal-express', '~> 0.8.1'
+gem 'crypt_keeper', '~> 0.20.0'
 
 gem 'protected_attributes', '~> 1.0.9'
 gem 'activerecord-deprecated_finders', '~> 1.0.3'

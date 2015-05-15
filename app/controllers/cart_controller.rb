@@ -19,6 +19,7 @@
 
 class CartController < ApplicationController
   include CurrentCart
+  include PaymentProcessor
   
   def index
     @cart = current_cart
@@ -27,6 +28,10 @@ class CartController < ApplicationController
     respond_to do |format|
       format.html { render layout: 'layouts/navigational' }
     end
+  end
+
+  def checkout
+    redirect_to payment_processor.checkout(current_cart)
   end
   
   def item_count

@@ -17,7 +17,7 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class SiteSettingsController < ApplicationController
+class PaymentProcessorSettingsController < ApplicationController
   include Settings
   before_filter :authenticate_user!
   load_and_authorize_resource
@@ -30,8 +30,8 @@ class SiteSettingsController < ApplicationController
   
   def update
     respond_to do |format|
-      if @site_settings.update(params[:site_setting])
-        format.html { redirect_to site_settings_path, notice: 'Site Settings Successfully Saved!' }
+      if @processor_settings.update_attributes(params[:payment_processor_setting])
+        format.html { redirect_to payment_processor_settings_path, notice: 'Payment Processor Settings Successfully Saved!' }
       else
         format.html { render :index }
       end

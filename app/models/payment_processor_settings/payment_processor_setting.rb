@@ -17,13 +17,8 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class PaymentsController < ApplicationController
-  include PaymentProcessor
-  skip_before_filter :verify_authenticity_token, only: :confirm
-
-  def confirm
-    payment_processor.confirm(request)
-
-    render nothing: true
-  end
+class PaymentProcessorSetting < ActiveRecord::Base
+  has_one :paypal_express_setting, -> { where(payment_processor_setting_id: 1) }
+  accepts_nested_attributes_for :paypal_express_setting
+  attr_accessible :processor_type, :paypal_express_setting_attributes
 end

@@ -31,9 +31,9 @@ class OrdersControllerTest < ActionController::TestCase
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [Order]
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Object]
 
-    @controller.stub :payment_processor, mock_payment_processor do
+    Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_no_difference 'Order.count' do
         post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
       end
@@ -51,9 +51,9 @@ class OrdersControllerTest < ActionController::TestCase
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [Order]
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Object]
 
-    @controller.stub :payment_processor, mock_payment_processor do
+    Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_difference 'Order.count' do
         post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
       end

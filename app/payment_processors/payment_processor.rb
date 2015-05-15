@@ -17,25 +17,18 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require 'paypal-sdk-adaptivepayments'
-
 module PaymentProcessor
-  include PayPal::SDK::AdaptivePayments
   extend ActiveSupport::Autoload
   
   autoload :PaymentProcessorBase
-  autoload :PaypalAdaptive
+  autoload :PaypalExpress
 
   def payment_processor
-    PayPal::SDK.configure(
-      mode: Rails.env.production? ? 'live' : 'sandbox',
-      username: ENV['PAYPAL_API_USERNAME'],
-      password: ENV['PAYPAL_API_PASSWORD'],
-      signature: ENV['PAYPAL_API_SIGNATURE'],
-      app_id: ENV['PAYPAL_APP_ID']
-    )
-    host = ENV['HOST']
-    gateway = PayPal::SDK::AdaptivePayments.new
-    PaypalAdaptive.new(gateway, host)
+    processor_type = PaymentProcessorSetting.first.processor_type
+    processor_settings = "#{processor_type}Setting".constantize.first
+    processor_class = "PaymentProcessor::#{processor_type}".constantize
+    processor_class.new(host: ENV['HOST'], processor_settings: processor_settings)
   end
+
+  class PaymentError < StandardError; end
 end

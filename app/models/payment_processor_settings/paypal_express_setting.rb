@@ -17,24 +17,15 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class SiteSettingsController < ApplicationController
-  include Settings
-  before_filter :authenticate_user!
-  load_and_authorize_resource
-  
-  def index
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def update
-    respond_to do |format|
-      if @site_settings.update(params[:site_setting])
-        format.html { redirect_to site_settings_path, notice: 'Site Settings Successfully Saved!' }
-      else
-        format.html { render :index }
-      end
-    end
-  end
+class PaypalExpressSetting < ActiveRecord::Base
+  belongs_to :payment_processor_setting
+
+  crypt_keeper :password, :api_signature, encryptor: :aes_new, key: "#{Rails.application.secrets.secret_key_base}", salt: "#{Rails.application.secrets.secret_key_salt}"
+
+  attr_accessible :username, :password, :api_signature, :allow_in_person_payments
+
+  validates :password, presence: true, if: -> { password_was.nil? }
+  validates :username,
+    :api_signature,
+    presence: true
 end

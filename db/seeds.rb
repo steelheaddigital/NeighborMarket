@@ -226,3 +226,13 @@ SiteContent.instance.update(
   :about => about,
   :terms_of_service => terms
 )
+
+if PaymentProcessorSetting.first.nil?
+  setting = PaymentProcessorSetting.new
+  setting.save(validate: false)
+end
+
+if PaypalAdaptiveSetting.first.nil?
+  setting = PaypalAdaptiveSetting.new
+  setting.save(validate: false)
+end

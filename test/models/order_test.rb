@@ -149,4 +149,41 @@ class OrderTest < ActiveSupport::TestCase
     
     assert order.has_items_with_minimum?
   end
+
+  test 'purchase calls payment_processor.purchase and returns url if successfully save' do
+    order = Order.new
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, 'http://processor-path', [order, {}]
+    order.stub :payment_processor, mock_payment_processor do
+      result = order.purchase({})
+      assert_equal 'http://processor-path', result
+      mock_payment_processor.verify
+    end
+  end
+
+  test 'purchase calls payment_processor.purchase and returns nil if not successfully save' do
+    order = Order.new
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, 'http://processor-path', [order, {}]
+    order.stub :payment_processor, mock_payment_processor do
+      order.stub :save, false do
+        result = order.purchase({})
+        assert_equal nil, result
+        mock_payment_processor.verify
+      end
+    end
+  end
+
+  test 'adds errors if payment processor purchase fails' do
+    order = Order.new
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, nil do
+      fail PaymentProcessor::PaymentError, 'Oh No! Payment Fails'
+    end
+    order.stub :payment_processor, mock_payment_processor do
+      result = order.purchase({})
+      assert_equal false, result
+      assert_equal order.errors.full_messages[0], 'Oh No! Payment Fails'
+    end
+  end
 end

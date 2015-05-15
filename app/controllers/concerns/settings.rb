@@ -17,24 +17,16 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class SiteSettingsController < ApplicationController
-  include Settings
-  before_filter :authenticate_user!
-  load_and_authorize_resource
-  
-  def index
-    respond_to do |format|
-      format.html
-    end
+module Settings
+  extend ActiveSupport::Concern
+
+  included do
+    before_filter :load_settings
   end
-  
-  def update
-    respond_to do |format|
-      if @site_settings.update(params[:site_setting])
-        format.html { redirect_to site_settings_path, notice: 'Site Settings Successfully Saved!' }
-      else
-        format.html { render :index }
-      end
-    end
+
+  def load_settings
+    @site_settings = SiteSetting.instance
+    @site_contents = SiteContent.instance
+    @processor_settings = PaymentProcessorSetting.first
   end
 end

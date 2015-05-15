@@ -24,7 +24,7 @@
   <div class="row">
 	<div class="col-md-3">
 	    <div class="list-group">
-	      <%= link_to "Site Settings", site_settings_path, {class: "list-group-item #{nav_item_is_active({controller: 'site_contents', action: 'index'}, {controller: 'site_contents', action: 'update'}, {controller: 'site_settings', action: 'index'})}" } %>
+	      <%= link_to "Site Settings", site_settings_path, {class: "list-group-item #{nav_item_is_active({controller: 'site_contents', action: 'index'}, {controller: 'site_contents', action: 'update'}, {controller: 'site_settings', action: 'index'}, {controller: 'site_settings', action: 'update'}, {controller: 'payment_processor_settings', action: 'index'}, {controller: 'payment_processor_settings', action: 'update'})}" } %>
 	      <%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path, {class: "list-group-item #{nav_item_is_active('edit_order_cycle_settings')}"}%>
 		  <%= link_to "Manage Categories", categories_management_index_path, {class: "list-group-item #{nav_item_is_active('categories')}"} %>
 		  <%= link_to "Manage Units", manage_units_management_index_path, {class: "list-group-item #{nav_item_is_active('manage_units')}"} %>

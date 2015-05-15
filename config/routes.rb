@@ -76,6 +76,12 @@ NeighborMarket::Application.routes.draw do
       post 'update', as: 'update'
     end
   end
+
+  resources :payment_processor_settings, :only => ["index"] do 
+    collection do
+      post 'update', as: 'update'
+    end
+  end
   
   resources :inventory_items do
     member do
@@ -114,6 +120,7 @@ NeighborMarket::Application.routes.draw do
     get 'destroy'
   end
   
+  post 'cart/checkout', to: 'cart#checkout', as: 'checkout'
   resources :cart, :only => ["index"] do
     collection do
       get 'item_count'
@@ -122,11 +129,8 @@ NeighborMarket::Application.routes.draw do
   
   post 'orders/new', to: 'orders#new'
   get 'orders/create', to: 'orders#create', as: 'create_order'
-  resources :orders, :only => ["new", "create", "edit", "update", "show", "destroy"] do
-    member do
-      get 'finish'
-    end
-  end
+  get  'orders/finish', to: 'orders#finish', as: 'finish_order'
+  resources :orders, :only => ["new", "create", "edit", "update", "show", "destroy"]
   
   resources :price_units
   

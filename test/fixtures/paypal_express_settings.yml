@@ -1,0 +1,12 @@
+one:
+  id: 1
+  payment_processor_setting_id: 1
+  username: 'test'
+  password: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
+  api_signature: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
+
+two:
+  id: 2
+  payment_processor_setting_id: 1
+  username: 'test'
+  api_signature: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
