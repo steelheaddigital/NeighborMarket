@@ -27,7 +27,6 @@ class ApplicationController < ActionController::Base
   around_filter :set_time_zone
   before_filter :current_order_id
   before_filter :completed_order_id
-  before_filter :set_action
   after_filter :add_headers
   
   def after_sign_in_path_for(resource)
@@ -85,14 +84,6 @@ class ApplicationController < ActionController::Base
   
   def site_name
     SiteSetting.instance.site_name
-  end
-  
-  def set_action
-    begin
-      url = Rails.application.routes.recognize_path(request.referrer)
-      session[:previous_action] = {controller: url[:controller], action: url[:action]}
-    rescue ActionController::RoutingError
-    end
   end
   
   rescue_from CanCan::AccessDenied do |exception|

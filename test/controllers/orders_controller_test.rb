@@ -120,21 +120,6 @@ class OrdersControllerTest < ActionController::TestCase
     assert_equal "Cart items quantity cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"/order_change_request/406222160/new\">send a request</a> to the site manager.", assigns(:order).errors.full_messages.first
   end
   
-  test "update should add items from cart when previous action is new" do
-    cart = carts(:full)
-    order = orders(:current)
-    inventory_item = inventory_items(:not_in_cart)
-    new_item = cart.cart_items.create({quantity: 10, inventory_item_id: inventory_item.id})
-    
-    assert_difference 'order.cart_items.count' do
-      @request.env['HTTP_REFERER'] = 'http://test.com/orders/new'
-      post :update, { :id => order.id }, { :cart_id => cart.id }
-    end
-    
-    assert_redirected_to edit_order_path
-    assert_equal 'Order successfully updated!', flash[:notice]
-  end
-  
   test "should show order" do
     order = orders(:current)
     

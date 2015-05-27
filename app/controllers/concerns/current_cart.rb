@@ -23,8 +23,8 @@ module CurrentCart
   def set_cart
     Cart.find(session[:cart_id])
   rescue ActiveRecord::RecordNotFound    
-    if(user_signed_in?)
-      cart = Cart.create(:user_id => current_user.id)
+    if user_signed_in?
+      cart = current_user.cart.create
     else
       cart = Cart.create
     end
@@ -35,7 +35,10 @@ module CurrentCart
     if session[:cart_id].nil?
       Cart.new
     else
-      Cart.find(session[:cart_id])
+      cart = Cart.find(session[:cart_id])
+      if current_user && cart.user_id.nil?
+        cart.update_attributes(user_id: current_user.id)
+      end
     end
   end
   

@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
         return
       end
 
-      @order = update_or_create_order(@cart)
+      @order = Order.update_or_new(@cart)
       @processor_params = CGI.parse(request.query_string)
     else
       @total_price = @cart.total_price
@@ -57,7 +57,7 @@ class OrdersController < ApplicationController
   end
   
   def create
-    @order = update_or_create_order(current_cart)
+    @order = Order.update_or_new(current_cart)
     purchase_redirect_url = @order.purchase(params)
     respond_to do |format|
       if purchase_redirect_url
@@ -94,28 +94,13 @@ class OrdersController < ApplicationController
     @order.current_user = current_user
     
     respond_to do |format|
-      previous_action = session[:previous_action]
-      #This check is necessary because the user may already have a current order but has now started a new one.
-      #In that case they are coming from New, but @order has an ID so the request ends up here.
-      if previous_action[:controller] == 'orders' && previous_action[:action] == 'new'
-        @order.add_inventory_items_from_cart(current_cart)
-        if @order.save
-          send_emails_and_destroy_cart(@order, true)
-          format.html { redirect_to edit_order_path, notice: 'Order successfully updated!' }
-        else
-          message = "Your order could not be processed because #{@order.errors.full_messages.first}"
-          format.html { redirect_to cart_index_path, notice: message }
-        end
+      if @order.update_attributes(params[:order])
+        send_emails(@order, true)
+        format.html { redirect_to edit_order_path, notice: 'Order successfully updated!' }
       else
-        if @order.update_attributes(params[:order])
-          send_emails(@order, true)
-          format.html { redirect_to edit_order_path, notice: 'Order successfully updated!' }
-        else
-          @total_price = @order.total_price
-          format.html { render 'edit' }
-        end
+        @total_price = @order.total_price
+        format.html { render 'edit' }
       end
-      
     end
   end
   
@@ -142,18 +127,6 @@ class OrdersController < ApplicationController
   
   private
   
-  def update_or_create_order(cart)
-    current_order = current_user.current_order
-    if current_order
-      order = current_order
-    else
-      order = current_user.orders.build
-    end
-    order.add_inventory_items_from_cart(cart)
-    
-    order
-  end
-  
   def send_emails_and_destroy_cart(order, update)
     send_emails(order, update)
     Cart.destroy(session[:cart_id])
@@ -162,8 +135,7 @@ class OrdersController < ApplicationController
   
   def send_emails(order, update)
     # Send an email to each seller notifying them of the sale
-    sellers_array = get_sellers(order)
-    sellers = sellers_array.uniq(&:id)
+    sellers = order.cart_items.map { |item| item.inventory_item.user }.uniq(&:id)
     if update
       sellers.each do |seller|
         SellerMailer.delay.updated_purchase_mail(seller, order)
@@ -175,15 +147,6 @@ class OrdersController < ApplicationController
     end
 
     BuyerMailer.delay.order_mail(current_user, order)
-  end
-  
-  def get_sellers(order)
-    sellers_array = []
-    order.cart_items.each do |item|
-      sellers_array.push(item.inventory_item.user)
-    end
-    
-    sellers_array
   end
   
 end

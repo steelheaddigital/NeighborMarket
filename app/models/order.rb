@@ -39,14 +39,17 @@ class Order < ActiveRecord::Base
               :update_seller_inventory
   after_save :disassociate_cart_items_from_cart
   
-  def purchase(params)
-    purchase_redirect_url = payment_processor.purchase(self, params)
-    if save
-      purchase_redirect_url
+  def self.update_or_new(cart)
+    user = cart.user
+    current_order = user.current_order
+    if current_order
+      order = current_order
+    else
+      order = user.orders.build
     end
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
-    false
+    order.add_inventory_items_from_cart(cart)
+    
+    order
   end
 
   def add_inventory_items_from_cart(cart)
@@ -64,6 +67,15 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def purchase(params)
+    purchase_redirect_url = payment_processor.purchase(self, params)
+    if save
+      purchase_redirect_url
+    end
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    false
+  end
   
   def has_cart_items_where_order_cycle_minimum_not_reached?
     cart_items.where(minimum_reached_at_order_cycle_end: false).any?
@@ -84,9 +96,9 @@ class Order < ActiveRecord::Base
   def will_destroy?
     @will_destroy
   end
-  
+
   private
-  
+
   def will_destroy
     @will_destroy = true
   end
