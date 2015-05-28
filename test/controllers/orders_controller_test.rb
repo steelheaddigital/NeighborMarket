@@ -8,19 +8,19 @@ class OrdersControllerTest < ActionController::TestCase
     sign_in @user
   end
   
-  test "should get new and update current order when buyer has an open order" do    
-    post :new, :cart => {}
+  test "should get new and update current order when buyer has an open order" do 
+    cart = carts(:full)
+
+    post :new, { cart: {} }, cart_id: cart.id
     
     assert :success
     assert_not_nil assigns(:order)
   end
   
   test "should get new when buyer has no open order" do
-    sign_out @user
-    @user  = users(:buyer_user_no_order)
-    sign_in @user
+    cart = carts(:no_order)
     
-    post :new, :cart => { }
+    post :new, { cart: {} }, cart_id: cart.id
     
     assert :success
     assert_not_nil assigns(:order)
@@ -35,7 +35,7 @@ class OrdersControllerTest < ActionController::TestCase
 
     Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_no_difference 'Order.count' do
-        post :create, { :order => { :deliver => false } }, {cart_id: cart.id}
+        post :create, { :order => { :deliver => false } }, { cart_id: cart.id }
       end
       
       assert_not_nil assigns(:order), "order was nil"
@@ -44,12 +44,7 @@ class OrdersControllerTest < ActionController::TestCase
   end
   
   test "create should create new order when buyer has no open order" do 
-    sign_out @user
-    @user  = users(:buyer_user_no_order)
-    sign_in @user
-    cart = carts(:full)
-    cart_items(:one).update_attribute(:quantity, 1)
-    cart_items(:four).update_attribute(:quantity, 1)
+    cart = carts(:no_order)
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Object]
 

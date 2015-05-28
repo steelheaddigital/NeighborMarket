@@ -14,7 +14,7 @@ buyer_not_current:
   user: buyer_user_not_current
 
 no_order:
-  user: nil
+  user: buyer_user_no_order
 
 minimum:
   user: buyer_user

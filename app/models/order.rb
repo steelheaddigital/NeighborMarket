@@ -42,6 +42,7 @@ class Order < ActiveRecord::Base
   def self.update_or_new(cart)
     user = cart.user
     current_order = user.current_order
+
     if current_order
       order = current_order
     else

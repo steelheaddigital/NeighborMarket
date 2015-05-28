@@ -33,13 +33,15 @@ module CurrentCart
   
   def current_cart
     if session[:cart_id].nil?
-      Cart.new
+      cart = Cart.new
     else
       cart = Cart.find(session[:cart_id])
       if current_user && cart.user_id.nil?
         cart.update_attributes(user_id: current_user.id)
       end
     end
+
+    cart
   end
   
 end

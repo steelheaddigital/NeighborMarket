@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CartItemsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
-    
+  
   test "should create cart item" do
     inventory_item = inventory_items(:one)
     
