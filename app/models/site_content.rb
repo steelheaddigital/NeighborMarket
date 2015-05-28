@@ -35,6 +35,7 @@ class SiteContent < ActiveRecord::Base
     self.site_description = Sanitize.fragment(site_description, Sanitize::Config::RELAXED)
     self.terms_of_service = Sanitize.fragment(terms_of_service, Sanitize::Config::RELAXED)
     self.about = Sanitize.fragment(about, Sanitize::Config::RELAXED)
+    self.inventory_guidelines = Sanitize.fragment(inventory_guidelines, Sanitize::Config::RELAXED)
   end
   
 end
