@@ -22,6 +22,7 @@
 <% content_for :SiteSettingsContent do %>
 	<div role="tabpanel" class="well tab-pane active" id="settings">
 		<%= render 'setting_form' %>
+		<p><%= button_to "Send Test Email", test_email_management_index_path, class: 'btn btn-primary' %></p>
 	</div>
 <% end %>
 <% content_for :SiteContentsContent do %>

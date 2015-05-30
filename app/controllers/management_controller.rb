@@ -390,10 +390,10 @@ class ManagementController < ApplicationController
   def test_email
     email = current_user.email
     
-    ManagerMailer.delay.test_email(email)
+    ManagerMailer.test_email(email).deliver
     
     respond_to do |format|
-      format.html { redirect_to edit_site_settings_management_index_url, notice: 'Email sent to your email address. If you do not recieve it, please check your email settings.' }
+      format.html { redirect_to site_settings_path, notice: 'Email sent to your email address. If you do not recieve it, please check your email settings.' }
     end
     
   end
