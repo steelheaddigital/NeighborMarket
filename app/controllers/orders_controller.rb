@@ -58,7 +58,7 @@ class OrdersController < ApplicationController
   
   def create
     @order = Order.update_or_new(current_cart)
-    purchase_redirect_url = @order.purchase(params)
+    purchase_redirect_url = @order.purchase(current_cart, params)
     respond_to do |format|
       if purchase_redirect_url
         format.html { redirect_to purchase_redirect_url }
@@ -120,7 +120,7 @@ class OrdersController < ApplicationController
       if @order.destroy
         format.html { redirect_to root_path, notice: 'Order successfully cancelled' }
       else
-        format.html { redirect_to edit_order_path(@order.id), notice: 'Order could not be cancelled' }
+        format.html { redirect_to edit_order_path(@order.id), notice: "Order could not be cancelled! Error: #{@order.errors[:base]}" }
       end
     end
   end

@@ -13,15 +13,16 @@ class PaypalExpressTest < ActiveSupport::TestCase
 
   test 'purchase should call paypal checkout and add payments to order' do
     order = orders(:current)
+    cart = carts(:full)
     payment_requests = [
       Paypal::Payment::Request.new(
         currency_code: :USD,
-        amount: 280.00,
+        amount: 200.00,
         seller_id: 'approvedseller@test.com'
       )
     ]
     amount = Minitest::Mock.new
-    amount.expect :total, 280.00
+    amount.expect :total, 200.00
     payment_info_item = Minitest::Mock.new
     payment_info_item.expect :seller_id, 'approvedseller@test.com'
     payment_info_item.expect :amount, amount
@@ -38,7 +39,7 @@ class PaypalExpressTest < ActiveSupport::TestCase
     gateway.expect :checkout!, paypal_response, ['test_token', 'test_payer_id', payment_requests]
     processor = PaypalExpress.new(host: 'http://testhost', processor_settings: @processor_settings, gateway: gateway)
 
-    result = processor.purchase(order, token: 'test_token', PayerID: 'test_payer_id')
+    result = processor.purchase(order, cart, token: 'test_token', PayerID: 'test_payer_id')
 
     assert_equal '/orders/finish', result
     gateway.verify

@@ -59,8 +59,7 @@ class ApplicationController < ActionController::Base
   
   def current_order_id
     if user_signed_in? && current_user.buyer?
-      current_order = current_user.orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
-      @current_order_id = current_order.id if current_order
+      @current_order_id = current_user.current_order.id if current_user.current_order
     end
   end
   

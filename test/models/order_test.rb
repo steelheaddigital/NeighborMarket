@@ -93,7 +93,7 @@ class OrderTest < ActiveSupport::TestCase
     cart = carts(:no_order)
     order = Order.new
     order.cart_items = cart.cart_items
-    
+
     assert order.valid?
     assert_difference 'order.cart_items.first.inventory_item.quantity_available', -10 do
       order.save
@@ -101,14 +101,37 @@ class OrderTest < ActiveSupport::TestCase
     
   end
   
-  test "seller inventory increased by associated cart item quantity when order destroyed" do
+  test "seller inventory increased by associated cart item quantity when order destroyed and refunds issued" do
     order = orders(:current)
     inventory_item = order.cart_items.first.inventory_item
-    
-    assert_difference 'InventoryItem.find(inventory_item.id).quantity_available', 10 do
-      order.destroy
+    mock_payment_processor = Minitest::Mock.new
+    order.payments.each do |payment|
+      mock_payment_processor.expect :refund, nil, [payment, payment.amount]
     end
-    
+
+    order.stub(:payment_processor, mock_payment_processor) do
+      assert_difference 'InventoryItem.find(inventory_item.id).quantity_available', 10 do
+        order.destroy
+      end
+      mock_payment_processor.verify
+    end
+  end
+
+  test 'order not destroyed if refund fails' do
+    order = orders(:current)
+    mock_payment_processor = Minitest::Mock.new
+    order.payments.each do
+      mock_payment_processor.expect :refund, nil do 
+        fail PaymentProcessor::PaymentError, 'Oh No! Refund Fails'
+      end
+    end
+
+    order.stub(:payment_processor, mock_payment_processor) do
+      assert_no_difference 'Order.count' do
+        order.destroy
+      end
+      assert_equal order.errors.full_messages.last, 'Oh No! Refund Fails'
+    end
   end
   
   test "returns validation error if order is not in current order_cycle" do
@@ -150,40 +173,43 @@ class OrderTest < ActiveSupport::TestCase
     assert order.has_items_with_minimum?
   end
 
-  test 'purchase calls payment_processor.purchase and returns url if successfully save' do
+  test 'purchase calls payment_processor.purchase and saves order and returns url if successfully saved' do
     order = Order.new
+    cart = Cart.new
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [order, {}]
-    order.stub :payment_processor, mock_payment_processor do
-      result = order.purchase({})
-      assert_equal 'http://processor-path', result
-      mock_payment_processor.verify
-    end
-  end
-
-  test 'purchase calls payment_processor.purchase and returns nil if not successfully save' do
-    order = Order.new
-    mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [order, {}]
-    order.stub :payment_processor, mock_payment_processor do
-      order.stub :save, false do
-        result = order.purchase({})
-        assert_equal nil, result
+    mock_payment_processor.expect :purchase, 'http://processor-path', [order, cart, {}]
+    assert_difference 'Order.count' do 
+      order.stub :payment_processor, mock_payment_processor do
+        result = order.purchase(cart, {})
+        assert_equal 'http://processor-path', result
         mock_payment_processor.verify
       end
     end
   end
 
-  test 'adds errors if payment processor purchase fails' do
+  test 'purchase returns false if order is not successfully saved' do
     order = Order.new
+    cart = Cart.new
+    save = -> { fail ActiveRecord::RecordNotSaved, 'Record not saved' }
+    order.stub :save, save do
+      result = order.purchase(cart, {})
+      assert_equal false, result
+    end
+  end
+
+  test 'adds errors if payment processor purchase fails and rolls back save' do
+    order = Order.new
+    cart = Cart.new
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :purchase, nil do
       fail PaymentProcessor::PaymentError, 'Oh No! Payment Fails'
     end
-    order.stub :payment_processor, mock_payment_processor do
-      result = order.purchase({})
-      assert_equal false, result
-      assert_equal order.errors.full_messages[0], 'Oh No! Payment Fails'
+    assert_no_difference 'Order.count' do 
+      order.stub :payment_processor, mock_payment_processor do
+        result = order.purchase({}, cart)
+        assert_equal nil, result
+        assert_equal order.errors.full_messages[0], 'Oh No! Payment Fails'
+      end
     end
   end
 end

@@ -25,8 +25,8 @@ module PaymentProcessor
       new_order_path
     end
 
-    def purchase(order, params)
-      order.sub_totals.each do |seller_id, amount|
+    def purchase(order, cart, params)
+      cart.sub_totals.each do |seller_id, amount|
         order.payments << Payment.new(
           receiver_id: seller_id, 
           sender_id: order.user.id, 

@@ -23,7 +23,7 @@
   <h2>Verify Your Order</h2>
   <div>Please verify your order and then press the "Purchase" button to complete.</div>
   <p class="notice"><%= flash[:notice] %></p>
-  <% if @current_order %>
+  <% if @current_order_id %>
     <h4>*Includes items previously added to your order for this cycle</h4>
   <%end%>
     <%= form_for @order, url: create_order_path do |f|%>

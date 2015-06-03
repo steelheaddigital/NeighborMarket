@@ -35,6 +35,7 @@ class Order < ActiveRecord::Base
   before_validation :set_cart_items_user
 
   before_destroy :will_destroy, prepend: true
+  after_destroy :refund_all
   before_save :update_order_cycle_id, 
               :update_seller_inventory
   after_save :disassociate_cart_items_from_cart
@@ -68,14 +69,22 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def purchase(params)
-    purchase_redirect_url = payment_processor.purchase(self, params)
-    if save
-      purchase_redirect_url
+  def purchase(cart, params)
+    ActiveRecord::Base.transaction do
+      begin
+        save
+        payment_processor.purchase(self, cart, params)
+      rescue PaymentProcessor::PaymentError => e
+        errors.add(:base, e.message)
+        raise ActiveRecord::Rollback, e.message
+      end
     end
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
+  rescue ActiveRecord::RecordNotSaved
     false
+  end
+
+  def update_and_purchase(order_params)
+    
   end
   
   def has_cart_items_where_order_cycle_minimum_not_reached?
@@ -99,6 +108,15 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+  def refund_all
+    payments.each do |payment|
+      payment_processor.refund(payment, payment.amount)
+    end
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    raise ActiveRecord::Rollback, e.message
+  end
 
   def will_destroy
     @will_destroy = true

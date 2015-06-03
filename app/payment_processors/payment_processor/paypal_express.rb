@@ -58,8 +58,8 @@ module PaymentProcessor
       raise PaymentProcessor::PaymentError, e.response.long_message
     end
 
-    def purchase(order, params)
-      payment_requests = create_payment_requests(order)
+    def purchase(order, cart, params)
+      payment_requests = create_payment_requests(cart)
       token = params[:token]
       payer_id = params[:PayerID]
 
@@ -116,10 +116,9 @@ module PaymentProcessor
 
     attr_writer :gateway
 
-    #items is either a Cart or Order instance
-    def create_payment_requests(items)
+    def create_payment_requests(cart)
       payment_requests = []
-      items.sub_totals.each do |seller_id, amount| 
+      cart.sub_totals.each do |seller_id, amount| 
         seller = User.find(seller_id)
         request = Paypal::Payment::Request.new(
           currency_code: :USD,

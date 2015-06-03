@@ -31,7 +31,7 @@ class OrdersControllerTest < ActionController::TestCase
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Object]
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Cart, Object]
 
     Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_no_difference 'Order.count' do
@@ -46,7 +46,7 @@ class OrdersControllerTest < ActionController::TestCase
   test "create should create new order when buyer has no open order" do 
     cart = carts(:no_order)
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Object]
+    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Cart, Object]
 
     Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_difference 'Order.count' do
@@ -131,14 +131,20 @@ class OrdersControllerTest < ActionController::TestCase
     
     order = orders(:current)
     
-    assert_difference 'Order.count', -1 do
-      post :destroy, :id => order.id
+    mock_payment_processor = Minitest::Mock.new
+    order.payments.each do |payment|
+      mock_payment_processor.expect :refund, nil, [payment, payment.amount]
     end
-    
-    assert_not_nil assigns(:order)
-    assert_redirected_to root_path
-    assert_equal 'Order successfully cancelled', flash[:notice]
-    
+
+    Order.stub_any_instance :payment_processor, mock_payment_processor do
+      assert_difference 'Order.count', -1 do
+        post :destroy, :id => order.id
+      end
+      
+      assert_not_nil assigns(:order)
+      assert_redirected_to root_path
+      assert_equal 'Order successfully cancelled', flash[:notice]
+    end
   end
   
   test "user cannot access order other than their own" do
