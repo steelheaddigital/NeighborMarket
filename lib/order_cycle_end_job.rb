@@ -20,7 +20,7 @@
 class OrderCycleEndJob
   
   def perform
-    current_cycle = OrderCycle.find_by_status("current")
+    current_cycle = OrderCycle.find_by_status('current')
     current_cycle_settings = OrderCycleSetting.first
     if current_cycle_settings.recurring
       padding_interval = current_cycle_settings.padding_interval.to_sym
@@ -31,11 +31,11 @@ class OrderCycleEndJob
       new_seller_delivery_date = current_cycle.seller_delivery_date.advance(interval => 1)
       new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(interval => 1)
       
-      new_cycle = OrderCycle.new(:start_date => new_start_date,
-                                 :end_date => new_end_date,
-                                 :status => "pending",
-                                 :seller_delivery_date => new_seller_delivery_date, 
-                                 :buyer_pickup_date => new_buyer_pickup_date)
+      new_cycle = OrderCycle.new(start_date: new_start_date,
+                                 end_date: new_end_date,
+                                 status: 'pending',
+                                 seller_delivery_date: new_seller_delivery_date, 
+                                 buyer_pickup_date: new_buyer_pickup_date)
                                  
       if new_cycle.save
         OrderCycle.queue_order_cycle_start_job(new_start_date)
@@ -44,7 +44,7 @@ class OrderCycleEndJob
         queue_post_pickup_job(current_cycle)
       end
     else
-      current_cycle.update_column(:status, "complete")
+      current_cycle.update_column(:status, 'complete')
       remove_items_from_orders_where_minimum_not_met(current_cycle.id)
       send_emails(current_cycle)
       queue_post_pickup_job(current_cycle)
@@ -54,22 +54,21 @@ class OrderCycleEndJob
   def remove_items_from_orders_where_minimum_not_met(current_order_cycle_id)
     cart_items = CartItem.joins(:order, :inventory_item).where(orders: { order_cycle_id: current_order_cycle_id })
     cart_items.each do |item|
-      if !item.inventory_item.minimum_reached?
+      unless item.inventory_item.minimum_reached_for_order_cycle?(current_order_cycle_id)
         item.update_column(:minimum_reached_at_order_cycle_end, false)
       end
     end
   end
   
   def send_emails(order_cycle)
-    sellers = User.joins(:roles).where(:roles => {:name => 'seller'})
+    sellers = User.joins(:roles).where(roles: { name: 'seller' })
     sellers.each do |seller|
       SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
     end
     
-    orders = Order.where(:order_cycle_id => order_cycle.id)
+    orders = Order.where(order_cycle_id: order_cycle.id)
     orders.each do |order|
       if order.has_cart_items_where_order_cycle_minimum_reached?
-        buyer = order.user
         BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver
       else
         BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver
@@ -79,12 +78,10 @@ class OrderCycleEndJob
   end
   
   def queue_post_pickup_job(order_cycle)
-      job = PostPickupJob.new(order_cycle.id)
-      send_date = order_cycle.buyer_pickup_date + 1.day
-      Delayed::Job.where("queue = ?","post_pickup").each do |job|
-  	    job.destroy
-      end
-      Delayed::Job.enqueue(job, { priority: 0, run_at: send_date, queue: 'post_pickup' })
+    job = PostPickupJob.new(order_cycle.id)
+    send_date = order_cycle.buyer_pickup_date + 1.day
+    Delayed::Job.where('queue = ?', 'post_pickup').each(&:destroy)
+    Delayed::Job.enqueue(job, priority: 0, run_at: send_date, queue: 'post_pickup')
   end
   
 end
