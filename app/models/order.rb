@@ -38,7 +38,7 @@ class Order < ActiveRecord::Base
   after_destroy :refund_all
   before_save :update_order_cycle_id, 
               :update_seller_inventory
-  after_save :disassociate_cart_items_from_cart
+  after_commit :disassociate_cart_items_from_cart
   
   def self.update_or_new(cart)
     user = cart.user

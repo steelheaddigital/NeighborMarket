@@ -55,7 +55,7 @@ module PaymentProcessor
 
       response.redirect_uri
     rescue Paypal::Exception::APIError => e
-      raise PaymentProcessor::PaymentError, e.response.long_message
+      raise PaymentProcessor::PaymentError, "#{e.message}; Details: #{e.response.details[0].long_message}"
     end
 
     def purchase(order, cart, params)
@@ -81,7 +81,7 @@ module PaymentProcessor
 
       finish_order_path
     rescue Paypal::Exception::APIError => e
-      raise PaymentProcessor::PaymentError, e.response.long_message
+      raise PaymentProcessor::PaymentError, "#{e.message}; Details: #{e.response.details[0].long_message}"
     end
 
     def refund(payment, amount)
@@ -109,7 +109,7 @@ module PaymentProcessor
         fail PaymentProcessor::PaymentError, "Paypal refund request failed with status #{reponse_status}"
       end
     rescue Paypal::Exception::APIError => e
-      raise PaymentProcessor::PaymentError, e.response.long_message
+      raise PaymentProcessor::PaymentError, "#{e.message}; Details: #{e.response.details[0].long_message}"
     end
 
     private 
@@ -118,12 +118,13 @@ module PaymentProcessor
 
     def create_payment_requests(cart)
       payment_requests = []
-      cart.sub_totals.each do |seller_id, amount| 
-        seller = User.find(seller_id)
+      cart.sub_totals.each_with_index do |sub_total, index| 
+        seller = User.find(sub_total[0])
         request = Paypal::Payment::Request.new(
           currency_code: :USD,
-          amount: amount,
-          seller_id: seller.email)
+          amount: sub_total[1],
+          seller_id: seller.email,
+          request_id: "CART#{cart.id}-PAYMENT#{index}")
         payment_requests.push(request)
       end
 

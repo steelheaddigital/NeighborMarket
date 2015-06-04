@@ -18,7 +18,8 @@ class PaypalExpressTest < ActiveSupport::TestCase
       Paypal::Payment::Request.new(
         currency_code: :USD,
         amount: 200.00,
-        seller_id: 'approvedseller@test.com'
+        seller_id: 'approvedseller@test.com',
+        request_id: "CART#{cart.id}-PAYMENT0"
       )
     ]
     amount = Minitest::Mock.new
@@ -52,7 +53,8 @@ class PaypalExpressTest < ActiveSupport::TestCase
       Paypal::Payment::Request.new(
         currency_code: :USD,
         amount: 200.00,
-        seller_id: 'approvedseller@test.com'
+        seller_id: 'approvedseller@test.com',
+        request_id: "CART#{cart.id}-PAYMENT0"
       )
     ]
 

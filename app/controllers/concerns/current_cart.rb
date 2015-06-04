@@ -24,7 +24,7 @@ module CurrentCart
     Cart.find(session[:cart_id])
   rescue ActiveRecord::RecordNotFound    
     if user_signed_in?
-      cart = current_user.cart.create
+      cart = current_user.carts.create
     else
       cart = Cart.create
     end
