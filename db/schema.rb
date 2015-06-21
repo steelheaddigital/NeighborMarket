@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150512114700) do
+ActiveRecord::Schema.define(version: 20150620144901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150512114700) do
     t.integer  "order_id"
     t.boolean  "delivered",                          default: false
     t.boolean  "minimum_reached_at_order_cycle_end", default: true
+    t.decimal  "price"
   end
 
   add_index "cart_items", ["cart_id"], name: "index_cart_items_on_cart_id", using: :btree
@@ -138,6 +139,7 @@ ActiveRecord::Schema.define(version: 20150512114700) do
     t.boolean  "complete",       default: false
     t.integer  "order_cycle_id"
     t.boolean  "deliver",        default: false
+    t.boolean  "canceled",       default: false
   end
 
   add_index "orders", ["order_cycle_id"], name: "index_orders_on_order_cycle_id", using: :btree
@@ -159,10 +161,13 @@ ActiveRecord::Schema.define(version: 20150512114700) do
     t.integer  "order_id"
     t.string   "processor_type"
     t.string   "payment_type"
+    t.decimal  "fee"
+    t.integer  "refunded_payment_id"
   end
 
   add_index "payments", ["order_id"], name: "index_payments_on_order_id", using: :btree
   add_index "payments", ["receiver_id"], name: "index_payments_on_receiver_id", using: :btree
+  add_index "payments", ["refunded_payment_id"], name: "index_payments_on_refunded_payment_id", using: :btree
   add_index "payments", ["sender_id"], name: "index_payments_on_sender_id", using: :btree
 
   create_table "paypal_express_settings", force: true do |t|
@@ -170,6 +175,7 @@ ActiveRecord::Schema.define(version: 20150512114700) do
     t.string  "username"
     t.text    "password"
     t.text    "api_signature"
+    t.text    "app_id"
     t.integer "payment_processor_setting_id", default: 1
   end
 
@@ -244,6 +250,21 @@ ActiveRecord::Schema.define(version: 20150512114700) do
     t.datetime "updated_at",                 null: false
     t.boolean  "active",      default: true
   end
+
+  create_table "user_paypal_express_settings", force: true do |t|
+    t.integer  "payment_processor_setting_id", default: 1
+    t.boolean  "accept_in_person_payments",    default: true
+    t.string   "account_id"
+    t.string   "account_type"
+    t.string   "email_address"
+    t.text     "access_token"
+    t.text     "access_token_secret"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "user_paypal_express_settings", ["user_id"], name: "index_user_paypal_express_settings_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: ""

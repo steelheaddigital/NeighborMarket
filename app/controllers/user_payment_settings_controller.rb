@@ -17,16 +17,19 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class PaypalExpressSetting < ActiveRecord::Base
-  belongs_to :payment_processor_setting
+class UserPaymentSettingsController < ApplicationController
+  include Settings
+  before_filter :authenticate_user!
 
-  crypt_keeper :password, :api_signature, :app_id, encryptor: :aes_new, key: "#{Rails.application.secrets.secret_key_base}", salt: "#{Rails.application.secrets.secret_key_salt}"
+  def index
+    processor_settings = PaymentProcessorSetting.first
+    @settings_view_directory = "user_#{processor_settings.processor_type.underscore}_settings/index"
+    processor_setting_class = "User#{processor_settings.processor_type}Setting".constantize
+    @settings = processor_setting_class.find_or_initialize_by(user_id: current_user.id)
 
-  attr_accessible :username, :password, :api_signature, :app_id, :allow_in_person_payments
-
-  validates :password, presence: true, if: -> { password_was.nil? }
-  validates :username,
-    :api_signature,
-    :app_id,
-    presence: true
+    respond_to do |format|
+      format.html { render layout: 'layouts/seller' }
+    end
+  end
+  
 end

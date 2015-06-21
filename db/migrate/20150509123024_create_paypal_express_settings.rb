@@ -5,6 +5,7 @@ class CreatePaypalExpressSettings < ActiveRecord::Migration
       t.string :username
       t.text :password
       t.text :api_signature
+      t.text :app_id
       t.integer :payment_processor_setting_id, default: 1
     end
 

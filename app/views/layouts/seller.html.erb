@@ -24,13 +24,14 @@
 	<div class ="row">
 	  <div class ="col-md-3">
 	    <div id="SellerTab" class="list-group">
-	      <%= link_to "Current Inventory", seller_index_path, {class: "list-group-item #{nav_item_is_active('index') || nav_item_is_active('previous_index') }"} %>
+	      <%= link_to "Current Inventory", seller_index_path, {class: "list-group-item #{nav_item_is_active({controller: 'seller', action: 'index'}) || nav_item_is_active('previous_index') }"} %>
 	      <%= link_to "Pick List", pick_list_seller_index_path, {class: "list-group-item #{nav_item_is_active('pick_list') }"} %>
 	      <%= link_to "Packing List", packing_list_seller_index_path, {class: "list-group-item #{nav_item_is_active('packing_list') || nav_item_is_active('previous_packing_list') }"} %>
 		  <%= link_to "Sales Report", sales_report_seller_index_path, {class: "list-group-item #{nav_item_is_active('sales_report')}"} %>
 		  <% if SiteSetting.instance.reputation_enabled %>
 		  	<%= link_to "Reviews", reviews_seller_index_path, {class: "list-group-item #{nav_item_is_active('reviews')}"} %>
 		  <% end %>
+		  <%= link_to "Payment Settings", user_payment_settings_path, {class: "list-group-item #{nav_item_is_active({controller: 'user_payment_settings', action: 'index'})}"} %>
 	    </div>
 	  </div>
 	  <div id="SellerContent" class="col-md-9">

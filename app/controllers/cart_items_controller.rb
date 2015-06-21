@@ -46,16 +46,16 @@ class CartItemsController < ApplicationController
     respond_to do |format|
       if @cart_item.destroy
         if @cart_item.order_id
-          if Order.exists?(@cart_item.order_id)
-            format.html{ redirect_to edit_order_path(@cart_item.order_id) }
+          if Order.active.exists?(@cart_item.order_id)
+            format.html { redirect_to edit_order_path(@cart_item.order_id) }
           else
-            format.html{redirect_to order_change_requests_management_index_path, notice: "All Items in the order have been deleted. The order has been cancelled."}
+            format.html { redirect_to order_change_requests_management_index_path, notice: 'All Items in the order have been deleted. The order has been cancelled.' }
           end
         else
-          format.html{ redirect_to cart_index_path }
+          format.html { redirect_to cart_index_path }
         end 
       else
-        format.html{ redirect_to cart_index_path, notice: "Cart item could not be deleted" }
+        format.html { redirect_to cart_index_path, notice: 'Cart item could not be deleted' }
       end
     end
   end

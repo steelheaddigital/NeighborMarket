@@ -18,9 +18,26 @@
 #
 
 class Payment < ActiveRecord::Base
+  include PaymentProcessor
+
   belongs_to :order
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
+  has_many :refunds, class_name: 'Payment', foreign_key: 'refunded_payment_id'
+  belongs_to :refunded_payment, class_name: 'Payment'
 
-  attr_accessible :transaction_id, :amount, :status, :payment_date, :receiver_id, :sender_id, :order_id, :processor_type, :payment_type
+  attr_accessible :transaction_id, :amount, :fee, :status, :payment_date, :receiver_id, :sender_id, :order_id, :processor_type, :payment_type
+
+  def refund(amount)
+    payment_processor(type: processor_type).refund(self, amount)
+  end
+
+  def refund_all
+    refund(net_total)
+  end
+
+  def net_total
+    total_refunds = refunds.sum(:amount)
+    amount - total_refunds
+  end
 end

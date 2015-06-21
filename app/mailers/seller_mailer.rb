@@ -41,14 +41,14 @@ class SellerMailer < BaseMailer
     @site_settings = SiteSetting.instance
     @seller = seller
     @order_cycle = order_cycle
-    @orders = Order.joins(:cart_items => :inventory_item)
-                   .select('orders.id, orders.user_id')
-                   .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle.id})
-                   .group('orders.id, orders.user_id')
+    @orders = Order.active.joins(:cart_items => :inventory_item)
+              .select('orders.id, orders.user_id')
+              .where(inventory_items: { user_id: seller.id }, orders:{ order_cycle_id: order_cycle.id })
+              .group('orders.id, orders.user_id')
     @inventory_items = InventoryItem.joins(:cart_items => :order)
-                                .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = TRUE', seller.id, order_cycle.id)
-                                .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
-                                .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
+                          .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = TRUE', seller.id, order_cycle.id)
+                          .select('inventory_items.id, inventory_items.name, inventory_items.price_unit, sum(cart_items.quantity)')
+                          .group('inventory_items.id, inventory_items.name, inventory_items.price_unit')
     @inventory_items_minimum_not_reached = InventoryItem.joins(:cart_items => :order)
                                                         .where('inventory_items.user_id = ? AND orders.order_cycle_id = ? AND cart_items.order_id IS NOT NULL AND cart_items.minimum_reached_at_order_cycle_end = FALSE', seller.id, order_cycle.id)
   

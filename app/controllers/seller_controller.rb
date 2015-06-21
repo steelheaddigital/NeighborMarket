@@ -16,13 +16,15 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+require 'will_paginate/array'
+require 'csv'
 
 class SellerController < ApplicationController
+  include Settings
+
   before_filter :authenticate_user!
   load_and_authorize_resource :class => InventoryItem
   skip_authorize_resource :only => :contact
-  require 'will_paginate/array'
-  require 'csv'
   
   def index    
     @all_inventory = get_past_inventory_items
@@ -139,8 +141,10 @@ class SellerController < ApplicationController
       format.html
     end
   end
+
   
   private
+
   def sales_report_csv(items)
     CSV.generate do |csv|
       csv << ["Item Name", "Price Per Unit", "Total Units Sold", "Total Price"]
@@ -168,10 +172,10 @@ class SellerController < ApplicationController
   
   def get_packing_list_orders(order_cycle_id)
     seller = current_user
-    Order.joins(:cart_items => :inventory_item)
-         .select('orders.id, orders.user_id')
-         .where(:inventory_items => {:user_id => seller.id}, :orders => {:order_cycle_id => order_cycle_id }, :cart_items => {minimum_reached_at_order_cycle_end: true})
-         .group('orders.id, orders.user_id')
+    Order.active.joins(cart_items: :inventory_item)
+      .select('orders.id, orders.user_id')
+      .where(inventory_items: { user_id: seller.id }, orders: { order_cycle_id: order_cycle_id }, cart_items: { minimum_reached_at_order_cycle_end: true })
+      .group('orders.id, orders.user_id')
   end
   
   def get_pick_list_inventory_items(order_cycle_id)

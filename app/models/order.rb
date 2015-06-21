@@ -34,12 +34,12 @@ class Order < ActiveRecord::Base
   
   before_validation :set_cart_items_user
 
-  before_destroy :will_destroy, prepend: true
-  after_destroy :refund_all
   before_save :update_order_cycle_id, 
-              :update_seller_inventory
+              :update_seller_inventory_and_process_refunds
   after_commit :disassociate_cart_items_from_cart
   
+  scope :active, -> { where(canceled: false) }
+
   def self.update_or_new(cart)
     user = cart.user
     current_order = user.current_order
@@ -82,10 +82,6 @@ class Order < ActiveRecord::Base
   rescue ActiveRecord::RecordNotSaved
     false
   end
-
-  def update_and_purchase(order_params)
-    
-  end
   
   def has_cart_items_where_order_cycle_minimum_not_reached?
     cart_items.where(minimum_reached_at_order_cycle_end: false).any?
@@ -103,23 +99,35 @@ class Order < ActiveRecord::Base
     !user.address.blank? && !user.city.blank? && !user.state.blank? && !user.country.blank? && !user.zip.blank? && !user.delivery_instructions.blank?
   end
   
-  def will_destroy?
-    @will_destroy
+  def will_cancel?
+    @will_cancel
+  end
+
+  def cancel
+    ActiveRecord::Base.transaction do
+      begin
+        @will_cancel = true
+        self.canceled = true
+        save
+
+        payments.where(payment_type: 'pay').find_each(&:refund_all)
+
+        cart_items.each do |item|
+          item.inventory_item.increment_quantity_available(item.quantity)
+        end
+      rescue PaymentProcessor::PaymentError => e
+        errors.add(:base, e.message)
+        raise ActiveRecord::Rollback, e.message
+      end
+    end
+  rescue ActiveRecord::RecordNotSaved
+    false
   end
 
   private
 
-  def refund_all
-    payments.each do |payment|
-      payment_processor.refund(payment, payment.amount)
-    end
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
-    raise ActiveRecord::Rollback, e.message
-  end
-
   def will_destroy
-    @will_destroy = true
+    @will_cancel = true
   end
   
   def set_cart_items_user
@@ -144,21 +152,32 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def update_seller_inventory
+  def update_seller_inventory_and_process_refunds
     cart_items.each do |item|
       #if the quantity was changed and the cart_item is part of an order
       if !item.order_id.nil?
         if item.quantity_changed?
           difference = item.quantity - item.quantity_was
+          
           item.inventory_item.decrement_quantity_available(difference)
+
+          if difference < 0
+            seller_id = item.inventory_item.user_id
+            payment = payments.find_by(receiver_id: seller_id)
+            refund_amount = difference.abs * item.price
+            payment.refund(refund_amount)
+          end
         end
       #this is a new order
       else
         item.inventory_item.decrement_quantity_available(item.quantity)
       end
     end
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    raise ActiveRecord::Rollback, e.message
   end
-  
+
   def disassociate_cart_items_from_cart
     cart_items.each do |item|
       item.cart_id = nil

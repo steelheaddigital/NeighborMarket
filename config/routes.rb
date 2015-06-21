@@ -83,6 +83,14 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
+  resources :user_payment_settings, only: ['index']
+
+  resources :user_paypal_express_settings, only: ['create', 'update'] do
+    collection do
+      get 'grant_permissions'
+    end
+  end 
+
   resources :inventory_items do
     member do
       post 'delete_from_current_inventory'

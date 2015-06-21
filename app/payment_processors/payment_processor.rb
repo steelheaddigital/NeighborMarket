@@ -23,8 +23,8 @@ module PaymentProcessor
   autoload :PaymentProcessorBase
   autoload :PaypalExpress
 
-  def payment_processor
-    processor_type = PaymentProcessorSetting.first.processor_type
+  def payment_processor(options = {})
+    processor_type = options[:type].nil? ? PaymentProcessorSetting.first.processor_type : options[:type]
     processor_settings = "#{processor_type}Setting".constantize.first
     processor_class = "PaymentProcessor::#{processor_type}".constantize
     processor_class.new(host: ENV['HOST'], processor_settings: processor_settings)

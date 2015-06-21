@@ -22,7 +22,7 @@ class OrderTest < ActiveSupport::TestCase
       order.add_inventory_items_from_cart(cart)
     end
     assert_not_nil order.cart_items
-    assert_equal(20, order.cart_items.find{|x| x.inventory_item_id == inventory_item.id}.quantity)
+    assert_equal(20, order.cart_items.find { |x| x.inventory_item_id == inventory_item.id }.quantity)
   end
   
   test "add_inventory_items_from_cart sets quantity of existing item to cart item quantity if item was already in the order" do
@@ -36,7 +36,7 @@ class OrderTest < ActiveSupport::TestCase
       order.add_inventory_items_from_cart(cart)
     end
     assert_not_nil order.cart_items
-    assert_equal(15, order.cart_items.find{|x| x.inventory_item_id == inventory_item.id}.quantity)
+    assert_equal(15, order.cart_items.find { |x| x.inventory_item_id == inventory_item.id }.quantity)
   end
   
   test "total_price returns correct result" do
@@ -69,27 +69,47 @@ class OrderTest < ActiveSupport::TestCase
     order = orders(:current)
     order.current_user = users(:manager_user)
     cart_item_id = order.cart_items.first.id
-    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
+    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 11 } } }
     
-    assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
+    assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available', -1 do
       order.update_attributes(params[:order])
     end
   end
   
-  test "seller inventory decreased by associated cart item quantity when order exists" do
-    
+  test "seller inventory increased by associated cart item quantity and refunds issued when order exists" do
+    order = orders(:current)
+    payment = payments(:one)
+    cart_item_id = order.cart_items.first.id
+    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, Payment.new, [payment, 10.00]
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
+        order.update_attributes(params[:order])
+      end
+      mock_payment_processor.verify
+    end
+  end
+  
+  test "seller inventory not changed by associated cart item quantity if refund fails" do
     order = orders(:current)
     cart_item_id = order.cart_items.first.id
-    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 20 } } }
-    
-    assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available', -10 do
-      order.update_attributes(params[:order])
+    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, nil do
+      fail PaymentProcessor::PaymentError, 'Oh No! Refund Failed!'
     end
-    
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      assert_no_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
+        order.update_attributes(params[:order])
+      end
+      assert_equal 'Oh No! Refund Failed!', order.errors.full_messages.last
+    end
   end
-  
+
   test "seller inventory decreased by associated cart item quantity when new order" do
-    
     cart = carts(:no_order)
     order = Order.new
     order.cart_items = cart.cart_items
@@ -97,39 +117,39 @@ class OrderTest < ActiveSupport::TestCase
     assert order.valid?
     assert_difference 'order.cart_items.first.inventory_item.quantity_available', -10 do
       order.save
-    end
-    
+    end  
   end
   
-  test "seller inventory increased by associated cart item quantity when order destroyed and refunds issued" do
+  test "seller inventory increased by associated cart item quantity when order canceled and refunds issued" do
     order = orders(:current)
     inventory_item = order.cart_items.first.inventory_item
     mock_payment_processor = Minitest::Mock.new
-    order.payments.each do |payment|
+    order.payments.where(payment_type: 'pay').each do |payment|
       mock_payment_processor.expect :refund, nil, [payment, payment.amount]
     end
 
-    order.stub(:payment_processor, mock_payment_processor) do
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
       assert_difference 'InventoryItem.find(inventory_item.id).quantity_available', 10 do
-        order.destroy
+        order.cancel
       end
+      assert_equal true, Order.find(order.id).canceled
       mock_payment_processor.verify
     end
   end
 
-  test 'order not destroyed if refund fails' do
+  test 'order not canceled if refund fails' do
     order = orders(:current)
     mock_payment_processor = Minitest::Mock.new
-    order.payments.each do
+    order.payments.where(payment_type: 'pay').each do
       mock_payment_processor.expect :refund, nil do 
         fail PaymentProcessor::PaymentError, 'Oh No! Refund Fails'
       end
     end
 
-    order.stub(:payment_processor, mock_payment_processor) do
-      assert_no_difference 'Order.count' do
-        order.destroy
-      end
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      order.cancel
+      
+      assert_equal false, Order.find(order.id).canceled
       assert_equal order.errors.full_messages.last, 'Oh No! Refund Fails'
     end
   end

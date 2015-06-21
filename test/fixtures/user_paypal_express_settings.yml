@@ -1,0 +1,7 @@
+one:
+  user: approved_seller_user
+  email_address: approved_seller_user@test.com
+  account_type: BUSINESS
+
+two:
+  user: unapproved_seller_user

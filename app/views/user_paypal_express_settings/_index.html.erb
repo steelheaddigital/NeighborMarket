@@ -1,0 +1,77 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<h1>Payment Settings</h1>
+<%= bootstrap_form_for @settings do |f| %>
+	<div class="container-fluid">
+		<%= f.error_messages %>
+		<div class="row">
+		  	<div class="col-md-12">
+		  		<%= f.check_box :accept_in_person_payments, label: 'Accept in-person payments' %>
+		  	</div>
+		  	<div class="col-md-12">
+		  		<%= f.submit "Save Settings", {:class => 'btn btn-primary'} %>
+		  	</div>
+		</div>
+	</div>
+<% end %>
+<%= bootstrap_form_for @settings do |f| %>
+	<div class="container-fluid">
+		<%= f.error_messages %>
+		<div class="row">
+		  	<div class="col-md-12">
+		  		<fieldset>
+					<legend>Paypal Account</legend>
+					<p>
+					<% if @settings.account_confirmed? %>
+						<span class="confirmedAccount">
+							<i class="icon-ok-sign"></i>
+							Paypal account confirmed
+						</span>
+					<% else %>
+						<span class="unconfirmedAccount">
+							<i class="icon-exclamation-sign"></i>
+							Paypal account not confirmed
+						</span>
+					<% end %>
+					</p>
+					<div class="col-md-12">
+						<p>
+							Enter the email address associated with your Paypal account below. The first name and last name in your profile must also match the names Paypal has on file for you. We will confirm your account with Paypal and you will be redirected to the Paypal site to log in and grant <%= @site_settings.site_name %> permission to process refunds. We need this permission to refund buyers on your behalf if orders are cancelled or modified after checkout.
+						</p>
+						<p>
+							You must also have a Paypal business account in order to receive payments through this site. You can <a href="https://www.paypal.com/signup/account">sign up for a new Paypal business account</a> or <a href="https://www.paypal.com/us/cgi-bin/webscr?cmd=_run-signup-upgrade-link">upgrade your existing account</a> if you need to.
+						</p>
+						<p>
+							Paypal charges a fee of 2.9% plus $.30 per transaction for processing payments.
+						</p>
+					</div>
+					<div class="col-md-8">
+						<%= f.text_field :email_address, label: 'Paypal account email address' %>
+					</div>
+					<div class="col-md-8">
+						<%= f.submit "Confirm Now", {:class => 'btn btn-primary'} %>
+					</div>
+				</fieldset>
+		  	</div>
+		 </div>
+	</div>
+<% end %>

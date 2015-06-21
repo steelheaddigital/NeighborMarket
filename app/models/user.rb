@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
                     :styles => { :medium => "300x300>", :thumb => "100x100>" },
                     :default_url => ':style/default_user.png'
   has_many :reviews
+  has_one :user_paypal_express_setting
   
   validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, :presence => true, :unless => :auto_create
@@ -65,7 +66,7 @@ class User < ActiveRecord::Base
   
   before_save { valid? || true }
   after_save { errors.clear || true }
-  before_update :set_auto_created_updated_at, :if => :auto_created_pending_update?
+  before_update :set_auto_created_updated_at, if: :auto_created_pending_update?
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -86,12 +87,12 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
+                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, 
+                  :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, 
+                  :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
   
   def set_auto_created_updated_at
-    if self.valid?
-      self.auto_create_updated_at = Time.current
-    end
+    self.auto_create_updated_at = Time.current if self.valid?
   end
   
   def auto_created_pending_update?
@@ -102,7 +103,7 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
-    where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.strip.downcase }]).first
+    where(conditions).where(['lower(username) = :value OR lower(email) = :value', { value: login.strip.downcase }]).first
   end
   
   def active_for_authentication?
@@ -147,7 +148,7 @@ class User < ActiveRecord::Base
       generate_confirmation_token!
     end
 
-    opts = pending_reconfirmation? ? { to: unconfirmed_email } : { }
+    opts = pending_reconfirmation? ? { to: unconfirmed_email } : {}
     send_devise_notification(:confirmation_instructions, @raw_confirmation_token, opts) if !auto_created || !auto_create_updated_at.nil?
     UserMailer.delay.auto_create_user_mail(self, @raw_confirmation_token) if auto_created_pending_update?
   end
@@ -164,7 +165,7 @@ class User < ActiveRecord::Base
     if seller? && !auto_create
       return true
     end
-    return false
+    false
   end
   
   def address_required?
@@ -187,39 +188,39 @@ class User < ActiveRecord::Base
   end
   
   def role?(role)
-    is_role = !!self.roles.find_by_name(role)
-    return is_role
+    is_role = !!roles.find_by_name(role)
+    is_role
   end
   
   def seller?
-    self.roles.each do |role|
-      if role.name == "seller" || self.become_seller && self.deleted_at.nil?
+    roles.each do |role|
+      if role.name == 'seller' || become_seller && deleted_at.nil?
         return true
       end
     end
-    return false
+    false
   end
   
   def buyer?
-    self.roles.each do |role|
-      if role.name == "buyer" && self.deleted_at.nil?
+    roles.each do |role|
+      if role.name == 'buyer' && deleted_at.nil?
         return true
       end
     end
-    return false
+    false
   end
   
   def manager?
-    self.roles.each do |role|
-      if role.name == "manager" && self.deleted_at.nil?
+    roles.each do |role|
+      if role.name == 'manager' && deleted_at.nil?
         return true
       end
     end
-    return false
+    false
   end
   
   def phone?
-    if self.phone == nil || self.phone == ""
+    if phone.nil? || phone == ''
       return false
     else
       return true
@@ -227,77 +228,68 @@ class User < ActiveRecord::Base
   end
   
   def approved_seller?
-    return self.seller? && self.approved_seller
+    self.seller? && approved_seller
   end
   
   def self.search(keywords, role, seller_approved, seller_approval_style)
     
-    scope = self.active
+    scope = active
     
-    if(role.present?)
-      scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}")
-    end
-    if(seller_approved.present?)
-      scope = scope.where('approved_seller = ?', seller_approved)
-    end
-    if(seller_approval_style.present?)
-      scope = scope.where('listing_approval_style = ?', "#{seller_approval_style}")
-    end
-    if(keywords.present?)
-      scope = scope.user_search(keywords)
-    else
-      scope
-    end
-    
+    scope = scope.joins(:roles).where('roles.name = ?', "#{role.downcase}") if role.present?
+    scope = scope.where('approved_seller = ?', seller_approved) if seller_approved.present?
+    scope = scope.where('listing_approval_style = ?', "#{seller_approval_style}") if seller_approval_style.present?
+    scope = scope.user_search(keywords) if keywords.present?
+    scope
+  
   end
   
   def auto_create_user
     self.auto_create = true
     self.auto_created = true
-    return self.save
+    save
   end
   
   def add_role(role_type)
-    if !self.role?(role_type)
+    unless self.role?(role_type)
       new_role = Role.new
       new_role.name = role_type.downcase
-      self.roles.build(new_role.attributes)
+      roles.build(new_role.attributes)
     end
   end
   
   def remove_role(role_type)
     if self.role?(role_type)
-      role = self.roles.find_by_name(role_type)
+      role = roles.find_by_name(role_type)
       role.destroy
     end
   end
   
   def soft_delete
-    update_column(:deleted_at, Time.now)
-    update_column(:email, nil)
-    update_column(:encrypted_password, '')
-    update_column(:reset_password_token, nil)
-    update_column(:reset_password_sent_at, nil)
-    update_column(:remember_created_at, nil)
-    update_column(:sign_in_count, 0)
-    update_column(:current_sign_in_at, nil)
-    update_column(:last_sign_in_at, nil)
-    update_column(:current_sign_in_ip, nil)
-    update_column(:last_sign_in_ip, nil)
-    update_column(:first_name, nil)
-    update_column(:last_name, nil)
-    update_column(:initial, nil)
-    update_column(:phone, nil)
-    update_column(:address, nil)
-    update_column(:city, nil)
-    update_column(:state, nil)
-    update_column(:country, nil)
-    update_column(:zip, nil)
-    update_column(:aboutme, nil)
-    update_column(:delivery_instructions, nil)
-    update_column(:payment_instructions, nil)
-    update_column(:approved_seller, false)
-    update_column(:listing_approval_style, "")
+    self.deleted_at = Time.now
+    self.email = nil
+    self.encrypted_password = ''
+    self.reset_password_token = nil
+    self.reset_password_sent_at = nil
+    self.remember_created_at = nil
+    self.sign_in_count = 0
+    self.current_sign_in_at = nil
+    self.last_sign_in_at = nil
+    self.current_sign_in_ip = nil
+    self.last_sign_in_ip = nil
+    self.first_name = nil
+    self.last_name = nil
+    self.initial = nil
+    self.phone = nil
+    self.address = nil
+    self.city = nil
+    self.state = nil
+    self.country = nil
+    self.zip = nil
+    self.aboutme = nil
+    self.delivery_instructions = nil
+    self.payment_instructions = nil
+    self.approved_seller = false
+    self.listing_approval_style = ''
     photo.clear
     roles.clear
     
@@ -306,9 +298,7 @@ class User < ActiveRecord::Base
   
   def avg_seller_rating
     ratings = inventory_items.joins(:reviews).average('reviews.rating')
-    unless ratings.nil?
-      ratings.round(2)
-    end
+    ratings.round(2) unless ratings.nil?
   end
 
   def current_inventory
@@ -323,7 +313,7 @@ class User < ActiveRecord::Base
   end
 
   def current_order
-    orders.find_by_order_cycle_id(OrderCycle.current_cycle_id)
+    orders.find_by(order_cycle_id: OrderCycle.current_cycle_id, canceled: false)
   end
   
 end

@@ -22,34 +22,42 @@ class CartItem < ActiveRecord::Base
   belongs_to :inventory_item
   belongs_to :order
   
-  attr_accessible :inventory_item_id, :quantity
+  attr_accessible :inventory_item_id, :quantity, :price
   attr_accessor :current_user
   
   validate :validate_quantity,
            :ensure_current_order_cycle
            
-  validate :validate_can_edit, :on => :update
+  validate :validate_can_edit, on: :update
   
   before_destroy :update_inventory_item_quantities
   after_destroy :check_order
   
   def can_edit?
-    user_editable || self.order.nil?
+    user_editable || order.nil?
   end
   
   def update_inventory_item_quantities
-    self.inventory_item.increment_quantity_available(self.quantity) if self.order
+    return true unless order
+    seller_id = inventory_item.user_id
+    payment = order.payments.find_by(receiver_id: seller_id)
+    payment.refund(total_price) if payment
+    inventory_item.increment_quantity_available(quantity)
+  rescue PaymentProcessor::PaymentError => e
+    logger.debug "ERROR"
+    errors.add(:base, e.message)
+    raise ActiveRecord::Rollback, e.message
   end
   
   def total_price
-    inventory_item.price * quantity
+    price * quantity
   end
   
   private
   
   def validate_can_edit
     if !can_edit?
-      if self.quantity_was > self.quantity && self.cart.nil?
+      if quantity_was > quantity && cart.nil?
         errors.add(:quantity, "cannot be decreased after your order has been completed. If you need to change this item, please <a href=\"#{Rails.application.routes.url_helpers.new_order_change_request_path(:order_id => self.order.id)}\">send a request</a> to the site manager.".html_safe)
       end
     end
@@ -63,28 +71,24 @@ class CartItem < ActiveRecord::Base
   end
   
   def check_order
-    if self.order
-      self.order.destroy if self.order.cart_items.count == 0 && !self.order.destroyed? && !self.order.will_destroy?
-    end
+    order.cancel if order.cart_items.count == 0 && !order.destroyed? && !order.will_cancel? if order
   end
   
   def validate_quantity
     inventory_item.reload
-    if !self.order_id.nil?
-      if (inventory_item.quantity_available + self.quantity_was) - self.quantity < 0
-        errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available + self.quantity_was} for item #{inventory_item.name}")
+    if !order_id.nil?
+      if (inventory_item.quantity_available + quantity_was) - quantity < 0
+        errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available + quantity_was} for item #{inventory_item.name}")
       end
     else
-      if inventory_item.quantity_available - self.quantity < 0
+      if inventory_item.quantity_available - quantity < 0
         errors.add(:quantity, "cannot be greater than quantity available of #{inventory_item.quantity_available} for item #{inventory_item.name}")
       end
     end
   end
   
   def ensure_current_order_cycle
-    if !OrderCycle.current_cycle
-      errors.add("","there is no open order cycle at this time.  Please check back later.")
-    end
+    errors.add('', 'there is no open order cycle at this time.  Please check back later.') unless OrderCycle.current_cycle
   end
   
 end

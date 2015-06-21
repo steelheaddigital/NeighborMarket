@@ -4,6 +4,8 @@ one:
   receiver: approved_seller_user
   sender: buyer_user
   amount: 10.00
+  transaction_id: 1
+  payment_type: pay
 
 two:
   id: 2
@@ -11,11 +13,3 @@ two:
   receiver: no_orders_seller_user
   sender: buyer_user
   amount: 20.00
-
-three:
-  id: 3
-  order: current
-  receiver: approved_seller_user
-  sender: buyer_user
-  amount: 10.00
-  transaction_id: 1

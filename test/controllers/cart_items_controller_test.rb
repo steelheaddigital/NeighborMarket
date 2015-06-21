@@ -28,19 +28,23 @@ class CartItemsControllerTest < ActionController::TestCase
     assert_response :not_found
   end
   
-  test "logged in manager can destroy cart item that is in order" do
+  test "logged in manager can destroy cart item and issue refunds when cart item is in an order" do
     cart_item = cart_items(:one)
-    # cart_item_four = cart_items(:four)
-    # cart_item_four.destroy
+    payment = payments(:one)
     @user = users(:manager_user)
     sign_in @user
-    
-    assert_difference 'CartItem.count', -1 do
-      get :destroy, :cart_item_id => cart_item.id 
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, Payment.new, [payment, 100.00]
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      assert_difference 'CartItem.count', -1 do
+        get :destroy, cart_item_id: cart_item.id 
+      end
+      
+      assert_not_nil assigns(:cart_item)
+      assert_redirected_to edit_order_path(cart_item.order_id)
+      mock_payment_processor.verify
     end
-    
-    assert_not_nil assigns(:cart_item)
-    assert_redirected_to edit_order_path(cart_item.order_id)
   end
   
   test "logged in buyer can destroy cart item that is in their session but has no order" do

@@ -8,7 +8,7 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test "destroy should destroy cart in session" do
-    cart = carts(:full)
+    cart = Cart.create({})
     session[:cart_id] = cart.id
     assert_difference 'Cart.count', -1 do
       post :destroy

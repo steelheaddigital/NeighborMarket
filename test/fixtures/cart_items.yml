@@ -9,49 +9,50 @@ one:
   inventory_item: one
   quantity: 10
   order: current
-
+  price: 10.00
 two:
   cart: buyer_not_current
   inventory_item: one
   quantity: 10
   order: not_current
- 
+  price: 10.00
 three:
   cart: buyer_not_current
   inventory_item: two
   quantity: 10
   order: current_two
-  
+  price: 10.00
 four:
   cart: full
   inventory_item: three
   quantity: 10
   order: current
-  
+  price: 10.00
 five:
   cart: minimum
   inventory_item: has_minimum
   quantity: 5
   order: current
-
+  price: 10.00
 minimum_not_met:
   inventory_item: has_minimum_not_met
   quantity: 3
   order: current
   cart: minimum
-
+  price: 10.00
 no_order:
   cart: no_order
   inventory_item: one
   quantity: 10
-  
+  price: 10.00
 minimum_not_reached_at_order_cycle_end:
   order: current_two
   minimum_reached_at_order_cycle_end: false
   inventory_item: has_minimum
   quantity: 10
-  
+  price: 10.00
 invalid:
   cart: invalid
   inventory_item: one
   quantity: 12
+  price: 10.00

@@ -25,12 +25,33 @@ class CartItemTest < ActiveSupport::TestCase
   
   test "updates inventory_item quantity availabe on destroy if item has order" do
     item = cart_items(:one)
-    
-    assert_difference "item.inventory_item.quantity_available", item.quantity do
-      item.destroy
+    payment = payments(:one)
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, Payment.new, [payment, 100.00]
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      assert_difference "item.inventory_item.quantity_available", item.quantity do
+        item.destroy
+      end
+      mock_payment_processor.verify
     end
   end
   
+  test "does not update inventory_item quantity availabe on destroy if refund fails" do
+    item = cart_items(:one)
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, nil do
+      fail PaymentProcessor::PaymentError, 'Oh No! Refund Fails!'
+    end
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      assert_no_difference "item.inventory_item.quantity_available" do
+        item.destroy
+      end
+      assert_equal 'Oh No! Refund Fails!', item.errors.full_messages.last
+    end
+  end
+
   test "does not update inventory_item quantity availabe on destroy if item does not have order" do
     item = cart_items(:no_order)
     

@@ -51,24 +51,26 @@ class Ability
     end
     
     if user.approved_seller?
-      can :manage, InventoryItem, :user_id => user.id
-      cannot :review, InventoryItem, :user_id => user.id
+      can :manage, InventoryItem, user_id: user.id
+      cannot :review, InventoryItem, user_id: user.id
       can :create, InventoryItemChangeRequest
+      can :create, UserPaypalExpressSetting
+      can [:update, :grant_permissions], UserPaypalExpressSetting, user_id: user.id 
     end
     
     if user.buyer?
-      can :update, Order, :user_id => user.id
+      can :update, Order, user_id: user.id
       can :create, Order
       can :finish, Order
       can :create, OrderChangeRequest
-      can :review, InventoryItem, :id => InventoryItem.joins(:cart_items => :order).where("orders.user_id = ?", user.id).pluck(:id)
+      can :review, InventoryItem, id: InventoryItem.joins(cart_items: :order).where('orders.user_id = ?', user.id).pluck(:id)
     end
     
     if user
       #Anyone can delete a cart_item that is in their session
       if session[:cart_id]
         cart = Cart.find(session[:cart_id])
-        can :destroy, CartItem if cart.cart_items.where("cart_id = ? AND order_id IS NULL", cart.id).count > 0
+        can :destroy, CartItem if cart.cart_items.where('cart_id = ? AND order_id IS NULL', cart.id).count > 0
         can :manage, Cart if cart
       end
       can :index, User

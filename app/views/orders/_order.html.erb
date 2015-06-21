@@ -59,7 +59,7 @@
 		  	  					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
 		  	  				  <% end %>
 							  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-					          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
+					          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
 					          <td><%= number_to_currency(item.total_price).to_s%></td>
 			  				  <% if @site_settings.facebook_enabled%>
 								<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item.inventory_item) %>"></span></td>

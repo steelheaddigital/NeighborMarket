@@ -117,8 +117,8 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
           
     respond_to do |format|
-      if @order.destroy
-        format.html { redirect_to root_path, notice: 'Order successfully cancelled' }
+      if @order.cancel
+        format.html { redirect_to site_setting_management_index_path, notice: 'Order successfully cancelled' }
       else
         format.html { redirect_to edit_order_path(@order.id), notice: "Order could not be cancelled! Error: #{@order.errors[:base]}" }
       end

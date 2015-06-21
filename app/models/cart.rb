@@ -28,12 +28,13 @@ class Cart < ActiveRecord::Base
   validate :validate_cart_items
   
   def add_inventory_item(inventory_item_id, quantity)
-    current_item = cart_items.find_by_inventory_item_id(inventory_item_id)
+    current_item = cart_items.find_by(inventory_item_id: inventory_item_id)
+    inventory_item = InventoryItem.find(inventory_item_id)
     
     if current_item
       current_item.quantity += quantity.to_i
     else
-      current_item = cart_items.build(inventory_item_id: inventory_item_id, quantity: quantity.to_i)
+      current_item = cart_items.build(inventory_item_id: inventory_item_id, quantity: quantity.to_i, price: inventory_item.price)
       current_item.cart_id = id
     end
      

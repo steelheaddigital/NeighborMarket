@@ -60,7 +60,7 @@ class OrdersControllerTest < ActionController::TestCase
   
   test "finish should get finish" do
     order = orders(:current)
-    cart = carts(:full)
+    cart = Cart.create({})
     get(:finish, { id: order.id }, { cart_id: cart.id })
     
     assert_response :success
@@ -136,13 +136,12 @@ class OrdersControllerTest < ActionController::TestCase
       mock_payment_processor.expect :refund, nil, [payment, payment.amount]
     end
 
-    Order.stub_any_instance :payment_processor, mock_payment_processor do
-      assert_difference 'Order.count', -1 do
-        post :destroy, :id => order.id
-      end
-      
+    Payment.stub_any_instance :payment_processor, mock_payment_processor do
+      post :destroy, id: order.id
+
+      assert_equal true, Order.find(order.id).canceled
       assert_not_nil assigns(:order)
-      assert_redirected_to root_path
+      assert_redirected_to site_setting_management_index_path
       assert_equal 'Order successfully cancelled', flash[:notice]
     end
   end
