@@ -22,10 +22,10 @@ class UserPaymentSettingsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    processor_settings = PaymentProcessorSetting.first
-    @settings_view_directory = "user_#{processor_settings.processor_type.underscore}_settings/index"
-    processor_setting_class = "User#{processor_settings.processor_type}Setting".constantize
+    @settings_view_directory = "user_#{@processor_settings.processor_type.underscore}_settings/form"
+    processor_setting_class = "User#{@processor_settings.processor_type}Setting".constantize
     @settings = processor_setting_class.find_or_initialize_by(user_id: current_user.id)
+    @in_person_settings = UserInPersonSetting.find_or_initialize_by(user_id: current_user.id)
 
     respond_to do |format|
       format.html { render layout: 'layouts/seller' }

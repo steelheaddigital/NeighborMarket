@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150620144901) do
+ActiveRecord::Schema.define(version: 20150622121755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,9 +251,16 @@ ActiveRecord::Schema.define(version: 20150620144901) do
     t.boolean  "active",      default: true
   end
 
+  create_table "user_in_person_settings", force: true do |t|
+    t.boolean "accept_in_person_payments", default: true
+    t.text    "payment_instructions"
+    t.integer "user_id"
+  end
+
+  add_index "user_in_person_settings", ["user_id"], name: "index_user_in_person_settings_on_user_id", using: :btree
+
   create_table "user_paypal_express_settings", force: true do |t|
     t.integer  "payment_processor_setting_id", default: 1
-    t.boolean  "accept_in_person_payments",    default: true
     t.string   "account_id"
     t.string   "account_type"
     t.string   "email_address"
@@ -291,7 +298,6 @@ ActiveRecord::Schema.define(version: 20150620144901) do
     t.string   "zip"
     t.text     "aboutme"
     t.text     "delivery_instructions"
-    t.text     "payment_instructions"
     t.boolean  "approved_seller",        default: false,    null: false
     t.string   "listing_approval_style", default: "manual", null: false
     t.string   "photo_file_name"

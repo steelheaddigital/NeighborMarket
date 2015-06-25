@@ -41,7 +41,7 @@
 			<tr>
 	          <td><%= item_name(item.inventory_item) %></td>
 			  <td><%= seller_name %></td>
-			  <td><%= item.inventory_item.user.payment_instructions %></td>
+			  <td><%= item.inventory_item.user.user_in_person_setting.payment_instructions %></td>
 				<% if @order.has_items_with_minimum? %>
 					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
 				<% end %>

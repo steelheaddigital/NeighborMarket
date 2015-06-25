@@ -44,7 +44,6 @@ class CartItem < ActiveRecord::Base
     payment.refund(total_price) if payment
     inventory_item.increment_quantity_available(quantity)
   rescue PaymentProcessor::PaymentError => e
-    logger.debug "ERROR"
     errors.add(:base, e.message)
     raise ActiveRecord::Rollback, e.message
   end

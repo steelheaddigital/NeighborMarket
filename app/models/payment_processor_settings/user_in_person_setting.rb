@@ -1,4 +1,3 @@
-<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -17,9 +16,11 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
-%>
 
-<h1>Payment Settings</h1>
+class UserInPersonSetting < ActiveRecord::Base
+  belongs_to :user
 
-<%= render 'user_in_person_settings/form', locals: {in_person_settings: @in_person_settings} %>
-<%= render @settings_view_directory, locals: {settings: @settings} %>
+  attr_accessible :accept_in_person_payments, :payment_instructions
+
+  validates :payment_instructions, presence: true, if: :accept_in_person_payments, on: :update
+end

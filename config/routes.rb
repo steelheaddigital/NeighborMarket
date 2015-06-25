@@ -85,6 +85,8 @@ NeighborMarket::Application.routes.draw do
   
   resources :user_payment_settings, only: ['index']
 
+  resources :user_in_person_settings
+  
   resources :user_paypal_express_settings, only: ['create', 'update'] do
     collection do
       get 'grant_permissions'

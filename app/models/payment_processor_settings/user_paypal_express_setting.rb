@@ -27,7 +27,7 @@ class UserPaypalExpressSetting < ActiveRecord::Base
 
   validate :business_account?
 
-  attr_accessible :accept_in_person_payments, :email_address
+  attr_accessible :email_address
 
   def verify_account(request_permissions)
     ActiveRecord::Base.transaction do

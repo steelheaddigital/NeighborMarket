@@ -24,17 +24,20 @@ class UserPaypalExpressSettingsController < ApplicationController
   load_and_authorize_resource
 
   def create
+    @in_person_settings = current_user.user_in_person_setting
     @settings = current_user.build_user_paypal_express_setting(params[:user_paypal_express_setting])
     request_permissions_url = @settings.verify_account(true)
 
     if request_permissions_url
       redirect_to request_permissions_url
     else
-      render '_index', layout: 'layouts/seller'
+      @settings_view_directory = 'user_paypal_express_settings/form'
+      render 'user_payment_settings/index', layout: 'layouts/seller'
     end
   end
 
   def update
+    @in_person_settings = current_user.user_in_person_setting
     @settings = UserPaypalExpressSetting.find(params[:id])
     @settings.assign_attributes(params[:user_paypal_express_setting])
     refund_permission_granted = @settings.permission_granted?('REFUND')
@@ -47,11 +50,13 @@ class UserPaypalExpressSettingsController < ApplicationController
         redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully updated'
       end
     else
-      render '_index', layout: 'layouts/seller'
+      @settings_view_directory = 'user_paypal_express_settings/form'
+      render 'user_payment_settings/index', layout: 'layouts/seller'
     end
   end
 
   def grant_permissions
+    @in_person_settings = current_user.user_in_person_setting
     @settings = current_user.user_paypal_express_setting
     request_token = params['request_token']
     verifier = params['verification_code']
@@ -59,7 +64,8 @@ class UserPaypalExpressSettingsController < ApplicationController
     if @settings.grant_permissions(request_token, verifier)
       redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully confirmed'
     else
-      render '_index', layout: 'layouts/seller'
+      @settings_view_directory = 'user_paypal_express_settings/form'
+      render 'user_payment_settings/index', layout: 'layouts/seller'
     end
   end
   

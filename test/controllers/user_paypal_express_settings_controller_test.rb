@@ -22,7 +22,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'create renders _index if verify_account does not return a string' do
+  test 'create renders form if verify_account does not return a string' do
     payment_processor = Minitest::Mock.new
     payment_processor.expect :verify_account, { account_id: '123', account_type: 'FAIL' }, ['test@test.com', @user.first_name, @user.last_name]
 
@@ -31,7 +31,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
-      assert_template '_index'
+      assert_template '_form'
     end
   end
 
@@ -65,7 +65,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'grant_permissions renders index if grant_permissions fails' do
+  test 'grant_permissions renders form if grant_permissions fails' do
     payment_processor = Minitest::Mock.new
     payment_processor.expect :get_access_token, nil do
       fail PaymentProcessor::PaymentError, 'Oh No!'
@@ -77,7 +77,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
       assert_not_nil assigns(:settings)
       assert_equal nil, @user.user_paypal_express_setting.access_token
       assert_equal nil, @user.user_paypal_express_setting.access_token_secret
-      assert_template '_index'
+      assert_template '_form'
     end
   end
 

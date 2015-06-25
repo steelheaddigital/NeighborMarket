@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
                     :default_url => ':style/default_user.png'
   has_many :reviews
   has_one :user_paypal_express_setting
+  has_one :user_in_person_setting
   
   validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, :presence => true, :unless => :auto_create
@@ -43,7 +44,6 @@ class User < ActiveRecord::Base
             :country, 
             :zip, :presence => true, :if => :address_required?
   validates :phone, :presence => true, :if => :seller?
-  validates :payment_instructions, :presence => true, :if => :seller?
   validates :delivery_instructions, :presence => true, :if => :delivery_instructions_required?
   validates_format_of :phone,
                       :with => %r{\(?[0-9]{3}\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}},
@@ -66,7 +66,9 @@ class User < ActiveRecord::Base
   
   before_save { valid? || true }
   after_save { errors.clear || true }
+  after_create :create_user_in_person_setting, if: :seller?
   before_update :set_auto_created_updated_at, if: :auto_created_pending_update?
+  after_update :create_user_in_person_setting, if: :become_seller
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -88,7 +90,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
                   :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, 
-                  :zip, :aboutme, :approved_seller, :payment_instructions, :delivery_instructions, 
+                  :zip, :aboutme, :approved_seller, :delivery_instructions, 
                   :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
   
   def set_auto_created_updated_at
@@ -287,13 +289,14 @@ class User < ActiveRecord::Base
     self.zip = nil
     self.aboutme = nil
     self.delivery_instructions = nil
-    self.payment_instructions = nil
     self.approved_seller = false
     self.listing_approval_style = ''
     photo.clear
     roles.clear
+    user_paypal_express_setting.delete if user_paypal_express_setting
+    user_in_person_setting.delete if user_in_person_setting
     
-    save
+    save(validate: false)
   end
   
   def avg_seller_rating

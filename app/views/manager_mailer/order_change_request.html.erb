@@ -48,7 +48,7 @@
 			          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
 			          <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
 			          <td><%= seller_name %>
-			          <td><%= item.inventory_item.user.payment_instructions %>
+			          <td><%= item.inventory_item.user.user_in_person_setting.payment_instructions %>
 			        </tr>
 				<%end%>
 				<tr>

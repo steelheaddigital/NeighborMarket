@@ -32,13 +32,14 @@ class UserRegistrationsControllerTest < ActionController::TestCase
   
   test "should respond with seller inactive signup if user type is seller" do
     assert_difference 'User.count' do
-      post :create, :user => { :username => "createseller", :user_type => "seller", :email => "createseller@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :payment_instructions => "bring it", :terms_of_service => true }
+      post :create, :user => { :username => "createseller", :user_type => "seller", :email => "createseller@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218",  :terms_of_service => true }
     end
     
     user = User.find_by_email("createseller@create.com")
     
     assert_redirected_to user_seller_inactive_signup_path
     assert user.seller?
+    assert_not_nil user.user_in_person_setting
   end
   
   test "should update user" do
@@ -71,6 +72,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     
     assert_redirected_to root_path
     assert user.seller?
+    assert_not_nil user.user_in_person_setting
     assert_equal 'Thank You! Your seller account has been created and is awaiting approval. You will receive an email when it is approved.', flash[:notice]
   end
   

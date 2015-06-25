@@ -18,6 +18,8 @@
 #
 
 class UserRegistrationsController < Devise::RegistrationsController
+  include Settings
+
   prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update, :destroy]
   before_filter :configure_permitted_parameters
@@ -25,8 +27,6 @@ class UserRegistrationsController < Devise::RegistrationsController
   def new
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     resource = build_resource({})
-    @site_settings = SiteSetting.instance
-    @site_contents = SiteContent.instance
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
 
@@ -36,8 +36,6 @@ class UserRegistrationsController < Devise::RegistrationsController
   def create
     authorize! :manage, :manager if params[:user][:user_type] == "manager"
     build_resource(sign_up_params)
-    @site_settings = SiteSetting.instance
-    @site_contents = SiteContent.instance
     user_type = params[:user][:user_type]
     add_resource_role(resource, user_type)
     
@@ -48,8 +46,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         respond_with resource, :location => after_sign_up_path_for(resource)
       else
         if resource.role?("seller")
-          user = User.find(resource.id)
-          send_new_seller_email(user)
+          send_new_seller_email(resource)
         end
         expire_data_after_sign_in!
         respond_with resource, :location => after_inactive_sign_up_path_for(resource)
@@ -61,8 +58,6 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def edit
-    @site_settings = SiteSetting.instance
-    @site_contents = SiteContent.instance
     super
   end
   
@@ -74,8 +69,6 @@ class UserRegistrationsController < Devise::RegistrationsController
     end
     
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    @site_settings = SiteSetting.instance
-    @site_contents = SiteContent.instance
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
     
     if params[:user][:become_seller] == "true"
@@ -89,8 +82,7 @@ class UserRegistrationsController < Devise::RegistrationsController
 
     if resource.update_attributes(params[resource_name])
       if is_navigational_format?
-        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
-          :update_needs_confirmation : :updated
+        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ? :update_needs_confirmation : :updated
         # customized code begin
         if resource.become_seller
           set_flash_message :notice, :became_seller
@@ -128,19 +120,15 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def become_seller
-    @site_contents = SiteContent.instance
-    @site_settings = SiteSetting.instance
     add_role(resource, "seller")
   end
   
   def become_buyer
-    @site_contents = SiteContent.instance
-    @site_settings = SiteSetting.instance
     add_role(resource, "buyer")
   end
   
   def terms_of_service
-    @terms_of_service = SiteContent.instance.terms_of_service
+    @terms_of_service = @site_contents.terms_of_service
     
     respond_to do |format|
       format.html
@@ -178,18 +166,16 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def add_role(resource, role)
-      new_role = Role.new
-      new_role.name = role.downcase
-      resource.roles.build(new_role.attributes)
+      resource.roles.build(name: role.downcase)
   end
   
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
-      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :payment_instructions, :delivery_instructions, :terms_of_service,
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :delivery_instructions, :terms_of_service,
         :email, :password, :password_confirmation, :photo)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
-      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :payment_instructions, :delivery_instructions, :terms_of_service,
+      u.permit(:username, :first_name, :last_name, :address, :city, :state, :country, :zip, :phone, :aboutme, :delivery_instructions, :terms_of_service,
         :email, :password, :password_confirmation, :photo)
     end
   end

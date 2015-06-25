@@ -1,5 +1,4 @@
 <%
-#
 #Copyright 2013 Neighbor Market
 #
 #This file is part of Neighbor Market.
@@ -19,7 +18,19 @@
 #
 %>
 
-<h1>Payment Settings</h1>
-
-<%= render 'user_in_person_settings/form', locals: {in_person_settings: @in_person_settings} %>
-<%= render @settings_view_directory, locals: {settings: @settings} %>
+<%= bootstrap_form_for @in_person_settings do |f| %>
+	<div class="container-fluid">
+		<%= f.error_messages %>
+		<div class="row">
+		  	<div class="col-md-12">
+		  		<%= f.check_box :accept_in_person_payments, label: 'Accept in-person payments' %>
+		  	</div>
+		  	<div class="col-md-12">
+		  		<%= f.text_area :payment_instructions %>
+		  	</div>
+		  	<div class="col-md-12">
+		  		<%= f.submit "Save Settings", {:class => 'btn btn-primary'} %>
+		  	</div>
+		</div>
+	</div>
+<% end %>

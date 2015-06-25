@@ -18,7 +18,6 @@ manager_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: 
  approved_seller: true                   
  listing_approval_style: manual
  roles: manager_role
@@ -39,7 +38,6 @@ approved_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: Test payment instructions
  approved_seller: true                       
  listing_approval_style: auto
  roles: seller_role
@@ -60,7 +58,6 @@ unapproved_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: Test payment instructions
  approved_seller: false                       
  listing_approval_style: manual 
  roles: seller_role
@@ -80,7 +77,6 @@ no_orders_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: Test
  approved_seller: false                       
  listing_approval_style: manual 
  roles: seller_role
@@ -101,7 +97,6 @@ buyer_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: Test
- payment_instructions: 
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
@@ -123,7 +118,6 @@ buyer_user_not_current:
  zip: 97218
  aboutme: Test
  delivery_instructions: Test
- payment_instructions: 
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
@@ -144,7 +138,6 @@ buyer_user_no_order:
  zip: 97218
  aboutme: Test
  delivery_instructions: Test
- payment_instructions: 
  approved_seller: false                        
  listing_approval_style: manual
  roles: buyer_role
@@ -164,7 +157,6 @@ unapproved_seller_buyer_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: Test
- payment_instructions: Test
  approved_seller: false                       
  listing_approval_style: manual
  roles: buyer_role, seller_role
@@ -184,7 +176,6 @@ unconfirmed_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: 
  approved_seller: false                   
  listing_approval_style: manual
  roles: seller_role
@@ -204,7 +195,6 @@ unconfirmed_approved_seller_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: 
  approved_seller: true                   
  listing_approval_style: manual
  roles: seller_role
@@ -223,7 +213,6 @@ unconfirmed_buyer_user:
  zip: 97218
  aboutme: Test
  delivery_instructions: 
- payment_instructions: 
  approved_seller: false                   
  listing_approval_style: manual
  roles: buyer_role
