@@ -44,7 +44,6 @@ NeighborMarket::Application.routes.draw do
       get 'outbound_delivery_log'
       post 'save_outbound_delivery_log'
       get 'buyer_invoices'
-      get 'site_setting'
       post 'update_site_setting'
       get 'inventory_item_approval'
       post 'update_inventory_item_approval'
@@ -85,7 +84,7 @@ NeighborMarket::Application.routes.draw do
   
   resources :user_payment_settings, only: ['index']
 
-  resources :user_in_person_settings
+  resources :user_in_person_settings, only: ['update']
   
   resources :user_paypal_express_settings, only: ['create', 'update'] do
     collection do
@@ -109,7 +108,6 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  put 'seller/:order_id/update_order', to: 'seller#update_order', :as => :seller_update_order
   resources :seller, :only => ["index"] do
     collection do
       get 'pick_list'
@@ -137,10 +135,8 @@ NeighborMarket::Application.routes.draw do
     end
   end
   
-  post 'orders/new', to: 'orders#new'
-  get 'orders/create', to: 'orders#create', as: 'create_order'
   get  'orders/finish', to: 'orders#finish', as: 'finish_order'
-  resources :orders, :only => ["new", "create", "edit", "update", "show", "destroy"]
+  resources :orders, :only => ["new", "create", "show", "destroy"]
   
   resources :price_units
   

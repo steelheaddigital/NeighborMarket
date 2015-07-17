@@ -24,7 +24,10 @@
   <tr>
     <th>Item Name</th>
     <th>Seller</th>
-    <th>Payment Instructions</th>
+    <% unless @order.online_payment_only? || (@order.paid_online? && @order.all_items_accept_online_payment?) %>
+    	<th>Payment Instructions</th>
+    <% end %>
+    <th>Payment Status</th>
 	<% if @order.has_items_with_minimum? %>
 		<th>Minimum</th>
 	<% end %>
@@ -39,39 +42,80 @@
 		<%@order.cart_items.select{|i| i.inventory_item.user.id == key && i.minimum_reached_at_order_cycle_end}.each do |item| %>
 			<%seller_name = item.inventory_item.user.username%>
 			<tr>
-	          <td><%= item_name(item.inventory_item) %></td>
-			  <td><%= seller_name %></td>
-			  <td><%= item.inventory_item.user.user_in_person_setting.payment_instructions %></td>
+				<td><%= item_name(item.inventory_item) %></td>
+				<td><%= seller_name %></td>
+				<% if show_payment_instructions(@order)%>
+					<td><%= item.inventory_item.user.user_in_person_setting.payment_instructions if !item.inventory_item.user.user_in_person_setting.accept_in_person_payments == true %></td>
+				<% end %>
+				<td><%= item_payment_status_message(item) %></td>
 				<% if @order.has_items_with_minimum? %>
 					<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
 				<% end %>
-			  <td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
-	          <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
-	          <td><%= number_to_currency(item.total_price).to_s%></td>
+				<td><%= item.quantity %><span> <%= item_quantity_label(item.inventory_item, item.quantity) %></span></td>
+				<td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %> </td>
+				<td><%= number_to_currency(item.total_price).to_s%></td>
 	        </tr>
 		<%end%>
 		<tr>
 			<td></td>
 			<td></td>
+			<% if show_payment_instructions(@order)%>
+				<td></td>
+			<% end %>
 			<td></td>
 			<% if @order.has_items_with_minimum? %>
 				<td></td>
 			<% end %>
 	        <td></td>
 	        <td style="font-weight:bold;"><%= "Subtotal for " + seller_name %></td>
-			<td><%= number_to_currency(value)%></td>
+			<td style="font-weight:bold;"><%= number_to_currency(value)%></td>
 		</tr>
 	<%end%>
+	<% if @order.paid_online? %>
+		<tr>
+            <td></td>
+            <td></td>
+            <% if show_payment_instructions(@order)%>
+            	<td></td>
+            <% end %>
+            <td></td>
+			<% if @order.has_items_with_minimum? %>
+				<td></td>
+			<% end %>
+			<td></td>
+            <td style="font-weight:bold;">Total Paid Online:</td>
+            <td><%= number_to_currency @order.online_payment_total %></td>
+        </tr>
+    <% end %>
+	<% if @order.paid_in_person? || (!@order.paid_online? || @order.items_with_in_person_payment_only?) %>
+		<tr>
+            <td></td>
+            <td></td>
+            <% if show_payment_instructions(@order)%>
+            	<td></td>
+            <% end %>
+            <td></td>
+			<% if @order.has_items_with_minimum? %>
+				<td></td>
+			<% end %>
+			<td></td>
+            <td style="font-weight:bold;">Total Due On Reciept:</td>
+            <td><%= number_to_currency @order.in_person_payment_total %></td>
+        </tr>
+    <% end %>
     <tr>
         <td></td>
         <td></td>
+        <% if show_payment_instructions(@order)%>
+        	<td></td>
+        <% end %>
         <td></td>
 		<% if @order.has_items_with_minimum? %>
 			<td></td>
 		<% end %>
 		<td></td>
         <td style="font-weight:bold;">Grand Total:</td>
-        <td><%= number_to_currency order.total_price %></td>
+        <td style="font-weight:bold;"><%= number_to_currency order.total_price %></td>
     </tr>
   </tbody>
 </table>

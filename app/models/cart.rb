@@ -19,6 +19,7 @@
 
 class Cart < ActiveRecord::Base
   include Totalable
+  include Payable
   
   has_many :cart_items, autosave: true, dependent: :destroy
   belongs_to :user
@@ -47,6 +48,10 @@ class Cart < ActiveRecord::Base
   
   def has_items_with_minimum?
     cart_items.any? { |cart_item| cart_item.inventory_item.has_minimum? && !cart_item.inventory_item.minimum_reached? && cart_item.minimum_reached_at_order_cycle_end }
+  end
+
+  def has_items?
+    cart_items.count > 0
   end
   
   private

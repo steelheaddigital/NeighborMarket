@@ -23,4 +23,13 @@ class UserInPersonSetting < ActiveRecord::Base
   attr_accessible :accept_in_person_payments, :payment_instructions
 
   validates :payment_instructions, presence: true, if: :accept_in_person_payments, on: :update
+  validate :validate_online_payment_processor_configured
+
+  private
+
+  def validate_online_payment_processor_configured
+    if !accept_in_person_payments && !user.online_payment_processor_configured?
+      errors.add(:accept_in_person_payments, 'cannot be false if no online payment processor is configured')
+    end
+  end
 end

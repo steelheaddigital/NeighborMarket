@@ -63,7 +63,7 @@ class UserPaypalExpressSettingTest < ActiveSupport::TestCase
       result = setting.verify_account true
 
       saved_setting = UserPaypalExpressSetting.find(setting.id)
-      assert_equal nil, saved_setting.account_id
+      assert_equal 'F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw==', saved_setting.account_id
       assert_equal 'BUSINESS', saved_setting.account_type
       assert_equal nil, result
       assert_equal setting.errors.full_messages.last, 'Oh No! Verify Account Fails'

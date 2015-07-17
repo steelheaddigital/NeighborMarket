@@ -31,7 +31,7 @@
 			<strong>Some items in your original order did not meet the minimum purchase quantity and have been removed from your order.</strong>
 		</p>
 	<%end%>
-	<strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>
+	<%= payment_message(@order) %>
 	<div style="margin-bottom:15px;">
 		<%= render :partial => "order_table", :locals => {:order => @order} %>
 	</div>

@@ -56,6 +56,7 @@ class OrderCycleEndJob
     cart_items.each do |item|
       unless item.inventory_item.minimum_reached_for_order_cycle?(current_order_cycle_id)
         item.update_column(:minimum_reached_at_order_cycle_end, false)
+        item.refund_payments
       end
     end
   end

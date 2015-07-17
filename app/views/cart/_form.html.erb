@@ -40,7 +40,15 @@
 	        <th>Price</th>
 	        <th>Quantity</th>
 	        <th>Seller</th>
-	        <th>Payment Instructions</th>
+	        <% unless item.object.order.nil? %>
+	        	<th>Payment Status</th>
+	        <% end %>
+	        <% unless f.object.online_payment_only? || (!f.object.all_items_accept_in_person_payment? && f.object.all_items_accept_online_payment?) || (f.object.items_with_online_payment_only? && f.object.items_with_in_person_payment_only?) && item.object.inventory_item.user.online_payment_processor_configured? %>
+	        	<th>Payment Instructions</th>
+	        <% end %>
+	        <% if !f.object.in_person_payment_only? && !f.object.all_items_accept_online_payment? && f.object.items_with_in_person_payment_only? %>
+	        	<th>Online payment accepted?</th>
+	        <% end %>
 			<%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
 				<th>Minimum</th>
 			<%end%>
@@ -53,9 +61,21 @@
 	        <tr>
 	          <td><%= item_name(item.object.inventory_item) %> </td>
 	          <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
-	          <td><%= item.text_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+	          <% if item.object.can_change_quantity? %>
+	          	<td><%= item.text_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+	          <% else %>
+	          	<td><%= item.object.quantity %></td>
+	          <% end %>
 	          <td><%= item.object.inventory_item.user.username %></td>
-	          <td><%= item.object.inventory_item.user.user_in_person_setting.payment_instructions %></td>
+	          <% unless item.object.order.nil? %>
+	        	<td><%= item_payment_status_message(item.object) %></td>
+	          <% end %>
+	          <% unless f.object.online_payment_only? || (!f.object.all_items_accept_in_person_payment? && f.object.all_items_accept_online_payment?) || (f.object.items_with_online_payment_only? && f.object.items_with_in_person_payment_only?) && item.object.inventory_item.user.online_payment_processor_configured? %>
+	          	<td><%= item.object.inventory_item.user.user_in_person_setting.payment_instructions %></td>
+	          <% end %>
+	          <% if !f.object.in_person_payment_only? && !f.object.all_items_accept_online_payment? && f.object.items_with_in_person_payment_only? %>
+	        	<td><%= item.object.inventory_item.user.online_payment_processor_configured? == true ? 'Yes' : 'No' %></td>
+	          <% end %>
 			  <%if item.object.inventory_item.has_minimum? && !item.object.inventory_item.minimum_reached?%>
 			  	<td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
 			  <%end%>
@@ -72,10 +92,30 @@
   </div>
 </div>
 <% end %>
+<% if @order %>
+	<% if @order.paid_online? %>
+		<div class="row">
+		  <div class ="col-md-3"></div>
+		  <div class="col-md-2">
+		    <span class="totalLabel" >Total Paid Online:</span>
+		    <span class="totalCell"><%= number_to_currency @order.online_payment_total %></span>
+		  </div>
+		</div>
+	<% end %>
+	<% if @order.paid_in_person? || (!@order.paid_online? || @order.items_with_in_person_payment_only?)%>
+		<div class="row">
+		  <div class ="col-md-3"></div>
+		  <div class="col-md-2">
+		    <span class="totalLabel" >Total Due On Receipt:</span>
+		    <span class="totalCell"><%= number_to_currency @order.in_person_payment_total %></span>
+		  </div>
+		</div>
+	<%end%>
+<% end %>
 <div class="row">
   <div class ="col-md-3"></div>
   <div class="col-md-2">
-    <span class="totalLabel" >Total:</span>
+    <span class="totalLabel" >Grand Total:</span>
     <span class="totalCell"><%= number_to_currency @total_price %></span>
   </div>
 </div>

@@ -214,7 +214,7 @@ module ApplicationHelper
   end
   
   def contains_item_with_minimum_text(type)
-    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.instance.facebook_enabled } encouraging your friends and family to also purchase the item."
+    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and any payments will be refunded.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.instance.facebook_enabled } encouraging your friends and family to also purchase the item."
   end
   
   def pageless(total_pages, url=nil, container=nil)
@@ -244,4 +244,15 @@ module ApplicationHelper
       javascript_tag(tag)
   end
   
+  def item_payment_status_message(cart_item)
+    order = cart_item.order
+    if order.paid_online? && order.payments.count == 0 && cart_item.inventory_item.user.online_payment_processor_configured?
+      'Online payment pending'
+    elsif order.paid_online? && order.payments.count > 0 && cart_item.inventory_item.user.online_payment_processor_configured?
+      'Paid online'
+    else
+      'Due on receipt'
+    end
+  end
+
 end

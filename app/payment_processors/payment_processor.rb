@@ -30,5 +30,9 @@ module PaymentProcessor
     processor_class.new(host: ENV['HOST'], processor_settings: processor_settings)
   end
 
+  def in_person_payment_processor
+    PaymentProcessor::InPerson.new({})
+  end
+
   class PaymentError < StandardError; end
 end

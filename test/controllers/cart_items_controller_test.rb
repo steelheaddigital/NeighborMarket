@@ -42,7 +42,7 @@ class CartItemsControllerTest < ActionController::TestCase
       end
       
       assert_not_nil assigns(:cart_item)
-      assert_redirected_to edit_order_path(cart_item.order_id)
+      assert_redirected_to order_path(cart_item.order_id)
       mock_payment_processor.verify
     end
   end

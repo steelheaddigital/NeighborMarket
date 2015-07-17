@@ -1,7 +1,9 @@
 one:
   user: approved_seller_user
   payment_instructions: Test payment instructions
+  accept_in_person_payments: true
 
 two:
   user: unapproved_seller_user
   payment_instructions: Test payment instructions
+  accept_in_person_payments: true

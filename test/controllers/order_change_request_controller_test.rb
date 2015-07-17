@@ -25,7 +25,7 @@ class OrderChangeRequestControllerTest < ActionController::TestCase
     assert_not_nil assigns(:request)
     assert_equal "Test Description", assigns(:request).description
     assert_equal order, assigns(:request).order
-    assert_redirected_to edit_order_path(:id => order.id)
+    assert_redirected_to order_path(:id => order.id)
   end
   
   test "should complete change request" do

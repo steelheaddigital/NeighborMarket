@@ -18,6 +18,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
+      assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
       assert_redirected_to 'http://paypal/request/permissions'
     end
   end
@@ -31,6 +32,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
+      assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
       assert_template '_form'
     end
   end
@@ -38,16 +40,28 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
   test 'update redirects to paypal request permissions if REFUND permission not granted' do
     setting = user_paypal_express_settings(:one)
     payment_processor = Minitest::Mock.new
-    payment_processor.expect :verify_account, { account_id: '123', account_type: 'BUSINESS' }, ['approved_seller_user@test.com', @user.first_name, @user.last_name]
+    payment_processor.expect :verify_account, { account_id: '12345', account_type: 'BUSINESS' }, ['approved_seller_user@test.com', @user.first_name, @user.last_name]
     payment_processor.expect :request_permissions, 'http://paypal/request/permissions'
+    payment_processor.expect :get_permissions, [], ['12345']
 
     UserPaypalExpressSetting.stub_any_instance :payment_processor, payment_processor do
-      post :update, id: setting.id, user_paypal_express_setting: { email_address: 'approved_seller_user@test.com', accept_in_person_payments: true }
+      post :update, commit: 'Verify Account', id: setting.id, user_paypal_express_setting: { email_address: 'approved_seller_user@test.com', accept_in_person_payments: true }
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
+      assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
       assert_redirected_to 'http://paypal/request/permissions'
     end
+  end
+
+  test 'update deletes setting if commit is Unlink Account' do
+    setting = user_paypal_express_settings(:one)
+
+    post :update, id: setting.id, commit: 'Unlink Account'
+
+    assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
+    assert_nil UserPaypalExpressSetting.find_by(id: setting.id)
+    assert_redirected_to user_payment_settings_path
   end
 
   test 'grant_permissions sets access_token and access_token_secret' do
@@ -59,6 +73,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
+      assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
       assert_equal '123', @user.user_paypal_express_setting.access_token
       assert_equal '456', @user.user_paypal_express_setting.access_token_secret
       assert_redirected_to user_payment_settings_path
@@ -75,8 +90,9 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
       get :grant_permissions, request_token: 'request_token', verification_code: 'verification_code'
 
       assert_not_nil assigns(:settings)
-      assert_equal nil, @user.user_paypal_express_setting.access_token
-      assert_equal nil, @user.user_paypal_express_setting.access_token_secret
+      assert_equal assigns(:settings_view_directory), 'user_paypal_express_settings/form'
+      assert_equal '12345', @user.user_paypal_express_setting.access_token
+      assert_equal '12345', @user.user_paypal_express_setting.access_token_secret
       assert_template '_form'
     end
   end
@@ -86,6 +102,7 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
     
     post :update, id: setting.id
     assert_response :not_found
+
   end
 
   test 'anonymous user cannot access protected actions' do

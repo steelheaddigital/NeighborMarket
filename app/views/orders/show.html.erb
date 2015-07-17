@@ -20,6 +20,11 @@
 %>
 
 <div class="container-fluid">
-  <h2>Your Order</h2>
-    <%= render "order" %>
+  <h2>Order</h2>
+  <%= render "order" %>
+  <% if current_user.id == @order.user_id && !current_user.manager?%>
+  	<%= link_to "Request Order Change", new_order_change_request_path(@order.id), :class => "btn btn-danger" %>
+  <% elsif current_user.manager? %>
+	<%= button_to "Cancel Order", { :action => "destroy", :controller => "orders", :id => @order.id}, { :method => "delete", :class => "btn btn-danger", :data => {:confirm => "Are you sure you want to cancel this order?"}} %>
+  <% end %>
 </div>

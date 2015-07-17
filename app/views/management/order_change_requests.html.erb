@@ -37,7 +37,7 @@
 	  		<td><%= request.order.user.username if !request.order.nil? %> </td>
 	  	  	<td><%= request.order.id if !request.order.nil? %></td>
 	        <td><%= request.description%></td>
-	        <td><%= link_to "Edit Order", request.order.nil? ? "" : edit_order_path(request.order), {:id => "mgmtEditOrderButton", :class => "btn btn-default", :style => "width:60%;", :disabled => request.order.nil?} %></td>
+	        <td><%= link_to "Edit Order", request.order.nil? ? "" : order_path(request.order), {:id => "mgmtEditOrderButton", :class => "btn btn-default", :style => "width:60%;", :disabled => request.order.nil?} %></td>
 	        <td><%= button_to "Complete", complete_order_change_request_path(request), { :data => {:confirm => "Are you sure you want to complete this request?"}, :class => "btn btn-primary", :style => "width:95%;" } %></td>
 	      </tr>
 	    <%end%>

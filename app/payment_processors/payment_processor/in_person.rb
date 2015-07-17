@@ -21,33 +21,40 @@ module PaymentProcessor
   class InPerson < PaymentProcessorBase
     include Rails.application.routes.url_helpers
 
-    def checkout(cart)
-      new_order_path
+    def initialize(args)
     end
 
     def purchase(order, cart, params)
-      cart.sub_totals.each do |seller_id, amount|
-        order.payments << Payment.new(
+      cart.in_person_payment_sub_totals.each do |seller_id, amount|
+        cart_items = order.cart_items.joins(:inventory_item).where('inventory_items.user_id = ?', seller_id)
+        new_payment = Payment.new(
           receiver_id: seller_id, 
           sender_id: order.user.id, 
           amount: amount,
           processor_type: 'InPerson',
-          payment_type: 'pay'
+          payment_type: 'pay',
+          status: 'Pending'
         )
+        new_payment.cart_items = cart_items
+        order.payments << new_payment
       end
       finish_order_path
     end
 
     def refund(payment, amount)
-      payment.order.payments.create(
-        processor_type: 'InPerson',
-        payment_type: 'refund',
-        receiver_id: payment.receiver_id,
-        sender_id: payment.sender_id,
-        amount: amount,
-        status: 'COMPLETE',
-        payment_date: DateTime.now
-      )
+      if payment.status == 'Pending'
+        payment.destroy
+      elsif payment.status == 'Completed'
+        payment.refunds.create(
+          processor_type: 'InPerson',
+          payment_type: 'refund',
+          receiver_id: payment.receiver_id,
+          sender_id: payment.sender_id,
+          amount: amount,
+          status: 'Completed',
+          payment_date: DateTime.now
+        )
+      end
     end
   end
 end

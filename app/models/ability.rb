@@ -55,13 +55,13 @@ class Ability
       cannot :review, InventoryItem, user_id: user.id
       can :create, InventoryItemChangeRequest
       can :create, UserPaypalExpressSetting
-      can [:update, :grant_permissions], UserPaypalExpressSetting, user_id: user.id 
+      can [:update, :grant_permissions, :destroy], UserPaypalExpressSetting, user_id: user.id
+      can :update, UserInPersonSetting, user_id: user.id 
     end
     
     if user.buyer?
-      can :update, Order, user_id: user.id
-      can :create, Order
-      can :finish, Order
+      can :show, Order, user_id: user.id
+      can [:create, :finish], Order
       can :create, OrderChangeRequest
       can :review, InventoryItem, id: InventoryItem.joins(cart_items: :order).where('orders.user_id = ?', user.id).pluck(:id)
     end

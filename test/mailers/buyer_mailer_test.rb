@@ -26,7 +26,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s)
     assert_match("Minimum", sent.body.to_s)
     assert_match("3", sent.body.to_s)
     assert_match("Your order contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and you will not be responsible for paying for them.  You can help reach the minimum by encouraging your friends and family to also purchase the item.", sent.body.to_s) 
@@ -51,7 +50,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s)
   end
   
   
@@ -76,7 +74,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s) 
   end
   
   test "all_modes marked for delivery order_email" do
@@ -99,7 +96,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s) 
   end
   
   
@@ -117,7 +113,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s) 
   end
   
   test "change_request_complete_mail" do
@@ -151,7 +146,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("approvedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s)
   end
   
   test "drop point order_cycle_end_email with items that did not meet minimum" do
@@ -174,7 +168,6 @@ class BuyerMailerTest < ActionMailer::TestCase
     assert_match("$10.00", sent.body.to_s)
     assert_match("10", sent.body.to_s) 
     assert_match("unapprovedseller", sent.body.to_s) 
-    assert_match("Test payment instructions", sent.body.to_s)
     assert_match("Some items in your original order did not meet the minimum purchase quantity and have been removed from your order.", sent.body.to_s) 
   end
 

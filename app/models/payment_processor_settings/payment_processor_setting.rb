@@ -19,7 +19,15 @@
 
 class PaymentProcessorSetting < ActiveRecord::Base
   has_one :paypal_express_setting, -> { where(payment_processor_setting_id: 1) }
-  has_many :user_paypal_express_setting, -> { where(payment_processor_setting_id: 1) }
+  has_many :user_paypal_express_settings, -> { where(payment_processor_setting_id: 1) }
   accepts_nested_attributes_for :paypal_express_setting
   attr_accessible :processor_type, :paypal_express_setting_attributes
+
+  def self.current_settings
+    "#{first.processor_type}Setting".constantize.first
+  end
+
+  def self.current_processor_type
+    first.processor_type
+  end
 end

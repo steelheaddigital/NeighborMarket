@@ -21,6 +21,7 @@ class CartItem < ActiveRecord::Base
   belongs_to :cart
   belongs_to :inventory_item
   belongs_to :order
+  has_and_belongs_to_many :payments
   
   attr_accessible :inventory_item_id, :quantity, :price
   attr_accessor :current_user
@@ -39,9 +40,8 @@ class CartItem < ActiveRecord::Base
   
   def update_inventory_item_quantities
     return true unless order
-    seller_id = inventory_item.user_id
-    payment = order.payments.find_by(receiver_id: seller_id)
-    payment.refund(total_price) if payment
+    
+    refund_payments
     inventory_item.increment_quantity_available(quantity)
   rescue PaymentProcessor::PaymentError => e
     errors.add(:base, e.message)
@@ -52,6 +52,18 @@ class CartItem < ActiveRecord::Base
     price * quantity
   end
   
+  def online_payment_only?
+    inventory_item.user.user_in_person_setting.accept_in_person_payments == false
+  end
+
+  def in_person_payment_only?
+    inventory_item.user.online_payment_processor_configured? == false
+  end
+
+  def can_change_quantity?
+    order.nil?
+  end
+
   private
   
   def validate_can_edit
@@ -70,7 +82,19 @@ class CartItem < ActiveRecord::Base
   end
   
   def check_order
-    order.cancel if order.cart_items.count == 0 && !order.destroyed? && !order.will_cancel? if order
+    return unless order
+    order.cancel if order.cart_items.count == 0 && !order.destroyed? && !order.will_cancel?
+  end
+
+  def refund_payments
+    return unless order
+    payments.each do |payment|
+      if payment.amount > total_price
+        payment.refund(total_price)
+      else
+        payment.refund_all
+      end
+    end
   end
   
   def validate_quantity

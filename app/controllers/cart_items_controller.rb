@@ -47,9 +47,9 @@ class CartItemsController < ApplicationController
       if @cart_item.destroy
         if @cart_item.order_id
           if Order.active.exists?(@cart_item.order_id)
-            format.html { redirect_to edit_order_path(@cart_item.order_id) }
+            format.html { redirect_to order_path(@cart_item.order_id) }
           else
-            format.html { redirect_to order_change_requests_management_index_path, notice: 'All Items in the order have been deleted. The order has been cancelled.' }
+            format.html { redirect_to site_settings_path, notice: 'All Items in the order have been deleted. The order has been cancelled.' }
           end
         else
           format.html { redirect_to cart_index_path }

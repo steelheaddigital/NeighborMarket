@@ -76,7 +76,7 @@ class PaypalExpressTest < ActiveSupport::TestCase
     paypal_response = Minitest::Mock.new
     paypal_response.expect :redirect_uri, 'http://paypal_url'
     gateway = Minitest::Mock.new
-    gateway.expect :setup, paypal_response, [payment_requests, 'http://testhost/orders/new', 'http://testhost/cart', paypal_options]
+    gateway.expect :setup, paypal_response, [payment_requests, 'http://testhost/orders/new?paying_online=true', 'http://testhost/cart', paypal_options]
     permissions = Minitest::Mock.new
     accounts = Minitest::Mock.new
     processor = PaypalExpress.new(host: 'http://testhost', processor_settings: @processor_settings, gateway: gateway, accounts: accounts, permissions: permissions)

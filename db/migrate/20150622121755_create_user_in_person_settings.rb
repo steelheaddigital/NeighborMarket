@@ -1,14 +1,14 @@
 class CreateUserInPersonSettings < ActiveRecord::Migration
   def up
     create_table :user_in_person_settings do |t|
-      t.boolean :accept_in_person_payments, default: true
+      t.boolean :accept_in_person_payments, default: false
       t.text :payment_instructions
     end
     add_reference :user_in_person_settings, :user, index: true
 
     execute <<-SQL 
-      INSERT INTO user_in_person_settings(user_id, payment_instructions)
-      SELECT id, payment_instructions
+      INSERT INTO user_in_person_settings(user_id, payment_instructions, accept_in_person_payments)
+      SELECT id, payment_instructions, true
       FROM users
       WHERE payment_instructions IS NOT NULL
     SQL

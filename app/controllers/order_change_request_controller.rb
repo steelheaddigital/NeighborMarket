@@ -41,7 +41,7 @@ class OrderChangeRequestController < ApplicationController
         managers.each do |manager|
           ManagerMailer.delay.order_change_request(manager, @request.description, @order)
         end
-        format.html { redirect_to edit_order_path(:id => @order.id), notice: "Change request successfully sent."}
+        format.html { redirect_to order_path(:id => @order.id), notice: "Change request successfully sent."}
       else
         format.html { render :new }
       end

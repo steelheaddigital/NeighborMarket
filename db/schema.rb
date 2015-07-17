@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622121755) do
+ActiveRecord::Schema.define(version: 20150716114838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,14 @@ ActiveRecord::Schema.define(version: 20150622121755) do
   add_index "cart_items", ["cart_id"], name: "index_cart_items_on_cart_id", using: :btree
   add_index "cart_items", ["inventory_item_id"], name: "index_cart_items_on_inventory_item_id", using: :btree
   add_index "cart_items", ["order_id"], name: "index_cart_items_on_order_id", using: :btree
+
+  create_table "cart_items_payments", force: true do |t|
+    t.integer "payment_id"
+    t.integer "cart_item_id"
+  end
+
+  add_index "cart_items_payments", ["cart_item_id"], name: "index_cart_items_payments_on_cart_item_id", using: :btree
+  add_index "cart_items_payments", ["payment_id"], name: "index_cart_items_payments_on_payment_id", using: :btree
 
   create_table "carts", force: true do |t|
     t.integer  "user_id"
@@ -252,7 +260,7 @@ ActiveRecord::Schema.define(version: 20150622121755) do
   end
 
   create_table "user_in_person_settings", force: true do |t|
-    t.boolean "accept_in_person_payments", default: true
+    t.boolean "accept_in_person_payments", default: false
     t.text    "payment_instructions"
     t.integer "user_id"
   end

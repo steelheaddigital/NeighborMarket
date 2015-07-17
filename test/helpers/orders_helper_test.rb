@@ -40,7 +40,6 @@ class OrdersHelperTest < ActionView::TestCase
     assert_match("Your order will be available for pickup on 08/17/2012 at 11:03 AM at the following address:", result)
     assert_match("12345 Test Way", result)
     assert_match("Portland, OR 97218", result)
-
   end
   
   test "pickup instructions returns correct content when site is set to all modes and order is marked for deliver" do
@@ -56,5 +55,4 @@ class OrdersHelperTest < ActionView::TestCase
     assert_match("12345 Test St.", result)
     assert_match("Portland, Oregon 97218", result)
   end
-  
 end

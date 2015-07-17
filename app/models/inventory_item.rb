@@ -44,8 +44,10 @@ class InventoryItem < ActiveRecord::Base
   validates :quantity_available, :numericality => {:greater_than_or_equal_to => 0}
   validates :autopost_quantity, :numericality => {:greater_than_or_equal_to => 0}, :allow_nil => true
   validates :autopost_quantity, :presence => true, :if => :autopost?
+  validates :minimum, numericality: { greater_than: 1 }, allow_nil: true
   validate :ensure_current_order_cycle
   validate :validate_can_edit, :on => :update
+  validate :ensure_payment_processor_setup
   validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
   
   before_create :add_to_order_cycle
@@ -230,7 +232,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def send_order_modified_emails
-    self.current_cart_items.each do |item|
+    self.current_cart_items.each do |item|  
       BuyerMailer.delay.order_modified_mail(self.user, item.order)
     end
   end
@@ -240,6 +242,23 @@ class InventoryItem < ActiveRecord::Base
       item.order_cycles << order_cycle
       item.quantity_available = item.autopost_quantity
       item.save
+    end
+  end
+
+  def ensure_payment_processor_setup
+    payment_processor_settings = PaymentProcessorSetting.current_settings
+    if PaymentProcessorSetting.current_processor_type == 'InPerson'
+      errors.add(:base, 'Item cannot be saved. Payment Instructions are not configured. Please check your payment settings.') if user.user_in_person_setting.payment_instructions.blank?
+    else
+      if payment_processor_settings.allow_in_person_payments
+        if user.user_in_person_setting.accept_in_person_payments
+          errors.add(:base, 'Item cannot be saved. In person payment instructions are not configured. Please check your payment settings.') if user.user_in_person_setting.payment_instructions.blank?
+        else
+          errors.add(:base, 'Item cannot be saved. Payment processor is not configured. Please check your payment settings.') unless user.online_payment_processor_configured?
+        end
+      else
+        errors.add(:base, 'Item cannot be saved. Payment processor is not configured. Please check your payment settings.') unless user.online_payment_processor_configured?
+      end
     end
   end
   

@@ -23,7 +23,7 @@ class CartItemTest < ActiveSupport::TestCase
     assert !item.valid?
   end
   
-  test "updates inventory_item quantity availabe on destroy if item has order" do
+  test "updates inventory_item quantity availabe on destroy if item has order and refunds payments" do
     item = cart_items(:one)
     payment = payments(:one)
     mock_payment_processor = Minitest::Mock.new
@@ -107,5 +107,4 @@ class CartItemTest < ActiveSupport::TestCase
     
     assert !item.can_edit?
   end
-  
 end

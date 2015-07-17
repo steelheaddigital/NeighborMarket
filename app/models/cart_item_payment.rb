@@ -1,4 +1,3 @@
-<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -17,10 +16,8 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
-%>
 
-<h1>Payment Settings</h1>
-<% if PaymentProcessorSetting.current_settings.allow_in_person_payments && PaymentProcessorSetting.current_processor_type != 'InPerson' %>
-	<%= render 'user_in_person_settings/form', locals: {in_person_settings: @in_person_settings} %>
-<% end %>
-<%= render @settings_view_directory, locals: {settings: @settings} %>
+class CartItemPayment < ActiveRecord::Base
+  belongs_to :payment
+  belongs_to :cart_item
+end

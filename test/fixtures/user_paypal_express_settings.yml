@@ -2,6 +2,9 @@ one:
   user: approved_seller_user
   email_address: approved_seller_user@test.com
   account_type: BUSINESS
+  account_id: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
+  access_token: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
+  access_token_secret: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
 
 two:
   user: unapproved_seller_user

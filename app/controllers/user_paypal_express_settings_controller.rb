@@ -20,7 +20,7 @@
 class UserPaypalExpressSettingsController < ApplicationController
   include Settings
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_view_directory
   load_and_authorize_resource
 
   def create
@@ -31,7 +31,6 @@ class UserPaypalExpressSettingsController < ApplicationController
     if request_permissions_url
       redirect_to request_permissions_url
     else
-      @settings_view_directory = 'user_paypal_express_settings/form'
       render 'user_payment_settings/index', layout: 'layouts/seller'
     end
   end
@@ -39,19 +38,26 @@ class UserPaypalExpressSettingsController < ApplicationController
   def update
     @in_person_settings = current_user.user_in_person_setting
     @settings = UserPaypalExpressSetting.find(params[:id])
-    @settings.assign_attributes(params[:user_paypal_express_setting])
-    refund_permission_granted = @settings.permission_granted?('REFUND')
-    request_permissions_result = @settings.verify_account(!refund_permission_granted)
 
-    if request_permissions_result
-      if request_permissions_result.is_a? String
-        redirect_to request_permissions_result
+    if params['commit'] == 'Verify Account'
+      @settings.assign_attributes(params[:user_paypal_express_setting])
+      refund_permission_granted = @settings.permission_granted?('REFUND')
+      request_permissions_result = @settings.verify_account(!refund_permission_granted)
+      if request_permissions_result
+        if request_permissions_result.is_a? String
+          redirect_to request_permissions_result
+        else
+          redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully updated.'
+        end
       else
-        redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully updated'
+        render 'user_payment_settings/index', layout: 'layouts/seller'
       end
-    else
-      @settings_view_directory = 'user_paypal_express_settings/form'
-      render 'user_payment_settings/index', layout: 'layouts/seller'
+    elsif params['commit'] == 'Unlink Account'
+      if @settings.destroy
+        redirect_to user_payment_settings_path, notice: 'Your Paypal account was successfully unlinked.'
+      else
+        render 'user_payment_settings/index', layout: 'layouts/seller'
+      end
     end
   end
 
@@ -62,11 +68,13 @@ class UserPaypalExpressSettingsController < ApplicationController
     verifier = params['verification_code']
 
     if @settings.grant_permissions(request_token, verifier)
-      redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully confirmed'
+      redirect_to user_payment_settings_path, notice: 'Your Paypal account information was successfully verified.'
     else
-      @settings_view_directory = 'user_paypal_express_settings/form'
       render 'user_payment_settings/index', layout: 'layouts/seller'
     end
   end
   
+  def set_view_directory
+    @settings_view_directory = 'user_paypal_express_settings/form'
+  end
 end

@@ -21,21 +21,43 @@
 
 <div id ="Cart" class="container-fluid">
   <h2>Your Cart</h2>
+  <%if @cart.has_items? %>
     <%= form_for @cart, :url => checkout_path, :method => "POST" do |f| %>
-    <%= f.error_messages %>
-    <% if @cart.has_items_with_minimum? %>
-  	  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
-  	  	<%= contains_item_with_minimum_text("cart") %>
-  	  </p>
-    <%end%>
-	<div class="container-fluid">
-    	<%= render :partial => "cart/form", :locals => {:f => f} %>
-	    <div class="row">
-	      <div class="col-md-12">
-          <%= f.submit("Confirm order and purchase", :class => 'btn btn-primary inlineButton') %>
-          <%= f.submit("Continue Shopping", :class => 'btn btn-default inlineButton')%>
-	      </div>
-	    </div>
-	</div>
+      <%= f.error_messages %>
+      <% if @cart.has_items_with_minimum? %>
+    	  <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+    	  	<%= contains_item_with_minimum_text("cart") %>
+    	  </p>
+      <%end%>
+        <% if @cart.items_with_online_payment_only? && @cart.items_with_in_person_payment_only?%>
+          <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+            Some items in your cart only accept payment in person and some require online payment. You can pay online now for the items that accept online payment. For the items that only accept in person payment, you will need to have payment ready for each seller according to their payment instructions when you receive your items. 
+          </p>
+        <% elsif @cart.all_items_accept_online_payment? && @cart.all_items_accept_in_person_payment? %>
+          <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+            All items in your cart accept either online or in person payments. You can pay for your items online now or when you receive them. If you choose to pay when you receive your items you will need to have payment ready for each seller according to their payment instructions.
+          </p>
+        <% elsif !@cart.in_person_payment_only? && !@cart.all_items_accept_online_payment? && @cart.items_with_in_person_payment_only? %>
+          <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+            Some items in your cart require in person payment. You can pay online now for the items that accept online payment or you can choose to pay in person for all of your items. For in person payments, you will need to have payment ready for each seller according to their payment instructions.
+          </p>
+        <%end%>
+    	<div class="container-fluid">
+        	<%= render :partial => "cart/form", :locals => {:f => f} %>
+    	    <div class="row">
+    	      <div class="col-md-12">
+              <% if @cart.in_person_payment_only? %>
+                <%= f.submit("Confirm order and purchase", :class => 'btn btn-primary inlineButton') %>
+              <% elsif @cart.online_payment_only? || (!@cart.all_items_accept_in_person_payment? && @cart.all_items_accept_online_payment?) || (@cart.items_with_online_payment_only? && @cart.items_with_in_person_payment_only?)%>
+                <%= f.submit("Checkout and pay online", :class => 'btn btn-primary inlineButton') %>
+              <% else%>
+                <%= f.submit("Checkout and pay online", :class => 'btn btn-primary inlineButton') %>
+                <%= f.submit("Checkout and pay in person", :class => 'btn btn-primary inlineButton') %>
+              <% end %>
+              <%= f.submit("Continue Shopping", :class => 'btn btn-default inlineButton')%>
+    	      </div>
+    	    </div>
+    	</div>
     <% end %>
+  <% end %>
 </div>

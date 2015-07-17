@@ -178,12 +178,12 @@ class ManagementController < ApplicationController
     selected_previous_order_cycle = previous_order_cycles.find{|e| e.id == order_cycle.id}
     
     #Loop through the orders array passed in and update the delivered attribute for each
-    orders.each do |order|
-      cart_item = Order.find(order[1][:id])
-      if(order[1][:complete])
-        cart_item.update_attribute(:complete, true)
+    orders.each do |order_params|
+      order = Order.find(order_params[1][:id])
+      if(order_params[1][:complete])
+        order.update_attribute(:complete, true)
       else
-        cart_item.update_attribute(:complete, false)
+        order.update_attribute(:complete, false)
       end
     end
     

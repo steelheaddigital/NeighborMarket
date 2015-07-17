@@ -62,5 +62,16 @@ class CartTest < ActiveSupport::TestCase
     
     assert cart.invalid?
   end
+
+  test 'has_items? returns true if cart has items' do
+    cart = carts(:full)
+
+    assert cart.has_items?
+  end
   
+  test 'has_items? returns false if cart has no items' do
+    cart = Cart.new
+
+    assert !cart.has_items?
+  end
 end

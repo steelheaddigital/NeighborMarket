@@ -18,97 +18,104 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 %>
-
-<div class="container-fluid">
-	<div id="PastInventoryContainer" class="row collapse">
-		<%= form_tag add_past_inventory_seller_index_path, :id => 'AddPastInventoryItems' do %>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					  <div id="PreviousSellerInventoryRow">
-						  <div class="table-responsive">
-							  <table class="table table-bordered">
-							    <thead>
-							      <tr>
-									  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
-									  <th>Name</th>
-							          <th>Top Level Category</th>
-							          <th>Second Level Category</th>
-							          <th>Price</th>
-							          <th>Quantity</th>
-									  <th></th>
-							      </tr>
-							    </thead>
-							    <tbody>
-							      <%@all_inventory.each_with_index do |item, index|%>
-							        <tr>
-									  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
-									  <td><%= item_name(item)%></td>
-							          <td><%= item.top_level_category.name%></td>
-							          <td><%= item.second_level_category.name%></td>
-							          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-							          <td><%= item.quantity_available%></td>
-									  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger"%></td>
-							        </tr>
-							      <%end%>
-							    </tbody>
-							  </table>
-					  		</div>
+<% if payment_processor_message(current_user) %>
+	<div class="alert alert-info">
+		<%= payment_processor_message(current_user) %>
+	</div>
+<%end%>
+<% if allow_adding_items(current_user) %>
+	<div class="container-fluid">
+		<div id="PastInventoryContainer" class="row collapse">
+			<%= form_tag add_past_inventory_seller_index_path, :id => 'AddPastInventoryItems' do %>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12">
+						  <div id="PreviousSellerInventoryRow">
+							  <div class="table-responsive">
+								  <table class="table table-bordered">
+								    <thead>
+								      <tr>
+										  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
+										  <th>Name</th>
+								          <th>Top Level Category</th>
+								          <th>Second Level Category</th>
+								          <th>Price</th>
+								          <th>Quantity</th>
+										  <th></th>
+								      </tr>
+								    </thead>
+								    <tbody>
+								      <%@all_inventory.each_with_index do |item, index|%>
+								        <tr>
+										  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
+										  <td><%= item_name(item)%></td>
+								          <td><%= item.top_level_category.name%></td>
+								          <td><%= item.second_level_category.name%></td>
+								          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+								          <td><%= item.quantity_available%></td>
+										  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger"%></td>
+								        </tr>
+								      <%end%>
+								    </tbody>
+								  </table>
+						  		</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" id="PreviousSellerInventorySubmitRow">
+						<div class="col-md-12">
+							<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
 						</div>
 					</div>
 				</div>
-				<div class="row" id="PreviousSellerInventorySubmitRow">
-					<div class="col-md-12">
-						<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
-					</div>
-				</div>
+			<% end %>
+		</div>
+		<div class="row">
+			<div id="PastInventortyToggleContainer">
+				<a href="#PastInventoryContainer" data-toggle="collapse" class="btn btn-primary">Add Past Inventory Items</a>
 			</div>
-		<% end %>
-	</div>
-	<div class="row">
-		<div id="PastInventortyToggleContainer">
-			<a href="#PastInventoryContainer" data-toggle="collapse" class="btn btn-primary">Add Past Inventory Items</a>
+		</div>
+		<div class="row">
+		  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn btn-default", :method => "get"} %>
+		  <div class="table-responsive">
+			  <table class="table table-bordered">
+			    <thead>
+			      <tr>
+					  <th>Name</th>
+			          <th>Top Level Category</th>
+			          <th>Second Level Category</th>
+			          <th>Price</th>
+			          <th>Quantity</th>
+			          <th></th>
+			          <th></th>
+					  <%if SiteSetting.instance.facebook_enabled%>
+					  	<th></th>
+					  <%end%>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <%@current_inventory.each do |item|%>
+			        <tr>
+					  <td><%= item_name(item)%></td>
+			          <td><%= item.top_level_category.name%></td>
+			          <td><%= item.second_level_category.name%></td>
+			          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+			          <td><%= item.quantity_available%></td>
+			          <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton inventoryItemButton"}, :method => "get", :class => "btn btn-default inventoryItemButton"} %></td>
+			          <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger inventoryItemButton"} %></td>
+					  <%if SiteSetting.instance.facebook_enabled%>
+					  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
+					  <%end%>
+			        </tr>
+			      <%end%>
+			    </tbody>
+			  </table>
+	  	  </div>
+		  <%= will_paginate @current_inventory %>
 		</div>
 	</div>
-	<div class="row">
-	  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn btn-default", :method => "get"} %>
-	  <div class="table-responsive">
-		  <table class="table table-bordered">
-		    <thead>
-		      <tr>
-				  <th>Name</th>
-		          <th>Top Level Category</th>
-		          <th>Second Level Category</th>
-		          <th>Price</th>
-		          <th>Quantity</th>
-		          <th></th>
-		          <th></th>
-				  <%if SiteSetting.instance.facebook_enabled%>
-				  	<th></th>
-				  <%end%>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      <%@current_inventory.each do |item|%>
-		        <tr>
-				  <td><%= item_name(item)%></td>
-		          <td><%= item.top_level_category.name%></td>
-		          <td><%= item.second_level_category.name%></td>
-		          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-		          <td><%= item.quantity_available%></td>
-		          <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton inventoryItemButton"}, :method => "get", :class => "btn btn-default inventoryItemButton"} %></td>
-		          <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger inventoryItemButton"} %></td>
-				  <%if SiteSetting.instance.facebook_enabled%>
-				  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
-				  <%end%>
-		        </tr>
-		      <%end%>
-		    </tbody>
-		  </table>
-  	  </div>
-	  <%= will_paginate @current_inventory %>
-	</div>
-</div>
-<% content_for :scripts do %>
-	<%=facebook%>
+	<% content_for :scripts do %>
+		<%=facebook%>
+	<%end%>
 <%end%>
+

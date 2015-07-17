@@ -51,8 +51,8 @@ class SellerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [seller.email], sent.to
     assert_equal "Your Test Neighbor Market Seller Account Is Approved", sent.subject
-    assert_match("Congratulations!  Your Seller account at Test Neighbor Market has been approved.", sent.body.to_s) 
-    assert_match("<a href=\"http://test.neighbormarket.org/users/sign_in\">Log in</a>", sent.body.to_s)
+    assert_match("Congratulations! Your Seller account at Test Neighbor Market has been approved.", sent.body.to_s) 
+    assert_match("<a href=\"http://test.neighbormarket.org/users/sign_in\">log in</a>", sent.body.to_s)
   end
   
   test "order cycle end mail when orders are not empty" do

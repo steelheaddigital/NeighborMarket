@@ -32,10 +32,10 @@
 		    </div>
 		    <p style="padding-top: 15px;">
 	            <% if @current_order_id %>
-	                <%= link_to('Edit My Order', edit_order_path(@current_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
+	                <%= link_to('My Order', order_path(@current_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
 	            <% end %>
 	            <% if @completed_order_id %>
-	                <%= link_to('Edit My Order', order_path(@completed_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
+	                <%= link_to('My Order', order_path(@completed_order_id), :class => "btn btn-primary", :style => "width: 150px;") %>
 	            <% end %>
 		    </p>
 		  </div>

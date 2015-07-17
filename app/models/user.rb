@@ -318,5 +318,20 @@ class User < ActiveRecord::Base
   def current_order
     orders.find_by(order_cycle_id: OrderCycle.current_cycle_id, canceled: false)
   end
+
+  def create_user_in_person_setting
+    build_user_in_person_setting
+    user_in_person_setting.accept_in_person_payments = true if PaymentProcessorSetting.current_processor_type == 'InPerson'
+    user_in_person_setting.save(validate: false)
+  end
+
+  def online_payment_processor_configured?
+    if PaymentProcessorSetting.current_processor_type != 'InPerson'
+      user_setting = eval("User#{PaymentProcessorSetting.current_processor_type}Setting".underscore)
+      !user_setting.nil? && user_setting.configuration_complete?
+    else
+      false
+    end
+  end
   
 end

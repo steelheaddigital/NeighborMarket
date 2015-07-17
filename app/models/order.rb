@@ -20,6 +20,7 @@
 class Order < ActiveRecord::Base
   include Totalable
   include PaymentProcessor
+  include Payable
   
   has_many :cart_items, dependent: :destroy, autosave: true
   belongs_to :user
@@ -28,14 +29,15 @@ class Order < ActiveRecord::Base
   
   accepts_nested_attributes_for :cart_items
   attr_accessible :cart_items_attributes, :deliver
-  attr_accessor :current_user
+  attr_accessor :current_user, :paying_online
   
   validate :ensure_current_order_cycle
   
   before_validation :set_cart_items_user
 
   before_save :update_order_cycle_id, 
-              :update_seller_inventory_and_process_refunds
+              :update_seller_inventory_and_process_refunds,
+              :set_in_person_payments_completed
   after_commit :disassociate_cart_items_from_cart
   
   scope :active, -> { where(canceled: false) }
@@ -73,7 +75,18 @@ class Order < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       begin
         save
-        payment_processor.purchase(self, cart, params)
+        if PaymentProcessorSetting.current_processor_type != 'InPerson' && (cart.items_with_in_person_payment_only? || !paid_online?)
+          #using online payment processor but some or all payments are in person
+          in_person_redirect_url = in_person_payment_processor.purchase(self, cart, params)
+          if paid_online? 
+            payment_processor.purchase(self, cart, params)
+          else
+            in_person_redirect_url
+          end
+        else
+          #call the configured payment processor, could be online or in-person
+          payment_processor.purchase(self, cart, params)
+        end
       rescue PaymentProcessor::PaymentError => e
         errors.add(:base, e.message)
         raise ActiveRecord::Rollback, e.message
@@ -122,6 +135,14 @@ class Order < ActiveRecord::Base
     end
   rescue ActiveRecord::RecordNotSaved
     false
+  end
+
+  def paid_online?
+    paying_online == 'true' || payments.any? { |p| p.processor_type != 'InPerson' }
+  end
+
+  def paid_in_person?
+    payments.any? { |p| p.processor_type == 'InPerson' }
   end
 
   private
@@ -185,4 +206,12 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def set_in_person_payments_completed
+    return unless complete_changed?
+    if complete_was == false && complete == true
+      payments.where(processor_type: 'InPerson').update_all(status: 'Completed', payment_date: DateTime.now)
+    else
+      payments.where(processor_type: 'InPerson').update_all(status: 'Pending', payment_date: nil)
+    end
+  end
 end

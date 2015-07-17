@@ -40,32 +40,31 @@ class OrderTest < ActiveSupport::TestCase
   end
   
   test "total_price returns correct result" do
-      order = Order.new
-      cart = carts(:full)
-      order.add_inventory_items_from_cart(cart)
-      result = order.total_price
-      assert_equal(result.to_s, "200.0")
+    order = Order.new
+    cart = carts(:full)
+    order.add_inventory_items_from_cart(cart)
+    result = order.total_price
+    assert_equal(result.to_s, "200.0")
   end
   
   test "total_price_by_seller returns correct result" do
-      order = Order.new
-      cart = carts(:buyer_not_current)
-      seller = users(:approved_seller_user)
-      order.add_inventory_items_from_cart(cart)
-      result = order.total_price_by_seller(seller.id)
-      assert_equal(result.to_s, "100.0")
+    order = Order.new
+    cart = carts(:buyer_not_current)
+    seller = users(:approved_seller_user)
+    order.add_inventory_items_from_cart(cart)
+    result = order.total_price_by_seller(seller.id)
+    assert_equal(result.to_s, "100.0")
   end
   
   test "sub_totals returns correct result" do
-      order = Order.new
-      cart = carts(:full)
-      order.add_inventory_items_from_cart(cart)
-      result = order.sub_totals
-      assert_equal(result.first[1].to_s, "200.0")
+    order = Order.new
+    cart = carts(:full)
+    order.add_inventory_items_from_cart(cart)
+    result = order.sub_totals
+    assert_equal(result.first[1].to_s, "200.0")
   end
   
   test "seller inventory changed by difference in quantity when associated cart item changed" do
-    
     order = orders(:current)
     order.current_user = users(:manager_user)
     cart_item_id = order.cart_items.first.id
@@ -195,6 +194,7 @@ class OrderTest < ActiveSupport::TestCase
 
   test 'purchase calls payment_processor.purchase and saves order and returns url if successfully saved' do
     order = Order.new
+    order.paying_online = 'true'
     cart = Cart.new
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :purchase, 'http://processor-path', [order, cart, {}]
@@ -209,6 +209,7 @@ class OrderTest < ActiveSupport::TestCase
 
   test 'purchase returns false if order is not successfully saved' do
     order = Order.new
+    order.paying_online = 'true'
     cart = Cart.new
     save = -> { fail ActiveRecord::RecordNotSaved, 'Record not saved' }
     order.stub :save, save do
@@ -219,6 +220,7 @@ class OrderTest < ActiveSupport::TestCase
 
   test 'adds errors if payment processor purchase fails and rolls back save' do
     order = Order.new
+    order.paying_online = 'true'
     cart = Cart.new
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :purchase, nil do
@@ -226,10 +228,67 @@ class OrderTest < ActiveSupport::TestCase
     end
     assert_no_difference 'Order.count' do 
       order.stub :payment_processor, mock_payment_processor do
-        result = order.purchase({}, cart)
+        result = order.purchase(cart, {})
         assert_equal nil, result
         assert_equal order.errors.full_messages[0], 'Oh No! Payment Fails'
       end
     end
+  end
+
+  test 'purchase calls in person payment processor if using online payment processor and order has cart has items with in person payment only' do
+    cart = carts(:buyer_not_current)
+    order = Order.new
+    order.paying_online = 'true'
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, 'http://processor-path', [order, cart, {}]
+    mock_in_person_payment_processor = Minitest::Mock.new
+    mock_in_person_payment_processor.expect :purchase, 'http://in-person-processor-path', [order, cart, {}]
+    assert_difference 'Order.count' do 
+      order.stub :payment_processor, mock_payment_processor do
+        order.stub :in_person_payment_processor, mock_in_person_payment_processor do
+          result = order.purchase(cart, {})
+          assert_equal 'http://processor-path', result
+          mock_payment_processor.verify
+          mock_in_person_payment_processor.verify
+        end
+      end
+    end
+  end
+
+  test 'purchase calls in person payment processor if using online payment processor and does not call online processor if all payments made in person' do
+    cart = carts(:buyer_not_current)
+    order = Order.new
+    mock_in_person_payment_processor = Minitest::Mock.new
+    mock_in_person_payment_processor.expect :purchase, 'http://in-person-processor-path', [order, cart, {}]
+    assert_difference 'Order.count' do 
+      order.stub :in_person_payment_processor, mock_in_person_payment_processor do
+        result = order.purchase(cart, {})
+        assert_equal 'http://in-person-processor-path', result
+        mock_in_person_payment_processor.verify
+      end
+    end
+  end
+
+  test 'sets in person payments to completed when saved as complete' do
+    order = orders(:current)
+
+    order.update_attribute(:complete, true)
+    in_person_payment = Payment.find(2)
+    online_payment = Payment.find(1)
+
+    assert_equal 'Completed', in_person_payment.status
+    assert_nil online_payment.status
+  end
+
+  test 'sets in person payments to pending when saved as not complete' do
+    order = orders(:current)
+
+    order.update_attribute(:complete, true)
+    order.update_attribute(:complete, false)
+    in_person_payment = Payment.find(2)
+    online_payment = Payment.find(1)
+
+    assert_equal 'Pending', in_person_payment.status
+    assert_nil online_payment.status
   end
 end

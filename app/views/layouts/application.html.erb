@@ -73,7 +73,7 @@
 								<li><%= link_to('Sell', seller_index_path) %></li>
 							<% end %>
 							<% if @current_order_id %>
-								<li><%= link_to('Current Order', edit_order_path(@current_order_id)) %></li>
+								<li><%= link_to('Current Order', order_path(@current_order_id)) %></li>
 							<% end %>
 							<% if @completed_order_id %>
 								<li><%= link_to('Current Order', order_path(@completed_order_id)) %></li>

@@ -5,7 +5,7 @@ class OrderTest < ActiveSupport::TestCase
     payment = payments(:one)
     payment.refunds.create(amount: 5.00)
 
-    assert_equal 5.00, payment.net_total
+    assert_equal 95.00, payment.net_total
   end
 
   test 'refund calls payment_processor refund method with correct parameters' do
@@ -24,7 +24,7 @@ class OrderTest < ActiveSupport::TestCase
     payment = payments(:one)
     payment.refunds.create(amount: 4.00)
     payment_processor = Minitest::Mock.new
-    payment_processor.expect :refund, Payment.new, [payment, 6.00]
+    payment_processor.expect :refund, Payment.new, [payment, 96.00]
 
     payment.stub :payment_processor, payment_processor do
       payment.refund_all

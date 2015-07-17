@@ -37,12 +37,13 @@
     <table border=1 style="border-collapse: collapse;">
         <thead>
           <tr>
-              <th>Item</th>
-              <th>Quantity</th>
-              <th>Price</th>
-			  <%if @has_items_with_minimum %>
-			  	<th>Minimum</th>
-			  <%end%>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Payment Status</th>
+    			  <%if @has_items_with_minimum %>
+    			  	<th>Minimum</th>
+    			  <%end%>
           </tr>
         </thead>
         <tbody>
@@ -51,9 +52,10 @@
               <td><%= item_name(item.inventory_item)%></td>
               <td style="text-align: center;"><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"%></td>
               <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
-			  <%if @has_items_with_minimum %>
-			  	<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
-			  <%end%>
+              <td><%= item_payment_status_message(item) %></td>
+      			  <%if @has_items_with_minimum %>
+      			  	<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
+      			  <%end%>
             </tr>
           <%end%>
         </tbody>

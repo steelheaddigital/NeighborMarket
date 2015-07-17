@@ -54,6 +54,64 @@ class InventoryItemsTest < ActiveSupport::TestCase
     assert !@item.valid?
   end
 
+  test "should not validate item with minimum less than 2" do
+    @item.minimum = 1
+    
+    assert !@item.valid?
+  end
+
+  test 'should not validate if in person payment processor and user does not have payment instructions' do
+    @item.user.user_in_person_setting.payment_instructions = nil
+    PaymentProcessorSetting.stub :current_processor_type, 'InPerson' do
+      assert @item.invalid?
+      assert_equal @item.errors.full_messages.first, 'Item cannot be saved. Payment Instructions are not configured. Please check your payment settings.'
+    end
+  end
+
+  test 'should not validate if online payment processor and user accepts in person payments but does not have payment instructions' do
+    @item.user.user_in_person_setting.payment_instructions = nil
+    @item.user.user_in_person_setting.accept_in_person_payments = true
+    current_settings = Minitest::Mock.new
+    current_settings.expect :processor_type, 'Online'
+    current_settings.expect :allow_in_person_payments, true
+    PaymentProcessorSetting.stub :current_settings, current_settings do
+      PaymentProcessorSetting.stub :current_processor_type, 'Online' do
+        assert @item.invalid?
+        assert_equal @item.errors.full_messages.first, 'Item cannot be saved. In person payment instructions are not configured. Please check your payment settings.'
+      end
+    end
+  end
+
+  test 'should not validate if online payment processor and user does not accept in person payments and payment processor is not configured' do
+    @item.user.user_in_person_setting.payment_instructions = nil
+    @item.user.user_in_person_setting.accept_in_person_payments = false
+    current_settings = Minitest::Mock.new
+    current_settings.expect :allow_in_person_payments, true
+    @item.user.stub :online_payment_processor_configured?, false do
+      PaymentProcessorSetting.stub :current_processor_type, 'Online' do
+        PaymentProcessorSetting.stub :current_settings, current_settings do
+          assert @item.invalid?
+          assert_equal @item.errors.full_messages.first, 'Item cannot be saved. Payment processor is not configured. Please check your payment settings.'
+        end
+      end
+    end
+  end
+
+  test 'should not validate if online payment processor and payment processor is not configured' do
+    @item.user.user_in_person_setting.payment_instructions = nil
+    @item.user.user_in_person_setting.accept_in_person_payments = false
+    current_settings = Minitest::Mock.new
+    current_settings.expect :allow_in_person_payments, false
+    @item.user.stub :online_payment_processor_configured?, false do
+      PaymentProcessorSetting.stub :current_processor_type, 'Online' do
+        PaymentProcessorSetting.stub :current_settings, current_settings do
+          assert @item.invalid?
+          assert_equal @item.errors.full_messages.first, 'Item cannot be saved. Payment processor is not configured. Please check your payment settings.'
+        end
+      end
+    end
+  end
+
   test "should not allow destroy if item is in cart" do
     assert !@item.destroy
   end
@@ -61,7 +119,7 @@ class InventoryItemsTest < ActiveSupport::TestCase
   test "should not allow update if price is changed and item is in current cycle and user is not manager" do
    @item.update_attributes("price" => 50)
    
-   assert !@item.valid?
+   assert @item.invalid?
   end
 
   test "should allow update if quantity_available is changed" do
@@ -131,7 +189,8 @@ class InventoryItemsTest < ActiveSupport::TestCase
    order_cycles(:current).destroy
    top_level_category = top_level_categories(:vegetable)
    second_level_category = second_level_categories(:carrot)
-   inventory_item = InventoryItem.new({ :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"})
+   user = users(:approved_seller_user)
+   inventory_item = user.inventory_items.new({ :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"})
    
    assert inventory_item.valid?
    assert_difference "InventoryItem.count" do
@@ -145,7 +204,8 @@ class InventoryItemsTest < ActiveSupport::TestCase
    order_cycles(:not_current).destroy
    top_level_category = top_level_categories(:vegetable)
    second_level_category = second_level_categories(:carrot)
-   inventory_item = InventoryItem.new({ :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"})
+   user = users(:approved_seller_user)
+   inventory_item = user.inventory_items.new({ :top_level_category_id => top_level_category.id, :second_level_category_id => second_level_category.id, :name => "test", :price => "10.00", :price_unit => "each", :quantity_available => "10", :description => "test"})
 
    assert !inventory_item.valid?
    assert_no_difference "InventoryItem.count" do

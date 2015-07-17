@@ -25,6 +25,7 @@ class Payment < ActiveRecord::Base
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
   has_many :refunds, class_name: 'Payment', foreign_key: 'refunded_payment_id'
   belongs_to :refunded_payment, class_name: 'Payment'
+  has_and_belongs_to_many :cart_items
 
   attr_accessible :transaction_id, :amount, :fee, :status, :payment_date, :receiver_id, :sender_id, :order_id, :processor_type, :payment_type
 
@@ -33,7 +34,7 @@ class Payment < ActiveRecord::Base
   end
 
   def refund_all
-    refund(net_total)
+    refund(net_total) if net_total > 0
   end
 
   def net_total

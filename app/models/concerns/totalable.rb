@@ -25,6 +25,14 @@ module Totalable
     #if the minimum purchase quantity for the inventory item is not reached
     cart_items.select { |cart_item| cart_item.minimum_reached_at_order_cycle_end == true }
   end
+
+  def online_payment_cart_items
+    cart_items.select { |cart_item| cart_item.minimum_reached_at_order_cycle_end == true && cart_item.inventory_item.user.online_payment_processor_configured? == true }
+  end
+
+  def in_person_payment_cart_items
+    cart_items.select { |cart_item| cart_item.minimum_reached_at_order_cycle_end == true && cart_item.inventory_item.user.online_payment_processor_configured? == false }
+  end
   
   def total_price
     cart_items_where_order_cycle_minimum_reached.to_a.sum(&:total_price)
@@ -33,10 +41,36 @@ module Totalable
   def total_price_by_seller(seller_id)
     cart_items_where_order_cycle_minimum_reached.select { |item| item.inventory_item.user_id == seller_id }.sum(&:total_price)
   end
+
+  def online_payment_total
+    online_payment_cart_items.to_a.sum(&:total_price)
+  end
   
+  def in_person_payment_total
+    in_person_payment_cart_items.to_a.sum(&:total_price)
+  end
+
   def sub_totals
     sub_total = {}
     cart_items_where_order_cycle_minimum_reached.group_by { |item| item.inventory_item.user.id }.each do |key, value| 
+      total = value.map(&:total_price).reduce(:+)
+      sub_total[key] = total 
+    end
+    sub_total
+  end
+
+  def online_payment_sub_totals
+    sub_total = {}
+    online_payment_cart_items.group_by { |item| item.inventory_item.user.id }.each do |key, value| 
+      total = value.map(&:total_price).reduce(:+)
+      sub_total[key] = total 
+    end
+    sub_total
+  end
+
+  def in_person_payment_sub_totals
+    sub_total = {}
+    in_person_payment_cart_items.group_by { |item| item.inventory_item.user.id }.each do |key, value| 
       total = value.map(&:total_price).reduce(:+)
       sub_total[key] = total 
     end

@@ -26,7 +26,7 @@
   <% if @current_order_id %>
     <h4>*Includes items previously added to your order for this cycle</h4>
   <%end%>
-    <%= form_for @order, url: orders_path do |f|%>
+    <%= form_for @order, url: orders_path, method: 'POST' do |f|%>
       <%= f.error_messages %>
 	  <% if @site_settings.delivery %>
 			  	<div class="row" style="margin-bottom: 15px;">

@@ -29,6 +29,10 @@ class UserPaypalExpressSetting < ActiveRecord::Base
 
   attr_accessible :email_address
 
+  def configuration_complete?
+    account_confirmed?
+  end
+
   def verify_account(request_permissions)
     ActiveRecord::Base.transaction do
       begin

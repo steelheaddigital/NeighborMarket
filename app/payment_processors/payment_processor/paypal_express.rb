@@ -57,7 +57,7 @@ module PaymentProcessor
 
       response = gateway.setup(
         payment_requests,
-        new_order_url(host: @host),
+        new_order_url(paying_online: true, host: @host),
         cart_index_url(host: @host),
         paypal_options
       )
@@ -76,7 +76,8 @@ module PaymentProcessor
 
       response.payment_info.each do |payment|
         seller = UserPaypalExpressSetting.find_by(email_address: payment.seller_id).user
-        order.payments << Payment.new(
+        cart_items = order.cart_items.joins(:inventory_item).where('inventory_items.user_id = ?', seller.id)
+        new_payment = Payment.new(
           receiver_id: seller.id, 
           sender_id: order.user.id, 
           amount: payment.amount.total,
@@ -87,6 +88,8 @@ module PaymentProcessor
           processor_type: 'PaypalExpress',
           payment_type: 'pay'
         )
+        new_payment.cart_items = cart_items
+        order.payments << new_payment
       end
 
       finish_order_path
@@ -100,8 +103,6 @@ module PaymentProcessor
       else
         gateway_config = @config.clone
         gateway_config[:subject] = User.find(payment.receiver_id).user_paypal_express_setting.email_address
-
-        Rails.logger.debug "SUBJECT: #{gateway_config[:subject]}"
         gateway = Paypal::Express::Request.new(gateway_config)
       end
 
@@ -195,8 +196,9 @@ module PaymentProcessor
 
     def create_payment_requests(cart)
       payment_requests = []
-      cart.sub_totals.each_with_index do |sub_total, index| 
-        seller = User.find(sub_total[0])
+      cart.online_payment_sub_totals.each_with_index do |sub_total, index|
+        seller_user_id = sub_total[0]
+        seller = User.find(seller_user_id)
         request = Paypal::Payment::Request.new(
           currency_code: :USD,
           amount: sub_total[1],

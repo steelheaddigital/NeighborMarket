@@ -70,5 +70,20 @@ module OrdersHelper
     
     html.html_safe
   end
+
+  def payment_message(order)
+    if !order.paid_online?
+      '<strong>*Please note the payment instructions for each item. You will need to have payment available when you receive your goods.</strong>'.html_safe
+    elsif order.items_with_in_person_payment_only?
+      '<strong>*Some items in your order require payment on reciept of the goods. Please note the payment instructions for these items below. You will need to have payment available when you receive your goods.</strong>'.html_safe
+    end
+  end
   
+  def show_payment_instructions(order)
+    show_instructions = false
+    if !order.online_payment_only? || (order.all_items_accept_in_person_payment? && !order.all_items_accept_online_payment?) || (!order.items_with_online_payment_only? && !order.items_with_in_person_payment_only?)
+      show_instructions = true
+    end
+    show_instructions
+  end
 end

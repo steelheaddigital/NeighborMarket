@@ -31,7 +31,29 @@ class CartController < ApplicationController
   end
 
   def checkout
-    redirect_to payment_processor.checkout(current_cart)
+    if !user_signed_in? || !current_user.buyer?
+      render :not_buyer
+      return
+    end
+
+    @cart = current_cart
+    if @cart.update_attributes(params[:cart])
+      if params[:commit] == 'Continue Shopping'
+        last_search_path = session[:last_search_path]
+        if last_search_path.nil?
+          redirect_to root_path
+        else
+          session[:last_search_path] = nil
+          redirect_to last_search_path
+        end
+      elsif params[:commit] == 'Checkout and pay online'
+        redirect_to payment_processor.checkout(current_cart)
+      else
+        redirect_to new_order_path
+      end
+    else
+      redirect_to :index
+    end
   end
   
   def item_count

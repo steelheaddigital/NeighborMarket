@@ -22,11 +22,13 @@
 	<div class="container-fluid">
 		<%= f.error_messages %>
 		<div class="row">
+			<% if PaymentProcessorSetting.current_processor_type != 'InPerson' %>
+			  	<div class="col-md-12">
+			  		<%= f.check_box :accept_in_person_payments, label: 'Accept in person payments' %>
+			  	</div>
+			<% end %>
 		  	<div class="col-md-12">
-		  		<%= f.check_box :accept_in_person_payments, label: 'Accept in-person payments' %>
-		  	</div>
-		  	<div class="col-md-12">
-		  		<%= f.text_area :payment_instructions %>
+		  		<%= f.text_area :payment_instructions, label: 'In person payment instructions' %>
 		  	</div>
 		  	<div class="col-md-12">
 		  		<%= f.submit "Save Settings", {:class => 'btn btn-primary'} %>
