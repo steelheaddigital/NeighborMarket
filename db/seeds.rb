@@ -231,8 +231,3 @@ if PaymentProcessorSetting.first.nil?
   setting = PaymentProcessorSetting.new
   setting.save(validate: false)
 end
-
-if PaypalAdaptiveSetting.first.nil?
-  setting = PaypalAdaptiveSetting.new
-  setting.save(validate: false)
-end
