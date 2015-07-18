@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '4.1.10'
 gem 'pg', '~> 0.18.1'
-gem 'unicorn', '~> 4.8.3'
+gem 'puma', '~> 2.12.2'
 
 group :test do
   gem 'minitest-focus'

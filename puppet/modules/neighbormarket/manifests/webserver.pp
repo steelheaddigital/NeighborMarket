@@ -32,7 +32,7 @@ class neighbormarket::webserver (
   nginx::resource::upstream { 'neighbormarket_server':
 	  ensure  => present,
 	  members => [
-	    'unix:/tmp/unicorn.sock'
+	    'unix:/tmp/neighbormarket.sock'
 	  ],
   }
 
