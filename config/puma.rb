@@ -4,8 +4,7 @@ threads threads_count, threads_count
 
 preload_app!
 
-rackup      DefaultRackup
-environment ENV['RACK_ENV'] || 'development'
+rackup DefaultRackup
 
 on_worker_boot do
   ActiveRecord::Base.establish_connection

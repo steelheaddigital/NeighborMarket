@@ -29,6 +29,7 @@
 				<div id="PaypalExpressSettings" class="payment-processor-setting-container <%= 'hidden' unless @processor_settings.processor_type == 'PaypalExpress' %>">
 					<%= f.fields_for :paypal_express_setting do |ff| %>
 						<%= ff.check_box :allow_in_person_payments, label: 'Allow in-person payments' %>
+						<%= ff.select :mode, [['Test', 'Test'], ['Live', 'Live']] %>
 						<%= ff.text_field :username, label: 'Username' %>
 						<%= ff.password_field :password, label: 'Password' %>
 						<%= ff.text_field :api_signature, label: 'API signature' %>

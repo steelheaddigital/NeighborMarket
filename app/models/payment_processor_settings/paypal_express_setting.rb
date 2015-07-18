@@ -22,7 +22,7 @@ class PaypalExpressSetting < ActiveRecord::Base
 
   crypt_keeper :password, :api_signature, :app_id, encryptor: :aes_new, key: "#{Rails.application.secrets.secret_key_base}", salt: "#{Rails.application.secrets.secret_key_salt}"
 
-  attr_accessible :username, :password, :api_signature, :app_id, :allow_in_person_payments
+  attr_accessible :username, :password, :api_signature, :app_id, :allow_in_person_payments, :mode
 
   validates :password, presence: true, if: -> { password_was.nil? }
   validates :username,

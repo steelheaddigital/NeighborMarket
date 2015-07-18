@@ -34,9 +34,19 @@ module PaymentProcessor
         username: @settings.username,
         password: @settings.password,
         signature: @settings.api_signature,
-        app_id: @settings.app_id,
-        mode: Rails.env == 'production' ? 'live' : 'sandbox'
+        app_id: @settings.app_id
       }
+
+      case @settings.mode
+      when 'Test'
+        @config[:mode] = 'sandbox'
+        @config[:app_id] = 'APP-80W284485P519543T'
+        Paypal.sandbox!
+      when 'Live'
+        @config[:mode] = 'live'
+      end
+
+      Rails.logger.debug "CRED: #{@config.inspect}"
 
       #allow a mock gateway instance to be passed in to the constructor for testing
       self.gateway = args.key?(:gateway) ? args[:gateway] : Paypal::Express::Request.new(@config)

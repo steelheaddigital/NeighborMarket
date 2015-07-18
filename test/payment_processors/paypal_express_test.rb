@@ -9,6 +9,7 @@ class PaypalExpressTest < ActiveSupport::TestCase
     processor_settings.expect :password, 'password'
     processor_settings.expect :api_signature, 'api_signature'
     processor_settings.expect :app_id, 'app_id'
+    processor_settings.expect :mode, 'Test'
     @processor_settings = processor_settings
   end
 

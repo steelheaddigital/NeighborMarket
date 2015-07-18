@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716114838) do
+ActiveRecord::Schema.define(version: 20150718152116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,7 @@ ActiveRecord::Schema.define(version: 20150716114838) do
     t.text    "api_signature"
     t.text    "app_id"
     t.integer "payment_processor_setting_id", default: 1
+    t.string  "mode",                         default: "Test"
   end
 
   create_table "price_units", force: true do |t|
