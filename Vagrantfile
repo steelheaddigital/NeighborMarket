@@ -102,10 +102,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.ssh.private_key_path = '~/.ssh/neighbormarket'
       override.vm.box = 'digital_ocean'
       override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
-      provider.client_id = ''
-      provider.api_key = ''
-      provider.image = '14.04 x32'
-      provider.region = "San Francisco 1"
+      provider.token = ''
+      provider.image = 'ubuntu-14-04-x32'
+      provider.region = "sfo1"
       provider.ssh_key_name = "neighbormarket"
     end
   end
@@ -117,10 +116,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.ssh.private_key_path = '~/.ssh/neighbormarket'
       override.vm.box = 'digital_ocean'
       override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
-      provider.client_id = ''
-      provider.api_key = ''
-      provider.image = '14.04 x32'
-      provider.region = "San Francisco 1"
+      provider.token = ''
+      provider.image = 'ubuntu-14-04-x32'
+      provider.region = "sfo1"
       provider.ssh_key_name = "neighbormarket"
     end
   end

@@ -15,7 +15,7 @@ node 'development.neighbormarket.local' {
   }
 }
 
-node 'demo.neighbormarket.org' {
+node 'staging.mysite.com' {
   class { 'neighbormarket':
     hostname         => $fqdn,
     environment      => 'production',
@@ -32,7 +32,7 @@ node 'demo.neighbormarket.org' {
   }
 }
 
-node 'production.neighbormarket.org' {
+node 'production.mysite.com' {
   class { 'neighbormarket':
     hostname         => $fqdn,
     environment      => 'production',
