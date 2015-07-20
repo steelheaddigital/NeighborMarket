@@ -1,4 +1,6 @@
 set :branch, 'master'
+set :rails_env, 'production'
+set :host_name, 'production.mysite.org'
 
 # Simple Role Syntax
 # ==================
@@ -6,10 +8,9 @@ set :branch, 'master'
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-role :app, %w{production.neighbormarket.org}
-role :web, %w{production.neighbormarket.org}
-role :db,  %w{production.neighbormarket.org}
-
+role :app, "#{fetch(:host_name)}"
+role :web, "#{fetch(:host_name)}"
+role :db,  "#{fetch(:host_name)}"
 
 # Extended Server Syntax
 # ======================
@@ -17,8 +18,7 @@ role :db,  %w{production.neighbormarket.org}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'production.neighbormarket.org', user: 'neighbormarket', roles: %w{web app db}
-
+server "#{fetch(:host_name)}", user: 'neighbormarket', roles: %w{web app db}
 
 # Custom SSH Options
 # ==================

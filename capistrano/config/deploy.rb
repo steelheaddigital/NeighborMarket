@@ -54,6 +54,17 @@ namespace :deploy do
     end
   end
 
+  task :seed do
+    puts "\n=== Seeding Database ===\n"
+    on primary :db do
+      within current_path do
+        with rails_env: fetch(:stage) do
+          execute :rake, 'db:seed'
+        end
+      end
+    end
+  end
+  
   after :publishing, :restart
 
   after :restart, :clear_cache do
@@ -72,9 +83,24 @@ namespace :foreman do
   desc "Creates the .env file if it does not exist"
   task :create_env_file do
     on roles(:app) do
-      unless File.exist?(File.join(shared_path, '.env'))
+      unless test("[ -f " + shared_path.to_s + "/.env ]")
         puts "\n\n=== Creating .env file! ===\n\n"
-        execute :touch, "#{File.join(shared_path, '.env')}"
+        env = <<-EOF
+RAILS_ENV=production
+HOST=#{fetch(:host_name)}
+DEFAULT_FROM=''
+SMTP_ADDRESS=''
+SMTP_DOMAIN=''
+SMTP_USERNAME=''
+SMTP_PASSWORD=''
+SMTP_PORT=25
+SMTP_AUTHENTICATION='plain'
+SECRET_KEY_BASE=#{SecureRandom.hex(64)}
+SECRET_KEY_SALT=#{SecureRandom.hex(64)}
+EOF
+        location = fetch(:template_dir, "config/deploy") + '/.env'
+        File.open(location,'w+') {|f| f.write env }
+        upload! "#{location}", "#{shared_path}/.env"
       end
     end
   end
