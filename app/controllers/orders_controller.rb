@@ -90,7 +90,7 @@ class OrdersController < ApplicationController
   def send_emails_and_destroy_cart(order, update)
     send_emails(order, update)
     Cart.destroy(session[:cart_id]) if Cart.exists?(session[:cart_id])
-    session.delete(:cart_id)
+    session[:cart_id] = nil
   end
   
   def send_emails(order, update)

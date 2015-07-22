@@ -231,3 +231,8 @@ if PaymentProcessorSetting.first.nil?
   setting = PaymentProcessorSetting.new
   setting.save(validate: false)
 end
+
+if PaypalExpressSetting.first.nil?
+  paypalsetting = PaypalExpressSetting.new
+  paypalsetting.save(validate: false)
+end
