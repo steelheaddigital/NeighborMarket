@@ -69,8 +69,8 @@ class Ability
     if user
       #Anyone can delete a cart_item that is in their session
       if session[:cart_id]
-        cart = Cart.find(session[:cart_id])
-        can :destroy, CartItem if cart.cart_items.where('cart_id = ? AND order_id IS NULL', cart.id).count > 0
+        cart = Cart.find_by(id: session[:cart_id])
+        can :destroy, CartItem if cart && cart.cart_items.where('cart_id = ? AND order_id IS NULL', cart.id).count > 0
         can :manage, Cart if cart
       end
       can :index, User
