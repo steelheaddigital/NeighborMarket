@@ -67,7 +67,7 @@ class OrderCycleEndJob
       SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
     end
     
-    orders = Order.where(order_cycle_id: order_cycle.id)
+    orders = Order.active.where(order_cycle_id: order_cycle.id)
     orders.each do |order|
       if order.has_cart_items_where_order_cycle_minimum_reached?
         BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver

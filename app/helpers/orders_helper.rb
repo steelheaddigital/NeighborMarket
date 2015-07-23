@@ -81,7 +81,7 @@ module OrdersHelper
   
   def show_payment_instructions(order)
     show_instructions = false
-    if !order.online_payment_only? || (order.all_items_accept_in_person_payment? && !order.all_items_accept_online_payment?) || (!order.items_with_online_payment_only? && !order.items_with_in_person_payment_only?)
+    if order.online_payment_only? || !(order.paid_online? && order.all_items_accept_online_payment?)
       show_instructions = true
     end
     show_instructions

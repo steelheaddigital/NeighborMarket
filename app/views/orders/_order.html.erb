@@ -37,7 +37,7 @@
 					<% end %>
 			        <th>Item Name</th>
 			        <th>Seller</th>
-			        <% unless @order.online_payment_only? || (@order.paid_online? && @order.all_items_accept_online_payment?) %>
+			        <% if show_payment_instructions(@order) %>
 			        	<th>Payment Instructions</th>
 			        <% end %>
 			        <th>Payment Status</th>
@@ -64,9 +64,9 @@
 								<td><%= item_name(item.inventory_item) %></td>
 								<td><%= seller_name %></td>
 								<% if show_payment_instructions(@order)%>
-									<td><%= item.inventory_item.user.user_in_person_setting.payment_instructions if !item.inventory_item.user.online_payment_processor_configured? %></td>
+									<td><%= item.inventory_item.user.user_in_person_setting.payment_instructions if show_user_payment_instructions?(item) %></td>
 								<% end %>
-								<td><%= item_payment_status_message(item) %></td>
+								<td><%= item.payment_status %></td>
 								<% if @order.has_items_with_minimum? %>
 									<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
 								<% end %>

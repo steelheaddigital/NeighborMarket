@@ -26,8 +26,9 @@ class UserPaypalExpressSetting < ActiveRecord::Base
   crypt_keeper :access_token, :access_token_secret, encryptor: :aes_new, key: "#{Rails.application.secrets.secret_key_base}", salt: "#{Rails.application.secrets.secret_key_salt}"
 
   validate :business_account?
+  validates :email_address, :first_name, :last_name, presence: true
 
-  attr_accessible :email_address
+  attr_accessible :email_address, :first_name, :last_name
 
   def configuration_complete?
     account_confirmed?
@@ -36,7 +37,7 @@ class UserPaypalExpressSetting < ActiveRecord::Base
   def verify_account(request_permissions)
     ActiveRecord::Base.transaction do
       begin
-        verify_response = payment_processor.verify_account(email_address, user.first_name, user.last_name)
+        verify_response = payment_processor.verify_account(email_address, first_name, last_name)
         self.account_id = verify_response[:account_id]
         self.account_type = verify_response[:account_type]
 

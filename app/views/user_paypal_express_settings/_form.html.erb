@@ -39,23 +39,31 @@
 						</span>
 					<% end %>
 					</p>
-					<div class="col-md-12">
-						<p>
-							To accept online payments through Paypal, we first need to verify your account. Enter the email address associated with your Paypal account below. The first name and last name in your profile must also match the names Paypal has on file for you. We will confirm your account with Paypal and you will be redirected to the Paypal site to log in and grant <%= @site_settings.site_name %> permission to process refunds. We need this permission to refund buyers on your behalf if orders are cancelled or modified after checkout.
-						</p>
-						<p>
-							You must also have a Paypal business account in order to receive payments through this site. You can <a href="https://www.paypal.com/signup/account">sign up for a new Paypal business account</a> or <a href="https://www.paypal.com/us/cgi-bin/webscr?cmd=_run-signup-upgrade-link">upgrade your existing account</a> if you need to.
-						</p>
-						<p>
-							Paypal charges a fee of 2.9% plus $.30 per transaction for processing payments.
-						</p>
+					<div class="row">
+						<div class="col-md-12">
+							<p>
+								Enter the email address and names associated with your Paypal account below. We will verify your account with Paypal and you will be redirected to the Paypal site to log in and grant <%= @site_settings.site_name %> permission to process refunds. We need this permission to refund buyers on your behalf if orders are cancelled or modified after checkout.
+							</p>
+							<p>
+								You must also have a Paypal business account in order to receive payments through this site. You can <a href="https://www.paypal.com/signup/account">sign up for a new Paypal business account</a> or <a href="https://www.paypal.com/us/cgi-bin/webscr?cmd=_run-signup-upgrade-link">upgrade your existing account</a> if you need to.
+							</p>
+							<p>
+								Paypal charges a fee of 2.9% plus $.30 per transaction for processing payments.
+							</p>
+						</div>
 					</div>
-					<div class="col-md-8">
-						<%= f.text_field :email_address, label: 'Paypal account email address' %>
+					<div class="row">
+						<div class="col-md-4">
+							<%= f.text_field :first_name %>
+							<%= f.text_field :last_name %>
+							<%= f.text_field :email_address, label: 'Paypal account email address' %>
+						</div>
 					</div>
-					<div class="col-md-8">
-						<%= f.submit "Confirm Account", {:class => 'btn btn-primary inlineButton'} %>
-						<%= f.submit "Unlink Account", {:class => 'btn btn-danger inlineButton'} if @settings.account_confirmed? %>
+					<div class="row">
+						<div class="col-md-12">
+							<%= f.submit "Confirm Account", {:class => 'btn btn-primary inlineButton'} %>
+							<%= f.submit "Unlink Account", {:class => 'btn btn-danger inlineButton'} if @settings.account_confirmed? %>
+						</div>
 					</div>
 				</fieldset>
 		  	</div>

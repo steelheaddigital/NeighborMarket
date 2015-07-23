@@ -166,7 +166,7 @@ module ApplicationHelper
   
   def nav_item_is_active(*args)
     args.each do |arg|
-      if arg.kind_of?(Hash)
+      if arg.is_a?(Hash)
         return "active" if arg[:action] == params[:action] && arg[:controller] == params[:controller]
       else
         return "active" if arg == params[:action]
@@ -189,19 +189,21 @@ module ApplicationHelper
   end
   
   def buyer_address(buyer)
-    address = ""
-    if !buyer.address.nil?
+    address = ''
+    unless buyer.address.nil?
       address = address + buyer.address + ", "
     end
-    if !buyer.city.nil?
+    unless buyer.city.nil?
       address = address + buyer.city + ", "
     end
-    if !buyer.state.nil?
+    unless buyer.state.nil?
       address = address + buyer.state + " "
     end
-    if !buyer.zip.nil?
+    unless buyer.zip.nil?
       address = address + buyer.zip
     end
+
+    address
   end
   
   def tooltip_label(label_text, tooltip_text)
@@ -214,10 +216,10 @@ module ApplicationHelper
   end
   
   def contains_item_with_minimum_text(type)
-    return "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and any payments will be refunded.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.instance.facebook_enabled } encouraging your friends and family to also purchase the item."
+    "Your #{type} contains some items that require a minimum amount to be purchased between all buyers for this order cycle before the seller will deliver the items.  The quantity that still needs to be purchased is shown in the \"Minimum\" column below. They are included in your total, but if the minimum is not met before the end of the order cycle these items will be removed from your order and any payments will be refunded.  You can help reach the minimum by #{'sharing this item on Facebook using the "share" button below and' if SiteSetting.instance.facebook_enabled } encouraging your friends and family to also purchase the item."
   end
   
-  def pageless(total_pages, url=nil, container=nil)
+  def pageless(total_pages, url = nil, container = nil)
     opts = {
         :totalPages => total_pages,
         :url        => url,
@@ -232,27 +234,19 @@ module ApplicationHelper
   def facebook
     app_id = SiteSetting.instance.facebook_app_id
     tag = %[$(function() {
-	    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-  	      FB.init({
-  	        appId: '#{app_id}',
-  	      	version: 'v2.0',
-  			    xfbml: true
-  	      });
-  	    });
-	    })]
-      
-      javascript_tag(tag)
-  end
-  
-  def item_payment_status_message(cart_item)
-    order = cart_item.order
-    if order.paid_online? && order.payments.count == 0 && cart_item.inventory_item.user.online_payment_processor_configured?
-      'Online payment pending'
-    elsif order.paid_online? && order.payments.count > 0 && cart_item.inventory_item.user.online_payment_processor_configured?
-      'Paid online'
-    else
-      'Due on receipt'
-    end
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+	      FB.init({
+	        appId: '#{app_id}',
+	      	version: 'v2.0',
+			    xfbml: true
+	      });
+	    });
+    })]
+    
+    javascript_tag(tag)
   end
 
+  def show_user_payment_instructions?(cart_item)
+    cart_item.payment_status == 'Due on receipt'
+  end
 end

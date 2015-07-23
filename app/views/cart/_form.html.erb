@@ -68,7 +68,7 @@
 	          <% end %>
 	          <td><%= item.object.inventory_item.user.username %></td>
 	          <% unless item.object.order.nil? %>
-	        	<td><%= item_payment_status_message(item.object) %></td>
+	        	<td><%= item.payment_status %></td>
 	          <% end %>
 	          <% unless f.object.online_payment_only? || (!f.object.all_items_accept_in_person_payment? && f.object.all_items_accept_online_payment?) || (f.object.items_with_online_payment_only? && f.object.items_with_in_person_payment_only?) && item.object.inventory_item.user.online_payment_processor_configured? %>
 	          	<td><%= item.object.inventory_item.user.user_in_person_setting.payment_instructions %></td>

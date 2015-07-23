@@ -64,6 +64,27 @@ class CartItem < ActiveRecord::Base
     order.nil?
   end
 
+  def refund_payments
+    return unless order
+    payments.each do |payment|
+      if payment.amount > total_price
+        payment.refund(total_price)
+      else
+        payment.refund_all
+      end
+    end
+  end
+
+  def payment_status
+    if order.paid_online? && order.payments.count == 0 && inventory_item.user.online_payment_processor_configured?
+      'Online payment pending'
+    elsif order.paid_online? && order.payments.count > 0 && inventory_item.user.online_payment_processor_configured?
+      'Paid online'
+    else
+      'Due on receipt'
+    end
+  end
+
   private
   
   def validate_can_edit
@@ -84,17 +105,6 @@ class CartItem < ActiveRecord::Base
   def check_order
     return unless order
     order.cancel if order.cart_items.count == 0 && !order.destroyed? && !order.will_cancel?
-  end
-
-  def refund_payments
-    return unless order
-    payments.each do |payment|
-      if payment.amount > total_price
-        payment.refund(total_price)
-      else
-        payment.refund_all
-      end
-    end
   end
   
   def validate_quantity

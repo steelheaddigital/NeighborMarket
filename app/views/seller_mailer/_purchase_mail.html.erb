@@ -52,7 +52,7 @@
               <td><%= item_name(item.inventory_item)%></td>
               <td style="text-align: center;"><%= "#{item.quantity}#{" "}#{item_quantity_label(item.inventory_item, item.quantity)}"%></td>
               <td><%= number_to_currency(item.inventory_item.price).to_s + " " + price_unit_label(item.inventory_item) %></td>
-              <td><%= item_payment_status_message(item) %></td>
+              <td><%= item.payment_status %></td>
       			  <%if @has_items_with_minimum %>
       			  	<td><%= item.inventory_item.quantity_needed_to_reach_minimum %></td>
       			  <%end%>

@@ -11,3 +11,8 @@ current_two:
 not_current:
   user: buyer_user_not_current
   order_cycle: not_current
+
+canceled:
+  user: buyer_user
+  order_cycle: current
+  canceled: true
