@@ -1,6 +1,8 @@
 one:
   user: approved_seller_user
   email_address: approved_seller_user@test.com
+  first_name: Approved
+  last_name: Seller
   account_type: BUSINESS
   account_id: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="
   access_token: "F913C4N2+//XYDmwd5HlVw==$bG6FtSKRBusM6+oR/DYMdw=="

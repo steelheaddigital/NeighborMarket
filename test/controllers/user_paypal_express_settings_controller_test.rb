@@ -10,11 +10,11 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
   test 'create redirects to paypal permissions request page' do
     payment_processor = Minitest::Mock.new
-    payment_processor.expect :verify_account, { account_id: '123', account_type: 'BUSINESS' }, ['test@test.com', @user.first_name, @user.last_name]
+    payment_processor.expect :verify_account, { account_id: '123', account_type: 'BUSINESS' }, ['test@test.com', 'Approved', 'Seller']
     payment_processor.expect :request_permissions, 'http://paypal/request/permissions'
 
     UserPaypalExpressSetting.stub_any_instance :payment_processor, payment_processor do
-      post :create, user_paypal_express_setting: { email_address: 'test@test.com', accept_in_person_payments: true }
+      post :create, user_paypal_express_setting: { email_address: 'test@test.com', first_name: 'Approved', last_name: 'Seller', accept_in_person_payments: true }
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
@@ -25,10 +25,10 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
 
   test 'create renders form if verify_account does not return a string' do
     payment_processor = Minitest::Mock.new
-    payment_processor.expect :verify_account, { account_id: '123', account_type: 'FAIL' }, ['test@test.com', @user.first_name, @user.last_name]
+    payment_processor.expect :verify_account, { account_id: '123', account_type: 'FAIL' }, ['test@test.com', 'Approved', 'Seller']
 
     UserPaypalExpressSetting.stub_any_instance :payment_processor, payment_processor do
-      post :create, user_paypal_express_setting: { email_address: 'test@test.com', accept_in_person_payments: true }
+      post :create, user_paypal_express_setting: { email_address: 'test@test.com', first_name: 'Approved', last_name: 'Seller', accept_in_person_payments: true }
 
       payment_processor.verify
       assert_not_nil assigns(:settings)
@@ -40,12 +40,12 @@ class UserPaypalExpressSettingsControllerTest < ActionController::TestCase
   test 'update redirects to paypal request permissions if REFUND permission not granted' do
     setting = user_paypal_express_settings(:one)
     payment_processor = Minitest::Mock.new
-    payment_processor.expect :verify_account, { account_id: '12345', account_type: 'BUSINESS' }, ['approved_seller_user@test.com', @user.first_name, @user.last_name]
+    payment_processor.expect :verify_account, { account_id: '12345', account_type: 'BUSINESS' }, ['approved_seller_user@test.com', 'Approved', 'Seller']
     payment_processor.expect :request_permissions, 'http://paypal/request/permissions'
     payment_processor.expect :get_permissions, [], ['12345']
 
     UserPaypalExpressSetting.stub_any_instance :payment_processor, payment_processor do
-      post :update, commit: 'Verify Account', id: setting.id, user_paypal_express_setting: { email_address: 'approved_seller_user@test.com', accept_in_person_payments: true }
+      post :update, commit: 'Verify Account', id: setting.id, user_paypal_express_setting: { email_address: 'approved_seller_user@test.com', first_name: 'Approved', last_name: 'Seller', accept_in_person_payments: true }
 
       payment_processor.verify
       assert_not_nil assigns(:settings)

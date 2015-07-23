@@ -14,7 +14,7 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     deliveries = ActionMailer::Base.deliveries
     
     assert !deliveries.empty?
-    assert_equal 8, deliveries.count
+    assert_equal 2, deliveries.count
   end
   
   test "remove_items_from_orders_where_minimum_not_met sets minimum_reached_at_order_cycle_end to false if minimum not met" do
@@ -28,7 +28,7 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     assert !updated_cart_item.minimum_reached_at_order_cycle_end
   end
   
-  test "perform creates new order cycle and sends emails" do
+  test "perform creates new order cycle" do
     OrderCycle.delete_all
     the_date = DateTime.now
     current_cycle = OrderCycle.new(:start_date => the_date,
@@ -40,11 +40,8 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     job = OrderCycleEndJob.new
     
     job.perform
-    deliveries = ActionMailer::Base.deliveries
     new_cycle = OrderCycle.where(:status => "pending").first
     
-    assert !deliveries.empty?
-    assert_equal 6, deliveries.count
     assert_equal the_date.advance(:days => 1).to_s, new_cycle.start_date.to_datetime.to_s
     assert_equal the_date.advance(:days => 1).to_s, new_cycle.end_date.to_datetime.to_s
     assert_equal the_date.advance(:days => 1).to_s, new_cycle.seller_delivery_date.to_datetime.to_s
