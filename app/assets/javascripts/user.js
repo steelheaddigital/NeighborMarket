@@ -39,8 +39,7 @@ function User(){
 	
     this.LoadContactDialog = function(url){
         $("#Modal").load(url, function() {
-            var modal = $(this);
-			modal.modal('show');
+			$(this).modal('show');
         });
     }
 	
