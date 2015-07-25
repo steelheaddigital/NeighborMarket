@@ -60,9 +60,9 @@ $(document).on("submit", "#edit_inventory_item", function(){
     return false;
 });
 
-$(document).on("submit", ".editInventoryItemButton", function(event){
+$(document).on("click", ".editInventoryItemButton", function(event){
     event.preventDefault();
-    var url = $(this).attr("action"),
+    var url = $(this).attr("href"),
      	seller = new Seller()
     
     seller.LoadInventoryDialog(url);

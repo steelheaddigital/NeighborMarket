@@ -24,9 +24,9 @@ class PaypalExpressSetting < ActiveRecord::Base
 
   attr_accessible :username, :password, :api_signature, :app_id, :allow_in_person_payments, :mode
 
-  validates :password, presence: true, if: -> { password_was.nil? }
   validates :username,
     :api_signature,
     :app_id,
+    :password,
     presence: true
 end

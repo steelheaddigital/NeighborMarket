@@ -25,58 +25,63 @@
 <%end%>
 <% if allow_adding_items(current_user) %>
 	<div class="container-fluid">
-		<div id="PastInventoryContainer" class="row collapse">
-			<%= form_tag add_past_inventory_seller_index_path, :id => 'AddPastInventoryItems' do %>
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-12">
-						  <div id="PreviousSellerInventoryRow">
-							  <div class="table-responsive">
-								  <table class="table table-bordered">
-								    <thead>
-								      <tr>
-										  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
-										  <th>Name</th>
-								          <th>Top Level Category</th>
-								          <th>Second Level Category</th>
-								          <th>Price</th>
-								          <th>Quantity</th>
-										  <th></th>
-								      </tr>
-								    </thead>
-								    <tbody>
-								      <%@all_inventory.each_with_index do |item, index|%>
-								        <tr>
-										  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
-										  <td><%= item_name(item)%></td>
-								          <td><%= item.top_level_category.name%></td>
-								          <td><%= item.second_level_category.name%></td>
-								          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-								          <td><%= item.quantity_available%></td>
-										  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger"%></td>
-								        </tr>
-								      <%end%>
-								    </tbody>
-								  </table>
-						  		</div>
+		<div id="PastInventoryContainer" class="container-fluid">
+			<div id="InnerPastInventoryContainer" class="row collapse">
+				<%= form_tag add_past_inventory_seller_index_path, :id => 'AddPastInventoryItems' do %>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							  <div id="PreviousSellerInventoryRow">
+								  <div class="table-responsive">
+									  <table class="table table-bordered">
+									    <thead>
+									      <tr>
+											  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
+											  <th>Name</th>
+									          <th>Top Level Category</th>
+									          <th>Second Level Category</th>
+									          <th>Price</th>
+									          <th>Quantity</th>
+											  <th></th>
+											  <th></th>
+									      </tr>
+									    </thead>
+									    <tbody>
+									      <%@all_inventory.each_with_index do |item, index|%>
+									        <tr>
+											  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
+											  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
+									          <td><%= item.top_level_category.name%></td>
+									          <td><%= item.second_level_category.name%></td>
+									          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+									          <td><%= item.quantity_available%></td>
+									          <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
+											  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger inventoryItemButton"%></td>
+									        </tr>
+									      <%end%>
+									    </tbody>
+									  </table>
+							  		</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" id="PreviousSellerInventorySubmitRow">
+							<div class="col-md-12">
+								<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
 							</div>
 						</div>
 					</div>
-					<div class="row" id="PreviousSellerInventorySubmitRow">
-						<div class="col-md-12">
-							<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
-						</div>
-					</div>
-				</div>
-			<% end %>
+				<% end %>
+			</div>
 		</div>
 		<div class="row">
 			<div id="PastInventortyToggleContainer">
-				<a href="#PastInventoryContainer" data-toggle="collapse" class="btn btn-primary">Add Past Inventory Items</a>
+				<a href="#InnerPastInventoryContainer" data-toggle="collapse" class="btn btn-primary">Add Past Inventory Items</a>
 			</div>
 		</div>
 		<div class="row">
 		  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn btn-default", :method => "get"} %>
+		  <h1>Current Inventory</h1>
 		  <div class="table-responsive">
 			  <table class="table table-bordered">
 			    <thead>
@@ -96,12 +101,12 @@
 			    <tbody>
 			      <%@current_inventory.each do |item|%>
 			        <tr>
-					  <td><%= item_name(item)%></td>
+					  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
 			          <td><%= item.top_level_category.name%></td>
 			          <td><%= item.second_level_category.name%></td>
 			          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
 			          <td><%= item.quantity_available%></td>
-			          <td><%= button_to "Edit", { :action => "edit", :controller => "inventory_items", :id => item.id}, {:form => {:class => "editInventoryItemButton inventoryItemButton"}, :method => "get", :class => "btn btn-default inventoryItemButton"} %></td>
+			          <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
 			          <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger inventoryItemButton"} %></td>
 					  <%if SiteSetting.instance.facebook_enabled%>
 					  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
