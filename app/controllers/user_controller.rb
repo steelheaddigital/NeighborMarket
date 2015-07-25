@@ -111,6 +111,7 @@ class UserController < ApplicationController
         format.html { redirect_to user_search_management_index_path, notice: 'User successfully updated!'}
         format.js { render :nothing => true }
       else
+        @site_settings = SiteSetting.instance
         format.html { render :edit }
         format.js { render :edit, :layout => false, :status => 403 }
       end
