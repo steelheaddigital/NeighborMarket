@@ -29,6 +29,7 @@
 	<meta property="og:app_id" content="<%= SiteSetting.instance.facebook_app_id %>" />
 	<meta property="og:type" content="product" />
 <% end %>
+<% title item_name(@inventory_item) %>
 <%= render @inventory_item %>
 <% content_for :scripts do %>
 	<%=facebook%>

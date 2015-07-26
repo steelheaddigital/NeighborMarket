@@ -25,7 +25,7 @@ class SecondLevelCategoriesController < ApplicationController
     @inventory_items = InventoryItem.joins(:order_cycles)
                        .where("second_level_category_id = ? AND is_deleted = false AND approved = true AND order_cycles.status = 'current'", params[:id])
                        .order('created_at DESC')
-                   
+    @category_name = SecondLevelCategory.where(id: params[:id]).pluck(:name).first
     session[:last_search_path] = request.fullpath          
     respond_to do |format|
       format.html { render 'inventory_items/search', layout: 'layouts/navigational'  }

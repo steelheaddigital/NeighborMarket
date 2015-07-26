@@ -30,10 +30,4 @@ class PaypalExpressSettingTest < ActiveSupport::TestCase
     setting.assign_attributes(username: 'test', password: 'test', api_signature: 'test', app_id: '')
     assert setting.invalid?
   end
-
-  test 'should validate empty password if previous password is not empty' do
-    setting = paypal_express_settings(:one)
-    setting.assign_attributes(username: 'test', password: '', api_signature: 'test', app_id: 'test')
-    assert setting.valid?
-  end
 end

@@ -24,7 +24,10 @@
     <div class="col-md-12">
       <div id="AddToCartNotice" class="alert fixed-alert">
       </div>
-      <%= render @inventory_items %>
+        <% if @category_name %>
+  			<h1><%= title @category_name %></h1>
+  		<% end %>
+      	<%= render @inventory_items %>
     </div>
   </div>
 </div>
