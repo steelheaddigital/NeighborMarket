@@ -49,9 +49,9 @@
               <% if @cart.in_person_payment_only? %>
                 <%= f.submit("Confirm order and purchase", :class => 'btn btn-primary inlineButton') %>
               <% elsif @cart.online_payment_only? || (!@cart.all_items_accept_in_person_payment? && @cart.all_items_accept_online_payment?) || (@cart.items_with_online_payment_only? && @cart.items_with_in_person_payment_only?)%>
-                <%= f.submit("Checkout and pay online", :class => 'btn btn-primary inlineButton') %>
+                <%= online_checkout_button %>
               <% else%>
-                <%= f.submit("Checkout and pay online", :class => 'btn btn-primary inlineButton') %>
+                <%= online_checkout_button %>
                 <%= f.submit("Checkout and pay in person", :class => 'btn btn-primary inlineButton') %>
               <% end %>
               <%= f.submit("Continue Shopping", :class => 'btn btn-default inlineButton')%>

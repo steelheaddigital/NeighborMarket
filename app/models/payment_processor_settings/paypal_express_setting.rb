@@ -29,4 +29,8 @@ class PaypalExpressSetting < ActiveRecord::Base
     :app_id,
     :password,
     presence: true
+
+  def checkout_button
+    '<input type="submit" name="commit" value="Checkout and pay online" class="btn inlineButton" style="background:url(https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png) no-repeat 0 0; color: transparent; width: 228px; margin-top: 12px;" />'
+  end
 end
