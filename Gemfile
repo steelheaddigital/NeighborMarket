@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.1.12'
-gem 'pg', '~> 0.18.1'
+gem 'pg', '~> 0.18.2'
 gem 'puma', '~> 2.12.2'
 
 group :test do
@@ -9,24 +9,24 @@ group :test do
   gem 'minitest-stub_any_instance'
 end
 
-gem 'bootstrap-sass', '~> 3.2.0'
-gem 'sass-rails', '>= 3.2'
-gem 'jquery-rails', '2.1.4'
+gem 'bootstrap-sass', '~> 3.3.5'
+gem 'sass-rails', '~> 5.0.3'
+gem 'jquery-rails', '3.1.3'
 gem 'uglifier', '>= 2.5.3'
 gem 'font-awesome-rails', '~> 3.2.1.3'
 gem 'autoprefixer-rails'
-gem 'bootstrap_form', '~> 2.1.1'
-gem 'bootstrap-will_paginate', '~> 0.0.10'
+gem 'bootstrap_form', '~> 2.3.0'
+gem 'will_paginate-bootstrap', '~> 1.0.1'
 gem 'dynamic_sitemaps', '~> 2.0.0'
 gem 'headliner', '~> 0.1.3'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', git: 'git://github.com/tmooney3979/dynamic_form'
 
-gem 'devise', '~> 3.2.4'
+gem 'devise', '~> 3.4.1'
 gem 'cancan', '~> 1.6.9'
 gem 'carmen-rails', '~> 1.0.1'
-gem 'will_paginate', '~> 3.0'
+gem 'will_paginate', '~> 3.0.3'
 gem 'prawn', '~> 0.12.0'
 gem 'paperclip', '~> 4.2.1'
 gem 'pg_search', '~> 0.7.9'

@@ -8,6 +8,9 @@ class SessionsControllerTest < ActionController::TestCase
   end
   
   test "destroy should destroy cart in session" do
+    user  = users(:buyer_user)
+    sign_in user
+
     cart = Cart.create({})
     session[:cart_id] = cart.id
     assert_difference 'Cart.count', -1 do

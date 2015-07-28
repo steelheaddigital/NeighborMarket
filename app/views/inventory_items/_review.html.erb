@@ -61,7 +61,7 @@
 				</div>
 			</div>
 			<%end%>
-			<%= will_paginate @reviews %>
+			<%= will_paginate @reviews, renderer: BootstrapPagination::Rails %>
 		</div>
 	</div>
 </div>

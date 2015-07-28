@@ -116,7 +116,7 @@
 			    </tbody>
 			  </table>
 	  	  </div>
-		  <%= will_paginate @current_inventory %>
+		  <%= will_paginate @current_inventory, renderer: BootstrapPagination::Rails %>
 		</div>
 	</div>
 	<% content_for :scripts do %>
