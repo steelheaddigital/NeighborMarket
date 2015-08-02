@@ -19,6 +19,7 @@ gem 'bootstrap_form', '~> 2.3.0'
 gem 'will_paginate-bootstrap', '~> 1.0.1'
 gem 'dynamic_sitemaps', '~> 2.0.0'
 gem 'headliner', '~> 0.1.3'
+gem 'jquery-datatables-rails', '~> 3.3.0'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', git: 'git://github.com/tmooney3979/dynamic_form'

@@ -31,96 +31,121 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-12">
-							  <div id="PreviousSellerInventoryRow">
-								  <div class="table-responsive">
-									  <table class="table table-bordered">
-									    <thead>
-									      <tr>
-											  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
-											  <th>Name</th>
-									          <th>Top Level Category</th>
-									          <th>Second Level Category</th>
-									          <th>Price</th>
-									          <th>Quantity</th>
-											  <th></th>
-											  <th></th>
-									      </tr>
-									    </thead>
-									    <tbody>
-									      <%@all_inventory.each_with_index do |item, index|%>
-									        <tr>
-											  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
-											  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
-									          <td><%= item.top_level_category.name%></td>
-									          <td><%= item.second_level_category.name%></td>
-									          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-									          <td><%= item.quantity_available%></td>
-									          <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
-											  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger inventoryItemButton"%></td>
-									        </tr>
-									      <%end%>
-									    </tbody>
-									  </table>
-							  		</div>
-								</div>
-							</div>
-						</div>
-						<div class="row" id="PreviousSellerInventorySubmitRow">
-							<div class="col-md-12">
-								<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
-							</div>
+							<table id="PastInventoryTable" class="table table-bordered">
+								<thead>
+								  <tr>
+									  <th><input type="checkbox" id="SelectAllInventoryItems" title="Select All"/></th>
+									  <th>Name</th>
+								      <th>Top Level Category</th>
+								      <th>Second Level Category</th>
+								      <th>Price</th>
+								      <th>Quantity</th>
+									  <th></th>
+									  <th></th>
+								  </tr>
+								</thead>
+								<tbody>
+								  <%@all_inventory.each_with_index do |item, index|%>
+								    <tr>
+									  <td><input type="checkbox" name=<%= "item[#{index}]"%> value=<%= item.id %> /></td>
+									  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
+								      <td><%= item.top_level_category.name%></td>
+								      <td><%= item.second_level_category.name%></td>
+								      <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+								      <td><%= item.quantity_available%></td>
+								      <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
+									  <td><%= link_to "Delete", item, :data => {:confirm => "Item will be permanently deleted from your inventory. Are you sure you want to continue?"}, :method => "delete", :class => "btn btn-danger inventoryItemButton"%></td>
+								    </tr>
+								  <%end%>
+								</tbody>
+							</table>
 						</div>
 					</div>
+					<div class="row" id="PreviousSellerInventorySubmitRow">
+						<div class="col-md-12">
+							<%= submit_tag("Add Selected Items", :class => 'btn btn-primary') %>
+						</div>
+					</div>
+				</div>
 				<% end %>
 			</div>
 		</div>
 		<div class="row">
 			<div id="PastInventortyToggleContainer">
-				<a href="#InnerPastInventoryContainer" data-toggle="collapse" class="btn btn-primary">Add Past Inventory Items</a>
+				<a href="#InnerPastInventoryContainer" data-toggle="collapse" class="btn btn-primary"><div>Add Past Inventory Items</div><div><i id="AddPastInventoryItemsIcon" class="icon-double-angle-down"></i></div></a>
 			</div>
 		</div>
 		<div class="row">
 		  <%= button_to "New Inventory Item", { :action => "new", :controller => "inventory_items"}, {:form => {:id => "NewInventoryItemButton"}, :class => "btn btn-default", :method => "get"} %>
 		  <h1>Current Inventory</h1>
-		  <div class="table-responsive">
-			  <table class="table table-bordered">
-			    <thead>
-			      <tr>
-					  <th>Name</th>
-			          <th>Top Level Category</th>
-			          <th>Second Level Category</th>
-			          <th>Price</th>
-			          <th>Quantity</th>
-			          <th></th>
-			          <th></th>
-					  <%if SiteSetting.instance.facebook_enabled%>
-					  	<th></th>
-					  <%end%>
-			      </tr>
-			    </thead>
-			    <tbody>
-			      <%@current_inventory.each do |item|%>
-			        <tr>
-					  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
-			          <td><%= item.top_level_category.name%></td>
-			          <td><%= item.second_level_category.name%></td>
-			          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
-			          <td><%= item.quantity_available%></td>
-			          <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
-			          <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger inventoryItemButton"} %></td>
-					  <%if SiteSetting.instance.facebook_enabled%>
-					  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
-					  <%end%>
-			        </tr>
-			      <%end%>
-			    </tbody>
-			  </table>
-	  	  </div>
+		  <table id="CurrentInventoryTable" class="table table-bordered">
+		    <thead>
+		      <tr>
+				  <th>Name</th>
+		          <th>Top Level Category</th>
+		          <th>Second Level Category</th>
+		          <th>Price</th>
+		          <th>Quantity</th>
+		          <th></th>
+		          <th></th>
+				  <%if SiteSetting.instance.facebook_enabled%>
+				  	<th></th>
+				  <%end%>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <%@current_inventory.each do |item|%>
+		        <tr>
+				  <td><span><%= image_tag item.photo.url(:thumb), { alt: item.name, style: "height: 50px; width: auto;"} if item.photo.exists? %> <%= item_name(item)%></span></td>
+		          <td><%= item.top_level_category.name%></td>
+		          <td><%= item.second_level_category.name%></td>
+		          <td><%= number_to_currency(item.price).to_s + " " + price_unit_label(item) %></td>
+		          <td><%= item.quantity_available%></td>
+		          <td><%= link_to "Edit", edit_inventory_item_path(item), :class => "btn btn-default inventoryItemButton editInventoryItemButton"%></td>
+		          <td><%= button_to "Delete", { :action => "delete_from_current_inventory", :controller => "inventory_items", :id => item.id}, {:form => {:class => "deleteInventoryItemButton"}, :data => {:confirm => "Are you sure you want to delete this item from your current inventory?"}, :class => "btn btn-danger inventoryItemButton"} %></td>
+				  <%if SiteSetting.instance.facebook_enabled%>
+				  	<td><span class="fb-share-button facebookTableContainer" data-href="<%= inventory_item_url(item) %>"></span></td>
+				  <%end%>
+		        </tr>
+		      <%end%>
+		    </tbody>
+		  </table>
 		  <%= will_paginate @current_inventory, renderer: BootstrapPagination::Rails %>
 		</div>
 	</div>
 	<% content_for :scripts do %>
 		<%=facebook%>
+		<script type="text/javascript">
+			$(function() {
+				$("#PastInventoryTable").DataTable({
+					ordering: true,
+					columns: [
+						{"orderable": false},
+						null,
+						null,
+						null,
+						null,
+						null,
+						{"orderable": false},
+						{"orderable": false}
+					]
+				});
+
+				$("#CurrentInventoryTable").DataTable({
+					ordering: true,
+					columns: [
+						null,
+						null,
+						null,
+						null,
+						null,
+						{"orderable": false},
+						{"orderable": false},
+						{"orderable": false}
+					]
+				});
+			});
+		</script>
 	<%end%>
 <%end%>
 

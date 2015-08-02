@@ -19,8 +19,8 @@
 #
 %>
 
-<div class="table-responsive">
-	<table class="table table-bordered table-condensed">
+<div class="table">
+	<table id="HistoricalOrdersTable" class="table table-bordered table-condensed">
 	  <thead>
 	    <tr>
 	        <th>Seller ID</th>
@@ -52,4 +52,12 @@
 	  </tbody>
 	</table>
 </div>
-
+<% content_for :scripts do %>
+	<script type="text/javascript">
+		$(function() {
+			$("#HistoricalOrdersTable").DataTable({
+				ordering: true
+			})
+		})
+	</script>
+<% end %>

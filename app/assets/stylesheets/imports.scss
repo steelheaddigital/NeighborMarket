@@ -18,6 +18,7 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 @import "theme/neighbormarket/variables";
+@import "bootstrap-sprockets";
 @import "bootstrap";
 @import "theme/neighbormarket/theme";
 @import "slidebars";
@@ -35,3 +36,4 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 @import "user";
 @import "user_paypal_express_settings";
 @import "font-awesome";
+@import "dataTables/bootstrap/3/jquery.dataTables.bootstrap"
