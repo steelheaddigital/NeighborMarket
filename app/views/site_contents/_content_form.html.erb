@@ -1,11 +1,19 @@
 <%= bootstrap_form_for @site_contents, :url => update_site_contents_path, :method => :post, :html => { :id => "SiteSettingsForm"} do |f| %>
 	<%= f.error_messages %>
-	<%= f.text_area :site_description, :rows => 5, label: "Site description (Displayed on front page. HTML is allowed.)"%>
-	<%= f.text_area :inventory_guidelines, :rows => 5, label: "Inventory guidelines (Displayed on seller inventory form.)"%>
+	<%= f.submit "Save Content", :class => 'btn btn-primary' %>
+	<%= f.text_area :site_description, :rows => 5, label: "Site description (Displayed on front page.)", class: 'wysihtml5'%>
+	<%= f.text_area :inventory_guidelines, :rows => 5, label: "Inventory guidelines (Displayed on seller inventory form.)", class: 'wysihtml5'%>
 	<%= f.check_box(:require_terms_of_service, {label: "Require terms of service agreement at user sign-up"}, true, "false")%>
-	<%= f.text_area :terms_of_service, :rows => 5 %>
-	<%= f.text_area :about, :rows => 5 %>
-	<div class="row">
-		<%= submit_tag "Save Content", :class => 'btn btn-primary' %>
-	</div>
+	<%= f.text_area :terms_of_service, :rows => 5, class: 'wysihtml5' %>
+	<%= f.text_area :about, :rows => 5, class: 'wysihtml5' %>
+	<%= f.submit "Save Content", :class => 'btn btn-primary' %>
+<%end%>
+<% content_for :scripts do %>
+	<script type="text/javascript">
+		$(function() {
+			$('.wysihtml5').each(function(i, elem) {
+      			$(elem).wysihtml5();
+    		});
+		});
+	</script>
 <%end%>

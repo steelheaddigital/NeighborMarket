@@ -37,7 +37,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<% if @items_for_carousel.count > 0 %>
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<div id="InventoryItemCarousel" class="carousel slide" data-interval="20000" data-ride="carousel">
 						  <!-- Wrapper for slides -->
 						  <div class="carousel-inner">
@@ -62,7 +62,7 @@
 						</div>
 					</div>
 				<% end %>
-				<div class=<%= "col-md-7" if @items_for_carousel.count > 0 %> >
+				<div class=<%= "col-md-8" if @items_for_carousel.count > 0 %> >
 					<div class="container">
 						<div class="row marketing">
 						  <div class="col-md-4 col-sm-4">
@@ -71,7 +71,7 @@
 						    </div>
 						    <h2>Buy</h2>
 						    <p class="marketing-description">
-						      Support the the local economy in your own neighborhood. Buy directly from your neighbors.
+						      Support the the local economy. Buy directly from your neighbors.
 						    </p>
 						    <p>
 						      <%= link_to 'Sign up as a buyer', buyer_sign_up_url, :class => "btn btn-success"  %>
@@ -83,7 +83,7 @@
 						    </div>
 						    <h2>Sell</h2>
 						    <p class="marketing-description">
-						      Sell your homegrown vegetables and homemade goods directly to your neighbors.
+						      Sell your homegrown vegetables and homemade goods.
 						    </p>
 						    <p>
 						      <%= link_to 'Sign up as a seller', seller_sign_up_url, :class => "btn btn-success" %>
@@ -93,7 +93,7 @@
 						    <div class="marketing-icon-container">
 						      <i class="icon-user icon-large"></i>
 						    </div>
-						    <h2>Meet the sellers</h2>
+						    <h2>Makers</h2>
 						    <p class="marketing-description">
 						      See what your neighbors are making.
 						    </p>
