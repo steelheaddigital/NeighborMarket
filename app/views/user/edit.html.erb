@@ -43,7 +43,6 @@
 
 					<%= f.text_field :first_name, label: "First name*" %>
 					<%= f.text_field :last_name, label: "Last name*" %>
-					<%= f.text_field :initial, label: "Initial" %>
 				 </div>
 				 <div class="col-md-4">
 					<%= f.telephone_field :phone, label: "#{if @user.seller? then 'Phone*' else 'Phone' end}" %>

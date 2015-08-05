@@ -21,7 +21,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
   
   test "should create user" do
     assert_difference 'User.count' do
-      post :create, :user => { :username => "create", :user_type => "buyer", :email => "create@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it", :terms_of_service => true }
+      post :create, :user => { :username => "create", :user_type => "buyer", :email => "create@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it", :terms_of_service => true }
     end
     
     user = User.find_by_email("create@create.com")
@@ -32,7 +32,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
   
   test "should respond with seller inactive signup if user type is seller" do
     assert_difference 'User.count' do
-      post :create, :user => { :username => "createseller", :user_type => "seller", :email => "createseller@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218",  :terms_of_service => true }
+      post :create, :user => { :username => "createseller", :user_type => "seller", :email => "createseller@create.com", :password => "Abc123!", :password_confirmation => "Abc123!", :first_name => "create", :last_name => "create", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218",  :terms_of_service => true }
     end
     
     user = User.find_by_email("createseller@create.com")
@@ -46,7 +46,7 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     user  = users(:buyer_user)
     sign_in user
     
-    put :update, :user => { :username => "updatebuyer", :email => "createseller@create.com", :first_name => "update", :last_name => "update", :initial => "c", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it" }
+    put :update, :user => { :username => "updatebuyer", :email => "createseller@create.com", :first_name => "update", :last_name => "update", :phone => "503-123-4567", :address => "123 Test", :city => "Portland", :country => "US", :state => "OR", :zip => "97218", :delivery_instructions => "bring it" }
     
     assert_redirected_to root_path
     assert_equal 'You updated your account successfully.', flash[:notice]
@@ -76,17 +76,6 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     assert_equal 'Thank You! Your seller account has been created and is awaiting approval. You will receive an email when it is approved.', flash[:notice]
   end
   
-  test "should add buyer role if user is becoming buyer" do
-    user  = users(:approved_seller_user)
-    sign_in user
-    
-    put :update, :user => { :become_buyer => "true", :delivery_instructions => "bring it" }
-    
-    assert_redirected_to root_path
-    assert user.buyer?
-    assert_equal 'You updated your account successfully.', flash[:notice]
-  end
-  
   test "should get inactive signup" do
     get :inactive_signup
     
@@ -102,14 +91,6 @@ class UserRegistrationsControllerTest < ActionController::TestCase
     assert !user.nil?
     assert_redirected_to root_path
     assert_equal 'Bye! Your account was successfully cancelled. We hope to see you again soon.', flash[:notice]
-  end
-  
-  test "should get become_buyer" do
-    user  = users(:approved_seller_user)
-    sign_in user
-    get :become_buyer, :user=>{:become_buyer=>true}
-    
-    assert_response :success
   end
   
   test "should get become_seller" do

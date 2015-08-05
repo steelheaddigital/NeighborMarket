@@ -9,7 +9,6 @@ manager_user:
  username: manager
  first_name: Manager
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -29,7 +28,6 @@ approved_seller_user:
  encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Approved
  last_name: Seller
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -49,7 +47,6 @@ unapproved_seller_user:
  username: unapprovedseller
  first_name: Unapproved
  last_name: Seller
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -68,7 +65,6 @@ no_orders_seller_user:
  username: noordersselleruser
  first_name: Unapproved
  last_name: Seller
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -88,7 +84,6 @@ buyer_user:
  encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Buyer
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -109,7 +104,6 @@ buyer_user_not_current:
  encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Buyer
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -129,7 +123,6 @@ buyer_user_no_order:
  encrypted_password: $2a$10$GCXByzIziJiWkm.zh6uWTuLW5wu9q1p9gOV4pzi2QzM2xi7D3VNku
  first_name: Buyer
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -148,7 +141,6 @@ unapproved_seller_buyer_user:
  username: unapprovedsellerbuyer
  first_name: Unapprovedsellerbuyer
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -167,7 +159,6 @@ unconfirmed_seller_user:
  username: unconfirmedseller
  first_name: Manager
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -186,7 +177,6 @@ unconfirmed_approved_seller_user:
  username: unconfirmedapprovedseller
  first_name: Seller
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -204,7 +194,6 @@ unconfirmed_buyer_user:
  username: unconfirmedbuyer
  first_name: Manager
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -226,7 +215,6 @@ confirmed_auto_created_user:
  username: confirmedautocreateduser
  first_name: Updated
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland
@@ -241,7 +229,6 @@ updated_auto_created_user:
  username: updatedautocreateduser
  first_name: Updated
  last_name: Test
- initial: T
  phone: 503-123-4567
  address: 12345 Test St.
  city: Portland

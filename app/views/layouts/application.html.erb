@@ -93,9 +93,6 @@
 							<% if !current_user.seller?%>
 							  <li><%= link_to('Become a seller', become_seller_url) %></li>
 							<% end %>
-							<% if !current_user.buyer?%>
-							  <li><%= link_to('Become a buyer', become_buyer_url) %></li>
-							<% end %>
 							<% else %>
 								<li><%= link_to('Sign up as a buyer', buyer_sign_up_url) %></li>
 								<li><%= link_to('Sign up as a seller', seller_sign_up_url) %></li>

@@ -9,7 +9,6 @@ class UserTest < ActiveSupport::TestCase
                      :username => "Test",
                      :first_name => "Test",
                      :last_name => "Test",
-                     :initial => "T",
                      :phone => "503-123-4567",
                      :address => "12345 Test St.",
                      :city => "Portland",
@@ -87,12 +86,6 @@ class UserTest < ActiveSupport::TestCase
     @seller.last_name = nil
 
     assert !@seller.valid?
-  end
-
-  test "should save seller without Initial" do
-    @seller.initial = nil
-
-    assert @seller.valid?
   end
 
   test "should not save seller without Address" do
@@ -511,7 +504,6 @@ class UserTest < ActiveSupport::TestCase
     assert_nil user.last_sign_in_ip
     assert_nil user.first_name
     assert_nil user.last_name
-    assert_nil user.initial
     assert_nil user.phone
     assert_nil user.address
     assert_nil user.city

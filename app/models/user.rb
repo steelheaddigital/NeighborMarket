@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
-  attr_accessor :login, :become_seller, :become_buyer, :skip_confirmation_email
+  attr_accessor :login, :become_seller, :skip_confirmation_email
   attr_writer :auto_create
   
   scope :active, -> { where(deleted_at: nil) }
@@ -89,9 +89,9 @@ class User < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :initial, :phone, :address, :city, :state, :country, 
+                  :first_name, :last_name, :phone, :address, :city, :state, :country, 
                   :zip, :aboutme, :approved_seller, :delivery_instructions, 
-                  :become_seller, :become_buyer, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
+                  :become_seller, :listing_approval_style, :photo, :skip_confirmation_email, :terms_of_service
   
   def set_auto_created_updated_at
     self.auto_create_updated_at = Time.current if self.valid?
@@ -280,7 +280,6 @@ class User < ActiveRecord::Base
     self.last_sign_in_ip = nil
     self.first_name = nil
     self.last_name = nil
-    self.initial = nil
     self.phone = nil
     self.address = nil
     self.city = nil

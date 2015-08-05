@@ -21,16 +21,6 @@
 
 <div class="container-fluid">
 	<div class="alert alert-info">
-	  You must have a buyer account to place your order.  Please
-	  <%if user_signed_in? %>
-	      <%if current_user.seller?%>
-	        <%= link_to("create a buyer account", become_buyer_path) %>
-	        <%else%>
-				<%= link_to "log in", new_user_session_path, {class: 'alert-link'} %> or <%= link_to "sign up", buyer_sign_up_path, {class: 'alert-link'} %>
-	      <%end%>
-	    <%else%>
-	      <%= link_to "log in", new_user_session_path, {class: 'alert-link'} %> or <%= link_to "sign up", buyer_sign_up_path, {class: 'alert-link'} %>
-	  <%end%>
-	  to continue.
+	  You must have a buyer account to place your order. Please <%= link_to "log in", new_user_session_path, {class: 'alert-link'} %> or <%= link_to "sign up", buyer_sign_up_path, {class: 'alert-link'} %> to continue.
 	</div>
 </div>

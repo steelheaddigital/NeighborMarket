@@ -21,7 +21,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   include Settings
 
   prepend_before_filter :require_no_authentication, :only => [ :new, :create, :cancel ]
-  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :become_buyer, :edit, :update, :destroy]
+  prepend_before_filter :authenticate_scope!, :only => [:become_seller, :edit, :update, :destroy]
   before_filter :configure_permitted_parameters
   
   def new
@@ -46,6 +46,8 @@ class UserRegistrationsController < Devise::RegistrationsController
         respond_with resource, :location => after_sign_up_path_for(resource)
       else
         if resource.role?("seller")
+          resource.add_role("buyer")
+          resource.save
           send_new_seller_email(resource)
         end
         expire_data_after_sign_in!
@@ -75,10 +77,6 @@ class UserRegistrationsController < Devise::RegistrationsController
       resource.become_seller = true
       add_role(resource, "seller")
     end
-    if params[:user][:become_buyer] == "true"
-      resource.become_buyer = true
-      add_role(resource, "buyer")
-    end
 
     if resource.update_attributes(params[resource_name])
       if is_navigational_format?
@@ -92,7 +90,7 @@ class UserRegistrationsController < Devise::RegistrationsController
         end
         # customized code end
       end
-      sign_in resource_name, resource, :bypass => true if !resource.become_seller && !resource.become_buyer
+      sign_in resource_name, resource, :bypass => true if !resource.become_seller
       respond_with resource, :location => after_update_path_for(resource)
     else
       clean_up_passwords resource
@@ -121,10 +119,6 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def become_seller
     add_role(resource, "seller")
-  end
-  
-  def become_buyer
-    add_role(resource, "buyer")
   end
   
   def terms_of_service

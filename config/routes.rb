@@ -7,7 +7,6 @@ NeighborMarket::Application.routes.draw do
     match '/buyer/sign_up' => 'user_registrations#new', :user => { :user_type => 'buyer' }, :as => :buyer_sign_up, via: [:get, :post]
     match '/seller/sign_up' => 'user_registrations#new', :user => { :user_type => 'seller' }, :as => :seller_sign_up, via: [:get, :post]
     match '/user/become_seller' => 'user_registrations#become_seller', :user => { :become_seller => true } , :as => :become_seller, via: [:get, :post]
-    match '/user/become_buyer' => 'user_registrations#become_buyer', :user => { :become_buyer => true }, :as => :become_buyer, via: [:get, :post]
     match '/user/seller_inactive_signup' => 'user_registrations#seller_inactive_signup', via: [:get, :post]
     match '/user/inactive_signup' => 'user_registrations#inactive_signup', via: [:get, :post]
     get '/user/auto_create_confirmation', to: 'user_confirmations#auto_create_confirmation'
