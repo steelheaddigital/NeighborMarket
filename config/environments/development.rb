@@ -12,7 +12,7 @@ NeighborMarket::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
 
-  config.cache_store = :dalli_store
+  config.cache_store = :redis_store
 
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
