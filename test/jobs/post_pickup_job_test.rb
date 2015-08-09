@@ -10,10 +10,10 @@ class PostPickupJobTest < ActiveSupport::TestCase
     order_cycle = order_cycles(:current)
     site_setting = site_settings(:one)
     site_setting.update_attribute("reputation_enabled", true)
-    job = PostPickupJob.new(order_cycle.id)
+    job = PostPickupJob.new
     
     
-    job.perform
+    job.perform(order_cycle.id)
     deliveries = ActionMailer::Base.deliveries
     
     assert !deliveries.empty?

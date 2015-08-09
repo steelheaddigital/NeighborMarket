@@ -19,6 +19,7 @@
 
 require_relative '../../lib/order_cycle_end_job'
 require_relative '../../lib/order_cycle_start_job'
+require 'sidekiq/api'
 
 class OrderCycle < ActiveRecord::Base
   has_many :orders
@@ -194,15 +195,17 @@ class OrderCycle < ActiveRecord::Base
   end
     
   def self.queue_order_cycle_start_job(start_date)
-    job = OrderCycleStartJob.new
-    Delayed::Job.where('queue = ? OR queue = ?', 'order_cycle_end', 'order_cycle_start').each(&:destroy)
-    Delayed::Job.enqueue(job, { priority: 0, run_at: start_date, queue: 'order_cycle_start' })
+    scheduled_set = Sidekiq::ScheduledSet.new
+    jobs = scheduled_set.select {|ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' }
+    jobs.each(&:delete)
+    OrderCycleStartJob.perform_at(start_date)
   end
 
   def self.queue_order_cycle_end_job(end_date)
-    job = OrderCycleEndJob.new
-    Delayed::Job.where('queue = ? OR queue = ?', 'order_cycle_end', 'order_cycle_start').each(&:destroy)
-    Delayed::Job.enqueue(job, { priority: 0, run_at: end_date, queue: 'order_cycle_end' })
+    scheduled_set = Sidekiq::ScheduledSet.new
+    jobs = scheduled_set.select {|ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' || ss.klass == 'PostPickupJob' }
+    jobs.each(&:delete)
+    OrderCycleEndJob.perform_at(end_date)
   end
   
 end

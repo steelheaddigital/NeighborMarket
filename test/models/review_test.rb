@@ -4,11 +4,6 @@ class ReviewTest < ActiveSupport::TestCase
   
   def setup
     ActionMailer::Base.deliveries = []
-    Delayed::Worker.delay_jobs = false
-  end
-  
-  def teardown
-    Delayed::Worker.delay_jobs = true
   end
   
   test "sends new review email after create" do
@@ -17,7 +12,9 @@ class ReviewTest < ActiveSupport::TestCase
     review = reviewable.reviews.new(rating: 1, review: "test")
     review.user = user
 
-    review.save
+    Sidekiq::Testing.inline! do
+      review.save
+    end
 
     assert !ActionMailer::Base.deliveries.empty?
   end

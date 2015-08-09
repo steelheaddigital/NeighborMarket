@@ -17,9 +17,10 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class PostPickupJob < Struct.new(:order_cycle_id)
+class PostPickupJob
+  include Sidekiq::Worker
   
-  def perform
+  def perform(order_cycle_id)
     if SiteSetting.instance.reputation_enabled
       orders = Order.where(:order_cycle_id => order_cycle_id)
       orders.each do |order|

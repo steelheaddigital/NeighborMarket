@@ -2,8 +2,10 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/mock'
+require 'sidekiq/testing'
 include ActionDispatch::TestProcess
 ActiveRecord::Migration.maintain_test_schema!
+Sidekiq::Testing.fake!
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.

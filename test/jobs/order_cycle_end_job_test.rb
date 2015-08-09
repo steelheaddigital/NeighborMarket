@@ -1,9 +1,11 @@
 require 'test_helper'
+Sidekiq::Testing.fake!
 
 class OrderCycleEndJobTest < ActiveSupport::TestCase
 
   def setup
     ActionMailer::Base.deliveries = []
+    PostPickupJob.jobs.clear
   end  
 
   test "send emails sends emails" do
@@ -54,11 +56,9 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     order_cycle = order_cycles(:current)
     job = OrderCycleEndJob.new
     
+    assert_equal 0, PostPickupJob.jobs.size
     job.queue_post_pickup_job(order_cycle)
-    queued_job = Delayed::Job.where("queue = ?","post_pickup")
-    
-    assert_not_nil queued_job.first
-    assert_equal queued_job.first.run_at, order_cycle.buyer_pickup_date + 1.day
+    assert_equal 1, PostPickupJob.jobs.size
   end
 
 end

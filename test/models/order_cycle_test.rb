@@ -1,7 +1,12 @@
 require 'test_helper'
 
 class OrderCycleTest < ActiveSupport::TestCase
-  
+
+  def setup
+    OrderCycleEndJob.jobs.clear
+    OrderCycleStartJob.jobs.clear  
+  end
+
    test "should validate valid order cycle" do
      order_cycle = OrderCycle.new(:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
      assert order_cycle.valid?, order_cycle.errors.inspect
@@ -85,18 +90,18 @@ class OrderCycleTest < ActiveSupport::TestCase
   test "save_and_set_status queues new job and sets status to pending if start_date is after now" do
     order_cycle = OrderCycle.new(:start_date => Date.current + 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
     
-    assert_difference "Delayed::Job.count" do
-      order_cycle.save_and_set_status
-    end
+    assert_equal 0, OrderCycleStartJob.jobs.size
+    order_cycle.save_and_set_status
+    assert_equal 1, OrderCycleStartJob.jobs.size
     assert_equal("pending", order_cycle.status)
   end
   
   test "save_and_set_status queues new job and sets status to current if start_date is before now" do
     order_cycle = OrderCycle.new(:start_date => DateTime.current - 1.day, :end_date => DateTime.current + 1.day, :seller_delivery_date => DateTime.current + 1.day, :buyer_pickup_date => DateTime.current + 1.day)
     
-    assert_difference "Delayed::Job.count" do
-      order_cycle.save_and_set_status
-    end
+    assert_equal 0, OrderCycleEndJob.jobs.size
+    order_cycle.save_and_set_status
+    assert_equal 1, OrderCycleEndJob.jobs.size
     assert_equal("current", order_cycle.status)
   end
   

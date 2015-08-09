@@ -18,6 +18,7 @@
 #
 
 class OrderCycleStartJob
+  include Sidekiq::Worker
 
   def perform
     pending_cycle = OrderCycle.find_by_status("pending")

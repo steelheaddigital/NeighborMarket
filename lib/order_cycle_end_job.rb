@@ -16,8 +16,10 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
+require 'sidekiq/api'
 
 class OrderCycleEndJob
+  include Sidekiq::Worker
   
   def perform
     current_cycle = OrderCycle.find_by_status('current')
@@ -79,10 +81,11 @@ class OrderCycleEndJob
   end
   
   def queue_post_pickup_job(order_cycle)
-    job = PostPickupJob.new(order_cycle.id)
     send_date = order_cycle.buyer_pickup_date + 1.day
-    Delayed::Job.where('queue = ?', 'post_pickup').each(&:destroy)
-    Delayed::Job.enqueue(job, priority: 0, run_at: send_date, queue: 'post_pickup')
+    scheduled_set = Sidekiq::ScheduledSet.new
+    jobs = scheduled_set.select {|ss| ss.klass == 'PostPickupJob' }
+    jobs.each(&:delete)
+    PostPickupJob.perform_at(send_date)
   end
   
 end

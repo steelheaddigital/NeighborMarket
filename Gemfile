@@ -9,6 +9,9 @@ group :test do
   gem 'minitest-stub_any_instance'
 end
 
+gem 'protected_attributes', '~> 1.0.9'
+gem 'activerecord-deprecated_finders', '~> 1.0.3'
+
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sass-rails', '~> 5.0.3'
 gem 'jquery-rails', '3.1.3'
@@ -41,10 +44,5 @@ gem 'paypal-express', '~> 0.8.1'
 gem 'paypal-sdk-permissions', '~> 1.96.4'
 gem 'paypal-sdk-adaptiveaccounts', git: 'git://github.com/paypal/adaptiveaccounts-sdk-ruby'
 gem 'crypt_keeper', '~> 0.20.0'
+gem 'sidekiq', '~> 3.4.2'
 
-gem 'protected_attributes', '~> 1.0.9'
-gem 'activerecord-deprecated_finders', '~> 1.0.3'
-
-#protected_attributes has to come before delayed_job
-gem 'delayed_job', '~> 4.0.2'
-gem 'delayed_job_active_record', '~> 4.0.1'
