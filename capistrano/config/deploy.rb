@@ -86,7 +86,7 @@ namespace :foreman do
       unless test("[ -f " + shared_path.to_s + "/.env ]")
         puts "\n\n=== Creating .env file! ===\n\n"
         env = <<-EOF
-PATH=/usr/local/rbenv/shims:/usr/local/rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PATH='./bin:/usr/local/rbenv/shims:/usr/local/rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 RAILS_ENV=production
 HOST=#{fetch(:host_name)}
 DEFAULT_FROM=''
