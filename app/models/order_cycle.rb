@@ -100,6 +100,11 @@ class OrderCycle < ActiveRecord::Base
         #post new inventory items marked as auto-post
         InventoryItem.autopost(self) unless updating
         OrderCycle.queue_order_cycle_end_job(end_date)
+        sellers = User.joins(:roles, :user_preference).where(roles: { name: 'seller' }, user_preferences: { seller_new_order_cycle_notification: true })
+        sellers.each do |seller|
+          seller.save if seller.authentication_token.blank? #generate an auth token
+          SellerMailer.delay.order_cycle_start_mail(seller, self)
+        end
       end
     end
     success
@@ -196,14 +201,14 @@ class OrderCycle < ActiveRecord::Base
     
   def self.queue_order_cycle_start_job(start_date)
     scheduled_set = Sidekiq::ScheduledSet.new
-    jobs = scheduled_set.select {|ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' }
+    jobs = scheduled_set.select { |ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' }
     jobs.each(&:delete)
     OrderCycleStartJob.perform_at(start_date)
   end
 
   def self.queue_order_cycle_end_job(end_date)
     scheduled_set = Sidekiq::ScheduledSet.new
-    jobs = scheduled_set.select {|ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' || ss.klass == 'PostPickupJob' }
+    jobs = scheduled_set.select { |ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' || ss.klass == 'PostPickupJob' }
     jobs.each(&:delete)
     OrderCycleEndJob.perform_at(end_date)
   end

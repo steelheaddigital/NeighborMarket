@@ -138,4 +138,14 @@ class SellerMailerTest < ActionMailer::TestCase
     assert_match("<a href=\"http://test.neighbormarket.org/seller/reviews\">Log in</a> to view all of your reviews and ratings.", sent.body.to_s)
   end
   
+  test 'order_cycle_start_mail' do
+    seller = users(:approved_seller_user)
+    order_cycle = order_cycles(:current)
+    SellerMailer.order_cycle_start_mail(seller, order_cycle).deliver
+    sent = ActionMailer::Base.deliveries.first
+
+    assert !ActionMailer::Base.deliveries.empty?
+    assert_equal [seller.email], sent.to
+    assert_equal 'A new order cycle has started at Test Neighbor Market', sent.subject
+  end
 end

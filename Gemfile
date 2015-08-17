@@ -29,6 +29,7 @@ gem 'bootstrap-wysihtml5-rails', '~> 0.3.3.7'
 gem 'dynamic_form', git: 'git://github.com/tmooney3979/dynamic_form'
 
 gem 'devise', '~> 3.4.1'
+gem 'simple_token_authentication', '~> 1.10.0'
 gem 'cancan', '~> 1.6.9'
 gem 'carmen-rails', '~> 1.0.1'
 gem 'will_paginate', '~> 3.0.3'
@@ -45,4 +46,3 @@ gem 'paypal-sdk-permissions', '~> 1.96.4'
 gem 'paypal-sdk-adaptiveaccounts', git: 'git://github.com/paypal/adaptiveaccounts-sdk-ruby'
 gem 'crypt_keeper', '~> 0.20.0'
 gem 'sidekiq', '~> 3.4.2'
-

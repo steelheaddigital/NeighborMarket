@@ -82,6 +82,7 @@ class Ability
         item.published?
       end
       can :show, SecondLevelCategory
+      can :update, UserPreference, user_id: user.id
     end
   end
 end

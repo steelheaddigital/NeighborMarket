@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809132222) do
+ActiveRecord::Schema.define(version: 20150816130024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -268,6 +268,14 @@ ActiveRecord::Schema.define(version: 20150809132222) do
 
   add_index "user_paypal_express_settings", ["user_id"], name: "index_user_paypal_express_settings_on_user_id", using: :btree
 
+  create_table "user_preferences", force: true do |t|
+    t.integer "user_id"
+    t.boolean "seller_new_order_cycle_notification", default: true
+    t.boolean "buyer_new_order_cycle_notification",  default: true
+  end
+
+  add_index "user_preferences", ["user_id"], name: "index_user_preferences_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: ""
     t.string   "encrypted_password",     default: "",       null: false
@@ -305,8 +313,10 @@ ActiveRecord::Schema.define(version: 20150809132222) do
     t.datetime "auto_create_updated_at"
     t.datetime "deleted_at"
     t.boolean  "terms_of_service",       default: false
+    t.string   "authentication_token"
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

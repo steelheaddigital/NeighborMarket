@@ -167,6 +167,8 @@ NeighborMarket::Application.routes.draw do
   resources :contact, :only => ["index"]
 
   post 'payments/confirm', to: 'payments#confirm', as: :payments_confirm
+
+  resources :user_preferences, only: ['update', 'edit']
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

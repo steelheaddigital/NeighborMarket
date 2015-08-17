@@ -1,4 +1,3 @@
-<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -17,21 +16,9 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
-%>
 
-<% content_for :SiteSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="settings">
-		<%= render 'site_settings/setting_form' %>
-	</div>
-<% end %>
-<% content_for :SiteContentsContent do %>
-	<div role="tabpanel" class="well tab-pane active" id="content">
-		<%= render 'content_form' %>
-	</div>
-<% end %>
-<% content_for :PaymentProcessorSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="payment_processor_settings">
-		<%= render 'payment_processor_settings/setting_form' %>
-	</div>
-<% end %>
-<%= render :template => 'layouts/_site_settings' %>
+class UserPreference < ActiveRecord::Base
+  belongs_to :user
+
+  attr_accessible :seller_new_order_cycle_notification, :buyer_new_order_cycle_notification
+end

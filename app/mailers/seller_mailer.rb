@@ -76,6 +76,13 @@ class SellerMailer < BaseMailer
           :subject => "A new review has been submitted for #{@inventory_item.name} at #{SiteSetting.instance.site_name}")
   end
   
+  def order_cycle_start_mail(seller, order_cycle)
+    @site_settings = SiteSetting.instance
+    @order_cycle = order_cycle
+    @seller = seller
+    mail(to: seller.email, subject: "A new order cycle has started at #{@site_settings.site_name}")
+  end
+
   private
   
   def purchase_mail(seller, order, subject)

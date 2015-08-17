@@ -19,19 +19,16 @@
 #
 %>
 
-<% content_for :SiteSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="settings">
-		<%= render 'site_settings/setting_form' %>
-	</div>
-<% end %>
-<% content_for :SiteContentsContent do %>
-	<div role="tabpanel" class="well tab-pane active" id="content">
-		<%= render 'content_form' %>
-	</div>
-<% end %>
-<% content_for :PaymentProcessorSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="payment_processor_settings">
-		<%= render 'payment_processor_settings/setting_form' %>
-	</div>
-<% end %>
-<%= render :template => 'layouts/_site_settings' %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	</head>
+	<body>
+		<p>A new order cycle has started at <%= @site_settings.site_name %> and will end on <%= format_date_time(@order_cycle.end_date) %>.</p>
+		<p>Please <a href="<%= new_user_session_url %>">log in</a> to update your inventory for this cycle.</p>
+		<div style="margin-top: 40px;">
+			<p>Don't want to receive these emails anymore? <a href="<%= edit_user_preference_url(@seller.user_preference, user_email: @seller.email, user_token: @seller.authentication_token) %>">click here</a> to update your email preferences.</p>
+		</div>
+	</body>
+</html>

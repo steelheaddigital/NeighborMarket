@@ -19,6 +19,7 @@
 
 class User < ActiveRecord::Base
   include PgSearch
+  acts_as_token_authenticatable
   
   pg_search_scope :user_search, :against => [:username, :first_name, :last_name]
   has_and_belongs_to_many :roles
@@ -33,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :reviews
   has_one :user_paypal_express_setting
   has_one :user_in_person_setting
+  has_one :user_preference
   
   validates :username, :uniqueness => true, :unless => :auto_create
   validates :username, :presence => true, :unless => :auto_create
@@ -67,6 +69,7 @@ class User < ActiveRecord::Base
   before_save { valid? || true }
   after_save { errors.clear || true }
   after_create :create_user_in_person_setting, if: :seller?
+  after_create :create_user_preference
   before_update :set_auto_created_updated_at, if: :auto_created_pending_update?
   after_update :create_user_in_person_setting, if: :become_seller
   

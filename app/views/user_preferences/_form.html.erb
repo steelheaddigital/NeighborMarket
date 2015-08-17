@@ -1,0 +1,50 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+<%= bootstrap_form_for @preferences do |f| %>
+	<%= hidden_field_tag "user_token", @token if @token %>
+	<%= hidden_field_tag "user_email", @email if @email %>
+	<div class="container-fluid">
+		<%= f.error_messages %>
+		<div class="row">
+			<% if current_user.seller? %>
+				<div class="col-md-6">
+					<fieldset>
+						<legend>Seller Preferences</legend>
+					  	<%= f.check_box :seller_new_order_cycle_notification, label: tooltip_label('Receive Order Cycle Start Notification', 'Receive email notifications when a new order cycle starts so you know when to post your items for sale.') %>
+					</fieldset>
+				</div>
+			<% end %>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<fieldset>
+					<legend>Buyer Preferences</legend>
+		  			<%= f.check_box :buyer_new_order_cycle_notification, label: tooltip_label('Receive Reccomendations', 'Receive an email notification when a new order cycle starts containing personalized reccomendations based on your order history.') %>
+				</fieldset>
+			</div>
+		</div>
+		<div class="row">
+		  	<div class="col-md-6">
+		  		<%= f.submit "Save Preferences", {:class => 'btn btn-primary'} %>
+		  	</div>
+		</div>
+	</div>
+<% end %>

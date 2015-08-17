@@ -83,7 +83,7 @@ class OrderCycleEndJob
   def queue_post_pickup_job(order_cycle)
     send_date = order_cycle.buyer_pickup_date + 1.day
     scheduled_set = Sidekiq::ScheduledSet.new
-    jobs = scheduled_set.select {|ss| ss.klass == 'PostPickupJob' }
+    jobs = scheduled_set.select { |ss| ss.klass == 'PostPickupJob' }
     jobs.each(&:delete)
     PostPickupJob.perform_at(send_date)
   end

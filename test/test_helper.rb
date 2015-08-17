@@ -12,7 +12,7 @@ class ActiveSupport::TestCase
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
-  fixtures :cart_items, :carts, :inventory_items, :order_cycle_settings, :order_cycles, :orders, :roles, :second_level_categories, :site_settings, :top_level_categories, :users, :price_units, :inventory_item_order_cycles, :inventory_item_change_requests, :order_change_requests, :reviews, :site_contents, :payments, :payment_processor_settings, :paypal_express_settings, :user_paypal_express_settings, :user_in_person_settings
+  fixtures :cart_items, :carts, :inventory_items, :order_cycle_settings, :order_cycles, :orders, :roles, :second_level_categories, :site_settings, :top_level_categories, :users, :price_units, :inventory_item_order_cycles, :inventory_item_change_requests, :order_change_requests, :reviews, :site_contents, :payments, :payment_processor_settings, :paypal_express_settings, :user_paypal_express_settings, :user_in_person_settings, :user_preferences
 end
 
 def logger

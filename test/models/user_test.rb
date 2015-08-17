@@ -55,6 +55,12 @@ class UserTest < ActiveSupport::TestCase
     assert_nil @buyer.user_in_person_setting
   end
 
+  test 'should create user_preference after create' do
+    @seller.save
+
+    assert_not_nil @seller.user_preference
+  end
+
   test "should validate valid seller" do
     assert @seller.valid?
   end

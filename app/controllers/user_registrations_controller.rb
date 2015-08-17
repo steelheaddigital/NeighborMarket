@@ -60,6 +60,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   end
   
   def edit
+    @preferences = current_user.user_preference
     super
   end
   

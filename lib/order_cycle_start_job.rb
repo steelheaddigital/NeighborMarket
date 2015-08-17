@@ -21,11 +21,17 @@ class OrderCycleStartJob
   include Sidekiq::Worker
 
   def perform
-    pending_cycle = OrderCycle.find_by_status("pending")
-    pending_cycle.status = "current"
+    pending_cycle = OrderCycle.find_by_status('pending')
+    pending_cycle.status = 'current'
     if pending_cycle.save
       OrderCycle.queue_order_cycle_end_job(pending_cycle.end_date)
       InventoryItem.autopost(pending_cycle)
+      
+      sellers = User.joins(:roles, :user_preference).where(roles: { name: 'seller' }, user_preferences: { seller_new_order_cycle_notification: true })
+      sellers.each do |seller|
+        seller.save if seller.authentication_token.blank? #generate an auth token
+        SellerMailer.order_cycle_start_mail(seller, pending_cycle).deliver
+      end
     end
   end
   

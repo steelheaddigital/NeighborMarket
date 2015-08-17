@@ -1,4 +1,3 @@
-<%
 #
 #Copyright 2013 Neighbor Market
 #
@@ -17,21 +16,24 @@
 #You should have received a copy of the GNU General Public License
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
-%>
 
-<% content_for :SiteSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="settings">
-		<%= render 'site_settings/setting_form' %>
-	</div>
-<% end %>
-<% content_for :SiteContentsContent do %>
-	<div role="tabpanel" class="well tab-pane active" id="content">
-		<%= render 'content_form' %>
-	</div>
-<% end %>
-<% content_for :PaymentProcessorSettingsContent do %>
-	<div role="tabpanel" class="well tab-pane" id="payment_processor_settings">
-		<%= render 'payment_processor_settings/setting_form' %>
-	</div>
-<% end %>
-<%= render :template => 'layouts/_site_settings' %>
+class UserPreferencesController < ApplicationController
+  acts_as_token_authentication_handler_for User
+  load_and_authorize_resource
+  
+  def edit
+    @preferences = current_user.user_preference
+    @token = current_user.authentication_token
+    @email = current_user.email
+    render layout: 'no_header'
+  end
+  
+  def update
+    @preferences = UserPreference.find(params[:id])
+    if @preferences.update_attributes(params[:user_preference])
+      redirect_to :back, notice: 'Preferences successfully updated!'
+    else
+      render :edit
+    end
+  end
+end
