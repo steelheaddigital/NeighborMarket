@@ -29,6 +29,7 @@
 					<fieldset>
 						<legend>Seller Preferences</legend>
 					  	<%= f.check_box :seller_new_order_cycle_notification, label: tooltip_label('Receive Order Cycle Start Notification', 'Receive email notifications when a new order cycle starts so you know when to post your items for sale.') %>
+					  	<%= f.check_box :seller_purchase_notification, label: tooltip_label('Receive Purchase Notification', 'Receive an email notification when someone purchases one of your products.') %>
 					</fieldset>
 				</div>
 			<% end %>

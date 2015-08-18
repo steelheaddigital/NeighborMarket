@@ -20,5 +20,5 @@
 class UserPreference < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :seller_new_order_cycle_notification, :buyer_new_order_cycle_notification
+  attr_accessible :seller_new_order_cycle_notification, :buyer_new_order_cycle_notification, :seller_purchase_notification
 end

@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.integer  "cart_id"
     t.integer  "inventory_item_id"
     t.integer  "quantity",                           default: 1
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "order_id"
     t.boolean  "delivered",                          default: false
     t.boolean  "minimum_reached_at_order_cycle_end", default: true
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
 
   create_table "carts", force: true do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "carts", ["user_id"], name: "index_carts_on_user_id", using: :btree
@@ -52,8 +52,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.integer  "inventory_item_id"
     t.text     "description"
     t.boolean  "complete",          default: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
   end
 
@@ -76,8 +76,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.string   "price_unit"
     t.integer  "quantity_available"
     t.text     "description"
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
@@ -98,8 +98,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.integer  "order_id"
     t.text     "description"
     t.boolean  "complete",    default: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "order_change_requests", ["order_id"], name: "index_order_change_requests_on_order_id", using: :btree
@@ -116,8 +116,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.string   "status"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "seller_delivery_date"
     t.datetime "buyer_pickup_date"
   end
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
 
   create_table "orders", force: true do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "complete",       default: false
     t.integer  "order_cycle_id"
     t.boolean  "deliver",        default: false
@@ -174,8 +174,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
 
   create_table "price_units", force: true do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "reviews", force: true do |t|
@@ -206,8 +206,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.integer  "top_level_category_id"
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "active",                default: true
   end
 
@@ -239,8 +239,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
   create_table "top_level_categories", force: true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "active",      default: true
   end
 
@@ -271,6 +271,7 @@ ActiveRecord::Schema.define(version: 20150816130024) do
   create_table "user_preferences", force: true do |t|
     t.integer "user_id"
     t.boolean "seller_new_order_cycle_notification", default: true
+    t.boolean "seller_purchase_notification",        default: true
     t.boolean "buyer_new_order_cycle_notification",  default: true
   end
 
@@ -287,8 +288,8 @@ ActiveRecord::Schema.define(version: 20150816130024) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "username"
     t.string   "first_name"
     t.string   "last_name"

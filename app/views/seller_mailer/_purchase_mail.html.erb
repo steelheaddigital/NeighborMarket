@@ -60,4 +60,7 @@
           <%end%>
         </tbody>
     </table>
+    <div style="margin-top: 40px;">
+      <p>Don't want to receive these emails anymore? <a href="<%= edit_user_preference_url(@seller.user_preference, user_email: @seller.email, user_token: @seller.authentication_token) %>">click here</a> to update your email preferences.</p>
+    </div>
 </html>

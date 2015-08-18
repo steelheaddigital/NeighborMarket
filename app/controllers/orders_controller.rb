@@ -98,11 +98,11 @@ class OrdersController < ApplicationController
     sellers = order.cart_items.map { |item| item.inventory_item.user }.uniq(&:id)
     if update
       sellers.each do |seller|
-        SellerMailer.delay.updated_purchase_mail(seller, order)
+        SellerMailer.delay.updated_purchase_mail(seller, order) if seller.user_preference.seller_purchase_notification
       end
     else
       sellers.each do |seller|
-        SellerMailer.delay.new_purchase_mail(seller, order)
+        SellerMailer.delay.new_purchase_mail(seller, order) if seller.user_preference.seller_purchase_notification
       end
     end
 
