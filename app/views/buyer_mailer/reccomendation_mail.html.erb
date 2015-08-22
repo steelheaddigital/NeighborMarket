@@ -1,0 +1,50 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+  	<p> Hello <%= @buyer.username %>,
+	<p>
+		We wanted to let you know that a new order cycle has started at <%= @site_name %>. Below are some recently posted items that you may be interested in. Thanks for supporting your neighbors and local artisans!
+	</p>
+	<table border=0 style="width: 600px;">
+		<%@items.each_slice(4) do |slice|%>
+			<tr>
+				<% slice.each do |item| %>
+					<td style="width:25%; text-align: center" >
+					      <a href="<%=inventory_item_url(item)%>"><%= image_tag URI.join(root_url, item.photo.url(:medium)), { alt: item.name, style: "height: auto; width: 100px;"} %></a>
+					      <div>
+					        <h3><%=link_to(item.name, inventory_item_url(item))%></h3>
+					      </div>
+					</td>
+				<%end%>
+			</tr>
+		<%end%>
+	</table>
+	<div style="margin-top: 40px;">
+      <p>Don't want to receive these emails anymore? <a href="<%= edit_user_preference_url(@buyer.user_preference, user_email: @buyer.email, user_token: @buyer.authentication_token) %>">click here</a> to update your email preferences.</p>
+    </div>
+  </body>
+</html>

@@ -87,6 +87,7 @@ class SellerMailer < BaseMailer
   
   def purchase_mail(seller, order, subject)
     @buyer = order.user
+    @seller = seller
     @cart_items = order.cart_items.joins(:inventory_item).where("inventory_items.user_id = ?", seller.id)
     @has_items_with_minimum = @cart_items.any?{|item| !item.inventory_item.quantity_needed_to_reach_minimum.nil? && item.inventory_item.quantity_needed_to_reach_minimum > 0}
     mail( :to => seller.email, 

@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 not_current:
-  start_date: 2012-08-17 18:03:25
-  end_date: 2012-08-17 18:03:25
+  start_date: <%= DateTime.now.utc %>
+  end_date: <%= DateTime.now.utc %>
   status: pending
   buyer_pickup_date: <%= DateTime.now.utc %>
-  seller_delivery_date: 2012-08-17 18:03:25
+  seller_delivery_date: <%= DateTime.now.utc %>
 
 current:
   start_date: 2012-08-17 18:03:25

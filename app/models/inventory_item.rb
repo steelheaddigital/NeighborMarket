@@ -54,7 +54,7 @@ class InventoryItem < ActiveRecord::Base
   after_update :notify_buyers
   before_destroy :ensure_not_referenced_by_any_cart_item, :validate_can_edit
   
-  scope :published, -> { joins(:order_cycles).where("order_cycles.id=? AND inventory_items.approved=true AND inventory_items.is_deleted=false", OrderCycle.current_cycle_id)}
+  scope :published, -> { joins(:order_cycles).where("order_cycles.id=? AND inventory_items.approved=true AND inventory_items.is_deleted=false", OrderCycle.current_cycle_id) }
   
   def autopost?
     self.autopost

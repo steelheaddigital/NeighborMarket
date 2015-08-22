@@ -23,8 +23,8 @@
 	<%= hidden_field_tag "user_email", @email if @email %>
 	<div class="container-fluid">
 		<%= f.error_messages %>
-		<div class="row">
-			<% if current_user.seller? %>
+		<% if current_user.seller? %>
+			<div class="row">
 				<div class="col-md-6">
 					<fieldset>
 						<legend>Seller Preferences</legend>
@@ -32,8 +32,8 @@
 					  	<%= f.check_box :seller_purchase_notification, label: tooltip_label('Receive Purchase Notification', 'Receive an email notification when someone purchases one of your products.') %>
 					</fieldset>
 				</div>
-			<% end %>
-		</div>
+			</div>
+		<% end %>
 		<div class="row">
 			<div class="col-md-6">
 				<fieldset>

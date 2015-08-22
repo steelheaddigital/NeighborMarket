@@ -17,22 +17,15 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class OrderCycleStartJob
+class ReccomendationMailJob
   include Sidekiq::Worker
-
-  def perform
-    pending_cycle = OrderCycle.find_by_status('pending')
-    pending_cycle.status = 'current'
-    if pending_cycle.save
-      OrderCycle.queue_order_cycle_end_job(pending_cycle.end_date)
-      InventoryItem.autopost(pending_cycle)
-      pending_cycle.queue_reccomendation_mail_job
-      
-      sellers = User.active_sellers.joins(:user_preference).where(user_preferences: { seller_new_order_cycle_notification: true })
-      sellers.each do |seller|
-        seller.save if seller.authentication_token.blank? #generate an auth token
-        SellerMailer.order_cycle_start_mail(seller, pending_cycle).deliver
-      end
+  
+  def perform 
+    return if InventoryItem.published.nil? || InventoryItem.published.count == 0
+    buyers = User.active_buyers.joins(:user_preference).where(user_preferences: { buyer_new_order_cycle_notification: true })
+    buyers.each do |buyer|
+      buyer.save if buyer.authentication_token.blank? #generate an auth token
+      BuyerMailer.reccomendation_mail(buyer).deliver
     end
   end
   

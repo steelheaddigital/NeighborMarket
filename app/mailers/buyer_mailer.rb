@@ -69,4 +69,11 @@ class BuyerMailer < BaseMailer
           :subject => "Thank you for participating in #{@site_name}")
   end
   
+  def reccomendation_mail(buyer)
+    @buyer = buyer
+    @items = InventoryItem.published.limit(8).order('Random()')
+    @site_name = SiteSetting.instance.site_name
+    mail(to: buyer.email, 
+         subject: "A new order cycle has started at #{@site_name}.")
+  end
 end

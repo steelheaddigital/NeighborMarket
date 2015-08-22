@@ -93,18 +93,21 @@ class OrderCycle < ActiveRecord::Base
     
     success = save
     if success
-      #complete_pending_cycles
       if start_date > Time.current
         OrderCycle.queue_order_cycle_start_job(start_date)
       else
         #post new inventory items marked as auto-post
         InventoryItem.autopost(self) unless updating
         OrderCycle.queue_order_cycle_end_job(end_date)
-        sellers = User.joins(:roles, :user_preference).where(roles: { name: 'seller' }, user_preferences: { seller_new_order_cycle_notification: true })
-        sellers.each do |seller|
-          seller.save if seller.authentication_token.blank? #generate an auth token
-          SellerMailer.delay.order_cycle_start_mail(seller, self)
+
+        unless updating
+          sellers = User.active_sellers.joins(:user_preference).where(user_preferences: { seller_new_order_cycle_notification: true })
+          sellers.each do |seller|
+            seller.save if seller.authentication_token.blank? #generate an auth token
+            SellerMailer.delay.order_cycle_start_mail(seller, self)
+          end
         end
+        queue_reccomendation_mail_job
       end
     end
     success
@@ -164,6 +167,13 @@ class OrderCycle < ActiveRecord::Base
     end
   end
   
+  def queue_reccomendation_mail_job
+    scheduled_set = Sidekiq::ScheduledSet.new
+    jobs = scheduled_set.select { |ss| ss.klass == 'ReccomendationMailJob' }
+    jobs.each(&:delete)
+    ReccomendationMailJob.perform_at(start_date + 2.days)
+  end
+
   def self.current_cycle
     find_by_status("current")
   end

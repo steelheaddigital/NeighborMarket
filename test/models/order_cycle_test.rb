@@ -4,7 +4,8 @@ class OrderCycleTest < ActiveSupport::TestCase
 
   def setup
     OrderCycleEndJob.jobs.clear
-    OrderCycleStartJob.jobs.clear  
+    OrderCycleStartJob.jobs.clear
+    ReccomendationMailJob.jobs.clear
   end
 
    test "should validate valid order cycle" do
@@ -91,8 +92,10 @@ class OrderCycleTest < ActiveSupport::TestCase
     order_cycle = OrderCycle.new(:start_date => Date.current + 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day)
     
     assert_equal 0, OrderCycleStartJob.jobs.size
+    assert_equal 0, ReccomendationMailJob.jobs.size
     order_cycle.save_and_set_status
     assert_equal 1, OrderCycleStartJob.jobs.size
+    assert_equal 0, ReccomendationMailJob.jobs.size
     assert_equal("pending", order_cycle.status)
   end
   
@@ -100,8 +103,10 @@ class OrderCycleTest < ActiveSupport::TestCase
     order_cycle = OrderCycle.new(:start_date => DateTime.current - 1.day, :end_date => DateTime.current + 1.day, :seller_delivery_date => DateTime.current + 1.day, :buyer_pickup_date => DateTime.current + 1.day)
     
     assert_equal 0, OrderCycleEndJob.jobs.size
+    assert_equal 0, ReccomendationMailJob.jobs.size
     order_cycle.save_and_set_status
     assert_equal 1, OrderCycleEndJob.jobs.size
+    assert_equal 1, ReccomendationMailJob.jobs.size
     assert_equal("current", order_cycle.status)
   end
   
