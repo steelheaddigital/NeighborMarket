@@ -37,3 +37,6 @@
 [submodule "puppet/modules/gcc"]
 	path = puppet/modules/gcc
 	url = https://github.com/puppetlabs/puppetlabs-gcc.git
+[submodule "puppet/modules/swap_file"]
+	path = puppet/modules/swap_file
+	url = https://github.com/petems/puppet-swap_file.git

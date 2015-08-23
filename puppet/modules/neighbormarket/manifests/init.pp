@@ -12,9 +12,13 @@ class neighbormarket (
   $db_password      = 'neighbormarket',
   $db_root_password = 'neighbormarket_root',
 ) {
+  include apt
 
   Exec { path => "/bin:/sbin:/usr/bin:/usr/sbin" }
   
+  swap_file::files { 'default':
+    ensure   => present,
+  }->
   class { 'neighbormarket::user':
     home  => $app_directory,
     user  => $user,
@@ -87,6 +91,12 @@ class neighbormarket (
     ensure => installed
   }
   
+  #enable automatic security updates.
+  apt::conf{"99unattended-upgrade":
+    ensure  => present,
+    content => "APT::Periodic::Unattended-Upgrade \"1\";",
+  }
+
   # --- Locale -------------------------------------------------------------------
   exec { 'update-locale':
     command => 'update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8'
