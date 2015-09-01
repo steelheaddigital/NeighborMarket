@@ -84,8 +84,9 @@ class User < ActiveRecord::Base
   attr_writer :auto_create
   
   scope :active, -> { where(deleted_at: nil) }
-  scope :active_sellers, -> { joins(:roles).where("roles.name='seller' AND users.approved_seller=true").active }
-  scope :active_buyers, -> { joins(:roles).where("roles.name='buyer'").active }
+  scope :confirmed, -> { where('confirmed_at IS NOT NULL').active }
+  scope :active_sellers, -> { joins(:roles).where("roles.name='seller' AND users.approved_seller=true").confirmed }
+  scope :active_buyers, -> { joins(:roles).where("roles.name='buyer'").confirmed }
   
   def auto_create
     @auto_create || false
