@@ -60,5 +60,4 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     job.queue_post_pickup_job(order_cycle)
     assert_equal 1, PostPickupJob.jobs.size
   end
-
 end

@@ -85,7 +85,7 @@ class OrderCycleEndJob
     scheduled_set = Sidekiq::ScheduledSet.new
     jobs = scheduled_set.select { |ss| ss.klass == 'PostPickupJob' }
     jobs.each(&:delete)
-    PostPickupJob.perform_at(send_date)
+    PostPickupJob.perform_at(send_date, order_cycle.id)
   end
   
 end

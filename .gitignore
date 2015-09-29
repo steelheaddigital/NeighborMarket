@@ -38,3 +38,5 @@
 
 # Ignore CTags files
 /.tags*
+node_modules
+shared
