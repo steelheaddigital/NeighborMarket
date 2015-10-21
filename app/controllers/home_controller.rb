@@ -22,8 +22,7 @@ class HomeController < ApplicationController
     session[:last_search_path] = nil
     site_settings = SiteSetting.instance
     site_contents = SiteContent.instance
-    current_inventory_items = InventoryItem.joins(:order_cycles)
-                              .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', "current")
+    current_inventory_items = InventoryItem.published.where('inventory_items.photo_file_name IS NOT NULL')
     @items_for_carousel = current_inventory_items.order("RANDOM()")
                           .limit(5)
     @items_for_display = current_inventory_items.paginate(:page => 1, :per_page => 8)
@@ -39,8 +38,7 @@ class HomeController < ApplicationController
   end
   
   def paginate_items
-    current_inventory_items = InventoryItem.joins(:order_cycles)
-                                           .where('order_cycles.status = ? AND inventory_items.photo_file_name IS NOT NULL', 'current')
+    current_inventory_items = InventoryItem.published.where('inventory_items.photo_file_name IS NOT NULL')
     @items_for_display = current_inventory_items.paginate(:page => params[:page], :per_page => 8)
     
     render "_items", :layout => false

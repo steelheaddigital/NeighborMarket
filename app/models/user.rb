@@ -299,6 +299,7 @@ class User < ActiveRecord::Base
     roles.clear
     user_paypal_express_setting.delete if user_paypal_express_setting
     user_in_person_setting.delete if user_in_person_setting
+    inventory_items.each(&:paranoid_destroy)
     
     save(validate: false)
   end

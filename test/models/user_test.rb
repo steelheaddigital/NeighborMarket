@@ -491,38 +491,44 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "soft_delete deletes appropriate fields" do
-    user = users(:approved_seller_user)
+    payment_processor = Minitest::Mock.new
+    2.times do
+      payment_processor.expect :refund, Payment.new, [Payment, BigDecimal]
+    end
+    Payment.stub_any_instance :payment_processor, payment_processor do
+      user = users(:approved_seller_user)
 
-    user.soft_delete
+      user.soft_delete
 
-    user = User.find(user.id)
+      user = User.find(user.id)
 
-    assert_not_nil user.deleted_at
-    assert_nil user.email
-    assert_nil user.password
-    assert_nil user.reset_password_token
-    assert_nil user.reset_password_sent_at
-    assert_nil user.remember_created_at
-    assert_equal(0, user.sign_in_count)
-    assert_nil user.current_sign_in_at
-    assert_nil user.last_sign_in_at
-    assert_nil user.current_sign_in_ip
-    assert_nil user.last_sign_in_ip
-    assert_nil user.first_name
-    assert_nil user.last_name
-    assert_nil user.phone
-    assert_nil user.address
-    assert_nil user.city
-    assert_nil user.state
-    assert_nil user.country
-    assert_nil user.zip
-    assert_nil user.aboutme
-    assert_nil user.delivery_instructions
-    assert !user.approved_seller
-    assert_equal("", user.listing_approval_style)
-    assert_equal([], user.roles)
-    assert_nil user.user_in_person_setting
-    assert_nil user.user_paypal_express_setting
+      assert_not_nil user.deleted_at
+      assert_nil user.email
+      assert_nil user.password
+      assert_nil user.reset_password_token
+      assert_nil user.reset_password_sent_at
+      assert_nil user.remember_created_at
+      assert_equal(0, user.sign_in_count)
+      assert_nil user.current_sign_in_at
+      assert_nil user.last_sign_in_at
+      assert_nil user.current_sign_in_ip
+      assert_nil user.last_sign_in_ip
+      assert_nil user.first_name
+      assert_nil user.last_name
+      assert_nil user.phone
+      assert_nil user.address
+      assert_nil user.city
+      assert_nil user.state
+      assert_nil user.country
+      assert_nil user.zip
+      assert_nil user.aboutme
+      assert_nil user.delivery_instructions
+      assert !user.approved_seller
+      assert_equal("", user.listing_approval_style)
+      assert_equal([], user.roles)
+      assert_nil user.user_in_person_setting
+      assert_nil user.user_paypal_express_setting
+    end
   end
 
   test 'current_inventory gets inventory for user' do

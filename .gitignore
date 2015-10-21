@@ -14,9 +14,6 @@
 /log/*.log
 /tmp
 
-#ignore the Netbeans project files
-/nbproject
-
 /vender/bundle
 /public/system
 /public/sitemaps
@@ -24,12 +21,6 @@
 #ignore the OSX files
 .DS_Store
 /.git-rewrite/
-/vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/lib/%name%/
-/vendor/bundle/ruby/1.9.1/gems/prawnto_2-0.2.5/spec/dummy/.sass-cache/
-/vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/app/views/layouts/%name%/
-/vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/app/controllers/%name%/
-/vendor/bundle/ruby/1.9.1/gems/railties-3.1.3/lib/rails/generators/rails/plugin_new/templates/app/helpers/%name%/
-/vendor/bundle/
 
 # Ignore application configuration
 /config/application.yml

@@ -17,8 +17,6 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require_relative '../../lib/order_cycle_end_job'
-require_relative '../../lib/order_cycle_start_job'
 require 'sidekiq/api'
 
 class OrderCycle < ActiveRecord::Base

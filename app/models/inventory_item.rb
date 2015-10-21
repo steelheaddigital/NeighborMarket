@@ -54,81 +54,82 @@ class InventoryItem < ActiveRecord::Base
   after_update :notify_buyers
   before_destroy :ensure_not_referenced_by_any_cart_item, :validate_can_edit
   
-  scope :published, -> { joins(:order_cycles).where("order_cycles.id=? AND inventory_items.approved=true AND inventory_items.is_deleted=false", OrderCycle.current_cycle_id) }
+  scope :active, -> { where(approved: true, is_deleted: false) }
+  scope :published, -> { joins(:order_cycles).where("order_cycles.id=?", OrderCycle.current_cycle_id).active }
   
   def autopost?
-    self.autopost
+    autopost
   end
   
   def top_level_category_name
-    self.top_level_category.name
+    top_level_category.name
   end
   
   def second_level_category_name
-    self.second_level_category.name
+    second_level_category.name
   end
   
   def self.search(keywords)
     scope = self.joins(:order_cycles)
-                .where("is_deleted = false AND approved = true AND order_cycles.status = 'current'")
+            .where("is_deleted = false AND approved = true AND order_cycles.status = 'current'")
     scope.item_search(keywords)
   end
   
   def decrement_quantity_available(quantity)
     self.quantity_available -= quantity
     @user_editable = true
-    self.save
+    save
   end
   
   def increment_quantity_available(quantity)
     self.quantity_available += quantity
     @user_editable = true
-    self.save
+    save
   end
   
   def cart_item_quantity_sum(order_cycle_id)
-    self.cart_items.joins(:order)
-                   .where(:orders => {:order_cycle_id => order_cycle_id})
-                   .map{|h| h[:quantity]}.reduce(:+)
+    cart_items.joins(:order)
+      .where(:orders => { :order_cycle_id => order_cycle_id })
+      .map { |h| h[:quantity] }.reduce(:+)
   end
   
   def previous_cart_items
-    self.cart_items.joins(:order)
-                   .where("orders.order_cycle_id != ?", OrderCycle.current_cycle_id)
+    cart_items.joins(:order)
+      .where("orders.order_cycle_id != ?", OrderCycle.current_cycle_id)
   end
   
   def paranoid_destroy
   
-     #if the inventory item isn't associated with any previous orders then go ahead and destroy it,
-     #otherwise, set it's is_deleted property to true to maintain order history
+    #if the inventory item isn't associated with any previous orders then go ahead and destroy it,
+    #otherwise, set it's is_deleted property to true to maintain order history
     send_order_modified_emails
     current_cart_items.destroy_all
-    if self.previous_cart_items.empty?
-      success = self.destroy
+    if previous_cart_items.empty?
+      success = destroy
     else
-      success = self.update_attribute(:is_deleted, true)
+      success = update_attribute(:is_deleted, true)
     end
     
-    return success
+    success
   end
   
   def add_to_order_cycle
     order_cycle = OrderCycle.active_cycle
-    self.order_cycles << order_cycle if !order_cycle.nil?
+    order_cycles << order_cycle unless order_cycle.nil? 
   end
   
   def in_current_order_cycle?
     order_cycle = order_cycles.find_by_status("current")
-    return !order_cycle.nil?
+    !order_cycle.nil?
   end
   
   def published?
-    self.in_current_order_cycle? && self.approved
+    self.in_current_order_cycle? && approved
   end
   
   def current_cart_items
-    self.cart_items.includes(:order)
-                   .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
+    cart_items.includes(:order)
+      .where(:orders => {:order_cycle_id => OrderCycle.current_cycle_id})
   end
   
   def can_edit?
@@ -136,7 +137,7 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def has_minimum?
-    !self.minimum.nil? && self.minimum > 0
+    !minimum.nil? && minimum > 0
   end
   
   def minimum_reached?
@@ -145,13 +146,13 @@ class InventoryItem < ActiveRecord::Base
   
   def minimum_reached_for_order_cycle?(order_cycle_id)
     quantity_purchased = total_quantity_ordered_for_order_cycle(order_cycle_id)
-    quantity_purchased >= self.minimum.to_i
+    quantity_purchased >= minimum.to_i
   end
   
   def quantity_needed_to_reach_minimum
     if self.has_minimum?
       quantity_purchased = current_cart_items.sum(:quantity)
-      self.minimum.to_i - quantity_purchased 
+      minimum.to_i - quantity_purchased 
     else
       nil
     end
@@ -159,22 +160,22 @@ class InventoryItem < ActiveRecord::Base
   
   def total_quantity_ordered_for_order_cycle(order_cycle_id)
     cart_items = self.cart_items.includes(:order)
-                   .where(:orders => {:order_cycle_id => order_cycle_id})
+                 .where(:orders => { :order_cycle_id => order_cycle_id })
     cart_items.sum(:quantity)
   end
   
   def update_or_create_review(user_id, rating, review)
-    existing_review = self.reviews.where(user_id: user_id).first
+    existing_review = reviews.where(user_id: user_id).first
     if !existing_review.nil?
       existing_review.update_attributes({rating: rating, review: review})
     else
-      self.reviews.build(user_id: user_id, rating: rating, review: review)
-      self.save
+      reviews.build(user_id: user_id, rating: rating, review: review)
+      save
     end
   end
   
   def avg_rating
-    ratings = self.reviews.average("reviews.rating")
+    ratings = reviews.average("reviews.rating")
     if !ratings.nil?
       ratings.round(2)
     else
@@ -193,8 +194,8 @@ class InventoryItem < ActiveRecord::Base
   
   def validate_can_edit
     if !can_edit?
-      self.changed.each do |value|
-        if(value != "quantity_available")
+      changed.each do |value|
+        if (value != "quantity_available")
           field = value.to_sym
           errors.add(field, "cannot be updated during the current order cycle since the inventory item is contained in one or more orders. If you need to change this item, please <a href=\"#{Rails.application.routes.url_helpers.new_inventory_item_change_request_path(:inventory_item_id => self.id)}\">send a request</a> to the site manager.".html_safe)
         end
@@ -232,13 +233,13 @@ class InventoryItem < ActiveRecord::Base
   end
   
   def send_order_modified_emails
-    self.current_cart_items.each do |item|  
-      BuyerMailer.delay.order_modified_mail(self.user, item.order)
+    current_cart_items.each do |item|  
+      BuyerMailer.delay.order_modified_mail(user, item.order)
     end
   end
   
   def self.autopost(order_cycle)
-    InventoryItem.where(:autopost => true).each do |item|
+    InventoryItem.active.where(autopost: true).each do |item|
       item.order_cycles << order_cycle
       item.quantity_available = item.autopost_quantity
       item.save
