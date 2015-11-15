@@ -1,0 +1,46 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    jdowning-rbenv (2.0.0)
+      puppetlabs-stdlib (< 5.0.0, >= 4.1.0)
+    jfryman-nginx (0.2.7)
+      puppetlabs-apt (< 3.0.0, >= 1.8.0)
+      puppetlabs-concat (< 2.0.0, >= 1.1.1)
+      puppetlabs-stdlib (< 5.0.0, >= 4.2.0)
+    maestrodev-wget (1.7.1)
+    petems-swap_file (2.0.0)
+      puppetlabs-stdlib (>= 3.2.0)
+    puppetlabs-apt (2.2.0)
+      puppetlabs-stdlib (< 5.0.0, >= 4.5.0)
+    puppetlabs-concat (1.2.4)
+      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
+    puppetlabs-firewall (1.7.1)
+    puppetlabs-gcc (0.3.0)
+      puppetlabs-stdlib (< 5.0.0, >= 2.0.0)
+    puppetlabs-postgresql (4.6.0)
+      puppetlabs-apt (< 3.0.0, >= 1.8.0)
+      puppetlabs-concat (< 2.0.0, >= 1.1.0)
+      puppetlabs-stdlib (~> 4.0)
+    puppetlabs-stdlib (4.9.0)
+    saz-sudo (3.1.0)
+      puppetlabs-stdlib (< 5.0.0, >= 2.3.0)
+    thomasvandoren-redis (0.10.0)
+      maestrodev-wget (>= 1.1.0)
+      puppetlabs-gcc (>= 0.0.3)
+
+PATH
+  remote: ./neighbormarket
+  specs:
+    neighbormarket (0.0.1)
+
+DEPENDENCIES
+  jdowning-rbenv (>= 0)
+  jfryman-nginx (>= 0)
+  neighbormarket (>= 0)
+  petems-swap_file (>= 0)
+  puppetlabs-apt (>= 0)
+  puppetlabs-firewall (>= 0)
+  puppetlabs-postgresql (>= 0)
+  saz-sudo (>= 0)
+  thomasvandoren-redis (>= 0)
+

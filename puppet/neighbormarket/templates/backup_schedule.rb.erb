@@ -1,0 +1,7 @@
+every 1.day, :at => '4:30 am' do
+  command "AWS_KEY_ID='' AWS_SECRET_ACCESS_KEY='' backup perform -t db_backup"
+end
+
+every 1.day, :at => '4:35 am' do
+  command "AWS_KEY_ID='' AWS_SECRET_ACCESS_KEY='' backup perform -t public_backup"
+end

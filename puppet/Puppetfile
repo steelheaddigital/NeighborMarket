@@ -1,0 +1,11 @@
+forge "https://forge.puppetlabs.com"
+
+mod 'puppetlabs/apt'
+mod 'petems/swap_file'
+mod 'puppetlabs/firewall'
+mod 'jdowning/rbenv'
+mod 'jfryman/nginx'
+mod 'puppetlabs/postgresql'
+mod 'thomasvandoren/redis'
+mod 'saz/sudo'
+mod 'neighbormarket', :path => "./neighbormarket"

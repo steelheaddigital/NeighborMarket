@@ -29,5 +29,11 @@
 
 # Ignore CTags files
 /.tags*
+
 node_modules
 shared
+
+# ignore puppet files
+/puppet/.librarian
+/puppet/.tmp
+/puppet/modules
