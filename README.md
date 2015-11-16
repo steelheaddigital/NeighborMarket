@@ -41,40 +41,26 @@ The easiest way to get up and running is to use the included Vagrant and Puppet 
 		vagrant ssh development
 		cd /vagrant
 
-5. add user vagrant to 'adm' group
-
-		sudo usermod -G adm vagrant
-
-6. Reload the VM
-
-		exit
-		vagrant reload
-
-7. Log back in to the VM
-
-		vagrant ssh development
-		cd /vagrant
-
-8. Set up the rails application
+5. Set up the rails application
 
 		bundle install
 		rake db:test:prepare
 		rake db:schema:load
-		rake db:seed
+		foreman run rake db:seed
 
-9. Create your .env file
+6. Create your .env file
 
 		cp development.env .env
 
-10. Run the tests to make sure everything is set up correctly
+7. Run the tests to make sure everything is set up correctly
 	
 		rake test
 
-10. start up the application
+8. start up the application
 
 		foreman start
 
-11. navigate to http://development.neighbormarket.local in browser. You can log in with the default manager account, username: manager, password: Abc123!
+9. navigate to http://development.neighbormarket.local in browser. You can log in with the default manager account, username: manager, password: Abc123!
 
 Deploy a Live Site
 --------------------
@@ -115,7 +101,7 @@ Scripts are also included for creating a VM on [Digital Ocean](https://digitaloc
 
 		vagrant provision production
 
-12. Set up your DNS entries to point your domain to the IP address you obtained in the step above.
+12. Set up your DNS entries to point your domain to the IP address you obtained in the step above. How you do this depends on where you registered your domain. Check with your domain registrar.
 
 13. Now to deploy the app with Capistrano.  First, change the host_name parameter at the top of capistrano/config/deploy/production.rb to your domain.
 

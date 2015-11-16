@@ -1,8 +1,15 @@
 class neighbormarket::user (
   $home,
   $user,
-  $group
+  $group,
+  $environment
 ) {
+
+  if $environment == 'development' {
+    user { "vagrant":
+      groups   => 'adm'
+    }
+  }
 
   group { $group:
     ensure => present,
@@ -12,7 +19,7 @@ class neighbormarket::user (
     gid      => $group,
     shell    => '/bin/bash',
     home     => $home,
-	groups   => 'adm'
+    groups   => 'adm'
   }->
   file { [$home,
           "$home/.ssh",

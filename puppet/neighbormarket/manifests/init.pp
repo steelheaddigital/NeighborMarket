@@ -22,7 +22,8 @@ class neighbormarket (
   class { 'neighbormarket::user':
     home  => $app_directory,
     user  => $user,
-    group => $group
+    group => $group,
+    environment => $environment
   }->
   class { 'neighbormarket::my_fw':
   	environment   => $environment
