@@ -47,7 +47,7 @@ class CartController < ApplicationController
           redirect_to last_search_path
         end
       elsif params[:commit] == 'Checkout and pay online'
-        redirect_to payment_processor.checkout(current_cart)
+        redirect_to payment_processor.checkout(@cart, new_order_url(paying_online: true), cart_index_url)
       else
         redirect_to new_order_path
       end

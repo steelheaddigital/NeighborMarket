@@ -38,7 +38,6 @@ module PaymentProcessor
         new_payment.cart_items = cart_items
         order.payments << new_payment
       end
-      finish_order_path
     end
 
     def refund(payment, amount)

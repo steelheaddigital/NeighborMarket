@@ -31,14 +31,38 @@ class CartItem < ActiveRecord::Base
            
   validate :validate_can_edit, on: :update
   
-  before_destroy :update_inventory_item_quantities
+  before_save :check_for_refunds
+  before_destroy :refund_all_payments
   after_destroy :check_order
   
   def can_edit?
     user_editable || order.nil?
   end
   
-  def update_inventory_item_quantities
+  def check_for_refunds
+    return unless order
+
+    if quantity_changed?
+      difference = quantity_was - quantity
+      if difference > 0
+        amount_to_refund = difference * price
+        payments.select { |p| p.net_total > 0 }.each do |payment|
+          if amount_to_refund > payment.net_total
+            payment.refund_all
+            amount_to_refund -= payment.net_total
+          else
+            payment.refund(amount_to_refund)
+            break
+          end
+        end
+      end
+    end
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    raise ActiveRecord::Rollback, e.message
+  end
+
+  def refund_all_payments
     return true unless order
     
     refund_payments

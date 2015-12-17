@@ -46,15 +46,13 @@ module PaymentProcessor
         @config[:mode] = 'live'
       end
 
-      Rails.logger.debug "CRED: #{@config.inspect}"
-
       #allow a mock gateway instance to be passed in to the constructor for testing
       self.gateway = args.key?(:gateway) ? args[:gateway] : Paypal::Express::Request.new(@config)
       self.accounts = args.key?(:accounts) ? args[:accounts] : PayPal::SDK::AdaptiveAccounts::API.new(@config)
       self.permissions = args.key?(:permissions) ? args[:permissions] : PayPal::SDK::Permissions::API.new(@config)
     end
 
-    def checkout(cart)
+    def checkout(cart, success_callback_url, cancel_callback_url)
       payment_requests = create_payment_requests(cart)
 
       paypal_options = {
@@ -67,8 +65,8 @@ module PaymentProcessor
 
       response = gateway.setup(
         payment_requests,
-        new_order_url(paying_online: true, host: @host),
-        cart_index_url(host: @host),
+        success_callback_url,
+        cancel_callback_url,
         paypal_options
       )
 
@@ -101,8 +99,6 @@ module PaymentProcessor
         new_payment.cart_items = cart_items
         order.payments << new_payment
       end
-
-      finish_order_path
     rescue Paypal::Exception::APIError => e
       raise PaymentProcessor::PaymentError, "#{e.message}; Details: #{e.response.details[0].long_message}"
     end

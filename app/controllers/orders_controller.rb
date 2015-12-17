@@ -18,11 +18,21 @@
 #
 
 class OrdersController < ApplicationController
-  include CurrentCart
+
+  include PaymentProcessor
 
   before_filter :authenticate_user!, except: [:new]
   load_and_authorize_resource
   skip_authorize_resource only: [:new]
+
+  def show
+    @order = Order.find(params[:id])
+    @site_settings = SiteSetting.instance 
+    
+    respond_to do |format|
+      format.html
+    end
+  end
 
   def new
     @cart = current_cart
@@ -36,16 +46,15 @@ class OrdersController < ApplicationController
       @total_price = @cart.total_price
       render 'cart/index'
     end
-    
   end
   
   def create
-    @order = Order.update_or_new(current_cart)
+    cart = current_cart
+    @order = Order.update_or_new(cart)
     @order.paying_online = params[:paying_online]
-    purchase_redirect_url = @order.purchase(current_cart, params)
     respond_to do |format|
-      if purchase_redirect_url
-        format.html { redirect_to purchase_redirect_url }
+      if @order.purchase(cart, params)
+        format.html { redirect_to finish_order_path }
       else
         message = "Your order could not be processed because #{@order.errors.full_messages.first}"
         format.html { redirect_to cart_index_path, notice: message }
@@ -64,15 +73,37 @@ class OrdersController < ApplicationController
     end
   end
   
-  def show
+  def edit
     @order = Order.find(params[:id])
-    @site_settings = SiteSetting.instance 
-    
+
     respond_to do |format|
       format.html
     end
   end
-  
+
+  def update
+    @order = Order.find(params[:id])
+    @order.current_user = current_user
+    new_cart = @order.begin_update(params[:order])
+    if @order.paid_online?
+      redirect_to payment_processor.checkout(new_cart, complete_update_url(paying_online: true, cart_id: new_cart.id, order_id: @order.id), edit_order_url(@order))
+    else
+      if @order.update_and_purchase(new_cart, params)
+        redirect_to complete_update_order_path(cart_id: new_cart.id, order_id: @order.id)
+      else
+        render :edit
+      end
+    end
+  end
+
+  def complete_update
+    cart = Cart.find(params[:cart_id])
+    order = Order.find(params[:order_id])
+    send_emails(order, true)
+    cart.destroy
+    redirect_to order_path(order), notice: 'Order successfully updated'
+  end
+
   def destroy
     @order = Order.active.find(params[:id])
           

@@ -36,7 +36,7 @@ class Order < ActiveRecord::Base
   before_validation :set_cart_items_user
 
   before_save :update_order_cycle_id, 
-              :update_seller_inventory_and_process_refunds,
+              :update_seller_inventory,
               :set_in_person_payments_completed
   after_commit :disassociate_cart_items_from_cart
   
@@ -71,22 +71,40 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def begin_update(order_params)
+    assign_attributes(order_params)
+    cart = Cart.new
+    cart_items.select(&:quantity_changed?).each do |item|
+      quantity = item.quantity - item.quantity_was
+      cart.add_inventory_item(item.inventory_item_id, quantity) if quantity > 0
+    end
+    cart.save
+    cart
+  end
+
+  def update_and_purchase(cart, params)
+    ActiveRecord::Base.transaction do
+      update_attributes!(params[:order])
+      purchase(cart, params)
+      true
+    end
+  rescue
+    false
+  end
+
   def purchase(cart, params)
     ActiveRecord::Base.transaction do
       begin
         save
         if PaymentProcessorSetting.current_processor_type != 'InPerson' && (cart.items_with_in_person_payment_only? || !paid_online?)
           #using online payment processor but some or all payments are in person
-          in_person_redirect_url = in_person_payment_processor.purchase(self, cart, params)
-          if paid_online? 
-            payment_processor.purchase(self, cart, params)
-          else
-            in_person_redirect_url
-          end
+          in_person_payment_processor.purchase(self, cart, params)
+          payment_processor.purchase(self, cart, params) if paid_online? 
         else
           #call the configured payment processor, could be online or in-person
           payment_processor.purchase(self, cart, params)
         end
+        true
       rescue PaymentProcessor::PaymentError => e
         errors.add(:base, e.message)
         raise ActiveRecord::Rollback, e.message
@@ -173,21 +191,13 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def update_seller_inventory_and_process_refunds
+  def update_seller_inventory
     cart_items.each do |item|
       #if the quantity was changed and the cart_item is part of an order
       if !item.order_id.nil?
         if item.quantity_changed?
-          difference = item.quantity - item.quantity_was
-          
+          difference = item.quantity - item.quantity_was      
           item.inventory_item.decrement_quantity_available(difference)
-
-          if difference < 0
-            seller_id = item.inventory_item.user_id
-            payment = payments.find_by(receiver_id: seller_id)
-            refund_amount = difference.abs * item.price
-            payment.refund(refund_amount)
-          end
         end
       #this is a new order
       else

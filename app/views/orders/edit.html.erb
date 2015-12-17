@@ -1,0 +1,135 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<div id="EditOrder" class="container-fluid">
+  <h2>Edit Order</h2>
+  <div class="container-fluid">
+    <div class="well row">
+    <%= form_for @order do |f| %>
+        <%= f.error_messages %>
+        <% if @order.has_items_with_minimum? %>
+          <p class="alert alert-info" style="margin-right: 15px; margin-left: 15px; margin-top: 15px;">
+            <%= contains_item_with_minimum_text("order") %>
+          </p>
+        <%end%>
+        <div class="row">
+          <div class="col-md-12 tableContainer">
+            <div class="table-responsive">
+              <table class="table" >
+              <thead>  
+                <tr>
+                  <th></th>
+                  <th>Item Name</th>
+                  <th>Seller</th>
+                  <% if show_payment_instructions(@order) %>
+                    <th>Payment Instructions</th>
+                  <% end %>
+                  <th>Payment Status</th>
+                  <% if @order.has_items_with_minimum? %>
+                    <th>Minimum</th>
+                  <% end %>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total Price</th>
+                </tr>
+              </thead>
+                <tbody>
+                  <%= f.fields_for :cart_items do |item| %>
+                    <%seller_name = item.object.inventory_item.user.username%>
+                    <tr>
+                      <td><%= link_to "Delete", cart_item_destroy_path(item.object.id) %></td>
+                      <td><%= item_name(item.object.inventory_item) %></td>
+                      <td><%= seller_name %></td>
+                      <% if show_payment_instructions(@order)%>
+                        <td><%= item.object.inventory_item.user.user_in_person_setting.payment_instructions if show_user_payment_instructions?(item.object) %></td>
+                      <% end %>
+                      <td><%= item.object.payment_status %></td>
+                      <% if @order.has_items_with_minimum? %>
+                        <td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
+                      <% end %>
+                      <td><%= item.text_field :quantity %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+                      <td><%= number_to_currency(item.object.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
+                      <td><%= number_to_currency(item.object.total_price).to_s%></td>
+                    </tr>
+                  <%end%>
+                  <% if @order.paid_online? %>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <% if show_payment_instructions(@order)%>
+                        <td></td>
+                      <% end %>
+                      <td></td>
+                      <% if @order.has_items_with_minimum? %>
+                        <td></td>
+                      <% end %>
+                      <td></td>
+                      <td><strong>Total Paid Online:</strong></td>
+                      <td><%= number_to_currency @order.online_payment_total %></td>
+                    </tr>
+                  <% end %>
+                  <% if @order.paid_in_person? || (!@order.paid_online? || @order.items_with_in_person_payment_only?) %>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <% if show_payment_instructions(@order)%>
+                        <td></td>
+                      <% end %>
+                      <td></td>
+                      <% if @order.has_items_with_minimum? %>
+                        <td></td>
+                      <% end %>
+                      <td></td>
+                      <td><strong>Total Due On Reciept:</strong></td>
+                      <td><%= number_to_currency @order.in_person_payment_total %></td>
+                    </tr>
+                  <% end %>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <% if show_payment_instructions(@order)%>
+                      <td></td>
+                    <% end %>
+                    <td></td>
+                    <% if @order.has_items_with_minimum? %>
+                      <td></td>
+                    <% end %>
+                    <td></td>
+                    <td><strong>Grand Total:</strong></td>
+                    <td><strong><%= number_to_currency @order.total_price %></strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+              <%= f.submit("Update", :class => 'btn btn-default inlineButton')%>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
