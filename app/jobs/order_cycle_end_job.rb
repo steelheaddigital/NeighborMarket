@@ -64,7 +64,7 @@ class OrderCycleEndJob
   end
   
   def send_emails(order_cycle)
-    sellers = User.joins(:roles, :orders).where(roles: { name: 'seller' }, orders: { canceled: false, order_cycle_id: order_cycle.id })
+    sellers = User.where(id: InventoryItem.where(id: CartItem.where(order_id: Order.active.where(order_cycle_id: order_cycle.id)).select(:inventory_item_id)).select(:user_id))
     sellers.each do |seller|
       SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver_now
     end

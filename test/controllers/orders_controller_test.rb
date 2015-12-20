@@ -29,8 +29,6 @@ class OrdersControllerTest < ActionController::TestCase
   
   test "create should update current order when buyer has an open order" do
     cart = carts(:full)
-    cart_items(:one).update_attribute(:quantity, 1)
-    cart_items(:four).update_attribute(:quantity, 1)
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :purchase, nil, [Order, Cart, Object]
 

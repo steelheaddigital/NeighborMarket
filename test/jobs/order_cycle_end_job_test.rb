@@ -16,7 +16,7 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     deliveries = ActionMailer::Base.deliveries
     
     assert !deliveries.empty?
-    assert_equal 2, deliveries.count
+    assert_equal 4, deliveries.count
   end
   
   test "remove_items_from_orders_where_minimum_not_met sets minimum_reached_at_order_cycle_end to false if minimum not met" do

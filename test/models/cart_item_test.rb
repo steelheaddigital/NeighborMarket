@@ -72,17 +72,8 @@ class CartItemTest < ActiveSupport::TestCase
   test "updates quantity if user is buyer and item has order and quantity is increased" do
     item = cart_items(:one)
     item.current_user = users(:buyer_user)
-    
+
     item.update_attributes(:quantity => 11)
-    
-    assert item.valid?
-  end
-  
-  test "updates quantity if user is manager and item has order and quantity is decreased" do
-    item = cart_items(:one)
-    item.current_user = users(:manager_user)
-    
-    item.update_attributes(:quantity => 9)
     
     assert item.valid?
   end
@@ -111,6 +102,7 @@ class CartItemTest < ActiveSupport::TestCase
   test "refunds issued when quantity decreased" do
     payment = payments(:one)
     cart_item = cart_items(:one)
+    cart_item.current_user = users(:manager_user)
     params = { :cart_item => { :id => cart_item.id, :quantity => 9 } }
     mock_payment_processor = Minitest::Mock.new
     mock_payment_processor.expect :refund, Payment.new, [payment, 10.00]
@@ -118,6 +110,7 @@ class CartItemTest < ActiveSupport::TestCase
     Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
       cart_item.update_attributes(params[:cart_item])
       mock_payment_processor.verify
+      assert cart_item.valid?
     end
   end
   
