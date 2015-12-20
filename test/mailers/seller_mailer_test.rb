@@ -10,7 +10,7 @@ class SellerMailerTest < ActionMailer::TestCase
     seller = users(:approved_seller_user)
     order = orders(:current)
     
-    SellerMailer.new_purchase_mail(seller, order).deliver
+    SellerMailer.new_purchase_mail(seller, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -28,7 +28,7 @@ class SellerMailerTest < ActionMailer::TestCase
     seller = users(:approved_seller_user)
     order = orders(:current)
     
-    SellerMailer.updated_purchase_mail(seller, order).deliver
+    SellerMailer.updated_purchase_mail(seller, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -45,7 +45,7 @@ class SellerMailerTest < ActionMailer::TestCase
   test "seller_approved_mail" do
     seller = users(:unapproved_seller_user)
     
-    SellerMailer.seller_approved_mail(seller).deliver
+    SellerMailer.seller_approved_mail(seller).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -58,7 +58,7 @@ class SellerMailerTest < ActionMailer::TestCase
   test "order cycle end mail when orders are not empty" do
     seller = users(:approved_seller_user)
     order_cycle = order_cycles(:current)
-    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -80,7 +80,7 @@ class SellerMailerTest < ActionMailer::TestCase
   test "order cycle end mail when orders are empty" do
     seller = users(:no_orders_seller_user)
     order_cycle = order_cycles(:current)
-    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -100,7 +100,7 @@ class SellerMailerTest < ActionMailer::TestCase
     order_cycle_settings = OrderCycleSetting.first
     order_cycle_settings.recurring = false
     order_cycle_settings.save
-    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+    SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -116,7 +116,7 @@ class SellerMailerTest < ActionMailer::TestCase
   
   test "change_request_complete_mail" do
     request = inventory_item_change_requests(:one)
-    SellerMailer.change_request_complete_mail(request).deliver
+    SellerMailer.change_request_complete_mail(request).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -128,7 +128,7 @@ class SellerMailerTest < ActionMailer::TestCase
   test "new_review_mail" do 
     review = reviews(:one)
     item = InventoryItem.find(review.reviewable_id)
-    SellerMailer.new_review_mail(review).deliver
+    SellerMailer.new_review_mail(review).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -141,7 +141,7 @@ class SellerMailerTest < ActionMailer::TestCase
   test 'order_cycle_start_mail' do
     seller = users(:approved_seller_user)
     order_cycle = order_cycles(:current)
-    SellerMailer.order_cycle_start_mail(seller, order_cycle).deliver
+    SellerMailer.order_cycle_start_mail(seller, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
 
     assert !ActionMailer::Base.deliveries.empty?

@@ -12,7 +12,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     settings = site_settings(:one)
     settings.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
     
-    BuyerMailer.order_mail(buyer, order).deliver
+    BuyerMailer.order_mail(buyer, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -37,7 +37,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     settings = site_settings(:one)
     settings.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
     
-    BuyerMailer.order_mail(buyer, order).deliver
+    BuyerMailer.order_mail(buyer, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -60,7 +60,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     settings = site_settings(:one)
     settings.update_attributes({:delivery => true, :drop_point => true, :require_terms_of_service => false})
     
-    BuyerMailer.order_mail(buyer, order).deliver
+    BuyerMailer.order_mail(buyer, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -83,7 +83,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     settings = site_settings(:one)
     settings.update_attributes({:delivery => true, :drop_point => true, :require_terms_of_service => false})
     
-    BuyerMailer.order_mail(buyer, order).deliver
+    BuyerMailer.order_mail(buyer, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -103,7 +103,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     seller = users(:approved_seller_user)
     order = orders(:current)
     
-    BuyerMailer.order_modified_mail(seller, order).deliver
+    BuyerMailer.order_modified_mail(seller, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -117,7 +117,7 @@ class BuyerMailerTest < ActionMailer::TestCase
   
   test "change_request_complete_mail" do
     request = order_change_requests(:one)
-    BuyerMailer.change_request_complete_mail(request).deliver
+    BuyerMailer.change_request_complete_mail(request).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -132,7 +132,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     order_cycle = order_cycles(:current)
     settings.update_attributes({:delivery => true, :drop_point => false, :require_terms_of_service => false})
     
-    BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver
+    BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -154,7 +154,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     order_cycle = order_cycles(:current)
     settings.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
     
-    BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver
+    BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -177,7 +177,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     order_cycle = order_cycles(:current)
     settings.update_attributes({:delivery => false, :drop_point => true, :require_terms_of_service => false})
     
-    BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver
+    BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -190,7 +190,7 @@ class BuyerMailerTest < ActionMailer::TestCase
     settings = site_settings(:one)
     buyer = users(:buyer_user)
     
-    BuyerMailer.post_pickup_mail(buyer).deliver
+    BuyerMailer.post_pickup_mail(buyer).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?

@@ -47,5 +47,8 @@ module NeighborMarket
     config.assets.initialize_on_precompile = false
     
     config.eager_load_paths << File.join(Rails.root, "lib")
+
+    #Opt in to Rails 5 behavior of propagating errors in after_rollback and after_commit callbacks
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end

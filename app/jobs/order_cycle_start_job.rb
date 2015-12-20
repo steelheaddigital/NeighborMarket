@@ -31,7 +31,7 @@ class OrderCycleStartJob
       sellers = User.active_sellers.joins(:user_preference).where(user_preferences: { seller_new_order_cycle_notification: true })
       sellers.each do |seller|
         seller.save if seller.authentication_token.blank? #generate an auth token
-        SellerMailer.order_cycle_start_mail(seller, pending_cycle).deliver
+        SellerMailer.order_cycle_start_mail(seller, pending_cycle).deliver_now
       end
     end
   end

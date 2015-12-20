@@ -26,7 +26,7 @@ class PostPickupJob
       orders.each do |order|
         if order.has_cart_items_where_order_cycle_minimum_reached?
           buyer = order.user
-          BuyerMailer.post_pickup_mail(buyer).deliver
+          BuyerMailer.post_pickup_mail(buyer).deliver_now
         end
       end
     end  

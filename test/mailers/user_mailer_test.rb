@@ -13,7 +13,7 @@ class UserMailerTest < ActionMailer::TestCase
     message.email = "test@test.com"
     message.subject = "Testing this thang"
     
-    UserMailer.user_contact_mail(user, message).deliver
+    UserMailer.user_contact_mail(user, message).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -28,7 +28,7 @@ class UserMailerTest < ActionMailer::TestCase
     user.auto_create_user
     token = 'abcdefg'
     
-    UserMailer.auto_create_user_mail(user, token).deliver
+    UserMailer.auto_create_user_mail(user, token).deliver_now
     sent = ActionMailer::Base.deliveries.first
     assert !ActionMailer::Base.deliveries.empty?
     assert_equal [user.email], sent.to

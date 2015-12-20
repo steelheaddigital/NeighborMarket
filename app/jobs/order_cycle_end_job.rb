@@ -66,15 +66,15 @@ class OrderCycleEndJob
   def send_emails(order_cycle)
     sellers = User.joins(:roles, :orders).where(roles: { name: 'seller' }, orders: { canceled: false, order_cycle_id: order_cycle.id })
     sellers.each do |seller|
-      SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver
+      SellerMailer.order_cycle_end_mail(seller, order_cycle).deliver_now
     end
     
     orders = Order.active.where(order_cycle_id: order_cycle.id)
     orders.each do |order|
       if order.has_cart_items_where_order_cycle_minimum_reached?
-        BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver
+        BuyerMailer.order_cycle_end_mail(order, order_cycle).deliver_now
       else
-        BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver
+        BuyerMailer.order_cycle_end_mail_no_items(order, order_cycle).deliver_now
       end
     end
     

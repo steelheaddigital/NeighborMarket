@@ -10,7 +10,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     manager = users(:manager_user)
     seller = users(:unapproved_seller_user)
     
-    ManagerMailer.new_seller_mail(seller, manager).deliver
+    ManagerMailer.new_seller_mail(seller, manager).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -25,7 +25,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     seller = users(:approved_seller_user)
     inventory_item = inventory_items(:one)
     
-    ManagerMailer.inventory_approval_required(seller, manager, inventory_item).deliver
+    ManagerMailer.inventory_approval_required(seller, manager, inventory_item).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -39,7 +39,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     description = "test description"
     inventory_item = inventory_items(:one)
     
-    ManagerMailer.inventory_item_change_request(manager, description, inventory_item).deliver
+    ManagerMailer.inventory_item_change_request(manager, description, inventory_item).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?
@@ -54,7 +54,7 @@ class ManagerMailerTest < ActionMailer::TestCase
     description = "test description"
     order = orders(:current)
     
-    ManagerMailer.order_change_request(manager, description, order).deliver
+    ManagerMailer.order_change_request(manager, description, order).deliver_now
     sent = ActionMailer::Base.deliveries.first
     
     assert !ActionMailer::Base.deliveries.empty?

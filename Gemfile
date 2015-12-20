@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.1.12'
-gem 'pg', '~> 0.18.2'
-gem 'puma', '~> 2.12.2'
+gem 'rails', '4.2.5'
+gem 'pg', '~> 0.18.4'
+gem 'puma', '~> 2.15.3'
 
 group :test do
   gem 'minitest-focus'
@@ -26,9 +26,9 @@ gem 'jquery-datatables-rails', '~> 3.3.0'
 gem 'bootstrap-wysihtml5-rails', '~> 0.3.3.7'
 
 #using this fork so that error messages with html will display properly
-gem 'dynamic_form', git: 'git://github.com/tmooney3979/dynamic_form'
+gem 'dynamic_form', git: 'git://github.com/steelheaddigital/dynamic_form'
 
-gem 'devise', '~> 3.4.1'
+gem 'devise', '~> 3.5.3'
 gem 'simple_token_authentication', '~> 1.10.0'
 gem 'cancan', '~> 1.6.9'
 gem 'carmen-rails', '~> 1.0.1'
@@ -45,4 +45,4 @@ gem 'paypal-express', '~> 0.8.1'
 gem 'paypal-sdk-permissions', '~> 1.96.4'
 gem 'paypal-sdk-adaptiveaccounts', git: 'git://github.com/paypal/adaptiveaccounts-sdk-ruby'
 gem 'crypt_keeper', '~> 0.20.0'
-gem 'sidekiq', '~> 3.4.2'
+gem 'sidekiq', '~> 4.0.1'

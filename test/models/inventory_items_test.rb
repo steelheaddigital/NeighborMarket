@@ -164,8 +164,8 @@ class InventoryItemsTest < ActiveSupport::TestCase
     Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
       item.paranoid_destroy
 
-      assert InventoryItem.exists?(item), 'InventoryItem does not exist'
-      assert !CartItem.exists?(cart_item), 'CartItem should not exist'
+      assert InventoryItem.exists?(item.id), 'InventoryItem does not exist'
+      assert !CartItem.exists?(cart_item.id), 'CartItem should not exist'
       assert item.is_deleted, 'inventory_item was not set to deleted'
     end
   end
@@ -174,7 +174,7 @@ class InventoryItemsTest < ActiveSupport::TestCase
    item = inventory_items(:two)
    item.paranoid_destroy
    
-   assert !InventoryItem.exists?(item)
+   assert !InventoryItem.exists?(item.id)
   end
 
   test "cart_item_quantity_sum sums cart item quantities for selected order_cycle" do

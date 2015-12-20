@@ -118,7 +118,7 @@ class PaypalExpressTest < ActiveSupport::TestCase
       assert_equal payment.receiver_id, new_payment.receiver_id
       assert_equal payment.sender_id, new_payment.sender_id
       assert_equal 10.00, new_payment.amount
-      assert_equal 2, new_payment.transaction_id
+      assert_equal '2', new_payment.transaction_id
       assert_equal 'Completed', new_payment.status
     end
     gateway.verify

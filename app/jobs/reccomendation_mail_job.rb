@@ -25,7 +25,7 @@ class ReccomendationMailJob
     buyers = User.active_buyers.joins(:user_preference).where(user_preferences: { buyer_new_order_cycle_notification: true })
     buyers.each do |buyer|
       buyer.save if buyer.authentication_token.blank? #generate an auth token
-      BuyerMailer.reccomendation_mail(buyer).deliver
+      BuyerMailer.reccomendation_mail(buyer).deliver_now
     end
   end
   
