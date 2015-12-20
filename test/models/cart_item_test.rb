@@ -107,4 +107,31 @@ class CartItemTest < ActiveSupport::TestCase
     
     assert !item.can_edit?
   end
+
+  test "refunds issued when quantity decreased" do
+    payment = payments(:one)
+    cart_item = cart_items(:one)
+    params = { :cart_item => { :id => cart_item.id, :quantity => 9 } }
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, Payment.new, [payment, 10.00]
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      cart_item.update_attributes(params[:cart_item])
+      mock_payment_processor.verify
+    end
+  end
+  
+  test "Errors reported if Refund fails" do
+    cart_item = cart_items(:one)
+    params = { :cart_item => { :id => cart_item.id, :quantity => 9 } }
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :refund, nil do
+      fail PaymentProcessor::PaymentError, 'Oh No! Refund Failed!'
+    end
+
+    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
+      cart_item.update_attributes(params[:cart_item])
+      assert_equal 'Oh No! Refund Failed!', cart_item.errors.full_messages.last
+    end
+  end
 end

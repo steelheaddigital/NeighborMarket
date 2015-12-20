@@ -5,14 +5,13 @@ class InPersonTest < ActiveSupport::TestCase
         @processor = PaymentProcessor::InPerson.new({})
     end
 
-    test 'purchase should add payments to order and return finish_order_path' do
+    test 'purchase should add payments to order' do
         order = orders(:current_two)
         cart = carts(:buyer_not_current)
 
         result = @processor.purchase(order, cart, nil)
 
         payment = order.payments.first
-        assert_equal result, '/orders/finish'
         assert_equal order.payments.count, 1
         assert_equal payment.receiver_id, users(:unapproved_seller_user).id
         assert_equal payment.sender_id, users(:buyer_user_not_current).id
@@ -41,11 +40,20 @@ class InPersonTest < ActiveSupport::TestCase
         assert_equal result.status, 'Completed'
     end
 
-    test 'refund should destroy payment if status is Pending' do
+    test 'refund should destroy payment if status is Pending and total amount is refunded' do
         payment = payments(:two)
 
         assert_difference 'Payment.count', -1 do
-            @processor.refund(payment, 100.00)
+            @processor.refund(payment, 20.00)
         end
+    end
+
+    test 'refund should update payment amount if status is Pending and total amount is less than payment total' do
+        payment = payments(:two)
+
+        @processor.refund(payment, 10.00)
+        updated_payment = Payment.find(payment.id)
+
+        assert_equal updated_payment.amount, 10.00
     end
 end

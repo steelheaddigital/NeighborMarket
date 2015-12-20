@@ -50,12 +50,13 @@ class CartControllerTest < ActionController::TestCase
     cart = carts(:full)
     session[:cart_id]  = cart.id
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :checkout, 'http://processor-path', [cart]
+    mock_payment_processor.expect :checkout, 'http://processor-path', [cart, 'http://test.host/orders/new?paying_online=true',  'http://test.host/cart']
     
     @controller.stub :payment_processor, mock_payment_processor do
       post :checkout, commit: 'Checkout and pay online'
     end
 
+    mock_payment_processor.verify
     assert_redirected_to 'http://processor-path'
   end
 

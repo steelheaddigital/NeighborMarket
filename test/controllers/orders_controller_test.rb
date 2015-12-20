@@ -32,15 +32,16 @@ class OrdersControllerTest < ActionController::TestCase
     cart_items(:one).update_attribute(:quantity, 1)
     cart_items(:four).update_attribute(:quantity, 1)
     mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :purchase, 'http://processor-path', [Order, Cart, Object]
+    mock_payment_processor.expect :purchase, nil, [Order, Cart, Object]
 
     Order.stub_any_instance :payment_processor, mock_payment_processor do
       assert_no_difference 'Order.count' do
         post :create, { :order => { :deliver => false } }, { cart_id: cart.id }
       end
       
+      mock_payment_processor.verify
       assert_not_nil assigns(:order), "order was nil"
-      assert_redirected_to 'http://processor-path'
+      assert_redirected_to 'http://test.host/orders/finish'
     end
   end
   

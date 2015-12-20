@@ -67,44 +67,13 @@ class OrderTest < ActiveSupport::TestCase
   test "seller inventory changed by difference in quantity when associated cart item changed" do
     order = orders(:current)
     order.current_user = users(:manager_user)
-    cart_item_id = order.cart_items.first.id
+    cart_item = order.cart_items.first
+    cart_item.update_attribute :cart_id, nil
+    cart_item_id = cart_item.id
     params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 11 } } }
     
     assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available', -1 do
       order.update_attributes(params[:order])
-    end
-  end
-  
-  test "seller inventory increased by associated cart item quantity and refunds issued when order exists" do
-    order = orders(:current)
-    payment = payments(:one)
-    cart_item_id = order.cart_items.first.id
-    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
-    mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :refund, Payment.new, [payment, 10.00]
-
-    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
-      assert_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
-        order.update_attributes(params[:order])
-      end
-      mock_payment_processor.verify
-    end
-  end
-  
-  test "seller inventory not changed by associated cart item quantity if refund fails" do
-    order = orders(:current)
-    cart_item_id = order.cart_items.first.id
-    params = { order: { :cart_items_attributes => { :id => cart_item_id, :quantity => 9 } } }
-    mock_payment_processor = Minitest::Mock.new
-    mock_payment_processor.expect :refund, nil do
-      fail PaymentProcessor::PaymentError, 'Oh No! Refund Failed!'
-    end
-
-    Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
-      assert_no_difference 'order.cart_items.find(cart_item_id).inventory_item.quantity_available' do
-        order.update_attributes(params[:order])
-      end
-      assert_equal 'Oh No! Refund Failed!', order.errors.full_messages.last
     end
   end
 
@@ -121,14 +90,15 @@ class OrderTest < ActiveSupport::TestCase
   
   test "seller inventory increased by associated cart item quantity when order canceled and refunds issued" do
     order = orders(:current)
-    inventory_item = order.cart_items.first.inventory_item
+    cart_item = order.cart_items.first
+    cart_item.update_attribute :cart_id, nil
     mock_payment_processor = Minitest::Mock.new
     order.payments.where(payment_type: 'pay').each do |payment|
       mock_payment_processor.expect :refund, nil, [payment, payment.amount]
     end
 
     Payment.stub_any_instance(:payment_processor, mock_payment_processor) do
-      assert_difference 'InventoryItem.find(inventory_item.id).quantity_available', 10 do
+      assert_difference 'InventoryItem.find(cart_item.inventory_item.id).quantity_available', 10 do
         order.cancel
       end
       assert_equal true, Order.find(order.id).canceled
@@ -200,8 +170,7 @@ class OrderTest < ActiveSupport::TestCase
     mock_payment_processor.expect :purchase, 'http://processor-path', [order, cart, {}]
     assert_difference 'Order.count' do 
       order.stub :payment_processor, mock_payment_processor do
-        result = order.purchase(cart, {})
-        assert_equal 'http://processor-path', result
+        order.purchase(cart, {})
         mock_payment_processor.verify
       end
     end
@@ -246,8 +215,7 @@ class OrderTest < ActiveSupport::TestCase
     assert_difference 'Order.count' do 
       order.stub :payment_processor, mock_payment_processor do
         order.stub :in_person_payment_processor, mock_in_person_payment_processor do
-          result = order.purchase(cart, {})
-          assert_equal 'http://processor-path', result
+          order.purchase(cart, {})
           mock_payment_processor.verify
           mock_in_person_payment_processor.verify
         end
@@ -262,8 +230,7 @@ class OrderTest < ActiveSupport::TestCase
     mock_in_person_payment_processor.expect :purchase, 'http://in-person-processor-path', [order, cart, {}]
     assert_difference 'Order.count' do 
       order.stub :in_person_payment_processor, mock_in_person_payment_processor do
-        result = order.purchase(cart, {})
-        assert_equal 'http://in-person-processor-path', result
+        order.purchase(cart, {})
         mock_in_person_payment_processor.verify
       end
     end

@@ -47,9 +47,8 @@ class PaypalExpressTest < ActiveSupport::TestCase
     accounts = Minitest::Mock.new
     processor = PaypalExpress.new(host: 'http://testhost', processor_settings: @processor_settings, gateway: gateway, accounts: accounts, permissions: permissions)
 
-    result = processor.purchase(order, cart, token: 'test_token', PayerID: 'test_payer_id')
+    processor.purchase(order, cart, token: 'test_token', PayerID: 'test_payer_id')
 
-    assert_equal '/orders/finish', result
     gateway.verify
     paypal_response.verify
   end
@@ -82,7 +81,7 @@ class PaypalExpressTest < ActiveSupport::TestCase
     accounts = Minitest::Mock.new
     processor = PaypalExpress.new(host: 'http://testhost', processor_settings: @processor_settings, gateway: gateway, accounts: accounts, permissions: permissions)
 
-    result = processor.checkout(cart)
+    result = processor.checkout(cart, 'http://testhost/orders/new?paying_online=true', 'http://testhost/cart')
 
     assert_equal 'http://paypal_url', result
     gateway.verify
