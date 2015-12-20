@@ -18,7 +18,6 @@
 #
 
 class OrdersController < ApplicationController
-
   include PaymentProcessor
 
   before_filter :authenticate_user!, except: [:new]
@@ -50,13 +49,13 @@ class OrdersController < ApplicationController
   
   def create
     cart = current_cart
-    @order = Order.update_or_new(cart)
-    @order.paying_online = params[:paying_online]
+    order = Order.update_or_new(cart)
+    order.paying_online = params[:paying_online]
     respond_to do |format|
-      if @order.purchase(cart, params)
+      if order.purchase(cart, params)
         format.html { redirect_to finish_order_path }
       else
-        message = "Your order could not be processed because #{@order.errors.full_messages.first}"
+        message = "Your order could not be processed because #{order.errors.full_messages.first}"
         format.html { redirect_to cart_index_path, notice: message }
       end
     end
@@ -85,23 +84,33 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     @order.current_user = current_user
     new_cart = @order.begin_update(params[:order])
+
     if @order.paid_online?
-      redirect_to payment_processor.checkout(new_cart, complete_update_url(paying_online: true, cart_id: new_cart.id, order_id: @order.id), edit_order_url(@order))
-    else
-      if @order.update_and_purchase(new_cart, params)
-        redirect_to complete_update_order_path(cart_id: new_cart.id, order_id: @order.id)
-      else
-        render :edit
+      checkout_url = payment_processor.checkout(new_cart, complete_update_order_url(cart_id: new_cart.id, order_id: @order.id), edit_order_url(@order))
+      if checkout_url
+        redirect_to checkout_url
+        return
       end
+    end
+
+    if @order.update_and_purchase(new_cart, params)
+      update_completed(new_cart, @order)
+    else
+      render :edit
     end
   end
 
   def complete_update
     cart = Cart.find(params[:cart_id])
     order = Order.find(params[:order_id])
-    send_emails(order, true)
-    cart.destroy
-    redirect_to order_path(order), notice: 'Order successfully updated'
+    order.add_inventory_items_from_cart(cart)
+
+    unless order.purchase(cart, params)
+      message = "Your order could not be updated because #{order.errors.full_messages.first}"
+      format.html { redirect_to edit_order_path(order), notice: message }
+    end
+
+    update_completed(cart, order)
   end
 
   def destroy
@@ -117,6 +126,12 @@ class OrdersController < ApplicationController
   end
   
   private
+
+  def update_completed(cart, order)
+    send_emails(order, true)
+    cart.destroy
+    redirect_to order_path(order), notice: 'Order successfully updated'
+  end
   
   def send_emails_and_destroy_cart(order, update)
     send_emails(order, update)
@@ -137,7 +152,7 @@ class OrdersController < ApplicationController
       end
     end
 
-    BuyerMailer.delay.order_mail(current_user, order)
+    BuyerMailer.delay.order_mail(order.user, order)
   end
   
 end

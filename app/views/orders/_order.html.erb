@@ -32,9 +32,6 @@
 			    <table class="table" >
 			    <thead>  
 			      <tr>
-			      	<% if current_user.manager? %>
-						<th></th>
-					<% end %>
 			        <th>Item Name</th>
 			        <th>Seller</th>
 			        <% if show_payment_instructions(@order) %>
@@ -58,9 +55,6 @@
 						<%@order.cart_items.select{|i| i.inventory_item.user.id == key && i.minimum_reached_at_order_cycle_end}.each do |item| %>
 							<%seller_name = item.inventory_item.user.username%>
 							<tr>
-								<% if current_user.manager? %>
-									<td><%= link_to "Delete", cart_item_destroy_path(item.id) %></td>
-								<% end %>
 								<td><%= item_name(item.inventory_item) %></td>
 								<td><%= seller_name %></td>
 								<% if show_payment_instructions(@order)%>
@@ -79,9 +73,6 @@
 					        </tr>
 						<%end%>
 						<tr>
-							<% if current_user.manager? %>
-								<td></td>
-							<% end %>
 							<td></td>
 							<td></td>
 							<% if show_payment_instructions(@order)%>
@@ -101,9 +92,6 @@
 					<%end%>
 					<% if @order.paid_online? %>
 						<tr>
-							<% if current_user.manager? %>
-								<td></td>
-							<% end %>
 				            <td></td>
 				            <td></td>
 				            <% if show_payment_instructions(@order)%>
@@ -123,9 +111,6 @@
 				    <% end %>
 					<% if @order.paid_in_person? || (!@order.paid_online? || @order.items_with_in_person_payment_only?) %>
 						<tr>
-							<% if current_user.manager? %>
-								<td></td>
-							<% end %>
 				            <td></td>
 				            <td></td>
 				            <% if show_payment_instructions(@order)%>
@@ -144,9 +129,6 @@
 				        </tr>
 				    <% end %>
 			        <tr>
-			        	<% if current_user.manager? %>
-							<td></td>
-						<% end %>
 			            <td></td>
 			            <td></td>
 			            <% if show_payment_instructions(@order)%>

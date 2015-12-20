@@ -54,6 +54,7 @@ module PaymentProcessor
 
     def checkout(cart, success_callback_url, cancel_callback_url)
       payment_requests = create_payment_requests(cart)
+      return false if payment_requests.empty?
 
       paypal_options = {
         no_shipping: true,
@@ -77,6 +78,8 @@ module PaymentProcessor
 
     def purchase(order, cart, params)
       payment_requests = create_payment_requests(cart)
+      return false if payment_requests.empty?
+
       token = params[:token]
       payer_id = params[:PayerID]
 

@@ -62,13 +62,13 @@
 	          <td><%= item_name(item.object.inventory_item) %> </td>
 	          <td><%= number_to_currency(item.object.inventory_item.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
 	          <% if item.object.can_change_quantity? %>
-	          	<td><%= item.text_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+	          	<td><%= item.number_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
 	          <% else %>
 	          	<td><%= item.object.quantity %></td>
 	          <% end %>
 	          <td><%= item.object.inventory_item.user.username %></td>
 	          <% unless item.object.order.nil? %>
-	        	<td><%= item.payment_status %></td>
+	        	<td><%= item.object.payment_status %></td>
 	          <% end %>
 	          <% unless f.object.online_payment_only? || (!f.object.all_items_accept_in_person_payment? && f.object.all_items_accept_online_payment?) || (f.object.items_with_online_payment_only? && f.object.items_with_in_person_payment_only?) && item.object.inventory_item.user.online_payment_processor_configured? %>
 	          	<td><%= item.object.inventory_item.user.user_in_person_setting.payment_instructions %></td>

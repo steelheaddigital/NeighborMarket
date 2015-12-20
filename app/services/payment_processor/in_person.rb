@@ -42,7 +42,12 @@ module PaymentProcessor
 
     def refund(payment, amount)
       if payment.status == 'Pending'
-        payment.destroy
+        new_amount = payment.amount - amount
+        if new_amount == 0
+          payment.destroy
+        else
+          payment.update_attribute(:amount, new_amount)
+        end
       elsif payment.status == 'Completed'
         payment.refunds.create(
           processor_type: 'InPerson',

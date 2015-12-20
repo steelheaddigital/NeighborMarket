@@ -60,7 +60,7 @@ class Ability
     end
     
     if user.buyer?
-      can :show, Order, user_id: user.id
+      can [:show, :edit, :update, :complete_update], Order, user_id: user.id
       can [:create, :finish], Order
       can :create, OrderChangeRequest
       can :review, InventoryItem, id: InventoryItem.joins(cart_items: :order).where('orders.user_id = ?', user.id).pluck(:id)

@@ -62,7 +62,7 @@
 							<div class="col-md-8">
 								<% if inventory_item.quantity_available > 0 %>
 							        <%= form_tag(cart_items_path(:inventory_item_id => inventory_item.id), :class => "addToCartButton") do %>
-							        <p><label>Quantity:</label><input id="quantity" name="quantity" style="width: 40px;" value="1"></input><span> <%= item_quantity_label(inventory_item, 2) %></span></p>
+							        <p><label>Quantity:</label><input type="number" id="quantity" name="quantity" style="width: 40px;" value="1"></input><span> <%= item_quantity_label(inventory_item, 2) %></span></p>
 							        <p><%= submit_tag("Add To Cart", :class => "btn btn-primary") %></p>
 							        <% end %>
 								<% end %>

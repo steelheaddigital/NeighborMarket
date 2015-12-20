@@ -193,10 +193,10 @@ class Order < ActiveRecord::Base
   
   def update_seller_inventory
     cart_items.each do |item|
-      #if the quantity was changed and the cart_item is part of an order
-      if !item.order_id.nil?
+      #if the quantity was changed and the cart_item has been saved to the order
+      if !item.order_id.nil? && item.cart_id.nil?
         if item.quantity_changed?
-          difference = item.quantity - item.quantity_was      
+          difference = item.quantity - item.quantity_was
           item.inventory_item.decrement_quantity_available(difference)
         end
       #this is a new order
@@ -204,9 +204,6 @@ class Order < ActiveRecord::Base
         item.inventory_item.decrement_quantity_available(item.quantity)
       end
     end
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
-    raise ActiveRecord::Rollback, e.message
   end
 
   def disassociate_cart_items_from_cart

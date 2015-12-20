@@ -21,6 +21,7 @@
 
 <div id="EditOrder" class="container-fluid">
   <h2>Edit Order</h2>
+  <p>You can increase the quantities of items in your order here. If you would like to cancel your order, remove items, or decrease the amounts of items, please use the "Request Order Change" button.</p>
   <div class="container-fluid">
     <div class="well row">
     <%= form_for @order do |f| %>
@@ -36,7 +37,9 @@
               <table class="table" >
               <thead>  
                 <tr>
-                  <th></th>
+                  <% if current_user.manager? %>
+                    <th></th>
+                  <% end %>
                   <th>Item Name</th>
                   <th>Seller</th>
                   <% if show_payment_instructions(@order) %>
@@ -55,7 +58,9 @@
                   <%= f.fields_for :cart_items do |item| %>
                     <%seller_name = item.object.inventory_item.user.username%>
                     <tr>
-                      <td><%= link_to "Delete", cart_item_destroy_path(item.object.id) %></td>
+                      <% if current_user.manager? %>
+                        <td><%= link_to "Delete", cart_item_destroy_path(item.object.id) %></td>
+                      <% end %>
                       <td><%= item_name(item.object.inventory_item) %></td>
                       <td><%= seller_name %></td>
                       <% if show_payment_instructions(@order)%>
@@ -65,14 +70,16 @@
                       <% if @order.has_items_with_minimum? %>
                         <td><%= item.object.inventory_item.quantity_needed_to_reach_minimum %></td>
                       <% end %>
-                      <td><%= item.text_field :quantity %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
+                      <td><%= item.number_field :quantity, :style => "width: 40px;" %><span> <%= item_quantity_label(item.object.inventory_item, item.object.quantity) %></span></td>
                       <td><%= number_to_currency(item.object.price).to_s + " " + price_unit_label(item.object.inventory_item) %></td>
                       <td><%= number_to_currency(item.object.total_price).to_s%></td>
                     </tr>
                   <%end%>
                   <% if @order.paid_online? %>
                     <tr>
-                      <td></td>
+                      <% if current_user.manager? %>
+                        <td></td>
+                      <% end %>
                       <td></td>
                       <td></td>
                       <% if show_payment_instructions(@order)%>
@@ -89,7 +96,9 @@
                   <% end %>
                   <% if @order.paid_in_person? || (!@order.paid_online? || @order.items_with_in_person_payment_only?) %>
                     <tr>
-                      <td></td>
+                      <% if current_user.manager? %>
+                        <td></td>
+                      <% end %>
                       <td></td>
                       <td></td>
                       <% if show_payment_instructions(@order)%>
@@ -105,7 +114,9 @@
                     </tr>
                   <% end %>
                   <tr>
-                    <td></td>
+                    <% if current_user.manager? %>
+                      <td></td>
+                    <% end %>
                     <td></td>
                     <td></td>
                     <% if show_payment_instructions(@order)%>
@@ -126,10 +137,19 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-              <%= f.submit("Update", :class => 'btn btn-default inlineButton')%>
+              <%= f.submit("Save Changes", :class => 'btn btn-default')%>
             </div>
           </div>
       <% end %>
+      <div class="row">
+        <div class="col-md-12" style="margin-top: 10px;">
+          <% if current_user.id == @order.user_id && !current_user.manager?%>
+            <%= link_to "Request Order Change", new_order_change_request_path(@order.id), :class => "btn btn-danger" %>
+          <% elsif current_user.manager? %>
+          <%= button_to "Cancel Order", { :action => "destroy", :controller => "orders", :id => @order.id}, { :method => "delete", :class => "btn btn-danger", :data => {:confirm => "Are you sure you want to cancel this order?"}} %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
