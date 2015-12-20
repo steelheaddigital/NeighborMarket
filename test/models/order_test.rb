@@ -39,6 +39,53 @@ class OrderTest < ActiveSupport::TestCase
     assert_equal(15, order.cart_items.find { |x| x.inventory_item_id == inventory_item.id }.quantity)
   end
   
+  test 'begin_update returns a Cart with changed items' do
+    order = orders(:current)
+    cart_item = cart_items(:one)
+    order_params = { cart_items_attributes: { id: cart_item.id, quantity: 12 } }
+
+    result = order.begin_update order_params
+
+    assert_equal 1, result.cart_items.count
+    assert_equal 2, result.cart_items.first.quantity
+  end
+
+  test 'update_and_purchase returns true and saves' do
+    order = orders(:current)
+    cart = carts(:full)
+    cart_item = cart.cart_items.first
+    order_params = { order: { cart_items_attributes: { id: cart_item.id, quantity: 11 } } }
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, true, [order, cart, order_params]
+
+    assert_difference 'CartItem.find(cart_item.id).quantity' do 
+      order.stub :payment_processor, mock_payment_processor do
+        result = order.update_and_purchase(cart, order_params)
+        mock_payment_processor.verify
+        assert_equal result, true
+      end
+    end
+  end
+
+  test 'update_and_purchase returns false and rolls back update if purchase false' do
+    order = orders(:current)
+    cart = carts(:full)
+    cart_item = cart.cart_items.first
+    mock_payment_processor = Minitest::Mock.new
+    mock_payment_processor.expect :purchase, false do
+      fail PaymentProcessor::PaymentError, 'Oh No! Payment Fails'
+    end
+
+    assert_no_difference 'CartItem.find(cart_item.id).quantity' do 
+      order.stub :payment_processor, mock_payment_processor do
+        result = order.update_and_purchase(cart, order: { cart_items_attributes: { id: cart_item.id, quantity: 12 } })
+        mock_payment_processor.verify
+        assert_equal result, nil
+        assert_equal order.errors.full_messages.last, 'Oh No! Payment Fails'
+      end
+    end
+  end
+
   test "total_price returns correct result" do
     order = Order.new
     cart = carts(:full)
@@ -88,7 +135,7 @@ class OrderTest < ActiveSupport::TestCase
     end  
   end
   
-  test "seller inventory increased by associated cart item quantity when order canceled and refunds issued" do
+  test "refunds issued and seller inventory increased by associated cart item quantity when order canceled" do
     order = orders(:current)
     cart_item = order.cart_items.first
     cart_item.update_attribute :cart_id, nil
@@ -162,7 +209,7 @@ class OrderTest < ActiveSupport::TestCase
     assert order.has_items_with_minimum?
   end
 
-  test 'purchase calls payment_processor.purchase and saves order and returns url if successfully saved' do
+  test 'purchase calls payment_processor.purchase and saves order if successfully saved' do
     order = Order.new
     order.paying_online = 'true'
     cart = Cart.new

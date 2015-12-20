@@ -3,3 +3,6 @@ one:
 
 two:
   user: approved_seller_user
+
+three:
+  user: unapproved_seller_user

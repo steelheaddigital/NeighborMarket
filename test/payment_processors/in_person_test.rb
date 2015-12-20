@@ -9,10 +9,10 @@ class InPersonTest < ActiveSupport::TestCase
         order = orders(:current_two)
         cart = carts(:buyer_not_current)
 
-        result = @processor.purchase(order, cart, nil)
+        @processor.purchase(order, cart, nil)
 
-        payment = order.payments.first
-        assert_equal order.payments.count, 1
+        payment = order.payments.last
+        assert_equal order.payments.count, 2
         assert_equal payment.receiver_id, users(:unapproved_seller_user).id
         assert_equal payment.sender_id, users(:buyer_user_not_current).id
         assert_equal payment.amount, 100.00

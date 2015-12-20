@@ -16,3 +16,9 @@ two:
   amount: 20.00
   processor_type: 'InPerson'
   status: 'Pending'
+
+three:
+  id: 3
+  order: current_two
+  processor_type: 'InPerson'
+  status: 'Pending'

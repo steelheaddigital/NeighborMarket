@@ -107,7 +107,8 @@ class OrdersController < ApplicationController
 
     unless order.purchase(cart, params)
       message = "Your order could not be updated because #{order.errors.full_messages.first}"
-      format.html { redirect_to edit_order_path(order), notice: message }
+      redirect_to edit_order_path(order), notice: message
+      return
     end
 
     update_completed(cart, order)

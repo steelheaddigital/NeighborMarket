@@ -86,7 +86,12 @@ class Order < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       update_attributes!(params[:order])
       purchase(cart, params)
-      true
+
+      if errors.empty?
+        true
+      else
+        fail ActiveRecord::Rollback
+      end
     end
   rescue
     false
