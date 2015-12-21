@@ -10,7 +10,6 @@ group :test do
 end
 
 gem 'protected_attributes', '~> 1.0.9'
-gem 'activerecord-deprecated_finders', '~> 1.0.3'
 
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sass-rails', '~> 5.0.3'
