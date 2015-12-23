@@ -58,7 +58,6 @@ NeighborMarket::Application.routes.draw do
       post 'create_price_unit'
       delete 'destroy_price_unit'
       get 'inventory_item_change_requests'
-      get 'order_change_requests'
       post 'test_email'
     end
   end
@@ -139,17 +138,17 @@ NeighborMarket::Application.routes.draw do
   
   resources :price_units
   
-  get 'inventory_item_change_request/:inventory_item_id/new', to: 'inventory_item_change_request#new', :as => :new_inventory_item_change_request
-  get 'inventory_item_change_request/:inventory_item_id/create', to: 'inventory_item_change_request#create', :as => :create_inventory_item_change_request
-  resources :inventory_item_change_request do
+  get 'inventory_item_change_requests/:inventory_item_id/new', to: 'inventory_item_change_requests#new', :as => :new_inventory_item_change_request
+  get 'inventory_item_change_requests/:inventory_item_id/create', to: 'inventory_item_change_requests#create', :as => :create_inventory_item_change_request
+  resources :inventory_item_change_requests, only: ['index'] do
     member do
       post 'complete'
     end
   end
   
-  get 'order_change_request/:order_id/new', to: 'order_change_request#new', :as => :new_order_change_request
-  post 'order_change_request/:order_id/create', to: 'order_change_request#create', :as => :create_order_change_request
-  resources :order_change_request do
+  get 'order_change_requests/:order_id/new', to: 'order_change_requests#new', :as => :new_order_change_request
+  post 'order_change_requests/:order_id/create', to: 'order_change_requests#create', :as => :create_order_change_request
+  resources :order_change_requests, only: ['index'] do
     member do
       post 'complete'
     end

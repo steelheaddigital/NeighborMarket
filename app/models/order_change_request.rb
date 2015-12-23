@@ -21,4 +21,6 @@ class OrderChangeRequest < ActiveRecord::Base
   belongs_to :order
   belongs_to :user
   attr_accessible :complete, :description
+
+  scope :active, -> { joins(order: :order_cycle).where(complete: false, orders: { canceled: false }, order_cycles: { status: 'current' }) }
 end

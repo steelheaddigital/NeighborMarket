@@ -17,10 +17,19 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class InventoryItemChangeRequestController < ApplicationController
+class InventoryItemChangeRequestsController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
   
+
+  def index
+    @requests = InventoryItemChangeRequest.active
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def new
     @item = InventoryItem.find(params[:inventory_item_id])
     @request = current_user.inventory_item_change_requests.build

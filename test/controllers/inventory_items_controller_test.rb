@@ -183,7 +183,7 @@ class InventoryItemsControllerTest < ActionController::TestCase
     end
     
     assert_redirected_to seller_index_path
-    assert_equal "Item cannot be removed from the current order cycle since it is contained in one or more orders. If you need to change this item, please <a href=\"/inventory_item_change_request/980190962/new\">send a request</a> to the site manager.", flash[:notice]
+    assert_equal "Item cannot be removed from the current order cycle since it is contained in one or more orders. If you need to change this item, please <a href=\"/inventory_item_change_requests/980190962/new\">send a request</a> to the site manager.", flash[:notice]
   end
   
   test "get_second_level_category returns second level category"do

@@ -17,10 +17,18 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-class OrderChangeRequestController < ApplicationController
+class OrderChangeRequestsController < ApplicationController
   before_filter :authenticate_user!
   load_and_authorize_resource
   
+  def index
+    @requests = OrderChangeRequest.active
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def new
     @order = Order.find(params[:order_id])
     @request = current_user.order_change_requests.build
@@ -55,9 +63,9 @@ class OrderChangeRequestController < ApplicationController
     respond_to do |format|
       if request.save
         BuyerMailer.delay.change_request_complete_mail(request)
-        format.html { redirect_to order_change_requests_management_index_path, notice: "Request successfully completed."}
+        format.html { redirect_to order_change_requests_path, notice: "Request successfully completed."}
       else
-        format.html { redirect_to order_change_requests_management_index_path, notice: "Request could not be completed."}
+        format.html { redirect_to order_change_requests_path, notice: "Request could not be completed."}
       end
     end
   end

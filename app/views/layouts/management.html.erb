@@ -59,8 +59,8 @@
 	          <a data-toggle="collapse" data-parent="#ChangeRequestsMenu" href="#ChangeRequestsSecondLevel">Change Requests</a>
 	      </div>
           <div id="ChangeRequestsSecondLevel" class="<%=second_level_nav_is_active(['inventory_item_change_requests', 'order_change_requests'])%>">
-			<%= link_to "Inventory Item Change Requests", inventory_item_change_requests_management_index_path, {class: "list-group-item #{nav_item_is_active('inventory_item_change_requests')}"}  %>
-			<%= link_to "Order Change Requests", order_change_requests_management_index_path, {class: "list-group-item #{nav_item_is_active('order_change_requests')}"}  %>
+			<%= link_to "Inventory Item Change Requests", inventory_item_change_requests_path, {class: "list-group-item #{nav_item_is_active('inventory_item_change_requests')}"}  %>
+			<%= link_to "Order Change Requests", order_change_requests_path, {class: "list-group-item #{nav_item_is_active('order_change_requests')}"}  %>
           </div>
 	      <div></div>
 	    </div>

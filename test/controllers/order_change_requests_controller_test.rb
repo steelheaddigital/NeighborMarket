@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OrderChangeRequestControllerTest < ActionController::TestCase
+class OrderChangeRequestsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
   def setup
@@ -8,6 +8,17 @@ class OrderChangeRequestControllerTest < ActionController::TestCase
     sign_in @user
   end
   
+  test "should get index" do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
+
+    get :index
+    
+    assert_response :success
+    assert_not_nil assigns(:requests)
+  end
+
   test "should get change_request" do
     order = orders(:current)
     get :new, :order_id => order.id
@@ -37,7 +48,7 @@ class OrderChangeRequestControllerTest < ActionController::TestCase
     post :complete, :id => request.id
     
     request.reload
-    assert_redirected_to order_change_requests_management_index_path
+    assert_redirected_to order_change_requests_path
     assert_equal 'Request successfully completed.', flash[:notice]
     assert request.complete
   end
@@ -47,6 +58,9 @@ class OrderChangeRequestControllerTest < ActionController::TestCase
     order = orders(:current)
     request = order_change_requests(:one)
     
+    get :index
+    assert_redirected_to new_user_session_path
+
     get :new, :order_id => order.id
     assert_redirected_to new_user_session_path
     
@@ -56,5 +70,18 @@ class OrderChangeRequestControllerTest < ActionController::TestCase
     post :complete, :id => request.id
     assert_redirected_to new_user_session_path
     
+  end
+
+  test "signed in user that is not manager cannot access protected actions" do
+    sign_out @user
+    @user  = users(:approved_seller_user)
+    sign_in @user
+    request = order_change_requests(:one)
+
+    post :complete, :id => request.id
+    assert_response :not_found
+    
+    get :index
+    assert_response :not_found
   end
 end

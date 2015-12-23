@@ -32,7 +32,6 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => CartItem
   load_and_authorize_resource :class => SiteSetting
   load_and_authorize_resource :class => PriceUnit
-  load_and_authorize_resource :class => InventoryItemChangeRequest
   
   def edit_order_cycle_settings
     @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
@@ -366,22 +365,6 @@ class ManagementController < ApplicationController
       else
         format.html{ redirect_to manage_units_management_index_path, notice: 'Unable to delete the unit' }
       end
-    end
-  end
-
-  def inventory_item_change_requests
-    @requests = InventoryItemChangeRequest.where(:complete => false)
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def order_change_requests
-    @requests = OrderChangeRequest.where(:complete => false)
-    
-    respond_to do |format|
-      format.html
     end
   end
 

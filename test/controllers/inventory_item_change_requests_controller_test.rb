@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class InventoryItemChangeRequestControllerTest < ActionController::TestCase
+class InventoryItemChangeRequestsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
   
   def setup
@@ -8,6 +8,17 @@ class InventoryItemChangeRequestControllerTest < ActionController::TestCase
     sign_in @user
   end
   
+  test "should get index" do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
+
+    get :index
+    
+    assert_response :success
+    assert_not_nil assigns(:requests)
+  end
+
   test "should get change_request" do
     item = inventory_items(:one)
     get :new, :inventory_item_id => item.id
@@ -47,6 +58,9 @@ class InventoryItemChangeRequestControllerTest < ActionController::TestCase
     item = inventory_items(:one)
     request = inventory_item_change_requests(:one)
     
+    get :index 
+    assert_redirected_to new_user_session_path
+
     get :new, :inventory_item_id => item.id
     assert_redirected_to new_user_session_path
     
@@ -56,5 +70,18 @@ class InventoryItemChangeRequestControllerTest < ActionController::TestCase
     post :complete, :id => request.id
     assert_redirected_to new_user_session_path
     
+  end
+
+  test "signed in user that is not manager cannot access protected actions" do
+    sign_out @user
+    @user  = users(:approved_seller_user)
+    sign_in @user
+    request = inventory_item_change_requests(:one)
+
+    post :complete, :id => request.id
+    assert_response :not_found
+    
+    get :index
+    assert_response :not_found
   end
 end

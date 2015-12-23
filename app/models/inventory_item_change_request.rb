@@ -21,4 +21,6 @@ class InventoryItemChangeRequest < ActiveRecord::Base
   belongs_to :inventory_item
   belongs_to :user
   attr_accessible :complete, :description
+
+  scope :active, -> { where(complete: false) }
 end
