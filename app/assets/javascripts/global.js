@@ -59,6 +59,6 @@ $(document).ready(function() {
 	 });
 });
 
-$(document).on('click', '.collapseIconLink i', function(){
-	$(this).toggleClass('icon-plus-sign').toggleClass('icon-minus-sign')
+$(document).on('click', '.collapseIconLink', function(){
+	$(this).find('i').toggleClass('icon-plus-sign').toggleClass('icon-minus-sign')
 })

@@ -24,6 +24,14 @@ class OrdersController < ApplicationController
   load_and_authorize_resource
   skip_authorize_resource only: [:new]
 
+  def index
+    @orders = Order.current
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def show
     @order = Order.find(params[:id])
     @site_settings = SiteSetting.instance 

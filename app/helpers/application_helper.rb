@@ -167,21 +167,30 @@ module ApplicationHelper
   def nav_item_is_active(*args)
     args.each do |arg|
       if arg.is_a?(Hash)
-        return "active" if arg[:action] == params[:action] && arg[:controller] == params[:controller]
+        return 'active' if arg[:action] == params[:action] && arg[:controller] == params[:controller]
       else
-        return "active" if arg == params[:action]
+        return 'active' if arg == params[:action]
       end
     end
   end
   
-  def second_level_nav_is_active(pages)
-    pages.each do |page|
-      if params[:action] == page
-        return "secondLevel collapse in"
+  def second_level_nav_is_active(*args)
+    class_list = 'secondLevel collapse'
+    args.each do |arg|
+      if arg.is_a?(Hash)
+        if arg[:action] == params[:action] && arg[:controller] == params[:controller]
+          class_list = 'secondLevel collapse in'
+          break
+        end
       else
-        return "secondLevel collapse"
+        if arg == params[:action]
+          class_list = 'secondLevel collapse in'
+          break
+        end
       end
     end
+    
+    class_list
   end
   
   def last_search_path

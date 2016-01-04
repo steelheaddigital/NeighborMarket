@@ -160,7 +160,9 @@ legend
 	padding-right:10px;
 }
 
-.collapseIconLink:hover{
+.collapseIconLink:hover,
+.collapseIconLink:focus
+{
 	color: $gray-darker;
 	text-decoration: none;
 }

@@ -57,7 +57,6 @@ NeighborMarket::Application.routes.draw do
       get 'manage_units'
       post 'create_price_unit'
       delete 'destroy_price_unit'
-      get 'inventory_item_change_requests'
       post 'test_email'
     end
   end

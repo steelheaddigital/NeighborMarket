@@ -48,7 +48,7 @@ class InventoryItemChangeRequestsControllerTest < ActionController::TestCase
     post :complete, :id => request.id
     
     request.reload
-    assert_redirected_to inventory_item_change_requests_management_index_path
+    assert_redirected_to inventory_item_change_requests_path
     assert_equal 'Request successfully completed.', flash[:notice]
     assert request.complete
   end

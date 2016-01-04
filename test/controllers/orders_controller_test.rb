@@ -94,6 +94,17 @@ class OrdersControllerTest < ActionController::TestCase
     end
   end
   
+  test 'should get index' do
+    sign_out @user
+    @user  = users(:manager_user)
+    sign_in @user
+    
+    get :index
+
+    assert_response :success
+    assert_not_nil :orders
+  end
+
   test "should get edit" do
     order = orders(:current)
     
@@ -179,6 +190,9 @@ class OrdersControllerTest < ActionController::TestCase
   test "user cannot access order other than their own" do
     order = orders(:not_current)
     
+    get :index
+    assert_response :not_found
+
     get :show, :id => order.id
     assert_response :not_found
     
@@ -199,7 +213,10 @@ class OrdersControllerTest < ActionController::TestCase
     sign_out @user
     
     order = orders(:current)
-        
+    
+    get :index
+    assert_redirected_to new_user_session_path
+
     post :create
     assert_redirected_to new_user_session_path
     

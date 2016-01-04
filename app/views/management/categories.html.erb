@@ -20,17 +20,18 @@
 %>
 
 <div>
-  <div>
+  <div style="margin-bottom: 20px;">
     <%= button_to "New Top Level Category", { :action => "new", :controller => "top_level_categories"}, {:form => {:id => "NewTopLevelCategoryButton"}, :class => "btn btn-default", :method => "get"} %>
   </div>
+  <div class="panel-group">
     <%@categories.each do |category|%>
-    <div class="accordion-group">
-      <div class="accordion-heading">
-          <span class="category-cell"><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>"><i class="icon-plus-sign"></i></a><%=category.name%></span>
-          <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn btn-default", :style => "width: 95%;"} %></span>
-          <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
-      </div>
-          <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="accordion-body collapse">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+              <span class="category-cell"><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>"><i class="icon-plus-sign"></i></a><%=category.name%></span>
+              <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn btn-default", :style => "width: 95%;"} %></span>
+              <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
+          </div>
+          <div style="margin-left:50px;" id="<%= "second-level-category" + "#{category.id}"%>" class="panel-body collapse">
               <div style="margin-top: 10px; margin-bottom: 10px;">
                 <%= button_to "New Second Level Category", { :action => "new", :controller => "second_level_categories", :id => category.id}, {:form => {:class => "newSecondLevelCategoryButton"}, :class => "btn btn-default", :method => "get"} %>
               </div>
@@ -44,7 +45,8 @@
                 <%end%>
               </div>
           </div>
-    </div>
+        </div>
     <%end%>
+  </div>
 </div>
 

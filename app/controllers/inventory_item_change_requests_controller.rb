@@ -64,9 +64,9 @@ class InventoryItemChangeRequestsController < ApplicationController
     respond_to do |format|
       if request.save
         SellerMailer.delay.change_request_complete_mail(request)
-        format.html { redirect_to inventory_item_change_requests_management_index_path, notice: "Request successfully completed."}
+        format.html { redirect_to inventory_item_change_requests_path, notice: "Request successfully completed."}
       else
-        format.html { redirect_to inventory_item_change_requests_management_index_path, notice: "Request could not be completed."}
+        format.html { redirect_to inventory_item_change_requests_path, notice: "Request could not be completed."}
       end
     end
   end

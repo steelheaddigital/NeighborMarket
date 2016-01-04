@@ -1,0 +1,111 @@
+<%
+#
+#Copyright 2013 Neighbor Market
+#
+#This file is part of Neighbor Market.
+#
+#Neighbor Market is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Neighbor Market is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
+#
+%>
+
+<% content_for :MainManagementContent do %>
+	<div id="Orders" class="container-fluid">
+	  	<h2>Current Orders</h2>
+	  	<div class="table">
+			<table id="OrdersTable" class="table table-striped">
+			  <thead>
+			    <tr>
+			    	<th></th>
+			    	<th></th>
+			    	<th>Order ID</th>
+			        <th>Buyer</th>
+			        <th>Buyer Email</th>
+			        <th>Total Amount</th>
+			    </tr>
+			  </thead>	
+			  <tbody>
+			    <%@orders.each do |order|%>
+					<tr>
+						<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#OrderDetail" + "#{order.id}" %>"><i class="icon-plus-sign"></i> Details</a></span></td>
+						<td><%= link_to "Edit", edit_order_path(order) %></td>
+						<td><%= order.id %></td>
+						<td><%= order.user.username %></td>
+						<td><a href="mailto:<%= order.user.email %>"><%= order.user.email %></a></td>
+						<td><%= number_to_currency(order.total_price)%></td>
+					</tr>
+					<tr id="<%="OrderDetail" + "#{order.id}" %>" class="collapse">
+						<td colspan="6">
+							<div class="well">
+								<table class="table table-condensed table-responsive table-striped">
+									<thead>
+									    <tr>
+									    	<th></th>
+									    	<th>Item Name</th>
+									    	<th>Seller</th>
+									    	<th>Quantity</th>
+									    	<th>Total Price</th>
+									    </tr>
+									</thead>
+									<tbody>
+										<% order.cart_items.each do |item| %>
+											<tr>
+											<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#ItemDetail" + "#{item.id}" %>"><i class="icon-plus-sign"></i> Payments</a></span></td>
+												<td><%=item.inventory_item.name%></td>
+												<td><%=item.inventory_item.user.username%></td>
+												<td><%=item.quantity%></td>
+												<td><%=number_to_currency(item.total_price)%></td>
+											</tr>
+											<tr id="<%="ItemDetail" + "#{item.id}" %>" class="collapse">
+												<td colspan="5">
+													<div class="well">
+														<table class="table table-condensed table-responsive table-striped">
+															<thead>
+															    <tr>
+															    	<th>ID</th>
+															    	<th>Type (Pay or Refund)</th>
+															    	<th>Processor Type</th>
+															    	<th>Status</th>
+															    	<th>Receiver</th>
+															    	<th>Amount</th>
+															    </tr>
+															</thead>
+															<tbody>
+																<% item.payments.each do |payment| %>
+																	<tr>
+																		<td><%=payment.id%></td>
+																		<td><%=payment.payment_type%></td>
+																		<td><%=payment.processor_type%></td>
+																		<td><%=payment.status%></td>
+																		<td><%=payment.receiver.username%></td>
+																		<td><%=number_to_currency(payment.amount)%></td>
+																	</tr>
+																<%end%>
+															</tbody>
+														</table>
+													</div>
+												</td>
+											</tr>
+										<%end%>
+									</tbody>
+								</table>
+							</div>
+						</td>
+					</tr>
+			    <% end %>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+<% end %>
+<%= render :template => 'layouts/management' %>

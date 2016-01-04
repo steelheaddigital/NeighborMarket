@@ -41,6 +41,7 @@ class Order < ActiveRecord::Base
   after_commit :disassociate_cart_items_from_cart
   
   scope :active, -> { where(canceled: false) }
+  scope :current, -> { joins(:order_cycle).where(order_cycles: { status: 'current' }).active }
 
   def self.update_or_new(cart)
     user = cart.user
