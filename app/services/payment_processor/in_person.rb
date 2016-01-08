@@ -19,8 +19,7 @@
 
 module PaymentProcessor
   class InPerson < PaymentProcessorBase
-    include Rails.application.routes.url_helpers
-
+    
     def initialize(args)
     end
 
@@ -49,7 +48,7 @@ module PaymentProcessor
           payment.update_attribute(:amount, new_amount)
         end
       elsif payment.status == 'Completed'
-        payment.refunds.create(
+        refund_payment = payment.refunds.build(
           processor_type: 'InPerson',
           payment_type: 'refund',
           receiver_id: payment.receiver_id,
@@ -58,6 +57,10 @@ module PaymentProcessor
           status: 'Completed',
           payment_date: DateTime.now
         )
+
+        refund_payment.cart_items = payment.cart_items
+        refund_payment.save
+        refund_payment
       end
     end
   end

@@ -29,12 +29,31 @@ class Payment < ActiveRecord::Base
 
   attr_accessible :transaction_id, :amount, :fee, :status, :payment_date, :receiver_id, :sender_id, :order_id, :processor_type, :payment_type
 
-  def refund(amount)
-    payment_processor(type: processor_type).refund(self, amount)
-  end
-
   def refund_all
     refund(net_total) if net_total > 0
+  end
+
+  def refund_all!
+    refund!(net_total) if net_total > 0
+  end
+
+  def refund(amount)
+    refund!(amount)
+  rescue PaymentProcessor::PaymentError => e
+    errors.add(:base, e.message)
+    false
+  end
+
+  def refund!(amount)
+    if !refundable?
+      fail PaymentProcessor::PaymentError, 'Payment is not refundable'
+    else
+      payment_processor(type: processor_type).refund(self, amount)
+    end
+  end
+
+  def refundable?
+    net_total > 0 && payment_type != 'refund'
   end
 
   def net_total

@@ -168,4 +168,6 @@ NeighborMarket::Application.routes.draw do
   post 'payments/confirm', to: 'payments#confirm', as: :payments_confirm
 
   resources :user_preferences, only: ['update', 'edit']
+
+  resources :payments, only: ['destroy']
 end

@@ -22,3 +22,14 @@ three:
   order: current_two
   processor_type: 'InPerson'
   status: 'Pending'
+
+four:
+  id: 4
+  amount: 20.00
+  payment_type: pay
+
+five:
+  id: 5
+  amount: 20.00
+  payment_type: refund
+  refunded_payment_id: 4

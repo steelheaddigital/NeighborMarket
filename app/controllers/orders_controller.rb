@@ -25,7 +25,15 @@ class OrdersController < ApplicationController
   skip_authorize_resource only: [:new]
 
   def index
-    @orders = Order.current
+    if params[:selected_previous_order_cycle].nil?
+      order_cycle = OrderCycle.latest_cycle
+    else
+      order_cycle = OrderCycle.find(params[:selected_previous_order_cycle][:id])
+    end
+
+    @orders = Order.joins(:order_cycle).where(order_cycles: { id: order_cycle.id }).active
+    @previous_order_cycles = OrderCycle.last_ten_cycles
+    @selected_previous_order_cycle = @previous_order_cycles.find { |e| e.id == order_cycle.id }
 
     respond_to do |format|
       format.html

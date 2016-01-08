@@ -4,7 +4,6 @@
 	  <div class="row">
 		  <div class="col-md-6">
 			  <div class="form-group">
-			    <%= f.label :time_zone %>
 			    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, { :default => "Pacific Time (US & Canada)" }, { :class => "form-control" } %>
 			  </div>
 			  <%= f.text_field :site_name, label: "Site name (Displayed on front page and in emails.)" %>

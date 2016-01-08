@@ -124,7 +124,7 @@ module PaymentProcessor
       reponse_status = response.ack
       if reponse_status == 'Success'
         refund = response.refund
-        refund_payment = payment.refunds.create(
+        refund_payment = payment.refunds.build(
           order_id: payment.order_id,
           processor_type: 'PaypalExpress',
           payment_type: 'refund',
@@ -136,7 +136,8 @@ module PaymentProcessor
           status: 'Completed',
           payment_date: DateTime.now
         )
-
+        refund_payment.cart_items = payment.cart_items
+        refund_payment.save
         refund_payment
       else
         fail PaymentProcessor::PaymentError, "Paypal refund request failed with status #{reponse_status}"

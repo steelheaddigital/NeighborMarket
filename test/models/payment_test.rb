@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class OrderTest < ActiveSupport::TestCase
+
   test 'net_total returns total of payments minus refunds' do
     payment = payments(:one)
     payment.refunds.create(amount: 5.00)
@@ -31,5 +32,26 @@ class OrderTest < ActiveSupport::TestCase
 
       payment_processor.verify
     end
+  end
+
+  test 'refund! throws exception if payment is not refundable' do
+    payment = payments(:four)
+    payment_processor = Minitest::Mock.new
+    payment_processor.expect :refund, Payment.new, [payment, 20.00]
+
+    assert_raises PaymentProcessor::PaymentError do
+      payment.refund!(20.00)
+    end
+  end
+
+  test 'refund returns false and adds error to collection if payment is not refundable' do
+    payment = payments(:four)
+    payment_processor = Minitest::Mock.new
+    payment_processor.expect :refund, Payment.new, [payment, 20.00]
+
+    result = payment.refund(20.00)
+
+    assert_equal false, result
+    assert_equal 'Payment is not refundable', payment.errors.full_messages.first
   end
 end

@@ -40,36 +40,35 @@ class CartItem < ActiveRecord::Base
   end
   
   def check_for_refunds
-    return unless order
+    return unless order && quantity_changed?
 
-    if quantity_changed?
-      difference = quantity_was - quantity
-      if difference > 0
-        amount_to_refund = difference * price
-        payments.select { |p| p.net_total > 0 }.each do |payment|
-          if amount_to_refund > payment.net_total
-            payment.refund_all
+    difference = quantity_was - quantity
+    if difference > 0
+      amount_to_refund = difference * price
+      payments.select { |p| p.net_total > 0 }.each do |payment|
+        if amount_to_refund > payment.net_total
+          if payment.refund_all
             amount_to_refund -= payment.net_total
           else
-            payment.refund(amount_to_refund)
-            break
+            merge_payment_errors(payment)
+            fail ActiveRecord::Rollback
           end
+        else
+          unless payment.refund(amount_to_refund)
+            merge_payment_errors(payment)
+            fail ActiveRecord::Rollback
+          end
+          break
         end
       end
     end
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
-    raise ActiveRecord::Rollback, e.message
   end
 
   def refund_all_payments
     return true unless order
     
-    refund_payments
+    refund_payments!
     inventory_item.increment_quantity_available(quantity)
-  rescue PaymentProcessor::PaymentError => e
-    errors.add(:base, e.message)
-    raise ActiveRecord::Rollback, e.message
   end
   
   def total_price
@@ -88,15 +87,21 @@ class CartItem < ActiveRecord::Base
     order.nil?
   end
 
+  def refund_payments!
+    unless refund_payments
+      fail ActiveRecord::Rollback
+    end
+  end
+
   def refund_payments
     return unless order
     payments.each do |payment|
-      if payment.amount > total_price
-        payment.refund(total_price)
-      else
-        payment.refund_all
+      unless payment.refund_all
+        merge_payment_errors(payment)
+        return false
       end
     end
+    true
   end
 
   def payment_status
@@ -111,6 +116,19 @@ class CartItem < ActiveRecord::Base
 
   private
   
+  def merge_payment_errors!(payment)
+    payment.errors.full_messages.each do |message|
+      errors.add(:base, message)
+    end
+    fail ActiveRecord::Rollback
+  end
+
+  def merge_payment_errors(payment)
+    payment.errors.full_messages.each do |message|
+      errors.add(:base, message)
+    end
+  end
+
   def validate_can_edit
     if !can_edit?
       if quantity_was > quantity && cart.nil?

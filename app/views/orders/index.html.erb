@@ -21,7 +21,16 @@
 
 <% content_for :MainManagementContent do %>
 	<div id="Orders" class="container-fluid">
-	  	<h2>Current Orders</h2>
+		<div class="row" style="margin-bottom: 15px;">
+			<%= form_tag orders_path, :method => 'GET', :class => 'form-inline' do %>
+				<div class="form-group">
+					<%= select(:selected_previous_order_cycle, :id, @previous_order_cycles.collect{|o| [format_short_date(o.end_date), o.id]}, {:include_blank => true}, {:class => 'form-control'}) %>
+				</div>
+				<%= submit_tag 'Submit', :class => 'btn btn-default' %>
+				<span>Choose an order cycle end date to load orders for a previous order cycle</span>
+			<% end %>
+		</div>
+	  	<h2>Orders for order cycle ending <%= format_short_date(@selected_previous_order_cycle.end_date) %></h2>
 	  	<div class="table">
 			<table id="OrdersTable" class="table table-striped">
 			  <thead>
@@ -38,7 +47,7 @@
 			    <%@orders.each do |order|%>
 					<tr>
 						<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#OrderDetail" + "#{order.id}" %>"><i class="icon-plus-sign"></i> Details</a></span></td>
-						<td><%= link_to "Edit", edit_order_path(order) %></td>
+						<td><%= link_to "Edit", edit_order_path(order) if order.in_current_order_cycle? %></td>
 						<td><%= order.id %></td>
 						<td><%= order.user.username %></td>
 						<td><a href="mailto:<%= order.user.email %>"><%= order.user.email %></a></td>
@@ -72,23 +81,27 @@
 														<table class="table table-condensed table-responsive table-striped">
 															<thead>
 															    <tr>
-															    	<th>ID</th>
-															    	<th>Type (Pay or Refund)</th>
 															    	<th>Processor Type</th>
+															    	<th>Payment Type</th>
 															    	<th>Status</th>
 															    	<th>Receiver</th>
 															    	<th>Amount</th>
+															    	<th></th>
 															    </tr>
 															</thead>
 															<tbody>
 																<% item.payments.each do |payment| %>
-																	<tr>
-																		<td><%=payment.id%></td>
-																		<td><%=payment.payment_type%></td>
+																	<tr>																		
 																		<td><%=payment.processor_type%></td>
+																		<td><%=payment.payment_type%></td>
 																		<td><%=payment.status%></td>
 																		<td><%=payment.receiver.username%></td>
 																		<td><%=number_to_currency(payment.amount)%></td>
+																		<td>
+																			<% if payment.refundable? %>
+																				<%= button_to "Refund", { :action => "destroy", :controller => "payments", :id => payment.id}, { :method => "delete", :class => "btn btn-danger", :data => {:confirm => "Are you sure you want to refund this payment?"}} %>
+																			<% end %>
+																		</td>
 																	</tr>
 																<%end%>
 															</tbody>

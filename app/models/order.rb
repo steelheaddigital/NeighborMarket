@@ -147,7 +147,7 @@ class Order < ActiveRecord::Base
         self.canceled = true
         save
 
-        payments.where(payment_type: 'pay').find_each(&:refund_all)
+        payments.where(payment_type: 'pay').find_each(&:refund_all!)
 
         cart_items.each do |item|
           item.inventory_item.increment_quantity_available(item.quantity)
@@ -169,6 +169,10 @@ class Order < ActiveRecord::Base
     payments.any? { |p| p.processor_type == 'InPerson' }
   end
 
+  def in_current_order_cycle?
+    order_cycle.id == OrderCycle.current_cycle_id
+  end
+
   private
 
   def will_destroy
@@ -182,9 +186,8 @@ class Order < ActiveRecord::Base
   end
   
   def ensure_current_order_cycle
-    current_order_cycle_id = OrderCycle.current_cycle_id
     if order_cycle
-      if order_cycle.id != current_order_cycle_id
+      unless in_current_order_cycle?
         errors.add('', 'Order is not in the current open order cycle and cannot be edited')
       end
     end
