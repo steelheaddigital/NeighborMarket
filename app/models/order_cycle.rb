@@ -76,7 +76,11 @@ class OrderCycle < ActiveRecord::Base
   end
   
   def set_order_cycle_end_date(settings)
-    if settings.recurring
+    return unless settings.recurring
+
+    if settings.interval == 'biweekly'
+      self.end_date = start_date.advance(week: 2)
+    else
       interval = settings.interval.pluralize.to_sym
       self.end_date = start_date.advance(interval => 1)
     end
