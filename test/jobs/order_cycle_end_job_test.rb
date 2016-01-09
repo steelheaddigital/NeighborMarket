@@ -49,9 +49,52 @@ class OrderCycleEndJobTest < ActiveSupport::TestCase
     assert_equal the_date.advance(:days => 1).to_s, new_cycle.seller_delivery_date.to_datetime.to_s
     assert_equal the_date.advance(:days => 1).to_s, new_cycle.buyer_pickup_date.to_datetime.to_s
     assert_equal OrderCycle.find(current_cycle.id).status, "complete"
+  end
+
+  test 'creates new cycle for recurring' do
+    OrderCycle.delete_all
+    OrderCycleSetting.first.update_attributes(recurring: true, interval: 'week')
+    the_date = DateTime.now
+    current_cycle = OrderCycle.new(:start_date => the_date,
+                               :end_date => the_date,
+                               :status => "current",
+                               :seller_delivery_date => the_date, 
+                               :buyer_pickup_date => the_date)
+    current_cycle.save(:validate => false)
+    job = OrderCycleEndJob.new
     
+    job.perform
+    new_cycle = OrderCycle.where(:status => "pending").first
+
+    assert_equal the_date.advance(:days => 1).to_s, new_cycle.start_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 1).to_s, new_cycle.end_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 1).to_s, new_cycle.seller_delivery_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 1).to_s, new_cycle.buyer_pickup_date.to_datetime.to_s
+    assert_equal OrderCycle.find(current_cycle.id).status, "complete"
   end
   
+  test 'creates new cycle for biweekly recurring' do
+    OrderCycle.delete_all
+    OrderCycleSetting.first.update_attributes(recurring: true, interval: 'biweekly', padding: 0)
+    the_date = DateTime.now
+    current_cycle = OrderCycle.new(:start_date => the_date,
+                               :end_date => the_date,
+                               :status => "current",
+                               :seller_delivery_date => the_date, 
+                               :buyer_pickup_date => the_date)
+    current_cycle.save(:validate => false)
+    job = OrderCycleEndJob.new
+    
+    job.perform
+    new_cycle = OrderCycle.where(:status => "pending").first
+
+    assert_equal the_date.to_s, new_cycle.start_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 2).to_s, new_cycle.end_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 2).to_s, new_cycle.seller_delivery_date.to_datetime.to_s
+    assert_equal the_date.advance(:weeks => 2).to_s, new_cycle.buyer_pickup_date.to_datetime.to_s
+    assert_equal OrderCycle.find(current_cycle.id).status, "complete"
+  end
+
   test "queue_post_pickup_job queues new post_pickup_job" do
     order_cycle = order_cycles(:current)
     job = OrderCycleEndJob.new

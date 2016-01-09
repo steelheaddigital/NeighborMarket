@@ -27,41 +27,10 @@ class ManagementController < ApplicationController
   load_and_authorize_resource :class => User
   load_and_authorize_resource :class => TopLevelCategory
   load_and_authorize_resource :class => SecondLevelCategory
-  load_and_authorize_resource :class => OrderCycle
   load_and_authorize_resource :class => Order
   load_and_authorize_resource :class => CartItem
   load_and_authorize_resource :class => SiteSetting
   load_and_authorize_resource :class => PriceUnit
-  
-  def edit_order_cycle_settings
-    @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    @order_cycle_settings.padding ||= 0
-    @order_cycle = OrderCycle.get_order_cycle
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-  
-  def update_order_cycle_settings
-    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
-    @order_cycle_settings.padding ||= 0
-
-    case params[:commit]
-    when 'Save and Start New Cycle'
-      @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
-    when 'Update Settings'
-      @order_cycle = OrderCycle.update_current_order_cycle(params[:order_cycle], @order_cycle_settings)
-    end
-    
-    respond_to do |format|
-      if @order_cycle_settings.save && @order_cycle.save_and_set_status
-        format.html { redirect_to edit_order_cycle_settings_management_index_path, notice: 'Order Cycle Settings Successfully Saved!' }
-      else
-        format.html { render :edit_order_cycle_settings }
-      end
-    end
-  end
   
   def approve_sellers
     @sellers = User.joins(:roles).where("approved_seller = false AND roles.name = 'seller'") 

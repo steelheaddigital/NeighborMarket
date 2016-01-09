@@ -26,12 +26,19 @@ class OrderCycleEndJob
     current_cycle_settings = OrderCycleSetting.first
     if current_cycle_settings.recurring
       padding_interval = current_cycle_settings.padding_interval.to_sym
-      interval = current_cycle_settings.interval.pluralize.to_sym
+
+      if current_cycle_settings.interval == 'biweekly'
+        new_end_date = current_cycle.end_date.advance(weeks: 2)
+        new_seller_delivery_date = current_cycle.seller_delivery_date.advance(weeks: 2)
+        new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(weeks: 2)
+      else
+        interval = current_cycle_settings.interval.pluralize.to_sym
+        new_end_date = current_cycle.end_date.advance(interval => 1)
+        new_seller_delivery_date = current_cycle.seller_delivery_date.advance(interval => 1)
+        new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(interval => 1)
+      end
       
       new_start_date = current_cycle.end_date.advance(padding_interval => current_cycle_settings.padding)
-      new_end_date = current_cycle.end_date.advance(interval => 1)
-      new_seller_delivery_date = current_cycle.seller_delivery_date.advance(interval => 1)
-      new_buyer_pickup_date = current_cycle.buyer_pickup_date.advance(interval => 1)
       
       new_cycle = OrderCycle.new(start_date: new_start_date,
                                  end_date: new_end_date,
@@ -41,16 +48,14 @@ class OrderCycleEndJob
                                  
       if new_cycle.save
         OrderCycle.queue_order_cycle_start_job(new_start_date)
-        remove_items_from_orders_where_minimum_not_met(current_cycle.id)
-        send_emails(current_cycle)
-        queue_post_pickup_job(current_cycle)
       end
     else
       current_cycle.update_column(:status, 'complete')
-      remove_items_from_orders_where_minimum_not_met(current_cycle.id)
-      send_emails(current_cycle)
-      queue_post_pickup_job(current_cycle)
     end
+
+    remove_items_from_orders_where_minimum_not_met(current_cycle.id)
+    send_emails(current_cycle)
+    queue_post_pickup_job(current_cycle)
   end
   
   def remove_items_from_orders_where_minimum_not_met(current_order_cycle_id)

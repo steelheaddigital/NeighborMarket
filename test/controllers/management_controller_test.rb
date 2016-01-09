@@ -8,38 +8,6 @@ class ManagementControllerTest < ActionController::TestCase
     sign_in @user
   end
   
-  test "should get order_cycle_settings" do
-    get :edit_order_cycle_settings
-    
-    assert_response :success
-    assert_not_nil assigns (:order_cycle_settings)
-    assert_not_nil assigns (:order_cycle)
-  end
-  
-  test "should update order_cycle_settings and create new order cycle if commit equals 'Start New Cycle'" do
-    
-    assert_difference "OrderCycle.count" do
-      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "day"}, :order_cycle => {:start_date => Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Save and Start New Cycle'
-    end
-    
-    assert_redirected_to edit_order_cycle_settings_management_index_path
-    assert_not_nil assigns (:order_cycle_settings)
-    assert_not_nil assigns (:order_cycle)
-  end
-  
-  test "should update order_cycle_settings but not order cycle if commit does not equal 'Start New Cycle'" do
-    current_order_cycle_id = order_cycles(:current).id
-    
-    assert_no_difference "OrderCycle.count" do
-      post :update_order_cycle_settings, :order_cycle_setting => {:recurring => "true", :interval => "day"}, :order_cycle => {:start_date => Date.current - 1.day, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current + 1.day, :buyer_pickup_date => Date.current + 1.day}, :commit => 'Update Settings'
-    end
-    
-    assert OrderCycle.find(current_order_cycle_id).status == "current", "Order cycle status was #{OrderCycle.find(current_order_cycle_id).status} but should have been current"
-    assert_redirected_to edit_order_cycle_settings_management_index_path
-    assert_not_nil assigns (:order_cycle_settings)
-    assert_not_nil assigns (:order_cycle)
-  end
-  
   test "should get approve_sellers" do
     get :approve_sellers
     
@@ -423,29 +391,23 @@ class ManagementControllerTest < ActionController::TestCase
     post :historical_orders_report
     assert_redirected_to new_user_session_path
     
-    get :edit_order_cycle_settings
+    get :new_users_report
     assert_redirected_to new_user_session_path
-    
-    post :update_order_cycle_settings
+
+    get :updated_user_profile_report
     assert_redirected_to new_user_session_path
-    
-     get :new_users_report
-     assert_redirected_to new_user_session_path
-   
-     get :updated_user_profile_report
-     assert_redirected_to new_user_session_path
-   
-     get :deleted_users_report
-     assert_redirected_to new_user_session_path
-     
-     get :manage_units
-     assert_redirected_to new_user_session_path
-     
-     post :create_price_unit
-     assert_redirected_to new_user_session_path
-     
-     post :destroy_price_unit
-     assert_redirected_to new_user_session_path
+
+    get :deleted_users_report
+    assert_redirected_to new_user_session_path
+
+    get :manage_units
+    assert_redirected_to new_user_session_path
+
+    post :create_price_unit
+    assert_redirected_to new_user_session_path
+
+    post :destroy_price_unit
+    assert_redirected_to new_user_session_path
   end
   
   test "signed in user that is not manager cannot access protected actions" do
@@ -496,12 +458,6 @@ class ManagementControllerTest < ActionController::TestCase
     assert_response :not_found
     
     post :historical_orders_report
-    assert_response :not_found
-    
-    get :edit_order_cycle_settings
-    assert_response :not_found
-    
-    post :update_order_cycle_settings
     assert_response :not_found
     
     get :new_users_report

@@ -32,8 +32,6 @@ NeighborMarket::Application.routes.draw do
   
   resources :management do
     collection do
-      get 'edit_order_cycle_settings'
-      post 'update_order_cycle_settings'
       get 'approve_sellers'
       get 'user_search'
       get 'user_search_results'
@@ -163,11 +161,12 @@ NeighborMarket::Application.routes.draw do
   get 'info/privacy', to: 'info#privacy'
 
   post 'contact', to: 'contact#create'
-  resources :contact, :only => ["index"]
+  resources :contact, only: [:index]
 
   post 'payments/confirm', to: 'payments#confirm', as: :payments_confirm
+  resources :payments, only: [:destroy]
 
-  resources :user_preferences, only: ['update', 'edit']
+  resources :user_preferences, only: [:edit, :update]
 
-  resources :payments, only: ['destroy']
+  resources :order_cycles, only: [:index, :update]
 end

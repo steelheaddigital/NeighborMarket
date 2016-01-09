@@ -25,12 +25,12 @@
 	<div class="col-md-3">
 	    <div class="list-group">
 	      <%= link_to "Site Settings", site_settings_path, {class: "list-group-item #{nav_item_is_active({controller: 'site_contents', action: 'index'}, {controller: 'site_contents', action: 'update'}, {controller: 'site_settings', action: 'index'}, {controller: 'site_settings', action: 'update'}, {controller: 'payment_processor_settings', action: 'index'}, {controller: 'payment_processor_settings', action: 'update'})}" } %>
-	      <%= link_to "Order Cycle Settings", edit_order_cycle_settings_management_index_path, {class: "list-group-item #{nav_item_is_active('edit_order_cycle_settings')}"}%>
-	      <%= link_to "Manage Orders", orders_path, {class: "list-group-item #{nav_item_is_active({controller: 'orders', action: 'index'})}"} %>
-		  <%= link_to "Manage Categories", categories_management_index_path, {class: "list-group-item #{nav_item_is_active('categories')}"} %>
-		  <%= link_to "Manage Units", manage_units_management_index_path, {class: "list-group-item #{nav_item_is_active('manage_units')}"} %>
+	      <%= link_to "Order Cycle Settings", order_cycles_path, {class: "list-group-item #{nav_item_is_active({controller: 'order_cycles', action: 'index'}, {controller: 'order_cycles', action: 'update'})}"}%>
+	      <%= link_to "Orders", orders_path, {class: "list-group-item #{nav_item_is_active({controller: 'orders', action: 'index'})}"} %>
+		  <%= link_to "Categories", categories_management_index_path, {class: "list-group-item #{nav_item_is_active('categories')}"} %>
+		  <%= link_to "Units", manage_units_management_index_path, {class: "list-group-item #{nav_item_is_active('manage_units')}"} %>
 	      <div id="ManageUsersMenu" class="list-group-item">
-	      	  <a data-toggle="collapse" data-parent="#ManageUsersMenu" href="#ManageUsersSecondLevel">Manage Users</a>
+	      	  <a data-toggle="collapse" data-parent="#ManageUsersMenu" href="#ManageUsersSecondLevel">Users</a>
 	      </div>
           <div id="ManageUsersSecondLevel" class="<%=second_level_nav_is_active('user_search','add_users', 'approve_sellers','new_users_report','deleted_users_report','updated_user_profile_report')%>">
             <%= link_to "User Search", user_search_management_index_path, {class: "list-group-item #{nav_item_is_active('user_search')}"} %>
@@ -41,7 +41,7 @@
 			<%= link_to "Recent User Profile Updates", updated_user_profile_report_management_index_path, {class: "list-group-item #{nav_item_is_active('updated_user_profile_report')}"}  %>
           </div>
 		  <div id="ManageInventoryMenu" class="list-group-item">
-			  <a data-toggle="collapse" data-parent="#ManageInventoryMenu" href="#ManageInventorySecondLevel">Manage Inventories</a>
+			  <a data-toggle="collapse" data-parent="#ManageInventoryMenu" href="#ManageInventorySecondLevel">Inventories</a>
 	      </div>
           <div id="ManageInventorySecondLevel" class="<%=second_level_nav_is_active('inventory_item_approval', 'inventory')%>">
             <%= link_to "Approve Inventory", inventory_item_approval_management_index_path, {class: "list-group-item #{nav_item_is_active('inventory_item_approval')}"} %>
