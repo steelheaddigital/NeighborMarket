@@ -288,10 +288,8 @@ class OrderTest < ActiveSupport::TestCase
 
     order.update_attribute(:complete, true)
     in_person_payment = Payment.find(2)
-    online_payment = Payment.find(1)
 
     assert_equal 'Completed', in_person_payment.status
-    assert_nil online_payment.status
   end
 
   test 'sets in person payments to pending when saved as not complete' do
@@ -300,9 +298,7 @@ class OrderTest < ActiveSupport::TestCase
     order.update_attribute(:complete, true)
     order.update_attribute(:complete, false)
     in_person_payment = Payment.find(2)
-    online_payment = Payment.find(1)
 
     assert_equal 'Pending', in_person_payment.status
-    assert_nil online_payment.status
   end
 end

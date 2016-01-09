@@ -53,7 +53,7 @@ class Payment < ActiveRecord::Base
   end
 
   def refundable?
-    net_total > 0 && payment_type != 'refund'
+    net_total > 0 && payment_type != 'refund' && status == 'Completed'
   end
 
   def net_total
