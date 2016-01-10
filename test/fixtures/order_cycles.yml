@@ -8,6 +8,7 @@ not_current:
   seller_delivery_date: <%= DateTime.now.utc %>
 
 current:
+  order_cycle_setting_id: 1
   start_date: 2012-08-17 18:03:25
   end_date: 2012-08-17 18:03:26
   status: current

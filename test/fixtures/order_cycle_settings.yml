@@ -1,13 +1,6 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-recurring:
+one:
+  id: 1
   recurring: true
-  interval: day
-  padding_interval: days
-  padding: 1
-
-not_recurring:
-  recurring: false
   interval: day
   padding_interval: days
   padding: 1

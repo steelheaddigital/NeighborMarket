@@ -149,11 +149,15 @@ module ApplicationHelper
   end
   
   def format_date_time(datetime)
-    "#{datetime.in_time_zone.strftime("%m/%d/%Y")} at #{datetime.in_time_zone.strftime("%I:%M %p")}"
+    "#{datetime.in_time_zone.strftime("%m/%d/%Y")} at #{format_time(datetime)}"
   end
   
   def format_short_date(datetime)
     "#{datetime.in_time_zone.strftime("%m/%d/%Y")}" if !datetime.nil?
+  end
+
+  def format_time(datetime)
+    "#{datetime.in_time_zone.strftime("%I:%M %p")}"
   end
   
   def site_name

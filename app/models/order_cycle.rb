@@ -23,6 +23,7 @@ class OrderCycle < ActiveRecord::Base
   has_many :orders
   has_many :inventory_item_order_cycles
   has_many :inventory_items, -> { uniq }, :through => :inventory_item_order_cycles
+  belongs_to :order_cycle_setting
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,
            :seller_delivery_date_not_before_end_date,
@@ -30,11 +31,14 @@ class OrderCycle < ActiveRecord::Base
            :next_end_date_not_before_next_start_date,
            :next_end_date_not_before_now
   
-  attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date, :status 
+  accepts_nested_attributes_for :order_cycle_setting
+
+  attr_accessible :start_date, :end_date, :status, :seller_delivery_date, :buyer_pickup_date, :status, :order_cycle_setting_attributes
   attr_accessor :updating
   
-  before_validation :get_current_cycle_settings
-  before_save :set_current_order_cycle_to_complete, unless: :updating
+  before_save :update_statuses, unless: :updating
+
+  scope :current_cycle, -> { where(status: 'current') }
   
   def self.get_order_cycle
     if find_by_status('current')
@@ -48,134 +52,14 @@ class OrderCycle < ActiveRecord::Base
     order_cycle
   end
   
-  def get_current_cycle_settings
-    @current_cycle_settings = OrderCycleSetting.first
-  end
-  
-  def set_current_order_cycle_to_complete
-    current_order_cycle = current_cycle
-    if current_order_cycle
-      current_order_cycle.update_column(:status, "complete")
-    end
-  end
-  
-  def self.build_initial_cycle(order_cycle_params, order_cycle_settings)
-    order_cycle = new(order_cycle_params)
-    order_cycle.set_order_cycle_end_date(order_cycle_settings)
-    
-    order_cycle
-  end
-  
-  def self.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+  def self.update_current_order_cycle(order_cycle_params)
     order_cycle = get_order_cycle
     order_cycle.assign_attributes(order_cycle_params)
-    order_cycle.set_order_cycle_end_date(order_cycle_settings)
     order_cycle.updating = true unless order_cycle.id.nil?
     
     order_cycle
   end
   
-  def set_order_cycle_end_date(settings)
-    return unless settings.recurring
-
-    if settings.interval == 'biweekly'
-      self.end_date = start_date.advance(week: 2)
-    else
-      interval = settings.interval.pluralize.to_sym
-      self.end_date = start_date.advance(interval => 1)
-    end
-  end
-  
-  def save_and_set_status
-    if start_date > Time.current
-      self.status = 'pending'
-    else
-      self.status = 'current'
-    end
-    
-    success = save
-    if success
-      if start_date > Time.current
-        OrderCycle.queue_order_cycle_start_job(start_date)
-      else
-        #post new inventory items marked as auto-post
-        InventoryItem.autopost(self) unless updating
-        OrderCycle.queue_order_cycle_end_job(end_date)
-
-        unless updating
-          sellers = User.active_sellers.joins(:user_preference).where(user_preferences: { seller_new_order_cycle_notification: true })
-          sellers.each do |seller|
-            seller.save if seller.authentication_token.blank? #generate an auth token
-            SellerMailer.delay.order_cycle_start_mail(seller, self)
-          end
-        end
-        queue_reccomendation_mail_job
-      end
-    end
-    success
-  end
-  
-  def end_date_not_before_today
-    if end_date.to_date < Date.current
-      errors.add(:end_date, 'cannot be before today') 
-    end
-  end
-  
-  def end_date_not_before_start_date
-    if end_date < start_date
-      errors.add(:end_date, 'cannot be before start date') 
-    end
-  end
-  
-  def seller_delivery_date_not_before_end_date
-    if seller_delivery_date < end_date
-      errors.add(:seller_delivery_date, 'cannot be before end date')
-    end
-  end
-  
-  def buyer_pickup_date_not_before_seller_delivery_date
-    if buyer_pickup_date < seller_delivery_date
-      errors.add(:buyer_pickup_date, 'cannot be before seller delivery date')
-    end
-  end
-  
-  def next_end_date_not_before_next_start_date
-    if @current_cycle_settings.recurring
-      next_start_date = end_date.advance(@current_cycle_settings.padding_interval.to_sym => @current_cycle_settings.padding)
-      next_end_date = end_date.advance(@current_cycle_settings.interval.pluralize.to_sym => 2)
-      if next_end_date < next_start_date
-        errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be before the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p") + '. Check the value of Padding.')
-      end
-    end
-  end
-  
-  def next_end_date_not_before_now
-    if @current_cycle_settings.recurring
-      next_end_date = end_date.advance(@current_cycle_settings.interval.pluralize.to_sym => 2)
-      if next_end_date.to_datetime < DateTime.current
-        errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be today')
-      end
-    end
-  end
-  
-  def current_cycle
-    OrderCycle.find_by_status("current")
-  end
-
-  def complete_pending_cycles
-    pending_cycles = OrderCycle.where("status = ?", "pending")
-    pending_cycles.each do |cycle|
-      cycle.update_column(:status, "complete")
-    end
-  end
-  
-  def queue_reccomendation_mail_job
-    scheduled_set = Sidekiq::ScheduledSet.new
-    jobs = scheduled_set.select { |ss| ss.klass == 'ReccomendationMailJob' }
-    jobs.each(&:delete)
-    ReccomendationMailJob.perform_at(start_date + 2.days)
-  end
-
   def self.current_cycle
     find_by_status("current")
   end
@@ -210,7 +94,7 @@ class OrderCycle < ActiveRecord::Base
   def self.active_cycle
     where("status IN('pending', 'current')").last
   end
-    
+
   def self.queue_order_cycle_start_job(start_date)
     scheduled_set = Sidekiq::ScheduledSet.new
     jobs = scheduled_set.select { |ss| ss.klass == 'OrderCycleStartJob' || ss.klass == 'OrderCycleEndJob' }
@@ -224,5 +108,97 @@ class OrderCycle < ActiveRecord::Base
     jobs.each(&:delete)
     OrderCycleEndJob.perform_at(end_date)
   end
+
+  def queue_reccomendation_mail_job
+    scheduled_set = Sidekiq::ScheduledSet.new
+    jobs = scheduled_set.select { |ss| ss.klass == 'ReccomendationMailJob' }
+    jobs.each(&:delete)
+    ReccomendationMailJob.perform_at(start_date + 2.days)
+  end 
+
+  def save_and_set_status
+    if start_date > Time.current
+      self.status = 'pending'
+    else
+      self.status = 'current'
+    end
+    
+    success = save
+    if success
+      if start_date > Time.current
+        OrderCycle.queue_order_cycle_start_job(start_date)
+      else
+        OrderCycle.queue_order_cycle_end_job(end_date)
+
+        unless updating
+          #post new inventory items marked as auto-post
+          InventoryItem.autopost(self) 
+          sellers = User.active_sellers.joins(:user_preference).where(user_preferences: { seller_new_order_cycle_notification: true })
+          sellers.each do |seller|
+            seller.save if seller.authentication_token.blank? #generate an auth token
+            SellerMailer.delay.order_cycle_start_mail(seller, self)
+          end
+          queue_reccomendation_mail_job
+        end
+      end
+    end
+    success
+  end 
+
+  private
+
+  def update_statuses
+    current_cycle = OrderCycle.find_by_status('current')
+    if current_cycle
+      current_cycle.update_column(:status, 'complete')
+    end
+
+    pending_cycles = OrderCycle.where(status: 'pending')
+    pending_cycles.each do |cycle|
+      cycle.update_column(:status, 'complete')
+    end
+  end
+
+  def end_date_not_before_today
+    if end_date.to_date < Date.current
+      errors.add(:end_date, 'cannot be before today') 
+    end
+  end
   
+  def end_date_not_before_start_date
+    if end_date < start_date
+      errors.add(:end_date, 'cannot be before start date') 
+    end
+  end
+  
+  def seller_delivery_date_not_before_end_date
+    if seller_delivery_date < end_date
+      errors.add(:seller_delivery_date, 'cannot be before end date')
+    end
+  end
+  
+  def buyer_pickup_date_not_before_seller_delivery_date
+    if buyer_pickup_date < seller_delivery_date
+      errors.add(:buyer_pickup_date, 'cannot be before seller delivery date')
+    end
+  end
+  
+  def next_end_date_not_before_next_start_date
+    return unless order_cycle_setting.recurring
+
+    next_start_date = end_date.advance(order_cycle_setting.padding_interval.to_sym => order_cycle_setting.padding)
+    next_end_date = end_date.advance(order_cycle_setting.interval.pluralize.to_sym => 2)
+    if next_end_date < next_start_date
+      errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be before the next calculated start date of ' + next_start_date.strftime("%m/%d/%Y %I:%M %p") + '. Check the value of Padding.')
+    end
+  end
+  
+  def next_end_date_not_before_now
+    return unless order_cycle_setting.recurring
+
+    next_end_date = end_date.advance(order_cycle_setting.interval.pluralize.to_sym => 2)
+    if next_end_date.to_datetime < DateTime.current
+      errors.add(:end_date, 'of ' + next_end_date.strftime("%m/%d/%Y %I:%M %p") + ' cannot be today')
+    end
+  end
 end

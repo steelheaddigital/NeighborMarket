@@ -18,7 +18,7 @@
 #
 
 class OrderCycleSetting < ActiveRecord::Base
-  
+  has_many :order_cycles
   attr_accessible :recurring, :interval, :padding, :padding_interval
   
   validates :interval, :presence => true, :if => 'recurring?'

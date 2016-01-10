@@ -168,5 +168,5 @@ NeighborMarket::Application.routes.draw do
 
   resources :user_preferences, only: [:edit, :update]
 
-  resources :order_cycles, only: [:index, :update]
+  resources :order_cycles, only: [:index, :update, :create]
 end

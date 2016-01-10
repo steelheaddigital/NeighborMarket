@@ -22,8 +22,6 @@ class OrderCyclesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @order_cycle_settings = OrderCycleSetting.first ? OrderCycleSetting.first : OrderCycleSetting.new
-    @order_cycle_settings.padding ||= 0
     @order_cycle = OrderCycle.get_order_cycle
     
     respond_to do |format|
@@ -31,19 +29,27 @@ class OrderCyclesController < ApplicationController
     end
   end
 
-  def update
-    @order_cycle_settings = OrderCycleSetting.new_setting(params[:order_cycle_setting])
-    @order_cycle_settings.padding ||= 0
+  def create
+    process_request
+  end
 
+  def update
+    process_request
+  end
+
+  
+  private
+
+  def process_request
     case params[:commit]
     when 'Save and Start New Cycle'
-      @order_cycle = OrderCycle.build_initial_cycle(params[:order_cycle], @order_cycle_settings)
+      @order_cycle = OrderCycle.new(params[:order_cycle])
     when 'Update Settings'
-      @order_cycle = OrderCycle.update_current_order_cycle(params[:order_cycle], @order_cycle_settings)
+      @order_cycle = OrderCycle.update_current_order_cycle(params[:order_cycle])
     end
     
     respond_to do |format|
-      if @order_cycle_settings.save && @order_cycle.save_and_set_status
+      if @order_cycle.save_and_set_status
         format.html { redirect_to order_cycles_path, notice: 'Order Cycle Settings Successfully Saved!' }
       else
         format.html { render :index }

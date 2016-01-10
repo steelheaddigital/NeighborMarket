@@ -17,8 +17,8 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$(document).on("click", "#order_cycle_setting_recurring", function(){
-	$("#OrderCycleEndDateContainer").toggleClass("hidden")
+$(document).on("click", "#RecurringOrderCycleCheckBox", function(){
+	$("#RecurringOrderCycleSettings").toggleClass("hidden")
 });
 
 $(document).on("submit", "#TopLevelCategoryForm", function(event){

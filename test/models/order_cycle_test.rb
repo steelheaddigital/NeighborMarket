@@ -32,37 +32,12 @@ class OrderCycleTest < ActiveSupport::TestCase
      order_cycle = OrderCycle.new(:start_date =>Date.current, :end_date => Date.current + 1.day, :seller_delivery_date => Date.current  + 1.day, :buyer_pickup_date => Date.current)
      assert !order_cycle.valid?, order_cycle.errors.inspect
    end
-   
-   test "build_initial_cycle returns new order_cycle" do
-     order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
-     order_cycle_settings = order_cycle_settings(:not_recurring)
-     
-     new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
-     
-     assert_not_nil(new_cycle)
-     expected_end_date = Time.new(2012,8,21).utc
-     assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
-     assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
-   end
-  
-   test "build_initial_cycle returns new order_cycle when recurring is true" do
-     order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-20"}
-     order_cycle_settings = order_cycle_settings(:recurring)
-     
-     new_cycle = OrderCycle.build_initial_cycle(order_cycle_params, order_cycle_settings)
-     
-     assert_not_nil(new_cycle)
-     expected_end_date = Time.new(2012,8,21).utc
-     assert new_cycle.start_date == DateTime.new(2012,8,20), "Start date does not match"
-     assert new_cycle.end_date == expected_end_date, "End date does not match. expected:" + expected_end_date.to_s + "recieved:" + new_cycle.end_date.to_s
-   end
   
    test "update_current_order_cycle updates curent order cycle and returns update order cycle" do
      order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
-     order_cycle_settings = order_cycle_settings(:not_recurring)
      current_order_cycle_id = order_cycles(:current).id
      
-     new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+     new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params)
      
      assert_not_nil(new_cycle)
      expected_end_date = Time.new(2012,8,21).utc
@@ -75,11 +50,10 @@ class OrderCycleTest < ActiveSupport::TestCase
 
    test 'update_current_order_cycle does not set updating attribute if new order_cycle' do
     order_cycle_params = {"start_date" => "2012-08-20", "end_date" => "2012-08-21"}
-    order_cycle_settings = order_cycle_settings(:not_recurring)
     order_cycles(:current).destroy
     order_cycles(:not_current).destroy
      
-    new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params, order_cycle_settings)
+    new_cycle = OrderCycle.update_current_order_cycle(order_cycle_params)
 
     assert_not_nil(new_cycle)
     expected_end_date = Time.new(2012,8,21).utc
