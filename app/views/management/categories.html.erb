@@ -27,7 +27,7 @@
     <%@categories.each do |category|%>
         <div class="panel panel-default">
           <div class="panel-heading">
-              <span class="category-cell"><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>"><i class="icon-plus-sign"></i></a><%=category.name%></span>
+              <span class="category-cell"><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="#<%= "second-level-category" + "#{category.id}"%>"><i class="fa fa-plus-circle"></i></a><%=category.name%></span>
               <span class="category-cell"><%= button_to "Edit", { :action => "edit", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "editTopLevelCategoryButton"}, :method => "get", :class => "btn btn-default", :style => "width: 95%;"} %></span>
               <span class="category-cell"><%= button_to "Delete", { :action => "destroy", :controller => "top_level_categories", :id => category.id}, {:form => {:class => "deleteTopLevelCategoryButton"}, :method => "delete", :class => "btn btn-danger", :style => "width: 95%;"} %></span>
           </div>

@@ -28,7 +28,7 @@
 	  <%if @current_order_id || @completed_order_id%>
 		  <div style="display: inline-block; margin-right: 100px;">
 		    <div style ="font-size:50px; margin-bottom: 20px;">
-		      <i class="icon-shopping-cart icon-large"></i>
+		      <%= fa_icon "shopping-basket 2x" %>
 		    </div>
 		    <p style="padding-top: 15px;">
 	            <% if @current_order_id %>
@@ -43,7 +43,7 @@
 	  <%if @seller %>
 		  <div style="display: inline-block; margin-right: 100px;">
 		    <div style ="font-size:50px; margin-bottom: 20px;">
-		      <i class="icon-money icon-large"></i>
+		      <%= fa_icon "money 2x" %>
 		    </div>
 		    <p style="padding-top: 15px;">
 		      <%= link_to 'Sell', seller_index_path, :class => "btn btn-primary", :style => "width: 150px;" %>
@@ -53,7 +53,7 @@
 	  <%if @manager %>
 		  <div style="display: inline-block; margin-right: 100px;">
 		    <div style ="font-size:50px; margin-bottom: 20px;">
-		      <i class="icon-search icon-large"></i>
+		      <%= fa_icon "wrench 2x" %>
 		    </div>
 		    <p>
 		      <%= link_to 'Manage', site_settings_path, :class => "btn btn-primary", :style => "width: 150px;" %>

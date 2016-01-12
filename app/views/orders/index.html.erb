@@ -46,7 +46,7 @@
 			  <tbody>
 			    <%@orders.each do |order|%>
 					<tr>
-						<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#OrderDetail" + "#{order.id}" %>"><i class="icon-plus-sign"></i> Details</a></span></td>
+						<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#OrderDetail" + "#{order.id}" %>"><i class="fa fa-plus-circle"></i> Details</a></span></td>
 						<td><%= link_to "Edit", edit_order_path(order) if order.in_current_order_cycle? %></td>
 						<td><%= order.id %></td>
 						<td><%= order.user.username %></td>
@@ -69,7 +69,7 @@
 									<tbody>
 										<% order.cart_items.each do |item| %>
 											<tr>
-											<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#ItemDetail" + "#{item.id}" %>"><i class="icon-plus-sign"></i> Payments</a></span></td>
+											<td><span><a href="#" class="collapseIconLink" data-toggle="collapse" data-target="<%="#ItemDetail" + "#{item.id}" %>"><i class="fa fa-plus-circle"></i> Payments</a></span></td>
 												<td><%=item.inventory_item.name%></td>
 												<td><%=item.inventory_item.user.username%></td>
 												<td><%=item.quantity%></td>

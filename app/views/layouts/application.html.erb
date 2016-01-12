@@ -105,7 +105,7 @@
 							</li>
 							<li >
 								<a id ="CartButton" href= "<%= cart_index_path %>" >
-									<i class="icon-shopping-cart"></i>
+									<%= fa_icon "shopping-cart" %>
 									Cart
 									<span id="CartCount" class="badge badge-info" style="margin-left:5px;"><%= current_cart.cart_items.count %></span>
 								</a>
@@ -142,7 +142,7 @@
 		</div>
 		<script>
 			$(function() {
-				$(".icon-question-sign").tooltip();
+				$(".fa-question-circle").tooltip();
 				$("#Modal").modal({show:false});
 			});
 		</script>

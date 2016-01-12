@@ -82,8 +82,8 @@ $(document).on("click", "#PreviewSalesReportSubmit", function(event){
 });
 
 $(document).on("click", "#PastInventortyToggleContainer", function() {
-	$("#AddPastInventoryItemsIcon").toggleClass("icon-double-angle-down")
-	$("#AddPastInventoryItemsIcon").toggleClass("icon-double-angle-up")
+	$("#AddPastInventoryItemsIcon").toggleClass("fa-angle-double-down")
+	$("#AddPastInventoryItemsIcon").toggleClass("fa-angle-double-up")
 });
 
 function Seller(){

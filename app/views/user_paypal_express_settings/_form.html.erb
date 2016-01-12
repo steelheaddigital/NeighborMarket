@@ -29,12 +29,12 @@
 					<p>
 					<% if @settings.account_confirmed? %>
 						<span class="confirmedAccount">
-							<i class="icon-ok-sign"></i>
+							<%= fa_icon 'check-circle' %>
 							Paypal account confirmed
 						</span>
 					<% else %>
 						<span class="unconfirmedAccount">
-							<i class="icon-exclamation-sign"></i>
+							<%= fa_icon 'exclamation-circle' %>
 							Paypal account not confirmed
 						</span>
 					<% end %>

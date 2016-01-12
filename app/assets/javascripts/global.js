@@ -60,5 +60,5 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '.collapseIconLink', function(){
-	$(this).find('i').toggleClass('icon-plus-sign').toggleClass('icon-minus-sign')
+	$(this).find('i').toggleClass('fa-plus-circle').toggleClass('fa-minus-circle')
 })
