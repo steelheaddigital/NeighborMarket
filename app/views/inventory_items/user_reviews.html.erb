@@ -19,6 +19,9 @@
 #
 %>
 
+<% content_for :head do %>
+	<%= javascript_include_tag "inventory_items" %>
+<%end%>
 <div class="container-fluid">
 	<%@inventory_items.each do |inventory_item|%>
 		<div class="container-fluid">
@@ -44,12 +47,12 @@
 				</p>
 				<div>
 					<label>Your Review</label>
-					<%= link_to "Edit", edit_review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review' if !inventory_item.rating.nil? %>
-						<%= button_to "Delete", review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), method: 'delete', form_class: 'inline',  data: { confirm: "Are you sure?" }, class: 'btn-link' if !inventory_item.rating.nil? %>
+					<%= link_to "Edit", edit_review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review', data: { dialog: "true" } if !inventory_item.rating.nil? %>
+					<%= button_to "Delete", review_path(:id => inventory_item.review_id, :reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), method: 'delete', form_class: 'inline',  data: { confirm: "Are you sure?" }, class: 'btn-link' if !inventory_item.rating.nil? %>
 				</div>
 				<% if inventory_item.rating.nil? && inventory_item.review.nil? %>
 					<p>
-						<%= link_to "New Review", new_review_path(:reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review' %>
+						<%= link_to "New Review", new_review_path(:reviewable_type => "InventoryItem", :reviewable_id => inventory_item.id), class: 'review', data: { dialog: "true" }%>
 					</p>
 				<% else %>
 					<p>

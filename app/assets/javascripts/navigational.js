@@ -17,23 +17,5 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Utils = (function($){
-
-	function Utils() { }
-
-	Utils.prototype.showAlert = function(message) {
-	    $("#FlashMessages").show();
-		$("#FlashAlert").html(message);
-	}
-
-	Utils.prototype.showNotice = function(message){
-		$("#FlashMessages").show();
-		$("#FlashNotice").html(message);
-	}
-
-	Utils.prototype.closeDialog = function() {
-		$("#Modal").modal('hide');
-	}
-
-	return new Utils();
-})(jQuery);
+//= require ./lib/jquery.slidebars
+//= require ./lib/slidebars

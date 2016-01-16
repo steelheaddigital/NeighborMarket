@@ -19,6 +19,9 @@
 #
 %>
 
+<% content_for :head do %>
+	<%= javascript_include_tag "reviews" %>
+<%end%>
 <% content_for :meta_tags  do %>
 	<meta content="<%= @user.aboutme %>" name="description" />
 	<meta property="og:title" content="<%= @user.username %>" />
@@ -85,7 +88,7 @@
   	    	<%= image_tag @user.photo.url(:medium), {alt: @user.username, class: "img-rounded"} %>
   		</div>
 		<div style="margin-top: 10px;">
-			<%= link_to "Contact #{@user.username}", new_user_contact_message_path(@user), class: "btn btn-primary contactButton", style: "width: 300px;"%>
+			<%= link_to "Contact #{@user.username}", new_user_contact_message_path(@user), class: "btn btn-primary contactButton", style: "width: 300px;", data: { dialog: "true" }%>
 		</div>
     </div>
   </div>

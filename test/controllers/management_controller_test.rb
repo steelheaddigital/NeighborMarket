@@ -233,27 +233,6 @@ class ManagementControllerTest < ActionController::TestCase
     assert_equal response.content_type, Mime::JS
   end
   
-  test "should get edit_inventory" do
-    inventory_item = inventory_items(:one)
-    get :edit_inventory, :id => inventory_item.id
-    
-    assert_response :success
-    assert_not_nil assigns (:item)
-    assert_not_nil assigns (:top_level_categories)
-    assert_not_nil assigns (:second_level_categories)
-  end
-  
-  test "should get edit_inventory js" do
-    inventory_item = inventory_items(:one)
-    xhr :get, :edit_inventory, :id => inventory_item.id, :format => 'js'
-    
-    assert_response :success
-    assert_not_nil assigns (:item)
-    assert_not_nil assigns (:top_level_categories)
-    assert_not_nil assigns (:second_level_categories)
-    assert_equal response.content_type, Mime::JS
-  end
-  
   test "should get historical_orders" do
     get :historical_orders
     
@@ -382,9 +361,6 @@ class ManagementControllerTest < ActionController::TestCase
     get :inventory
     assert_redirected_to new_user_session_path
     
-    post :edit_inventory
-    assert_redirected_to new_user_session_path
-    
     get :historical_orders
     assert_redirected_to new_user_session_path
     
@@ -449,9 +425,6 @@ class ManagementControllerTest < ActionController::TestCase
     assert_response :not_found
     
     get :inventory
-    assert_response :not_found
-    
-    post :edit_inventory
     assert_response :not_found
     
     get :historical_orders

@@ -213,18 +213,6 @@ class ManagementController < ApplicationController
     end
   end
   
-  def edit_inventory
-    @item = InventoryItem.find(params[:id])
-    @top_level_categories = TopLevelCategory.all
-    @second_level_categories = SecondLevelCategory.where(:top_level_category_id => @item.top_level_category.id)
-    @inventory_guidelines = SiteContent.instance.inventory_guidelines
-    
-    respond_to do |format|
-      format.html
-      format.js { render :layout => false }
-    end
-  end
-  
   def historical_orders
     
     respond_to do |format|

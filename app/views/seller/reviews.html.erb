@@ -19,26 +19,33 @@
 #
 %>
 
-<h2>Your Overall Rating</h2>
-<p>
-	<span>
-		<%= radio_button_tag "rating", 0.5, @average_rating > 0 && @average_rating <= 0.5, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 1, @average_rating > 0.5 && @average_rating <= 1, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 1.5, @average_rating > 1 && @average_rating <= 1.5, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 2, @average_rating > 1.5 && @average_rating <= 2, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 2.5, @average_rating > 2 && @average_rating <= 2.5, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 3, @average_rating > 2.5 && @average_rating <= 3, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 3.5, @average_rating > 3 && @average_rating <= 3.5, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 4, @average_rating > 3.5 && @average_rating <= 4, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 4.5, @average_rating > 4 && @average_rating <= 4.5, class: "star {split:2}", disabled: "disabled" %>
-		<%= radio_button_tag "rating", 5, @average_rating > 4.5 && @average_rating <= 5, class: "star {split:2}", disabled: "disabled" %>
-	</span>
-	<span class="avgRating"><%= @average_rating %> average rating</span>
-</p>
-<h2>Item Reviews and Ratings</h2>
-<% @inventory_items.each do |inventory_item| %>
-	<div class="well">
-    	<span class="itemReviewTitle"><%= image_tag(inventory_item.photo.url(:thumb), alt: inventory_item.name, class: "img-responsive") if inventory_item.photo.file? %><%= item_name(inventory_item) %></span>
-		<%= render partial: "inventory_items/review", locals: {inventory_item: inventory_item}%>
-	</div>
-<% end %>
+<% content_for :head do %>
+	<%= javascript_include_tag "reviews" %>
+<%end%>
+<% if !@average_rating.nil? %>
+	<h2>Your Overall Rating</h2>
+	<p>
+		<span>
+			<%= radio_button_tag "rating", 0.5, @average_rating > 0 && @average_rating <= 0.5, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 1, @average_rating > 0.5 && @average_rating <= 1, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 1.5, @average_rating > 1 && @average_rating <= 1.5, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 2, @average_rating > 1.5 && @average_rating <= 2, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 2.5, @average_rating > 2 && @average_rating <= 2.5, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 3, @average_rating > 2.5 && @average_rating <= 3, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 3.5, @average_rating > 3 && @average_rating <= 3.5, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 4, @average_rating > 3.5 && @average_rating <= 4, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 4.5, @average_rating > 4 && @average_rating <= 4.5, class: "star {split:2}", disabled: "disabled" %>
+			<%= radio_button_tag "rating", 5, @average_rating > 4.5 && @average_rating <= 5, class: "star {split:2}", disabled: "disabled" %>
+		</span>
+		<span class="avgRating"><%= @average_rating %> average rating</span>
+	</p>
+	<h2>Item Reviews and Ratings</h2>
+	<% @inventory_items.each do |inventory_item| %>
+		<div class="well">
+	    	<span class="itemReviewTitle"><%= image_tag(inventory_item.photo.url(:thumb), alt: inventory_item.name, class: "img-responsive") if inventory_item.photo.file? %><%= item_name(inventory_item) %></span>
+			<%= render partial: "inventory_items/review", locals: {inventory_item: inventory_item}%>
+		</div>
+	<% end %>
+<%else%>
+	<div class="alert alert-info">You do not have any reviews or ratings yet</div>
+<%end%>

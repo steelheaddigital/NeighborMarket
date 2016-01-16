@@ -17,239 +17,127 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$(document).on("click", "#RecurringOrderCycleCheckBox", function(){
-	$("#RecurringOrderCycleSettings").toggleClass("hidden")
-});
+//= require ./lib/jquery.form
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require summernote
+//= require inventory_items
 
-$(document).on("submit", "#TopLevelCategoryForm", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-
-    mgmt.SubmitCategoryForm($(this));
-
-    return false;
-});
-
-$(document).on("submit", "#SecondLevelCategoryForm", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-
-    mgmt.SubmitCategoryForm($(this));
-
-    return false;
-});
-
-$(document).on("submit", "#EditUserForm", function(event){
-    event.preventDefault();
-    var mgmt = new Management();
-
-    mgmt.SubmitEditUsersForm($(this))
-
-    return false;
-});
-
-$(document).on("change", "#RoleTypeSelect", function(){
-    if($(this).val() == "Seller"){
-      $("#SellerApprovalStyleLabel").show();
-      $("#seller_approval_style").show();
-      $("#SellerApprovedLabel").show();
-      $("#seller_approved").show();
-    }
-    else{
-      $("#SellerApprovalStyleLabel").hide();
-      $("#seller_approval_style").hide();
-      $("#SellerApprovedLabel").hide();
-      $("#seller_approved").hide();
-    }
-    });
-
-$(document).on("submit", "#UserSearchForm", function(event){
-    event.preventDefault();
-    var queryString = $(this).serialize(),
-    	url = $(this).attr("action")
-
-    $("#ManagerSearchResults").empty();
-    $("#ManagerSearchResultsLoading").show();
-
-    $("#ManagerSearchResults").load(url+"?"+queryString, function(){
-        $("#ManagerSearchResultsLoading").hide();
-    });
-
-    return false;
-});
-
-$(document).on("submit", ".editUsersButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-     	mgmt = new Management()
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", "#NewTopLevelCategoryButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-    	mgmt = new Management()
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", ".newSecondLevelCategoryButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-     	mgmt = new Management()
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", ".editTopLevelCategoryButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-     	mgmt = new Management()
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", ".editSecondLevelCategoryButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-     	mgmt = new Management()
-
-    mgmt.LoadManagementDialog(url);
-
-    return false;
-});
-
-$(document).on("submit", "#ManagementEditInventoryItem", function(){
-	event.preventDefault();
-    var mgmt = new Management();
-    mgmt.SubmitEditInventoryItem($(this))
-    return false;
-});
-
-$(document).on("click", "#mgmtEditInventoryItemButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href");
-
-    $("#Modal").load(url).modal('show');    
+(function($, utils) {
     
-    return false;
-});
+    function Management() {
+        init();
+    }
 
-$(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
-    event.preventDefault();
-	var form = $(this).closest("form"),
-     	url = form.attr("action"),
-    	mgmt = new Management()
-    
-	mgmt.SubmitHistoricalOrdersForm(form)
-		
-	return false;
-});
+    function init() {
+        $(document).on("click", "#RecurringOrderCycleCheckBox", function(){
+            $("#RecurringOrderCycleSettings").toggleClass("hidden")
+        });
 
+        $(document).on("change", "#RoleTypeSelect", function(){
+            roleTypeSelect.call(this);
+        });
 
-function Management(){
- 
-    var self = this;
+        $(document).on("submit", "#UserSearchForm", function(event){
+            submitUserSearchForm.call(this, event)
+        });
 
-	this.SubmitHistoricalOrdersForm = function(form){
-		$("#HistoricalOrdersLoading").show();
+        $(document).on("click", "#PreviewHistoricalOrdersSubmit", function(event){
+            submitHistoricalOrdersForm.call(this, event);
+        });
+
+        $(document).on('click', '[data-toggle="show"]', function() {
+            showPaymentProcessorSettings.call(this);
+        });
+
+        $(document).on("submit", "#TopLevelCategoryForm", function(event){
+            submitCategoryForm.call(this, event);
+        });
+
+        $(document).on("submit", "#SecondLevelCategoryForm", function(event){
+            submitCategoryForm.call(this, event);
+        });
+    }
+
+    function roleTypeSelect(){
+        if($(this).val() == "Seller"){
+            $("#SellerApprovalStyleLabel").show();
+            $("#seller_approval_style").show();
+            $("#SellerApprovedLabel").show();
+            $("#seller_approved").show();
+        }
+        else{
+            $("#SellerApprovalStyleLabel").hide();
+            $("#seller_approval_style").hide();
+            $("#SellerApprovedLabel").hide();
+            $("#seller_approved").hide();
+        }
+    }
+
+    function submitUserSearchForm(event){
+        event.preventDefault();
+        var queryString = $(this).serialize(),
+        url = $(this).attr("action")
+
+        $("#ManagerSearchResults").empty();
+        $("#ManagerSearchResultsLoading").show();
+
+        $("#ManagerSearchResults").load(url+"?"+queryString, function(){
+            $("#ManagerSearchResultsLoading").hide();
+        });
+    }
+
+    function submitHistoricalOrdersForm(event){
+        event.preventDefault();
+        var form = $(this).closest("form")
+        url = form.attr("action")
+
+        $("#HistoricalOrdersLoading").show();
         form.ajaxSubmit({
            dataType: "html",
            success: function(content){
-			 $("#HistoricalOrdersReportContent").html(content);
+             $("#HistoricalOrdersReportContent").html(content);
              $("#HistoricalOrdersLoading").hide();
            },
            error: function(request){
             $("#HistoricalOrdersLoading").hide();
-			$("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
-           }
-        });
-	}
-
-	this.SubmitEditInventoryItem = function(form){
-		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled');
-		submitButton.attr('value', "Saving...");
-		form.ajaxSubmit({
-	       dataType: "html",
-	       //Remove the file input if it's empty so paperclip doesn't choke
-	       beforeSerialize: function() {
-	           if($("#inventory_item_photo").val() === ""){
-	               $("#inventory_item_photo").remove();
-	           }
-	       },
-	       success: function(data){
-			   $("#ManagementContent").html(data);
-			   self.CloseManagementDialog();
-	       },
-	       error: function(request){
-	           $("#Modal").html(request.responseText).modal('show');
-	       }
-	    });
-	};
- 
-    this.SubmitCategoryForm = function(form){
-	   submitButton = form.find(':submit');
-	   submitButton.attr('disabled', 'disabled');
-	   submitButton.attr('value', "Saving...");
-       form.ajaxSubmit({
-           cache: false,
-           dataType: "html",
-           success: function(data){
-             self.CloseManagementDialog();
-			 $('#ManagementContent').html(data);
-           },
-           error: function(request){
-            $("#Modal").html(request.responseText).modal('show');
+            $("#HistoricalOrdersReportContent").html(request.responseText).modal('show');
            }
         });
     }
-    
-    this.SubmitEditUsersForm = function(form){
-		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled');
-		submitButton.attr('value', "Saving...");
+
+    function showPaymentProcessorSettings(){
+        var target = "#" + $(this).data("target");
+        var toHide = $(".payment-processor-setting-container").not(target);
+
+        $(target + ' :input').prop('disabled', false);
+        toHide.find(':input').prop('disabled', true);
+        toHide.addClass('hidden');
+        $(target).removeClass('hidden');
+    }
+
+    function submitCategoryForm(event){
+        event.preventDefault();
+        var form = $(this);
+        
+        submitButton = form.find(':submit');
+        submitButton.attr('disabled', 'disabled');
+        submitButton.attr('value', "Saving...");
         form.ajaxSubmit({
-           cache: false,
-           dataType: "html",
-	       //Remove the file input if it's empty so paperclip doesn't choke
-	       beforeSerialize: function() {
-	           if($("#user_photo").val() === ""){
-	               $("#user_photo").remove();
-	           }
-	       },
-           success: function(){
-             var approveSellers = $("#ApproveSellers");
-             //if we are on the Approve Sellers screen, then refresh the Approve Seller table
-             if(approveSellers.length > 0){
-				$('#ManagementContent').load('/management/approve_sellers');
-             }
-			 self.CloseManagementDialog();
-             utils.ShowAlert("User successfully updated!");
-           },
-           error: function(request){
-			$("#Modal").html(request.responseText).modal('show');
-           }
-        });
-    }
-    
-    this.LoadManagementDialog = function(url){
-        $("#Modal").load(url, function() 
-            {$("#ManagementNotice").hide();
-			$(this).modal('show');
+            cache: false,
+            dataType: "html",
+            success: function(data){
+                utils.closeDialog();
+                $('#ManagementContent').html(data);
+            },
+            error: function(request){
+                $("#Modal").html(request.responseText).modal('show');
+            }
         });
     }
 
-    this.CloseManagementDialog = function(){
-        $("#Modal").modal('hide');
-    }
-}
+
+    return new Management();
+
+})(jQuery, Utils);
+

@@ -18,7 +18,9 @@
 #along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 #
 %>
-
+<% content_for :head do %>
+	<%= javascript_include_tag "seller" %>
+<%end%>
 <%content_for :MainContent do %>
 <div class="container-fluid">
 	<div class ="row">
@@ -34,7 +36,7 @@
 		  <%= link_to "Payment Settings", user_payment_settings_path, {class: "list-group-item #{nav_item_is_active({controller: 'user_payment_settings', action: 'index'})}"} %>
 	    </div>
 	  </div>
-	  <div id="SellerContent" class="col-md-9">
+	  <div id="ViewContent" class="col-md-9">
 	    <%= content_for?(:MainSellerContent) ? yield(:MainSellerContent) : yield %>
 	  </div>
 	</div>

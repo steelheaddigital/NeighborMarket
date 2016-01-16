@@ -17,137 +17,72 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$(document).on("change", "#inventory_item_top_level_category_id", function() {
-    var data = {category_id:$(this).val()},
-	 	seller = new Seller()
-	
-	seller.GetSecondLevelCategories(data);
-});
+//= require ./lib/jquery.form
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require inventory_items
 
-$(document).on("click", "#SelectAllInventoryItems", function() {
-	var rows = $(this).parents("table").find("tbody").find("tr");
-	
-	//Toggle the checkbox for each row in the table
-	rows.each(function(){
-		$(this).find("td:first")
-			   .children(":first")
-			   .attr('checked', function(idx, oldAttr) {
-			            return !oldAttr;
-			        })
-	});
-	
-});
+(function($, utils){
 
-$(document).on("submit", "#NewInventoryItemButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("action"),
-     	seller = new Seller()
-    
-    seller.LoadInventoryDialog(url);
-    
-    return false;
-});
+	var Seller = function() {
+		init();
+	}
 
-$(document).on("submit", "#new_inventory_item", function(){
-    var seller = new Seller();
-    seller.SubmitInventoryItemForm($(this));
-    return false;
-});
+	function init() {
 
-$(document).on("submit", "#edit_inventory_item", function(){
-    var seller = new Seller();
-	seller.SubmitInventoryItemForm($(this));
-    return false;
-});
+		$(document).on("click", "#SelectAllInventoryItems", function() {
+			selectAll.call(this);
+		});
 
-$(document).on("click", ".editInventoryItemButton", function(event){
-    event.preventDefault();
-    var url = $(this).attr("href"),
-     	seller = new Seller()
-    
-    seller.LoadInventoryDialog(url);
-    
-    return false;
-});
+		$(document).on("click", "#PreviewSalesReportSubmit", function(event){
+			submitSalesReportForm.call(this, event)
+		});
 
-$(document).on("click", "#PreviewSalesReportSubmit", function(event){
-    event.preventDefault();
-	var form = $(this).closest("form"),
-     	url = form.attr("action"),
-    	seller = new Seller()
-    
-	seller.SubmitSalesReportForm(form)
-		
-	return false;
-});
+		$(document).on("click", "#PastInventortyToggleContainer", toggleAngleIcons);
+	}
 
-$(document).on("click", "#PastInventortyToggleContainer", function() {
-	$("#AddPastInventoryItemsIcon").toggleClass("fa-angle-double-down")
-	$("#AddPastInventoryItemsIcon").toggleClass("fa-angle-double-up")
-});
+	function selectAll(){
+		var element = $(this);
+		var rows = element.parents("table").find("tbody").find("tr");
+			
+		//Toggle the checkbox for each row in the table
+		rows.each(function(){
+			$(this).find("td:first")
+				   .children(":first")
+				   .attr('checked', function(idx, oldAttr) {
+				    	return !oldAttr;
+				    })
+		});
+	}
 
-function Seller(){
-	
-	var self = this;
-	
-	this.SubmitSalesReportForm = function(form){
-		$("#SalesReportLoading").show();
+	function submitSalesReportForm(form){
+		event.preventDefault();
+		var form = $(this).closest("form")
+		var url = form.attr("action")
+		var loading = $("#SalesReportLoading");
+
+		loading.show();
         form.ajaxSubmit({
-           dataType: "html",
-           success: function(content){
-			 $("#SalesReportContent").html(content);
-             $("#SalesReportLoading").hide();
-           },
-           error: function(request){
-            $("#SalesReportLoading").hide();
-			$("#SalesReportContent").html(request.responseText).modal('show');
-           }
+           	dataType: "html",
+           	success: function(content){
+			 	$("#SalesReportContent").html(content);
+             	loading.hide();
+           	},
+           	error: function(request){
+            	loading.hide();
+				$("#SalesReportContent").html(request.responseText).modal('show');
+           	}
         });
 	}
-	
-	this.GetSecondLevelCategories = function(data){
-		var url = '/inventory_items/get_second_level_category'
-		$("#inventory_item_second_level_category_id").attr("disabled", "disabled")
-		$.get(url ,data, function(data){
-	      $("#inventory_item_second_level_category_id").empty();
-	      $("#inventory_item_second_level_category_id").append("<option value=\"\" selected=\"selected\"></option>");
-	      $.each(data, function(index, value) {
-	        $("#inventory_item_second_level_category_id").append("<option value = " + value.id + ">" + value.name + "</option>");
-	      });
-	      $("#inventory_item_second_level_category_id").removeAttr("disabled");
-	    });
-	}
-	
-    this.SubmitInventoryItemForm = function(form){
-		submitButton = form.find(':submit');
-		submitButton.attr('disabled', 'disabled');
-		submitButton.attr('value', "Saving...");
-		form.ajaxSubmit({
-	       dataType: "html",
-	       //Remove the file input if it's empty so paperclip doesn't choke
-	       beforeSerialize: function() {
-	           if($("#inventory_item_photo").val() === ""){
-	               $("#inventory_item_photo").remove();
-	           }
-	       },
-	       success: function(data, textStatus, request){
-	           self.CloseInventoryDialog();
-			   $("#SellerContent").html(data);
-	       },
-	       error: function(request){
-	           $("#Modal").html(request.responseText).modal('show');
-	       }
-	    });
-	}
-    
-    this.LoadInventoryDialog = function(url){
-        $("#Modal").load(url, function() {
-			$("#SellerNotice").hide();
-			$(this).modal('show');
-        });
+
+    function toggleAngleIcons(){
+    	var icon = $("#AddPastInventoryItemsIcon");
+
+    	icon.toggleClass("fa-angle-double-down");
+		icon.toggleClass("fa-angle-double-up");
     }
 
-    this.CloseInventoryDialog = function(){
-        $("#Modal").modal('hide');
-    }
-}
+    return new Seller();
+
+})(jQuery, Utils);
+

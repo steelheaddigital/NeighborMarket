@@ -27,8 +27,8 @@ class HomeController < ApplicationController
                           .limit(5)
     @items_for_display = current_inventory_items.paginate(:page => 1, :per_page => 8)
     if site_settings
-      @site_name = if site_settings.site_name.blank? then "Neighbor Market" else site_settings.site_name end
-      @site_description = if site_contents.site_description.blank? then "Welcome to the " + @site_name else site_contents.site_description end
+      @site_name = site_settings.site_name.blank? ? "Neighbor Market" : site_settings.site_name
+      @site_description = site_contents.site_description.blank? ? "Welcome to the " + @site_name : site_contents.site_description
     else
       @site_name = "Neighbor Market"
       @site_description = "Welcome to the Neighbor Market"

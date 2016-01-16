@@ -19,6 +19,9 @@
 #
 %>
 
+<% content_for :head do %>
+	<%= javascript_include_tag "reviews" %>
+<%end%>
 <% @reviews = inventory_item.reviews.joins(:user)
                                   	.select('reviews.*, users.username AS username')
                                   	.order('reviews.created_at DESC')

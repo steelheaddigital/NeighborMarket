@@ -17,12 +17,4 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$(document).on('click', '[data-toggle="show"]', function() {
-    var target = "#" + $(this).data("target");
-    var toHide = $(".payment-processor-setting-container").not(target);
-    
-    $(target + ' :input').prop('disabled', false);
-    toHide.find(':input').prop('disabled', true);
-    toHide.addClass('hidden');
-    $(target).removeClass('hidden');
-});
+//= require ./lib/jquery.pageless
