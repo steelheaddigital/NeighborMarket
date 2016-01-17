@@ -22,7 +22,7 @@ require 'sidekiq/api'
 class OrderCycle < ActiveRecord::Base
   has_many :orders
   has_many :inventory_item_order_cycles
-  has_many :inventory_items, -> { uniq }, :through => :inventory_item_order_cycles
+  has_many :inventory_items, -> { uniq }, through: :inventory_item_order_cycles
   belongs_to :order_cycle_setting
   validate :end_date_not_before_today,
            :end_date_not_before_start_date,

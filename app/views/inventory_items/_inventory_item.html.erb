@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<% if SiteSetting.instance.reputation_enabled && !inventory_item.avg_rating.nil? %>
-					<%= render partial: "review", locals: {inventory_item: inventory_item}%>
+					<%= render partial: "inventory_items/review", locals: {inventory_item: inventory_item}%>
 				<%end%>
 				</div>
 			</div>

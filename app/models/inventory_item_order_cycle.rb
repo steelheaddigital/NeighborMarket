@@ -18,7 +18,7 @@
 #
 
 class InventoryItemOrderCycle < ActiveRecord::Base
-  belongs_to :inventory_item
+  belongs_to :inventory_item, touch: true
   belongs_to :order_cycle
   
   before_destroy :user_can_delete_from_order_cycle
