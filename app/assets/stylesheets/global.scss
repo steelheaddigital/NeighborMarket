@@ -191,3 +191,10 @@ legend
 	top: 10px; 
 	display: block
 }
+
+/*Fixes responsive tables when using the dataTables plugin*/
+.table-responsive .dataTables_wrapper .row
+{
+	margin-right: 0;
+	margin-left: 0;
+}
