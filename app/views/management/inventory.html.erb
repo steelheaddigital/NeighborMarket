@@ -19,9 +19,8 @@
 #
 %>
 
-<h4>Inventory for the current order cycle</h4>
 <div class="table-responsive">
-	<table class="table table-bordered table-condensed">
+	<table id="InventoryTable" class="table table-bordered table-condensed">
 	  <thead>
 	    <tr>
 	  <th>Seller Name</th>
@@ -50,5 +49,14 @@
 	  </tbody>
 	</table>
 </div>
-<%= will_paginate @inventory_items, renderer: BootstrapPagination::Rails %>
+<% content_for :scripts do %>
+	<script type="text/javascript">
+		$(function() {
+			$("#InventoryTable").DataTable({
+				ordering: true,
+				pageLength: 10
+			});
+		});
+	</script>
+<% end %>
 

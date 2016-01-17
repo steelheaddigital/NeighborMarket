@@ -20,7 +20,7 @@
 %>
 
 <div class="table-responsive">
-	<table class="table table-bordered table-condensed">
+	<table id="UserTable" class="table table-bordered table-condensed">
 	  <thead>
 	    <tr>
 			<th>Username</th>
@@ -45,5 +45,13 @@
 	  </tbody>
 	</table>
 </div>
+<script type="text/javascript">
+	$(function() {
+		$("#UserTable").DataTable({
+			ordering: true,
+			pageLength: 10
+		});
+	});
+</script>
 
 
