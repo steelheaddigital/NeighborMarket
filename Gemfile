@@ -24,6 +24,7 @@ gem 'dynamic_sitemaps', '~> 2.0.0'
 gem 'headliner', '~> 0.1.3'
 gem 'jquery-datatables-rails', '~> 3.3.0'
 gem 'summernote-rails', '~> 0.7.1.0'
+gem 'turbolinks', '~> 2.5.3'
 
 #using this fork so that error messages with html will display properly
 gem 'dynamic_form', git: 'git://github.com/steelheaddigital/dynamic_form'

@@ -19,9 +19,6 @@
 #
 %>
 
-<% content_for :head do %>
-	<%= javascript_include_tag "inventory_items" %>
-<%end%>
 <div class="container-fluid">
 	<%@inventory_items.each do |inventory_item|%>
 		<div class="container-fluid">

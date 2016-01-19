@@ -17,11 +17,6 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//= require ./lib/jquery.form
-//= require dataTables/jquery.dataTables
-//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
-//= require inventory_items
-
 (function($, utils){
 
 	var Seller = function() {

@@ -10,10 +10,6 @@
 <%end%>
 <% content_for :scripts do %>
 	<script type="text/javascript">
-		$(function() {
-			$('.wysiwyg').each(function(i, elem) {
-      			$(elem).summernote({maxHeight: 300});
-    		});
-		});
+		$('.wysiwyg').summernote({maxHeight: 300});
 	</script>
 <%end%>

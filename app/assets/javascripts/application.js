@@ -19,98 +19,22 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require bootstrap3-typeahead
 //= require ./lib/jquery.cookie
 //= require ./lib/google_analytics_turbolinks
+//= require ./lib/jquery.pageless
+//= require ./lib/jquery.rating
+//= require ./lib/jquery.metadata
+//= require ./lib/jquery.form
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+//= require summernote
+//= require slidebars
+//= require jquery.slidebars
 //= require utils
-
-(function($, utils) {
-
-	function Application() { 
-		init();
-	}
-
-	function init() {
-
-		// When I say html I really mean script for rails
-		$.ajaxSettings.accepts.html = $.ajaxSettings.accepts.script;
-
-		$(document).ajaxSend(ajaxSend);
-
-		$(document).ajaxSuccess(ajaxSuccess);
-
-		$(document).ready(documentReady);
-
-		$(document).on('click', '.collapseIconLink', function(event){
-			collapseLink.call(this, event)
-		});
-
-		$(document).on("submit", "[data-dialog]", function(event){
-            loadDialog.call(this, event)
-        });
-
-        $(document).on("click", "[data-dialog]", function(event){
-            loadDialog.call(this, event)
-        });
-	}
-
-	function ajaxSend(event, request, settings) {
-		// Always send the authenticity_token with ajax
-		if ( settings.type == 'post' ) {
-	        settings.data = (settings.data ? settings.data + "&" : "")
-	                + "authenticity_token=" + encodeURIComponent( AUTH_TOKEN );
-	        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	    }
-
-		$("#FlashMessages").hide();
-		$("#FlashNotice").empty();
-		$("#FlashAlert").empty();
-	}
-
-	function ajaxSuccess(event, request, settings) {
-		var notice = request.getResponseHeader("X-Notice")
-		if(notice){
-			utils.showNotice(notice);
-		} 
-		
-	   	var alert = $.cookie('alert');
-		if(alert){
-			utils.showAlert(alert);
-		} 
-	}
-
-	function documentReady() {
-		var length = $.trim($('#FlashNotice').html()) + $.trim($('#FlashAlert').html());
-
-		if(length){
-			$('#FlashMessages').show();
-		}
-		else{
-			$('#FlashMessages').hide();
-		}
-		
-		$('.dropdown-submenu').click(function(event){
-		     event.stopPropagation();
-		});
-
-		$(".fa-question-circle").tooltip();
-		
-		$("#Modal").modal({ show:false });
-	}
-
-	function collapseLink(){
-		$(this).find('i').toggleClass('fa-plus-circle').toggleClass('fa-minus-circle')
-	}
-
-	function loadDialog(event){
-        event.preventDefault();
-        var element = $(this);
-        var url = element.attr("action") ? element.attr("action") : element.attr("href");
-
-        $("#Modal").load(url, function() {
-            $(this).modal('show');
-        });
-    }
-
-	return new Application();
-})(jQuery, Utils);
+//= require management
+//= require seller
+//= require inventory_items
+//= require turbolinks
+//= require init
 

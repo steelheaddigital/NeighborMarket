@@ -19,9 +19,6 @@
 #
 %>
 
-<% content_for :head do %>
-	<%= javascript_include_tag "reviews" %>
-<%end%>
 <% content_for :meta_tags  do %>
 	<meta content="<%= @user.aboutme %>" name="description" />
 	<meta property="og:title" content="<%= @user.username %>" />

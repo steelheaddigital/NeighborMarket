@@ -51,11 +51,9 @@
 </div>
 <% content_for :scripts do %>
 	<script type="text/javascript">
-		$(function() {
-			$("#InventoryTable").DataTable({
-				ordering: true,
-				pageLength: 10
-			});
+		$("#InventoryTable").DataTable({
+			ordering: true,
+			pageLength: 10
 		});
 	</script>
 <% end %>

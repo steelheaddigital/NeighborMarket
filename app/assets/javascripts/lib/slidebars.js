@@ -20,8 +20,15 @@
 // 006 - Operations
 // 007 - API
 // 008 - User Input
-
-;(function($) {
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as anonymous module.
+		define(['jquery'], factory);
+	} else {
+		// Browser globals.
+		factory(jQuery);
+	}
+}(function ($) {
 
 	$.slidebars = function(options) {
 
@@ -257,7 +264,7 @@
 		// ---------
 		// 007 - API
 		
-		this.slidebars = {
+		var slidebars = {
 			open: open, // Maps user variable name to the open method.
 			close: close, // Maps user variable name to the close method.
 			toggle: toggle, // Maps user variable name to the toggle method.
@@ -343,4 +350,4 @@
 		
 	}; // End Slidebars function.
 
-}) (jQuery);
+}));

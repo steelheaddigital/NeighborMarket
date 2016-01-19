@@ -17,10 +17,6 @@ You should have received a copy of the GNU General Public License
 along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//= require ./lib/bootstrap3-typeahead
-//= require ./lib/jquery.rating
-//= require ./lib/jquery.metadata
-
 (function($, utils){
 
 	var InventoryItems = function() { 

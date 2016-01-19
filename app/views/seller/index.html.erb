@@ -119,35 +119,33 @@
 	<% content_for :scripts do %>
 		<%=facebook%>
 		<script type="text/javascript">
-			$(function() {
-				$("#PastInventoryTable").DataTable({
-					ordering: true,
-					order: [1, "asc"],
-					columns: [
-						{"orderable": false},
-						null,
-						null,
-						null,
-						null,
-						null,
-						{"orderable": false},
-						{"orderable": false}
-					]
-				});
+			$("#PastInventoryTable").DataTable({
+				ordering: true,
+				order: [1, "asc"],
+				columns: [
+					{"orderable": false},
+					null,
+					null,
+					null,
+					null,
+					null,
+					{"orderable": false},
+					{"orderable": false}
+				]
+			});
 
-				$("#CurrentInventoryTable").DataTable({
-					ordering: true,
-					columns: [
-						null,
-						null,
-						null,
-						null,
-						null,
-						{"orderable": false},
-						{"orderable": false},
-						{"orderable": false}
-					]
-				});
+			$("#CurrentInventoryTable").DataTable({
+				ordering: true,
+				columns: [
+					null,
+					null,
+					null,
+					null,
+					null,
+					{"orderable": false},
+					{"orderable": false},
+					{"orderable": false}
+				]
 			});
 		</script>
 	<%end%>

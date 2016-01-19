@@ -19,9 +19,6 @@
 #
 %>
 
-<% content_for :head do %>
-	<%= javascript_include_tag "reviews" %>
-<%end%>
 <% if !@average_rating.nil? %>
 	<h2>Your Overall Rating</h2>
 	<p>
