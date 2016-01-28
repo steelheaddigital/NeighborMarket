@@ -35,8 +35,8 @@
 							<div>
 					    	<%= s.label "Padding (amount of time between the end date and the next start date)" %>
 					    </div>
-						<%= s.number_field :padding, hide_label: true, wrapper: {style: 'display: inline-block; width: 75px;'} %>
-					    <%= s.select(:padding_interval, {"hours" => "hours","days" => "days"}, { hide_label: true }, { wrapper: { style: "display: inline-block; width: 265px;" } }) %>
+						<%= s.number_field :padding, hide_label: true, wrapper: {class: 'inline', style: 'width: 75px;'} %>
+					    <%= s.select(:padding_interval, {"hours" => "hours","days" => "days"}, { hide_label: true }, { wrapper: {class: 'inline', style: "width: 265px;" } }) %>
 					</div>
 				<% end %>
 			</div>
