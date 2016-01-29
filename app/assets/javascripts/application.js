@@ -22,6 +22,7 @@ along with Neighbor Market.  If not, see <http://www.gnu.org/licenses/>.
 //= require bootstrap3-typeahead
 //= require ./lib/jquery.cookie
 //= require ./lib/google_analytics_turbolinks
+//= require ./lib/facebook_turbolinks
 //= require ./lib/jquery.pageless
 //= require ./lib/jquery.rating
 //= require ./lib/jquery.metadata
